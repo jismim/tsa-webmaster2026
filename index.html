@@ -4,154 +4,383 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Give&Grow - Community Resource Hub for High School Students</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- favicon -->
+     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
 </head>
+
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-text">Give&Grow</div>
+        </div>
+    </div>
+
     <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <img src="images/logo.png" alt="Give&Grow Logo">
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <img src="images/logo.png" alt="Give&Grow Logo" class="logo-img">
                 <span>Give&Grow</span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#submit">Submit Resource</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <!-- currently not linked -->
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#resources">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#submit">Submit Resource</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Header Section -->
     <section class="hero" id="home">
-        <!-- PLACEHOLDER: Replace the src below with your hero image path -->
-        <!-- Recommended size: 1920x600px or similar wide aspect ratio -->
         <img src="images/placeholder.png" alt="Students collaborating" class="hero-image">
         <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>Empowering High School Students</h1>
-            <p>Find college prep resources, internships, and opportunities in one place.</p>
-            <button class="cta-button">Get Started</button>
+        <div class="hero-content container">
+            <h1 class="animate-title">Your Future Starts Here</h1>
+            <p class="animate-subtitle">Discover thousands of opportunities to build your dream career</p>
+            <div class="hero-buttons">
+                <button class="cta-button primary">Explore Resources</button>
+                <button class="cta-button secondary">Share Opportunity</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-pill">
+                    <span class="stat-number">2,500+</span>
+                    <span class="stat-label">Students Helped</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label">Resources</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Partner Orgs</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Carousel -->
+    <section class="success-stories">
+        <div class="container">
+            <h2 class="text-center">Real Students, Real Success</h2>
+            <p class="section-subtitle text-center">See how Give&Grow helped students achieve their goals</p>
+            
+            <div class="stories-carousel-container">
+                <button class="story-nav prev-story" aria-label="Previous story">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="stories-carousel">
+                    <div class="story-card active">
+                    <div class="story-content">
+                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
+                        <p class="story-text">
+                            I used Give&Grow to find local STEM volunteering opportunities. I ended up helping at a robotics club, and it was a great way to build experience.
+                        </p>
+                        <div class="story-author">
+                            <div class="author-avatar">S1</div>
+                            <div class="author-info">
+                                <h4>Student, Age 16</h4>
+                                <p>Interested in STEM</p>
+                            </div>
+                        </div>
+                        <div class="story-badge"><i class="fas fa-microscope"></i> STEM Interest</div>
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-content">
+                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
+                        <p class="story-text">
+                            The college prep checklist helped me organize everything. I finally felt like I had a plan instead of stressing about deadlines.
+                        </p>
+                        <div class="story-author">
+                            <div class="author-avatar">S2</div>
+                            <div class="author-info">
+                                <h4>High School Senior</h4>
+                                <p>Applying for College</p>
+                            </div>
+                        </div>
+                        <div class="story-badge"><i class="fas fa-graduation-cap"></i> College Prep</div>
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-content">
+                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
+                        <p class="story-text">
+                            I finished one of the beginner coding challenges on Give&Grow and built a simple project. It made learning programming feel less scary.
+                        </p>
+                        <div class="story-author">
+                            <div class="author-avatar">S3</div>
+                            <div class="author-info">
+                                <h4>Student, Age 17</h4>
+                                <p>Beginner Programmer</p>
+                            </div>
+                        </div>
+                        <div class="story-badge"><i class="fas fa-laptop-code"></i> Learning Tech</div>
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-content">
+                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
+                        <p class="story-text">
+                            I found a local volunteering group through Give&Grow and joined their monthly meetups. It's been a simple but meaningful way to get involved.
+                        </p>
+                        <div class="story-author">
+                            <div class="author-avatar">S4</div>
+                            <div class="author-info">
+                                <h4>High School Sophomore</h4>
+                                <p>Community Volunteer</p>
+                            </div>
+                        </div>
+                        <div class="story-badge"><i class="fas fa-handshake"></i> Community</div>
+                    </div>
+                </div>
+                </div>
+                <button class="story-nav next-story" aria-label="Next story">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="story-dots"></div>
         </div>
     </section>
 
     <!-- Impact Section -->
     <section class="impact">
-        <h2>Our Impact</h2>
-        <div class="impact-grid">
-            <div class="impact-card">
-                <div class="impact-number" data-target="47">0</div>
-                <p>STEM Opportunities</p>
-            </div>
-            <div class="impact-card">
-                <div class="impact-number" data-target="32">0</div>
-                <p>Nonprofit Partners</p>
-            </div>
-            <div class="impact-card">
-                <div class="impact-number" data-target="28">0</div>
-                <p>Online Courses</p>
-            </div>
-            <div class="impact-card">
-                <div class="impact-number" data-target="156">0</div>
-                <p>Total Resources</p>
+        <div class="container">
+            <h2 class="text-center">Making an Impact That Matters</h2>
+            <div class="row impact-grid">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="impact-card stem">
+                        <div class="impact-icon"><i class="fas fa-microscope"></i></div>
+                        <div class="impact-number" data-target="47">0</div>
+                        <p>STEM Opportunities</p>
+                        <span class="impact-detail">From research labs to tech internships</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="impact-card nonprofit">
+                        <div class="impact-icon"><i class="fas fa-handshake"></i></div>
+                        <div class="impact-number" data-target="22">0</div>
+                        <p>Nonprofit Partners</p>
+                        <span class="impact-detail">Verified community organizations</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="impact-card courses">
+                        <div class="impact-icon"><i class="fas fa-book-open"></i></div>
+                        <div class="impact-number" data-target="28">0</div>
+                        <p>Online Courses</p>
+                        <span class="impact-detail">100% free learning paths</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="impact-card total">
+                        <div class="impact-icon"><i class="fas fa-star"></i></div>
+                        <div class="impact-number" data-target="100">0</div>
+                        <p>Total Resources</p>
+                        <span class="impact-detail">And growing every week</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Resources Highlight Section -->
-    <section class="resources-highlight">
-        <h2>Featured Resources</h2>
-        <div class="carousel-container">
-            <button class="carousel-btn prev-btn" aria-label="Previous">&lt;</button>
-            <div class="resources-carousel">
-                <div class="resource-card active">
-                    <div class="resource-icon">🎓</div>
-                    <h3>College Prep Guide</h3>
-                    <p>Essays, test prep, and application strategies to help you get into your dream school.</p>
-                    <a href="#" class="resource-link">Learn More →</a>
+    <section class="resources-highlight" id="resources">
+        <div class="container">
+            <h2 class="text-center">What Are You Looking For?</h2>
+            <p class="section-subtitle text-center">Browse by category or explore everything</p>
+            <div class="carousel-container">
+                <button class="carousel-btn prev-btn" aria-label="Previous">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="resources-carousel">
+                    <div class="resource-card active">
+                        <div class="resource-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3>College Prep Guide</h3>
+                        <p>Essays, test prep, and application strategies to help you get into your dream school.</p>
+                        <div class="resource-meta">
+                            <span class="resource-count">24 resources</span>
+                            <span class="resource-updated">Updated weekly</span>
+                        </div>
+                        <a href="#" class="resource-link">Explore Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon"><i class="fas fa-microscope"></i></div>
+                        <h3>STEM Internships</h3>
+                        <p>Research opportunities and tech internships at universities and companies nationwide.</p>
+                        <div class="resource-meta">
+                            <span class="resource-count">47 opportunities</span>
+                            <span class="resource-updated">New this week</span>
+                        </div>
+                        <a href="#" class="resource-link">Browse Opportunities <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon"><i class="fas fa-laptop-code"></i></div>
+                        <h3>CS Skills Hub</h3>
+                        <p>Free coding courses and tutorials from beginner to advanced levels.</p>
+                        <div class="resource-meta">
+                            <span class="resource-count">28 courses</span>
+                            <span class="resource-updated">Self-paced</span>
+                        </div>
+                        <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon"><i class="fas fa-hands-helping"></i></div>
+                        <h3>Volunteer Opportunities</h3>
+                        <p>Connect with nonprofits and community service projects that match your interests.</p>
+                        <div class="resource-meta">
+                            <span class="resource-count">32 organizations</span>
+                            <span class="resource-updated">Verified partners</span>
+                        </div>
+                        <a href="#" class="resource-link">Find Projects <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon"><i class="fas fa-palette"></i></div>
+                        <h3>Creative Arts</h3>
+                        <p>Scholarships, competitions, and showcases for aspiring artists, writers, and musicians.</p>
+                        <div class="resource-meta">
+                            <span class="resource-count">15 opportunities</span>
+                            <span class="resource-updated">Ongoing</span>
+                        </div>
+                        <a href="#" class="resource-link">Get Inspired <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <div class="resource-card">
-                    <div class="resource-icon">🔬</div>
-                    <h3>STEM Internships</h3>
-                    <p>Research opportunities and tech internships at universities and companies nationwide.</p>
-                    <a href="#" class="resource-link">Browse Opportunities →</a>
-                </div>
-                <div class="resource-card">
-                    <div class="resource-icon">💻</div>
-                    <h3>CS Skills Hub</h3>
-                    <p>Free coding courses and tutorials from beginner to advanced levels.</p>
-                    <a href="#" class="resource-link">Start Learning →</a>
-                </div>
-                <div class="resource-card">
-                    <div class="resource-icon">🤝</div>
-                    <h3>Volunteer Opportunities</h3>
-                    <p>Connect with nonprofits and community service projects that match your interests.</p>
-                    <a href="#" class="resource-link">Find Projects →</a>
-                </div>
+                <button class="carousel-btn next-btn" aria-label="Next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
-            <button class="carousel-btn next-btn" aria-label="Next">&gt;</button>
-        </div>
-        <div class="carousel-dots"></div>
-        <div class="view-all-container">
-            <button class="view-all-btn">View All Resources</button>
+            <div class="carousel-dots"></div>
+            <div class="view-all-container">
+                <button class="view-all-btn">View All 156 Resources</button>
+            </div>
         </div>
     </section>
 
-    <!-- Submit Resource CTA Section -->
-    <section class="submit-cta">
-        <div class="submit-content">
-            <h2>Help Build Our Community</h2>
-            <p>Share resources that could help other students succeed</p>
-            <button class="submit-button" onclick="location.href='#submit'">Submit a Resource</button>
+    <!-- How To Section -->
+    <section class="quick-actions">
+        <div class="container">
+            <h2 class="text-center">Get Started in 3 Easy Steps</h2>
+            <div class="row actions-grid">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="action-card">
+                        <div class="action-number">1</div>
+                        <div class="action-icon"><i class="fas fa-search"></i></div>
+                        <h3>Browse Resources</h3>
+                        <p>Explore opportunities by category or search for what you need</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="action-card">
+                        <div class="action-number">2</div>
+                        <div class="action-icon"><i class="fas fa-bookmark"></i></div>
+                        <h3>Save Your Favorites</h3>
+                        <p>Create a personal list of resources you want to pursue</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="action-card">
+                        <div class="action-number">3</div>
+                        <div class="action-icon"><i class="fas fa-rocket"></i></div>
+                        <h3>Take Action</h3>
+                        <p>Apply, register, or reach out, we'll guide you through it</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Submit Resource Section -->
+    <section class="submit-cta" id="submit">
+        <div class="container">
+            <div class="submit-content">
+                <div class="cta-icon"><i class="fas fa-lightbulb"></i></div>
+                <h2>Know a Great Opportunity?</h2>
+                <p>Help other students by sharing resources you've found valuable</p>
+                <button class="submit-button">Submit a Resource</button>
+                <p class="cta-note">All submissions are reviewed by our team</p>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Give&Grow</h3>
-                <p>Empowering high school students with the resources they need to succeed.</p>
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="row footer-content">
+                <div class="col-lg-3 col-md-6 mb-4 footer-section">
+                    <h3>Give&Grow</h3>
+                    <p>Empowering high school students with the resources they need to succeed.</p>
+                    <!-- <div class="footer-social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div> -->
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#submit">Submit Resource</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">College Prep</a></li>
+                        <li><a href="#">STEM Internships</a></li>
+                        <li><a href="#">CS Courses</a></li>
+                        <li><a href="#">Nonprofits</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <!-- <li><a href="#">Newsletter</a></li> -->
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#resources">Resources</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#submit">Submit Resource</a></li>
-                </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Give&Grow. All rights reserved.</p>
             </div>
-            <div class="footer-section">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="#">College Prep</a></li>
-                    <li><a href="#">STEM Internships</a></li>
-                    <li><a href="#">CS Courses</a></li>
-                    <li><a href="#">Nonprofits</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Connect</h4>
-                <ul>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Newsletter</a></li>
-                    <li><a href="#">Social Media</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Give&Grow. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- link to JS -->
     <script src="script.js"></script>
 </body>
 </html>
