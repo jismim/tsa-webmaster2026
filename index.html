@@ -1,386 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Give&Grow - Community Resource Hub for High School Students</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- favicon -->
-     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Find Help. Give Back.</title>
+  <meta name="description" content="CareMap Morris connects Morris County residents with trusted community resources and ways to donate or volunteer." />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen">
-        <div class="loader">
-            <div class="loader-circle"></div>
-            <div class="loader-text">Give&Grow</div>
-        </div>
+  <!-- Skip link for accessibility -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Simple header/nav -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="CareMap Morris Home">
+        <span class="brand-mark" aria-hidden="true">●</span>
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="directory.html">Directory</a>
+        <a href="donate-volunteer.html">Donate & Volunteer</a>
+        <a href="submit.html">Submit a Resource</a>
+        <a href="awareness.html">Awareness</a>
+        <a href="events.html">Events</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#home">
-                <img src="images/logo.png" alt="Give&Grow Logo" class="logo-img">
-                <span>Give&Grow</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <!-- currently not linked -->
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#resources">Resources</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#submit">Submit Resource</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <!-- First-time user popup (modal) -->
+  <div class="modal-backdrop" id="firstTimeBackdrop" hidden></div>
+  <section class="modal" id="firstTimeModal" role="dialog" aria-modal="true" aria-labelledby="firstTimeTitle" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="firstTimeTitle">Welcome to CareMap Morris</h2>
+        <button class="icon-btn" id="dismissModalX" aria-label="Dismiss welcome popup">✕</button>
+      </div>
 
-    <!-- Header Section -->
-    <section class="hero" id="home">
-        <img src="images/placeholder.png" alt="Students collaborating" class="hero-image">
-        <div class="hero-overlay"></div>
-        <div class="hero-content container">
-            <h1 class="animate-title">Your Future Starts Here</h1>
-            <p class="animate-subtitle">Discover thousands of opportunities to build your dream career</p>
-            <div class="hero-buttons">
-                <button class="cta-button primary">Explore Resources</button>
-                <button class="cta-button secondary">Share Opportunity</button>
-            </div>
-            <div class="hero-stats">
-                <div class="stat-pill">
-                    <span class="stat-number">2,500+</span>
-                    <span class="stat-label">Students Helped</span>
-                </div>
-                <div class="stat-pill">
-                    <span class="stat-number">156</span>
-                    <span class="stat-label">Resources</span>
-                </div>
-                <div class="stat-pill">
-                    <span class="stat-number">50+</span>
-                    <span class="stat-label">Partner Orgs</span>
-                </div>
-            </div>
+      <div class="modal-body">
+        <p class="lead">
+          This site helps Morris County residents <strong>find support</strong> and helps neighbors <strong>give back</strong>.
+        </p>
+
+        <div class="modal-grid">
+          <div class="modal-block">
+            <h3>How to search</h3>
+            <ul>
+              <li>Use the search bar to look up a service (e.g., “food pantry”, “shelter”, “housing”).</li>
+              <li>Or open the Directory to browse categories.</li>
+            </ul>
+          </div>
+
+          <div class="modal-block">
+            <h3>What filters do</h3>
+            <ul>
+              <li><strong>Type</strong>: food pantry, women’s shelter, domestic violence support, homeless services</li>
+              <li><strong>Services</strong>: meals, counseling, emergency housing, legal support</li>
+              <li><strong>Give back</strong>: donation needs + volunteer roles</li>
+            </ul>
+          </div>
+
+          <div class="modal-block">
+            <h3>Where to get help vs give back</h3>
+            <ul>
+              <li><strong>Find Help</strong>: Directory → choose “Services Provided”</li>
+              <li><strong>Give Back</strong>: Directory → “Donation Needs” or “Volunteer Opportunities”</li>
+            </ul>
+          </div>
         </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="dismissModalBtn">Got it</button>
+          <a class="btn btn-ghost" href="directory.html">Go to Directory</a>
+        </div>
+
+        <p class="fineprint">
+          If you need urgent help, call <strong>911</strong>. For 24/7 support, consider <strong>988</strong> for mental health crisis support.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1>Find Help. Give Back. Strengthen Morris County.</h1>
+          <p class="subtitle">
+            CareMap Morris connects residents to trusted local nonprofits and services —
+            supporting low-income families, women in crisis, people facing homelessness, and food-insecure neighbors.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="directory.html">Find Help</a>
+            <a class="btn btn-secondary" href="give-back.html">Give Back</a>
+            <a class="btn btn-ghost" href="submit.html">Submit a Resource</a>
+          </div>
+
+          <!-- SEARCH BAR (jumps into directory) -->
+          <form class="search" id="homeSearchForm" role="search" aria-label="Search community resources">
+            <label class="sr-only" for="homeSearchInput">Search resources</label>
+            <input
+              id="homeSearchInput"
+              name="q"
+              type="search"
+              placeholder='Try: "food pantry", "shelter", "counseling"...'
+              autocomplete="off"
+            />
+            <button class="btn btn-dark" type="submit">Search</button>
+          </form>
+
+          <p class="micro">
+            Tip: Searching will take you straight to the Directory with results filtered.
+          </p>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <!-- Replace with a real image if you want -->
+          <div class="hero-card">
+            <p class="hero-card-kicker">Community Support Hub</p>
+            <p class="hero-card-title">Resources • Donations • Volunteer Opportunities</p>
+            <div class="hero-card-tags">
+              <span class="tag">Food</span>
+              <span class="tag">Housing</span>
+              <span class="tag">Safety</span>
+              <span class="tag">Families</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Success Stories Carousel -->
-    <section class="success-stories">
-        <div class="container">
-            <h2 class="text-center">Real Students, Real Success</h2>
-            <p class="section-subtitle text-center">See how Give&Grow helped students achieve their goals</p>
-            
-            <div class="stories-carousel-container">
-                <button class="story-nav prev-story" aria-label="Previous story">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="stories-carousel">
-                    <div class="story-card active">
-                    <div class="story-content">
-                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
-                        <p class="story-text">
-                            I used Give&Grow to find local STEM volunteering opportunities. I ended up helping at a robotics club, and it was a great way to build experience.
-                        </p>
-                        <div class="story-author">
-                            <div class="author-avatar">S1</div>
-                            <div class="author-info">
-                                <h4>Student, Age 16</h4>
-                                <p>Interested in STEM</p>
-                            </div>
-                        </div>
-                        <div class="story-badge"><i class="fas fa-microscope"></i> STEM Interest</div>
-                    </div>
-                </div>
+    <!-- STATS -->
+    <section class="stats" aria-label="Community impact statistics">
+      <div class="container stats-grid">
+        <article class="stat">
+          <p class="stat-number"><span data-count="12" class="count">0</span><span class="stat-suffix">%</span></p>
+          <p class="stat-label">Estimated residents facing food insecurity (example placeholder)</p>
+        </article>
 
-                <div class="story-card">
-                    <div class="story-content">
-                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
-                        <p class="story-text">
-                            The college prep checklist helped me organize everything. I finally felt like I had a plan instead of stressing about deadlines.
-                        </p>
-                        <div class="story-author">
-                            <div class="author-avatar">S2</div>
-                            <div class="author-info">
-                                <h4>High School Senior</h4>
-                                <p>Applying for College</p>
-                            </div>
-                        </div>
-                        <div class="story-badge"><i class="fas fa-graduation-cap"></i> College Prep</div>
-                    </div>
-                </div>
+        <article class="stat">
+          <p class="stat-number"><span data-count="30" class="count">0</span><span class="stat-suffix">+</span></p>
+          <p class="stat-label">Nonprofits listed (goal)</p>
+        </article>
 
-                <div class="story-card">
-                    <div class="story-content">
-                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
-                        <p class="story-text">
-                            I finished one of the beginner coding challenges on Give&Grow and built a simple project. It made learning programming feel less scary.
-                        </p>
-                        <div class="story-author">
-                            <div class="author-avatar">S3</div>
-                            <div class="author-info">
-                                <h4>Student, Age 17</h4>
-                                <p>Beginner Programmer</p>
-                            </div>
-                        </div>
-                        <div class="story-badge"><i class="fas fa-laptop-code"></i> Learning Tech</div>
-                    </div>
-                </div>
+        <article class="stat">
+          <p class="stat-number"><span data-count="50" class="count">0</span><span class="stat-suffix">+</span></p>
+          <p class="stat-label">Volunteer opportunities (goal)</p>
+        </article>
+      </div>
 
-                <div class="story-card">
-                    <div class="story-content">
-                        <div class="quote-mark"><i class="fas fa-quote-left"></i></div>
-                        <p class="story-text">
-                            I found a local volunteering group through Give&Grow and joined their monthly meetups. It's been a simple but meaningful way to get involved.
-                        </p>
-                        <div class="story-author">
-                            <div class="author-avatar">S4</div>
-                            <div class="author-info">
-                                <h4>High School Sophomore</h4>
-                                <p>Community Volunteer</p>
-                            </div>
-                        </div>
-                        <div class="story-badge"><i class="fas fa-handshake"></i> Community</div>
-                    </div>
-                </div>
-                </div>
-                <button class="story-nav next-story" aria-label="Next story">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="story-dots"></div>
-        </div>
+      <div class="container stats-note">
+        <p class="fineprint">
+          Replace placeholder stats with sourced numbers and add them to <code>works-cited.md</code>.
+        </p>
+      </div>
     </section>
 
-    <!-- Impact Section -->
-    <section class="impact">
-        <div class="container">
-            <h2 class="text-center">Making an Impact That Matters</h2>
-            <div class="row impact-grid">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="impact-card stem">
-                        <div class="impact-icon"><i class="fas fa-microscope"></i></div>
-                        <div class="impact-number" data-target="47">0</div>
-                        <p>STEM Opportunities</p>
-                        <span class="impact-detail">From research labs to tech internships</span>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="impact-card nonprofit">
-                        <div class="impact-icon"><i class="fas fa-handshake"></i></div>
-                        <div class="impact-number" data-target="22">0</div>
-                        <p>Nonprofit Partners</p>
-                        <span class="impact-detail">Verified community organizations</span>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="impact-card courses">
-                        <div class="impact-icon"><i class="fas fa-book-open"></i></div>
-                        <div class="impact-number" data-target="28">0</div>
-                        <p>Online Courses</p>
-                        <span class="impact-detail">100% free learning paths</span>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="impact-card total">
-                        <div class="impact-icon"><i class="fas fa-star"></i></div>
-                        <div class="impact-number" data-target="100">0</div>
-                        <p>Total Resources</p>
-                        <span class="impact-detail">And growing every week</span>
-                    </div>
-                </div>
+    <!-- FEATURED RESOURCES -->
+    <section class="featured" aria-label="Featured community resources">
+      <div class="container section-head">
+        <h2>Featured Resources</h2>
+        <p class="subtitle">
+          A few trusted organizations making a real difference in Morris County.
+        </p>
+      </div>
+
+      <div class="container card-grid">
+        <!-- Card 1 -->
+        <article class="card">
+          <div class="card-body">
+            <h3 class="card-title">Featured Organization #1</h3>
+            <p class="card-meta">Supports: Food-insecure residents</p>
+            <p class="card-text">
+              Brief overview of mission/services. Include what they provide and why it matters locally.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Food Pantry</span>
+              <span class="pill">Donations: Food</span>
+              <span class="pill">Volunteers Needed</span>
             </div>
-        </div>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-secondary" href="directory.html#org-1">View Details</a>
+            <a class="btn btn-ghost" href="donate-volunteer.html">How to Donate</a>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card">
+          <div class="card-body">
+            <h3 class="card-title">Featured Organization #2</h3>
+            <p class="card-meta">Supports: Women in crisis</p>
+            <p class="card-text">
+              Brief overview of services (shelter, counseling, safety planning). Keep this respectful and clear.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Shelter</span>
+              <span class="pill">Safety Support</span>
+              <span class="pill">Donations: Hygiene</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-secondary" href="directory.html#org-2">View Details</a>
+            <a class="btn btn-ghost" href="directory.html?filter=volunteer">Volunteer</a>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card">
+          <div class="card-body">
+            <h3 class="card-title">Featured Organization #3</h3>
+            <p class="card-meta">Supports: Individuals facing homelessness</p>
+            <p class="card-text">
+              Brief overview (housing navigation, emergency shelter, case management, job readiness).
+            </p>
+            <div class="pill-row">
+              <span class="pill">Housing</span>
+              <span class="pill">Case Management</span>
+              <span class="pill">Donations: Clothing</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-secondary" href="directory.html#org-3">View Details</a>
+            <a class="btn btn-ghost" href="submit.html">Submit Another</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="container section-foot">
+        <a class="btn btn-primary" href="directory.html">View All Resources</a>
+      </div>
     </section>
+  </main>
 
-    <!-- Resources Highlight Section -->
-    <section class="resources-highlight" id="resources">
-        <div class="container">
-            <h2 class="text-center">What Are You Looking For?</h2>
-            <p class="section-subtitle text-center">Browse by category or explore everything</p>
-            <div class="carousel-container">
-                <button class="carousel-btn prev-btn" aria-label="Previous">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="resources-carousel">
-                    <div class="resource-card active">
-                        <div class="resource-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <h3>College Prep Guide</h3>
-                        <p>Essays, test prep, and application strategies to help you get into your dream school.</p>
-                        <div class="resource-meta">
-                            <span class="resource-count">24 resources</span>
-                            <span class="resource-updated">Updated weekly</span>
-                        </div>
-                        <a href="#" class="resource-link">Explore Now <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="resource-card">
-                        <div class="resource-icon"><i class="fas fa-microscope"></i></div>
-                        <h3>STEM Internships</h3>
-                        <p>Research opportunities and tech internships at universities and companies nationwide.</p>
-                        <div class="resource-meta">
-                            <span class="resource-count">47 opportunities</span>
-                            <span class="resource-updated">New this week</span>
-                        </div>
-                        <a href="#" class="resource-link">Browse Opportunities <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="resource-card">
-                        <div class="resource-icon"><i class="fas fa-laptop-code"></i></div>
-                        <h3>CS Skills Hub</h3>
-                        <p>Free coding courses and tutorials from beginner to advanced levels.</p>
-                        <div class="resource-meta">
-                            <span class="resource-count">28 courses</span>
-                            <span class="resource-updated">Self-paced</span>
-                        </div>
-                        <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="resource-card">
-                        <div class="resource-icon"><i class="fas fa-hands-helping"></i></div>
-                        <h3>Volunteer Opportunities</h3>
-                        <p>Connect with nonprofits and community service projects that match your interests.</p>
-                        <div class="resource-meta">
-                            <span class="resource-count">32 organizations</span>
-                            <span class="resource-updated">Verified partners</span>
-                        </div>
-                        <a href="#" class="resource-link">Find Projects <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="resource-card">
-                        <div class="resource-icon"><i class="fas fa-palette"></i></div>
-                        <h3>Creative Arts</h3>
-                        <p>Scholarships, competitions, and showcases for aspiring artists, writers, and musicians.</p>
-                        <div class="resource-meta">
-                            <span class="resource-count">15 opportunities</span>
-                            <span class="resource-updated">Ongoing</span>
-                        </div>
-                        <a href="#" class="resource-link">Get Inspired <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <button class="carousel-btn next-btn" aria-label="Next">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="carousel-dots"></div>
-            <div class="view-all-container">
-                <button class="view-all-btn">View All 156 Resources</button>
-            </div>
-        </div>
-    </section>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">CareMap Morris</p>
+        <p class="fineprint">
+          Mission: Improve access to services, raise awareness of local needs, and strengthen support across Morris County.
+        </p>
+      </div>
 
-    <!-- How To Section -->
-    <section class="quick-actions">
-        <div class="container">
-            <h2 class="text-center">Get Started in 3 Easy Steps</h2>
-            <div class="row actions-grid">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="action-card">
-                        <div class="action-number">1</div>
-                        <div class="action-icon"><i class="fas fa-search"></i></div>
-                        <h3>Browse Resources</h3>
-                        <p>Explore opportunities by category or search for what you need</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="action-card">
-                        <div class="action-number">2</div>
-                        <div class="action-icon"><i class="fas fa-bookmark"></i></div>
-                        <h3>Save Your Favorites</h3>
-                        <p>Create a personal list of resources you want to pursue</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="action-card">
-                        <div class="action-number">3</div>
-                        <div class="action-icon"><i class="fas fa-rocket"></i></div>
-                        <h3>Take Action</h3>
-                        <p>Apply, register, or reach out, we'll guide you through it</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      <div>
+        <p class="footer-title">Quick Links</p>
+        <ul class="footer-links">
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Donate & Volunteer</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+          <li><a href="awareness.html">Awareness</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
 
-    <!-- Submit Resource Section -->
-    <section class="submit-cta" id="submit">
-        <div class="container">
-            <div class="submit-content">
-                <div class="cta-icon"><i class="fas fa-lightbulb"></i></div>
-                <h2>Know a Great Opportunity?</h2>
-                <p>Help other students by sharing resources you've found valuable</p>
-                <button class="submit-button">Submit a Resource</button>
-                <p class="cta-note">All submissions are reviewed by our team</p>
-            </div>
-        </div>
-    </section>
+      <div>
+        <p class="footer-title">Contact</p>
+        <p class="fineprint">Add an email/contact form link here.</p>
+        <p class="fineprint"><a href="works-cited.md">Works Cited</a></p>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="container">
-            <div class="row footer-content">
-                <div class="col-lg-3 col-md-6 mb-4 footer-section">
-                    <h3>Give&Grow</h3>
-                    <p>Empowering high school students with the resources they need to succeed.</p>
-                    <!-- <div class="footer-social">
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    </div> -->
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#resources">Resources</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#submit">Submit Resource</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 footer-section">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#">College Prep</a></li>
-                        <li><a href="#">STEM Internships</a></li>
-                        <li><a href="#">CS Courses</a></li>
-                        <li><a href="#">Nonprofits</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 footer-section">
-                    <h4>Connect</h4>
-                    <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <!-- <li><a href="#">Newsletter</a></li> -->
-                        <li><a href="#">Feedback</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Give&Grow. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- link to JS -->
-    <script src="script.js"></script>
+  <script src="js/popup.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>
