@@ -4,13 +4,250 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CareMap Morris - Community Highlights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cream: #f5f0e8;
+            --tan:   #d9cfc0;
+            --warm-gray: #9e9589;
+            --dark:  #1a1714;
+            --accent: #c0392b;
+            --card-bg: #ffffff;
+            --border: #ddd5c8;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        .site-header {
+            background: var(--cream);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+        }
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .brand { text-decoration: none; color: var(--dark); font-family: 'Playfair Display', serif; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem; }
+        .brand-mark { color: var(--accent); font-size: 0.6rem; }
+        .nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+        .nav a { text-decoration: none; color: var(--dark); font-family: 'Source Serif 4', serif; font-size: 0.85rem; opacity: 0.75; transition: opacity 0.2s; }
+        .nav a:hover { opacity: 1; }
+        .nav a.active { opacity: 1; border-bottom: 2px solid var(--accent); }
+
+        .page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+        .date-strip {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--warm-gray);
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.6rem;
+        }
+
+        .hero-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+            min-height: 240px;
+        }
+
+        .hero-scene {
+            background: linear-gradient(180deg, #87ceeb 0%, #b0d8f0 45%, #7aad6b 68%, #5a9a52 100%);
+            position: relative;
+            overflow: hidden;
+            min-height: 220px;
+        }
+        .cloud {
+            position: absolute;
+            background: #fff;
+            border-radius: 50px;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .c1 { width: 80px; height: 28px; top: 22%; left: 12%; }
+        .c1::before { width: 42px; height: 42px; top: -22px; left: 12px; }
+        .c1::after  { width: 28px; height: 28px; top: -12px; left: 44px; }
+        .c2 { width: 50px; height: 18px; top: 35%; left: 55%; opacity: 0.8; }
+        .c2::before { width: 28px; height: 28px; top: -15px; left: 8px; }
+        .hills { position: absolute; bottom: 0; left: 0; right: 0; }
+        .hill-back {
+            position: absolute;
+            bottom: 30%; left: -10%;
+            width: 120%; height: 60%;
+            background: #6fa862;
+            border-radius: 50% 50% 0 0;
+        }
+        .hill-front {
+            position: absolute;
+            bottom: 0; left: -5%;
+            width: 110%; height: 45%;
+            background: #4e8c44;
+            border-radius: 50% 50% 0 0;
+        }
+        .scene-label {
+            position: absolute;
+            bottom: 0.6rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.85);
+            font-family: 'Source Serif 4', serif;
+            white-space: nowrap;
+        }
+
+        .hero-today {
+            background: var(--tan);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 2.5rem;
+            gap: 0.5rem;
+        }
+        .hero-today .label {
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--warm-gray);
+        }
+        .hero-today .today-date {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--dark);
+        }
+        .hero-today .today-sub {
+            font-size: 0.95rem;
+            color: var(--warm-gray);
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--dark);
+            border-bottom: 2px solid var(--dark);
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .h-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+
+        @media (max-width: 640px) {
+            .hero-split { grid-template-columns: 1fr; }
+            .hero-scene { min-height: 150px; }
+        }
+    </style>
 </head>
 <body>
-    
 
-    <!-- link to JS -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="index.html" aria-label="CareMap Morris Home">
+                <span class="brand-mark" aria-hidden="true">●</span>
+                <span class="brand-text">CareMap Morris</span>
+            </a>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="directory.html">Directory</a>
+                <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
+                <a href="submit.html">Submit a Resource</a>
+                <a href="awareness.html">Awareness</a>
+                <a href="events.html">Events</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <div class="page">
+
+            <p class="date-strip" id="dateStrip">Loading…</p>
+
+            <div class="hero-split" aria-label="Today's community snapshot">
+                <div class="hero-scene" aria-hidden="true">
+                    <div class="cloud c1"></div>
+                    <div class="cloud c2"></div>
+                    <div class="hills">
+                        <div class="hill-back"></div>
+                        <div class="hill-front"></div>
+                    </div>
+                    <span class="scene-label">Morris County, NJ</span>
+                </div>
+
+                <div class="hero-today">
+                    <span class="label">Community Highlights</span>
+                    <h1 class="today-date" id="heroDate">Today</h1>
+                    <p class="today-sub">"updates"</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">Latest Updates</h2>
+
+            <div class="highlights-grid" id="highlightsGrid">
+                <article class="h-card"></article>
+                <article class="h-card"></article>
+                <article class="h-card"></article>
+                <article class="h-card"></article>
+                <article class="h-card"></article>
+                <article class="h-card"></article>
+            </div>
+
+        </div>
+    </main>
+
     <script src="js/script.js"></script>
+    <script>
+        const now = new Date();
+        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('heroDate').textContent = now.toLocaleDateString('en-US', opts);
+        document.getElementById('dateStrip').textContent =
+            `Community Highlights  ·  ${now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+    </script>
 </body>
 </html>
