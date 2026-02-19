@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Submit a Resource</title>
+  <meta name="description" content="Suggest a Morris County community organization or resource for the CareMap Morris directory." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin: 0 0 10px;
+    }
+
+    /* Page layout */
+    .page-wrap { padding: 52px 0 72px; }
+    .page-grid { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; }
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: clamp(26px, 3vw, 38px); margin: 0 0 12px; line-height: 1.2; }
+    .page-header .subtitle { color: var(--muted); font-size: 1.05rem; margin: 0; max-width: 560px; }
+
+    /* Form card */
+    .form-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; }
+
+    /* Form sections */
+    .form-section { margin-bottom: 30px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .form-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .form-section-title { font-size: 1rem; font-weight: 700; margin: 0 0 18px; display: flex; align-items: center; gap: 8px; }
+    .form-section-icon { width: 28px; height: 28px; border-radius: 8px; background: rgba(9,129,74,0.1); color: var(--accent); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    /* Fields */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    label .required { color: var(--accent); margin-left: 2px; }
+    label .optional { color: var(--muted); font-weight: 400; font-size: 0.82rem; margin-left: 4px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 12px;
+      background: #fafafa;
+      color: var(--text);
+      font-size: 0.97rem;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(9,129,74,0.12);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 100px; line-height: 1.55; }
+    .hint { font-size: 0.82rem; color: var(--muted); margin-top: 5px; }
+
+    /* Checkboxes */
+    .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; transition: background 0.1s, border-color 0.1s; }
+    .checkbox-item:hover { background: rgba(9,129,74,0.04); border-color: rgba(9,129,74,0.25); }
+    .checkbox-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+    .checkbox-item span { font-size: 0.9rem; color: var(--text); }
+
+    /* Submit row */
+    .submit-row { display: flex; align-items: center; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+    .submit-row .btn-primary { padding: 13px 28px; }
+    .submit-note { font-size: 0.85rem; color: var(--muted); flex: 1; min-width: 200px; }
+
+    /* Success banner */
+    .success-banner { display: none; background: rgba(9,129,74,0.08); border: 1px solid rgba(9,129,74,0.25); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 24px; align-items: flex-start; gap: 14px; }
+    .success-banner.visible { display: flex; }
+    .success-banner p { margin: 0; font-size: 0.97rem; }
+    .success-banner strong { color: var(--accent); }
+
+    /* Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .sidebar-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .sidebar-card h3 { margin: 0 0 12px; font-size: 1rem; }
+    .sidebar-card p { margin: 0 0 10px; font-size: 0.92rem; color: var(--muted); line-height: 1.6; }
+    .sidebar-card p:last-child { margin-bottom: 0; }
+
+    /* Qualifies list */
+    .qualifies-list { list-style: none; padding: 0; margin: 0; }
+    .qualifies-list li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+    .qualifies-list li:last-child { border-bottom: none; }
+    .q-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 1px; }
+    .q-icon.yes { background: rgba(9,129,74,0.12); color: var(--accent); }
+    .q-icon.no { background: rgba(192,57,43,0.1); color: #c0392b; }
+
+    /* Timeline */
+    .timeline { margin: 0; padding: 0; list-style: none; }
+    .timeline li { display: flex; gap: 12px; padding-bottom: 16px; position: relative; }
+    .timeline li:last-child { padding-bottom: 0; }
+    .timeline li::before { content: ''; position: absolute; left: 10px; top: 22px; bottom: 0; width: 1px; background: var(--line); }
+    .timeline li:last-child::before { display: none; }
+    .t-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; z-index: 1; }
+    .t-content { flex: 1; }
+    .t-content strong { display: block; font-size: 0.9rem; margin-bottom: 2px; }
+    .t-content span { font-size: 0.85rem; color: var(--muted); }
+
+    /* Dev note card */
+    .dev-note { background: rgba(229,198,135,0.12); border-color: rgba(229,198,135,0.4); }
+
+    @media (max-width: 900px) {
+      .page-grid { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+    }
+    @media (max-width: 600px) {
+      .field-row { grid-template-columns: 1fr; }
+      .checkbox-group { grid-template-columns: 1fr; }
+      .form-card { padding: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="CareMap Morris Home">
+        <span class="brand-mark" aria-hidden="true">●</span>
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href = "about.html">About</a>
+        <a href="directory.html">Directory</a>
+        <a href="donate-volunteer.html">Donate & Volunteer</a>
+        <a href="submit.html">Submit a Resource</a>
+        <a href="highlights.html">Highlights</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="container page-wrap">
+
+      <div class="page-header">
+        <p class="section-label">Community Submissions</p>
+        <h1>Submit a Resource</h1>
+        <p class="subtitle">Know of a local organization that should be listed on CareMap Morris? Fill out the form below and we'll review it for inclusion in the directory.</p>
+      </div>
+
+      <div class="page-grid">
+
+        <!-- FORM -->
+        <div>
+          <div class="success-banner" id="successBanner" role="alert" aria-live="polite">
+            <span aria-hidden="true" style="font-size:1.3rem; flex-shrink:0; margin-top:2px;">✅</span>
+            <p><strong>Submission received — thank you!</strong><br>We'll review this resource and be in touch if we have questions. If approved, it will appear in the directory within a few business days.</p>
+          </div>
+
+          <div class="form-card">
+            <form id="submitForm" novalidate aria-label="Submit a community resource">
+
+              <!-- Organization Info -->
+              <div class="form-section">
+                <p class="form-section-title">
+                  <span class="form-section-icon" aria-hidden="true">🏢</span>
+                  Organization Information
+                </p>
+                <div class="field">
+                  <label for="orgName">Organization name <span class="required" aria-label="required">*</span></label>
+                  <input type="text" id="orgName" name="orgName" required placeholder="e.g. Morris Community Food Pantry" autocomplete="organization" />
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="orgType">Type of resource <span class="required" aria-label="required">*</span></label>
+                    <select id="orgType" name="orgType" required>
+                      <option value="" disabled selected>Select a type…</option>
+                      <option value="food-pantry">Food Pantry</option>
+                      <option value="shelter">Shelter / Housing</option>
+                      <option value="domestic-violence">Domestic Violence Support</option>
+                      <option value="homeless-services">Homeless Services</option>
+                      <option value="mental-health">Mental Health Services</option>
+                      <option value="legal-aid">Legal Aid</option>
+                      <option value="youth-services">Youth Services</option>
+                      <option value="senior-services">Senior Services</option>
+                      <option value="disability-services">Disability Services</option>
+                      <option value="job-training">Job Training / Employment</option>
+                      <option value="healthcare">Healthcare / Clinics</option>
+                      <option value="childcare">Childcare / Family Support</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="orgWebsite">Website <span class="optional">(optional)</span></label>
+                    <input type="url" id="orgWebsite" name="orgWebsite" placeholder="https://example.org" autocomplete="url" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="orgDescription">Description of services <span class="required" aria-label="required">*</span></label>
+                  <textarea id="orgDescription" name="orgDescription" required rows="4" placeholder="Briefly describe what this organization does and who it serves. Include any eligibility requirements if known."></textarea>
+                  <p class="hint">2–4 sentences is great. Focus on what's offered and who benefits.</p>
+                </div>
+              </div>
+
+              <!-- Location & Contact -->
+              <div class="form-section">
+                <p class="form-section-title">
+                  <span class="form-section-icon" aria-hidden="true">📍</span>
+                  Location &amp; Contact
+                </p>
+                <div class="field">
+                  <label for="orgAddress">Street address <span class="required" aria-label="required">*</span></label>
+                  <input type="text" id="orgAddress" name="orgAddress" required placeholder="123 Main St, Morristown, NJ 07960" autocomplete="street-address" />
+                  <p class="hint">Must be located in or directly serve Morris County, NJ.</p>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="orgPhone">Phone number <span class="optional">(optional)</span></label>
+                    <input type="tel" id="orgPhone" name="orgPhone" placeholder="(973) 555-0100" autocomplete="tel" />
+                  </div>
+                  <div class="field">
+                    <label for="orgEmail">Public email <span class="optional">(optional)</span></label>
+                    <input type="email" id="orgEmail" name="orgEmail" placeholder="info@example.org" autocomplete="email" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="orgHours">Hours of operation <span class="optional">(optional)</span></label>
+                  <input type="text" id="orgHours" name="orgHours" placeholder="e.g. Mon–Fri 9am–5pm, Sat 10am–2pm" />
+                </div>
+              </div>
+
+              <!-- Services -->
+              <div class="form-section">
+                <p class="form-section-title">
+                  <span class="form-section-icon" aria-hidden="true">🛠</span>
+                  Services Provided
+                </p>
+                <p style="color:var(--muted); font-size:0.92rem; margin:0 0 12px;">Check all that apply.</p>
+                <fieldset style="border:none; padding:0; margin:0;">
+                  <legend class="sr-only">Services provided by this organization</legend>
+                  <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="meals" /><span>Meals / Food</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="emergency-housing" /><span>Emergency Housing</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="counseling" /><span>Counseling / Mental Health</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="legal" /><span>Legal Support</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="case-management" /><span>Case Management</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="job-readiness" /><span>Job Readiness / Training</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="childcare" /><span>Childcare / Youth Programs</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="transportation" /><span>Transportation</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="healthcare" /><span>Healthcare / Clinics</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="hygiene" /><span>Hygiene / Personal Care</span></label>
+                  </div>
+                </fieldset>
+              </div>
+
+              <!-- Donation & Volunteer -->
+              <div class="form-section">
+                <p class="form-section-title">
+                  <span class="form-section-icon" aria-hidden="true">🤝</span>
+                  Donation &amp; Volunteer Opportunities
+                  <span style="font-weight:400; font-size:0.85rem; color:var(--muted);">(optional)</span>
+                </p>
+                <div class="field">
+                  <label for="donationNeeds">Donation needs</label>
+                  <input type="text" id="donationNeeds" name="donationNeeds" placeholder="e.g. Non-perishable food, hygiene products, clothing, monetary donations" />
+                  <p class="hint">List the types of items or funds this organization currently needs.</p>
+                </div>
+                <div class="field">
+                  <label for="volunteerRoles">Volunteer opportunities</label>
+                  <textarea id="volunteerRoles" name="volunteerRoles" rows="3" placeholder="e.g. Weekly food sorting (Saturdays 9–11am), event support, office admin, driving..."></textarea>
+                  <p class="hint">Briefly describe available volunteer roles and any scheduling info.</p>
+                </div>
+              </div>
+
+              <!-- About You -->
+              <div class="form-section">
+                <p class="form-section-title">
+                  <span class="form-section-icon" aria-hidden="true">👤</span>
+                  About You
+                  <span style="font-weight:400; font-size:0.85rem; color:var(--muted);">(optional but helpful)</span>
+                </p>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="submitterName">Your name</label>
+                    <input type="text" id="submitterName" name="submitterName" placeholder="Jane Smith" autocomplete="name" />
+                  </div>
+                  <div class="field">
+                    <label for="submitterEmail">Your email</label>
+                    <input type="email" id="submitterEmail" name="submitterEmail" placeholder="you@example.com" autocomplete="email" />
+                    <p class="hint">Only used if we need to follow up. Never shared publicly.</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="submitterRelation">Your relationship to this organization</label>
+                  <select id="submitterRelation" name="submitterRelation">
+                    <option value="" disabled selected>Select one…</option>
+                    <option value="staff">I work or volunteer there</option>
+                    <option value="client">I've used their services</option>
+                    <option value="community">Community member / neighbor</option>
+                    <option value="referral">I refer people to them professionally</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="additionalNotes">Anything else we should know? <span class="optional">(optional)</span></label>
+                  <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Any additional context, corrections to existing listings, or notes for our review team."></textarea>
+                </div>
+              </div>
+
+              <div class="submit-row">
+                <button type="submit" class="btn btn-primary">Submit for Review</button>
+                <p class="submit-note">By submitting, you confirm this information is accurate to the best of your knowledge. Submissions are reviewed before appearing in the directory.</p>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" aria-label="Submission information">
+
+          <div class="sidebar-card">
+            <h3>What qualifies as a resource?</h3>
+            <p>We list organizations that meet these criteria:</p>
+            <ul class="qualifies-list">
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Located in or directly serving Morris County, NJ</li>
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Provides a free or low-cost community benefit</li>
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Has verifiable contact information</li>
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Actively operating (not closed or paused)</li>
+              <li><span class="q-icon no" aria-label="No">✕</span> Not for-profit businesses or paid services</li>
+              <li><span class="q-icon no" aria-label="No">✕</span> No political campaigns or advocacy orgs</li>
+            </ul>
+            <p style="margin-top:12px;">Not sure if it qualifies? Submit it anyway — we'll review and reach out if needed.</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Review process</h3>
+            <p>Here's what happens after you submit:</p>
+            <ol class="timeline" role="list">
+              <li>
+                <span class="t-dot" aria-hidden="true">1</span>
+                <div class="t-content"><strong>Submission received</strong><span>We log your suggestion and confirm receipt.</span></div>
+              </li>
+              <li>
+                <span class="t-dot" aria-hidden="true">2</span>
+                <div class="t-content"><strong>Initial check</strong><span>We verify the org serves Morris County and meets our criteria.</span></div>
+              </li>
+              <li>
+                <span class="t-dot" aria-hidden="true">3</span>
+                <div class="t-content"><strong>Verification</strong><span>We confirm details via their website, public registries, or direct contact.</span></div>
+              </li>
+              <li>
+                <span class="t-dot" aria-hidden="true">4</span>
+                <div class="t-content"><strong>Goes live</strong><span>Approved listings appear in the directory within a few business days.</span></div>
+              </li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">CareMap Morris</p>
+        <p class="fineprint">Mission: Improve access to services, raise awareness of local needs, and strengthen support across Morris County.</p>
+      </div>
+      <div>
+        <p class="footer-title">Quick Links</p>
+        <ul class="footer-links">
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+          <li><a href="awareness.html">Awareness</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">Contact</p>
+        <p class="fineprint">Add an email/contact form link here.</p>
+        <p class="fineprint"><a href="works-cited.md">Works Cited</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('submitForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const required = this.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(function(field) {
+        if (!field.value.trim()) {
+          valid = false;
+          field.style.borderColor = '#c0392b';
+          field.addEventListener('input', function() { field.style.borderColor = ''; }, { once: true });
+        }
+      });
+      if (!valid) {
+        const first = this.querySelector('[required][style*="border-color"]');
+        if (first) first.focus();
+        return;
+      }
+      document.getElementById('successBanner').classList.add('visible');
+      document.querySelector('.form-card').style.display = 'none';
+      document.getElementById('successBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  </script>
+
+</body>
+</html>

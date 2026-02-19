@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Donate & Volunteer</title>
+  <meta name="description" content="Find ways to donate or volunteer with Morris County nonprofits. Filter by age, location, and service type." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Page-specific extensions only — all base styles from style.css */
+
+    .page-hero {
+      padding: 54px 0 36px;
+    }
+    .page-hero h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      margin: 0 0 12px;
+    }
+
+    /* Tab bar */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+    .tab-btn:hover:not(.active) {
+      background: rgba(0,0,0,0.04);
+      color: var(--text);
+    }
+
+    /* Layout */
+    .dv-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      padding: 32px 0 64px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .dv-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Filter sidebar */
+    .filter-sidebar {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      position: sticky;
+      top: 70px;
+    }
+    .filter-sidebar h2 {
+      font-size: 1.05rem;
+      margin: 0 0 18px;
+    }
+    .filter-group {
+      margin-bottom: 20px;
+    }
+    .group-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .filter-group select {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      font-size: 0.9rem;
+      appearance: none;
+      cursor: pointer;
+    }
+    .filter-group select:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+
+    /* Service chips */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .chip {
+      font-size: 0.8rem;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(229,198,135,0.1);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .chip.selected {
+      background: var(--accent);
+      border-color: transparent;
+      color: #fff;
+    }
+    .chip:hover:not(.selected) {
+      background: rgba(0,0,0,0.05);
+      color: var(--text);
+    }
+
+    .btn-reset {
+      width: 100%;
+      padding: 8px;
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      cursor: pointer;
+      margin-top: 4px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-reset:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Results header */
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .results-header h2 { font-size: 1.25rem; margin: 0; }
+    .results-count { font-size: 0.85rem; color: var(--muted); }
+
+    /* Opportunity cards */
+    .cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .dv-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 18px 20px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .dv-card:hover {
+      box-shadow: 0 14px 36px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    @media (max-width: 600px) {
+      .dv-card { grid-template-columns: 1fr; }
+    }
+
+    /* Kind badge */
+    .kind-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .badge-donate    { background: rgba(224,92,42,0.15);  color: #c0451a; border: 1px solid rgba(224,92,42,0.3); }
+    .badge-volunteer { background: rgba(9,129,74,0.15);   color: var(--accent); border: 1px solid rgba(9,129,74,0.3); }
+    .badge-both      { background: rgba(229,198,135,0.2); color: var(--muted); border: 1px solid var(--line); }
+
+    .dv-card h3          { font-size: 1.1rem; margin: 0 0 4px; }
+    .dv-card .card-org   { font-size: 0.87rem; color: var(--muted); margin: 0 0 8px; }
+    .dv-card .card-desc  { font-size: 0.93rem; margin: 0 0 12px; }
+
+    .dv-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+      justify-content: flex-start;
+      min-width: 130px;
+    }
+    @media (max-width: 600px) {
+      .dv-card-actions { flex-direction: row; min-width: unset; }
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 48px 16px;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+    }
+    .no-results strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="CareMap Morris Home">
+        <span class="brand-mark" aria-hidden="true">●</span>
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href = "about.html">About</a>
+        <a href="directory.html">Directory</a>
+        <a href="donate-volunteer.html">Donate & Volunteer</a>
+        <a href="submit.html">Submit a Resource</a>
+        <a href="highlights.html">Highlights</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <h1>Donate &amp; Volunteer</h1>
+        <p class="subtitle">
+          Give your time, money, or supplies to organizations making a real difference in Morris County.
+          Filter below to find the right opportunity for you.
+        </p>
+        <div class="tab-bar" role="tablist" aria-label="Filter by opportunity type">
+          <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="all">All</button>
+          <button class="tab-btn"        role="tab" aria-selected="false" data-tab="donate">Donate</button>
+          <button class="tab-btn"        role="tab" aria-selected="false" data-tab="volunteer">Volunteer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sidebar + Results -->
+    <div class="container dv-layout">
+
+      <!-- Filters -->
+      <aside class="filter-sidebar" aria-label="Filter opportunities">
+        <h2>Filter</h2>
+
+        <div class="filter-group">
+          <label class="group-label" for="filter-age">Age Group</label>
+          <select id="filter-age">
+            <option value="">Any age</option>
+            <option value="kids">Kids (under 13)</option>
+            <option value="teen">Teens (13–17)</option>
+            <option value="adult">Adults (18+)</option>
+            <option value="senior">Seniors (55+)</option>
+            <option value="family">Family-friendly (all ages)</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="group-label" for="filter-location">Town / Area</label>
+          <select id="filter-location">
+            <option value="">Any location</option>
+            <option value="morristown">Morristown</option>
+            <option value="parsippany">Parsippany</option>
+            <option value="rockaway">Rockaway</option>
+            <option value="dover">Dover</option>
+            <option value="madison">Madison</option>
+            <option value="boonton">Boonton</option>
+            <option value="county-wide">County-wide / Remote</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <span class="group-label" id="service-label">Service / Type</span>
+          <div class="chip-group" role="group" aria-labelledby="service-label">
+            <button class="chip" data-value="food">Food</button>
+            <button class="chip" data-value="housing">Housing</button>
+            <button class="chip" data-value="clothing">Clothing</button>
+            <button class="chip" data-value="hygiene">Hygiene</button>
+            <button class="chip" data-value="counseling">Counseling</button>
+            <button class="chip" data-value="education">Education</button>
+            <button class="chip" data-value="legal">Legal</button>
+            <button class="chip" data-value="childcare">Childcare</button>
+          </div>
+        </div>
+
+        <button class="btn-reset" id="resetFilters">Reset all filters</button>
+      </aside>
+
+      <!-- Results -->
+      <section aria-label="Opportunities list">
+        <div class="results-header">
+          <h2 id="results-heading">Opportunities</h2>
+          <span class="results-count" id="resultsCount" aria-live="polite"></span>
+        </div>
+        <div class="cards-list" id="cardsList" aria-labelledby="results-heading"></div>
+        <div class="no-results" id="noResults" hidden>
+          <strong>No results found</strong>
+          Try adjusting your filters or <a href="submit.html">submit a new resource</a>.
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">CareMap Morris</p>
+        <p class="fineprint">Mission: Improve access to services, raise awareness of local needs, and strengthen support across Morris County.</p>
+      </div>
+      <div>
+        <p class="footer-title">Quick Links</p>
+        <ul class="footer-links">
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+          <li><a href="awareness.html">Awareness</a></li>
+          <li><a href="events.html">Events</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">Contact</p>
+        <p class="fineprint">Add an email/contact form link here.</p>
+        <p class="fineprint"><a href="works-cited.md">Works Cited</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  const DATA = [
+    { id:1,  kind:"donate",    title:"Food Pantry Supply Drive",          org:"Morris Community Food Bank",        desc:"Drop off non-perishable food items or make a monetary donation to stock shelves for food-insecure families throughout the county.", age:["adult","family","teen"], location:"morristown",   services:["food"],                             linkLabel:"Donate Now",          link:"#" },
+    { id:2,  kind:"volunteer", title:"Weekend Meal Prep & Serving",       org:"Morris Community Food Bank",        desc:"Help prepare and serve hot meals at our Morristown kitchen on Saturday mornings. No experience needed — just a willingness to help!",  age:["adult","family","teen"], location:"morristown",   services:["food"],                             linkLabel:"Sign Up",             link:"#" },
+    { id:3,  kind:"donate",    title:"Hygiene & Personal Care Drive",     org:"Zufall Health Foundation",          desc:"We accept toiletries, feminine hygiene products, toothbrushes, and soap for residents who can't afford basic personal care items.",        age:["adult","family","senior"],location:"dover",        services:["hygiene"],                          linkLabel:"Donate Items",        link:"#" },
+    { id:4,  kind:"both",      title:"Women's Shelter Support",           org:"Morristown Neighborhood House",     desc:"Donate household items, gift cards, or clothing to women in our shelter program. Volunteers also needed for childcare and life-skills workshops.", age:["adult","senior"],        location:"morristown",   services:["housing","childcare","counseling"],  linkLabel:"Get Involved",        link:"#" },
+    { id:5,  kind:"volunteer", title:"Tutoring & Homework Help",          org:"Madison Education Access Coalition",desc:"Work one-on-one with K–8 students after school on Tuesdays and Thursdays. College students and adults welcome; background check required.", age:["adult","teen"],           location:"madison",      services:["education"],                        linkLabel:"Apply to Volunteer",  link:"#" },
+    { id:6,  kind:"donate",    title:"Winter Clothing Drive",             org:"Parsippany Cares",                  desc:"Donate gently used or new coats, hats, gloves, and boots for adults and children before the cold season hits.",                              age:["adult","family","teen","kids"], location:"parsippany", services:["clothing"],                      linkLabel:"Drop Off Items",      link:"#" },
+    { id:7,  kind:"volunteer", title:"Homeless Outreach Walks",           org:"Rockaway Valley Outreach",          desc:"Join our street outreach team to distribute care kits and connect unsheltered individuals with county housing navigation services.",         age:["adult"],                  location:"rockaway",     services:["housing"],                          linkLabel:"Join a Walk",         link:"#" },
+    { id:8,  kind:"both",      title:"Legal Aid Fund & Clinic Volunteer", org:"Morris County Legal Aid",           desc:"Donate to fund free legal consultations for low-income residents. Attorneys and paralegals can volunteer for monthly clinics.",               age:["adult"],                  location:"morristown",   services:["legal"],                            linkLabel:"Contribute",          link:"#" },
+    { id:9,  kind:"volunteer", title:"Senior Friendly Visitor Program",   org:"Boonton Senior Services",           desc:"Visit isolated older adults for weekly one-hour companionship visits. Great for teens completing community service hours.",                   age:["adult","senior","teen"],  location:"boonton",      services:["counseling"],                       linkLabel:"Become a Visitor",    link:"#" },
+    { id:10, kind:"donate",    title:"Children's Book & Supply Drive",    org:"Morris Kids First",                 desc:"Donate new or lightly used books, backpacks, and art supplies so every child starts the school year ready to learn.",                       age:["family","kids"],          location:"county-wide",  services:["education","childcare"],            linkLabel:"Donate Supplies",     link:"#" },
+    { id:11, kind:"volunteer", title:"Remote Data Entry & Admin Support", org:"CareMap Morris",                    desc:"Help keep our resource directory up to date from home. Ideal for those with limited mobility or who prefer remote volunteering.",             age:["adult","senior","teen"],  location:"county-wide",  services:["education"],                        linkLabel:"Volunteer Remotely",  link:"#" },
+    { id:12, kind:"both",      title:"Family Resource Fair Support",      org:"United Way of Northern NJ",         desc:"Sponsor a booth, donate door prizes, or volunteer day-of at our annual Family Resource Fair connecting hundreds of residents to services.",  age:["adult","family","teen"],  location:"parsippany",   services:["food","housing","childcare","education"], linkLabel:"Get Involved", link:"#" }
+  ];
+
+  let activeTab = "all", activeAge = "", activeLocation = "";
+  let activeServices = new Set();
+
+  const cardsList = document.getElementById("cardsList");
+  const noResults = document.getElementById("noResults");
+  const countEl   = document.getElementById("resultsCount");
+  const tabBtns   = document.querySelectorAll(".tab-btn");
+  const ageSelect = document.getElementById("filter-age");
+  const locSelect = document.getElementById("filter-location");
+  const chips     = document.querySelectorAll(".chip");
+  const resetBtn  = document.getElementById("resetFilters");
+
+  function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function badge(kind){
+    if(kind==="donate")    return `<span class="kind-badge badge-donate">Donate</span>`;
+    if(kind==="volunteer") return `<span class="kind-badge badge-volunteer">Volunteer</span>`;
+    return                        `<span class="kind-badge badge-both">Donate + Volunteer</span>`;
+  }
+
+  function buildCard(o){
+    const pills = o.services.map(s=>`<span class="pill">${cap(s)}</span>`).join("");
+    return `<article class="dv-card">
+      <div class="dv-card-body">
+        ${badge(o.kind)}
+        <h3>${o.title}</h3>
+        <p class="card-org">${o.org}</p>
+        <p class="card-desc">${o.desc}</p>
+        <div class="pill-row">${pills}</div>
+      </div>
+      <div class="dv-card-actions">
+        <a class="btn btn-primary" href="${o.link}">${o.linkLabel}</a>
+        <a class="btn btn-ghost"   href="directory.html#org-${o.id}">View Org</a>
+      </div>
+    </article>`;
+  }
+
+  function render(){
+    const filtered = DATA.filter(o => {
+      if(activeTab!=="all" && o.kind!=="both" && o.kind!==activeTab) return false;
+      if(activeAge      && !o.age.includes(activeAge))               return false;
+      if(activeLocation && o.location!==activeLocation)              return false;
+      if(activeServices.size && ![...activeServices].every(s=>o.services.includes(s))) return false;
+      return true;
+    });
+    noResults.hidden    = filtered.length > 0;
+    cardsList.innerHTML = filtered.map(buildCard).join("");
+    countEl.textContent = `${filtered.length} result${filtered.length!==1?"s":""}`;
+  }
+
+  tabBtns.forEach(btn => btn.addEventListener("click", ()=>{
+    tabBtns.forEach(b=>{ b.classList.remove("active"); b.setAttribute("aria-selected","false"); });
+    btn.classList.add("active"); btn.setAttribute("aria-selected","true");
+    activeTab = btn.dataset.tab; render();
+  }));
+
+  ageSelect.addEventListener("change", ()=>{ activeAge = ageSelect.value; render(); });
+  locSelect.addEventListener("change", ()=>{ activeLocation = locSelect.value; render(); });
+
+  chips.forEach(c => c.addEventListener("click", ()=>{
+    const v = c.dataset.value;
+    activeServices.has(v) ? (activeServices.delete(v), c.classList.remove("selected"))
+                          : (activeServices.add(v),    c.classList.add("selected"));
+    render();
+  }));
+
+  resetBtn.addEventListener("click", ()=>{
+    activeTab="all"; activeAge=""; activeLocation=""; activeServices.clear();
+    ageSelect.value=""; locSelect.value="";
+    chips.forEach(c=>c.classList.remove("selected"));
+    tabBtns.forEach(b=>{ b.classList.remove("active"); b.setAttribute("aria-selected","false"); });
+    tabBtns[0].classList.add("active"); tabBtns[0].setAttribute("aria-selected","true");
+    render();
+  });
+
+  render();
+  </script>
+</body>
+</html>

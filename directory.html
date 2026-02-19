@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resource Directory | CareMap Morris</title>
+  <meta name="description" content="Browse Morris County community resources — food, housing, health, legal aid, and more." />
+
+  <!-- Base styles from homepage (tokens, header, buttons, footer) -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Directory-specific styles -->
+  <link rel="stylesheet" href="css/directory.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="CareMap Morris Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a href = "about.html">About</a>
+        <a href="directory.html">Directory</a>
+        <a href="donate-volunteer.html">Donate & Volunteer</a>
+        <a href="submit.html">Submit a Resource</a>
+        <a href="highlights.html">Highlights</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN ==================== -->
+  <main id="main">
+
+    <!-- Page intro -->
+    <section class="dir-hero">
+      <div class="container">
+        <h1 class="dir-hero-title">Resource Directory for <em>Morris County</em></h1>
+        <p class="dir-hero-sub">
+          Browse trusted nonprofits, shelters, food resources, counseling, and community support services.
+        </p>
+        
+      </div>
+    </section>
+
+    <!-- Resource cards grid -->
+<section class="dir-section" aria-label="Community resources">
+    <div class="container">
+  
+      <!-- FILTER BAR -->
+      <div class="dir-controls" aria-label="Directory filters">
+  
+        <div class="dir-search-wrap">
+          <label for="searchInput">Search Resources</label>
+          <input 
+            type="search"
+            id="searchInput"
+            placeholder='Try: "food pantry", "shelter", "counseling"...'
+          />
+        </div>
+  
+        <div class="dir-filter-row">
+  
+          <div>
+            <label for="categoryFilter">Category</label>
+            <select id="categoryFilter">
+              <option value="all">All Categories</option>
+            </select>
+          </div>
+  
+          <div>
+            <label for="townFilter">Town</label>
+            <select id="townFilter">
+              <option value="all">All Towns</option>
+            </select>
+          </div>
+  
+          <button id="clearFilters" class="dir-clear-btn">
+            Clear
+          </button>
+  
+        </div>
+  
+        <p class="dir-results-count" id="resultsCount"></p>
+  
+      </div>
+  
+      <!-- CARDS GRID -->
+      <div class="resource-grid" id="resourceGrid" aria-label="Resource listings">
+        <!-- Cards are injected here by directory.js -->
+      </div>
+  
+    </div>
+  </section>
+  
+ 
+      
+
+  </main>
+
+  <!-- ==================== DETAIL MODAL ==================== -->
+  <!-- Backdrop (click to close) -->
+  <div
+    class="detail-backdrop"
+    id="detailBackdrop"
+    hidden
+    aria-hidden="true"
+  ></div>
+
+  <!-- Modal wrapper (centres the card) -->
+  <div
+    class="detail-modal-wrap"
+    id="detailModalWrap"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detailTitle"
+  >
+    <!-- Card content is injected here by directory.js -->
+    <div class="detail-card" id="detailCard"></div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">CareMap Morris</p>
+        <p class="fineprint">
+          Improve access to services, raise awareness of local needs, and strengthen support across Morris County.
+        </p>
+        <p class="fineprint" style="margin-top:10px;font-size:0.8rem">
+          <strong>Not an emergency platform.</strong>
+          Call <strong>911</strong> for immediate danger.
+          Call or text <strong>988</strong> for mental health crisis.
+        </p>
+      </div>
+
+      <div>
+        <p class="footer-title">Quick Links</p>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+          <li><a href="works-cited.html">Works Cited</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="footer-title">Emergency Lines</p>
+        <ul class="footer-links">
+          <li><a href="tel:911">911 — Emergency</a></li>
+          <li><a href="tel:988">988 — Mental Health Crisis</a></li>
+          <li><a href="tel:18007997233">1-800-799-7233 — DV Hotline</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <!-- Data must load before the directory logic -->
+  <script src="js/resources.js"></script>
+  <script src="js/directory.js"></script>
+</body>
+</html>
