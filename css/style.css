@@ -756,6 +756,7 @@ body {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /* Responsive */
 @media (max-width: 900px){
   .hero-inner{ grid-template-columns: 1fr; }
@@ -766,6 +767,8 @@ body {
   .modal-grid{ grid-template-columns: 1fr; }
 }
 =======
+=======
+>>>>>>> Stashed changes
 .footer-disclaimer {
   font-size: .75rem;
   color: rgba(247,242,234,.3);
@@ -820,5 +823,9 @@ body {
   .primary-nav   { display: none; }
   .mobile-nav-btn { display: flex; }
   .footer-grid   { grid-template-columns: 1fr; }
+<<<<<<< Updated upstream
+}
+>>>>>>> Stashed changes
+=======
 }
 >>>>>>> Stashed changes
