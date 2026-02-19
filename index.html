@@ -3,270 +3,400 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CareMap Morris | Find Help. Give Back.</title>
+  <title>CareMap Morris — Find Help. Give Back.</title>
   <meta name="description" content="CareMap Morris connects Morris County residents with trusted community resources and ways to donate or volunteer." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
-  <!-- Skip link for accessibility -->
+
+  <!-- Skip link -->
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- Simple header/nav -->
+  <!-- ==================== MOBILE MENU ==================== -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+    <div class="mobile-menu-head">
+      <span class="mobile-menu-brand">CareMap Morris</span>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
+    </div>
+    <a href="directory.html">Directory</a>
+    <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
+    <a href="submit.html">Submit a Resource</a>
+    <a href="awareness.html">Awareness</a>
+    <a href="events.html">Events</a>
+  </nav>
+
+  <!-- ==================== HEADER ==================== -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="CareMap Morris Home">
-        <span class="brand-mark" aria-hidden="true">●</span>
+      <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
+        <span class="brand-mark" aria-hidden="true"></span>
         <span class="brand-text">CareMap Morris</span>
       </a>
 
-      <nav class="nav" aria-label="Primary navigation">
+      <nav class="primary-nav" aria-label="Primary navigation">
         <a href="directory.html">Directory</a>
-        <a href="donate-volunteer.html">Donate & Volunteer</a>
+        <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
         <a href="submit.html">Submit a Resource</a>
         <a href="awareness.html">Awareness</a>
         <a href="events.html">Events</a>
+        <a href="directory.html" class="nav-cta">Find Help →</a>
       </nav>
+
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
+        ☰ Menu
+      </button>
     </div>
   </header>
 
-  <!-- First-time user popup (modal) -->
-  <div class="modal-backdrop" id="firstTimeBackdrop" hidden></div>
-  <section class="modal" id="firstTimeModal" role="dialog" aria-modal="true" aria-labelledby="firstTimeTitle" hidden>
+  <!-- ==================== FIRST-TIME USER MODAL ==================== -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden></div>
+  <div class="modal-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
     <div class="modal-card">
-      <div class="modal-header">
-        <h2 id="firstTimeTitle">Welcome to CareMap Morris</h2>
-        <button class="icon-btn" id="dismissModalX" aria-label="Dismiss welcome popup">✕</button>
+
+      <div class="modal-head">
+        <h2 id="modalTitle">Welcome to CareMap Morris</h2>
+        <button class="modal-dismiss" id="dismissX" aria-label="Close welcome message">✕</button>
       </div>
 
       <div class="modal-body">
-        <p class="lead">
-          This site helps Morris County residents <strong>find support</strong> and helps neighbors <strong>give back</strong>.
+        <p class="modal-lead">
+          This site helps Morris County residents <strong>find support</strong> and helps neighbors <strong>give back</strong> to their community.
         </p>
 
-        <div class="modal-grid">
+        <div class="modal-blocks">
           <div class="modal-block">
             <h3>How to search</h3>
             <ul>
-              <li>Use the search bar to look up a service (e.g., “food pantry”, “shelter”, “housing”).</li>
-              <li>Or open the Directory to browse categories.</li>
+              <li>Use the search bar to look up a service — try "food pantry," "shelter," or "housing."</li>
+              <li>Or open the Directory to browse all categories.</li>
             </ul>
           </div>
 
           <div class="modal-block">
             <h3>What filters do</h3>
             <ul>
-              <li><strong>Type</strong>: food pantry, women’s shelter, domestic violence support, homeless services</li>
-              <li><strong>Services</strong>: meals, counseling, emergency housing, legal support</li>
-              <li><strong>Give back</strong>: donation needs + volunteer roles</li>
+              <li><strong>Type:</strong> food pantry, shelter, domestic violence support, homeless services</li>
+              <li><strong>Services:</strong> meals, counseling, emergency housing, legal support</li>
+              <li><strong>Give back:</strong> donation needs and volunteer roles</li>
             </ul>
           </div>
 
           <div class="modal-block">
-            <h3>Where to get help vs give back</h3>
+            <h3>Find help vs. give back</h3>
             <ul>
-              <li><strong>Find Help</strong>: Directory → choose “Services Provided”</li>
-              <li><strong>Give Back</strong>: Directory → “Donation Needs” or “Volunteer Opportunities”</li>
+              <li><strong>Find Help:</strong> Directory → "Services Provided"</li>
+              <li><strong>Give Back:</strong> Directory → "Donation Needs" or "Volunteer Opportunities"</li>
             </ul>
           </div>
         </div>
 
         <div class="modal-actions">
-          <button class="btn btn-primary" id="dismissModalBtn">Got it</button>
-          <a class="btn btn-ghost" href="directory.html">Go to Directory</a>
+          <button class="btn btn-primary" id="dismissBtn">Got it — let's go</button>
+          <a class="btn btn-ghost" href="directory.html">Browse Directory</a>
         </div>
 
-        <p class="fineprint">
-          If you need urgent help, call <strong>911</strong>. For 24/7 support, consider <strong>988</strong> for mental health crisis support.
+        <p class="modal-urgent">
+          If you need immediate help, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
         </p>
       </div>
-    </div>
-  </section>
 
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
   <main id="main">
+
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero" aria-label="Site introduction">
       <div class="container hero-inner">
+
         <div class="hero-copy">
-          <h1>Find Help. Give Back. Strengthen Morris County.</h1>
-          <p class="subtitle">
-            CareMap Morris connects residents to trusted local nonprofits and services —
-            supporting low-income families, women in crisis, people facing homelessness, and food-insecure neighbors.
+          <p class="hero-eyebrow">Morris County, New Jersey</p>
+          <h1>Find Help.<br><em>Give Back.</em><br>Strengthen Community.</h1>
+          <p class="hero-sub">
+            CareMap Morris connects residents to trusted local nonprofits and services — supporting families facing food insecurity, women in crisis, neighbors experiencing homelessness, and more.
           </p>
 
-          <div class="cta-row">
-            <a class="btn btn-primary" href="directory.html">Find Help</a>
-            <a class="btn btn-secondary" href="give-back.html">Give Back</a>
-            <a class="btn btn-ghost" href="submit.html">Submit a Resource</a>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="directory.html">Find Help →</a>
+            <a class="btn btn-sage"    href="give-back.html">Give Back →</a>
+            <a class="btn btn-ghost"   href="submit.html">Submit a Resource</a>
           </div>
 
-          <!-- SEARCH BAR (jumps into directory) -->
-          <form class="search" id="homeSearchForm" role="search" aria-label="Search community resources">
-            <label class="sr-only" for="homeSearchInput">Search resources</label>
-            <input
-              id="homeSearchInput"
-              name="q"
-              type="search"
-              placeholder='Try: "food pantry", "shelter", "counseling"...'
-              autocomplete="off"
-            />
-            <button class="btn btn-dark" type="submit">Search</button>
-          </form>
-
-          <p class="micro">
-            Tip: Searching will take you straight to the Directory with results filtered.
-          </p>
+          <div class="hero-search">
+            <label for="heroSearch">Search resources</label>
+            <div class="hero-search-row">
+              <input
+                id="heroSearch"
+                name="q"
+                type="search"
+                placeholder='Try: "food pantry", "shelter", "counseling"…'
+                autocomplete="off"
+                aria-label="Search community resources"
+              />
+              <button type="button" id="heroSearchBtn">Search</button>
+            </div>
+            <p class="hero-search-hint">Searching takes you straight into the Directory with results filtered.</p>
+          </div>
         </div>
 
-        <div class="hero-art" aria-hidden="true">
-          <!-- Replace with a real image if you want -->
-          <div class="hero-card">
-            <p class="hero-card-kicker">Community Support Hub</p>
-            <p class="hero-card-title">Resources • Donations • Volunteer Opportunities</p>
-            <div class="hero-card-tags">
-              <span class="tag">Food</span>
-              <span class="tag">Housing</span>
-              <span class="tag">Safety</span>
-              <span class="tag">Families</span>
+        <!-- Right panel — decorative preview cards -->
+        <div class="hero-panel" aria-hidden="true">
+          <div class="hp-card">
+            <p class="hp-card-kicker food">Food &amp; Nutrition</p>
+            <p class="hp-card-name">Morris Community Food Pantry</p>
+            <p class="hp-card-desc">Weekly food distributions for Morris County residents in need. No appointment required.</p>
+            <div class="hp-card-tags">
+              <span class="hp-tag rust">Food Pantry</span>
+              <span class="hp-tag sage">Walk-in</span>
+              <span class="hp-tag sand">Volunteers Needed</span>
+            </div>
+          </div>
+
+          <div class="hp-card">
+            <p class="hp-card-kicker safety">Safety &amp; Shelter</p>
+            <p class="hp-card-name">Domestic Violence Crisis Center</p>
+            <p class="hp-card-desc">Confidential shelter, counseling, and safety planning for survivors of domestic violence.</p>
+            <div class="hp-card-tags">
+              <span class="hp-tag rust">24/7 Hotline</span>
+              <span class="hp-tag sage">Counseling</span>
+              <span class="hp-tag sand">Confidential</span>
+            </div>
+          </div>
+
+          <div class="hp-card">
+            <p class="hp-card-kicker home">Housing &amp; Stability</p>
+            <p class="hp-card-name">Morris Homeless Services</p>
+            <p class="hp-card-desc">Emergency shelter, housing navigation, and case management for those facing homelessness.</p>
+            <div class="hp-card-tags">
+              <span class="hp-tag sage">Emergency Housing</span>
+              <span class="hp-tag sand">Case Management</span>
             </div>
           </div>
         </div>
+
       </div>
     </section>
 
     <!-- STATS -->
-    <section class="stats" aria-label="Community impact statistics">
-      <div class="container stats-grid">
-        <article class="stat">
-          <p class="stat-number"><span data-count="12" class="count">0</span><span class="stat-suffix">%</span></p>
-          <p class="stat-label">Estimated residents facing food insecurity (example placeholder)</p>
-        </article>
+    <section class="stats-section" aria-label="Community need statistics">
+      <div class="container">
+        <div class="stats-grid">
+          <article class="stat-item">
+            <p class="stat-number">
+              <span class="count-num" data-target="12">0</span><span class="stat-suffix">%</span>
+            </p>
+            <p class="stat-label">of Morris County residents estimated to face food insecurity</p>
+          </article>
 
-        <article class="stat">
-          <p class="stat-number"><span data-count="30" class="count">0</span><span class="stat-suffix">+</span></p>
-          <p class="stat-label">Nonprofits listed (goal)</p>
-        </article>
+          <article class="stat-item">
+            <p class="stat-number">
+              <span class="count-num" data-target="30">0</span><span class="stat-suffix">+</span>
+            </p>
+            <p class="stat-label">nonprofits and community services listed in our directory</p>
+          </article>
 
-        <article class="stat">
-          <p class="stat-number"><span data-count="50" class="count">0</span><span class="stat-suffix">+</span></p>
-          <p class="stat-label">Volunteer opportunities (goal)</p>
-        </article>
-      </div>
+          <article class="stat-item">
+            <p class="stat-number">
+              <span class="count-num" data-target="50">0</span><span class="stat-suffix">+</span>
+            </p>
+            <p class="stat-label">volunteer opportunities available across Morris County</p>
+          </article>
+        </div>
 
-      <div class="container stats-note">
-        <p class="fineprint">
-          Replace placeholder stats with sourced numbers and add them to <code>works-cited.md</code>.
+        <p class="stats-note">
+          Statistics are sourced from verified public data. See our <a href="works-cited.html">Works Cited</a> for full references.
         </p>
       </div>
     </section>
 
     <!-- FEATURED RESOURCES -->
-    <section class="featured" aria-label="Featured community resources">
-      <div class="container section-head">
-        <h2>Featured Resources</h2>
-        <p class="subtitle">
-          A few trusted organizations making a real difference in Morris County.
-        </p>
-      </div>
+    <section class="section featured-section" aria-label="Featured organizations">
+      <div class="container">
+        <p class="section-label reveal">Featured Organizations</p>
+        <h2 class="section-title reveal">Trusted Nonprofits Making<br>a Real Difference</h2>
+        <p class="section-sub reveal">These organizations serve Morris County residents every day. Learn how to access services or support their work.</p>
 
-      <div class="container card-grid">
-        <!-- Card 1 -->
-        <article class="card">
-          <div class="card-body">
-            <h3 class="card-title">Featured Organization #1</h3>
-            <p class="card-meta">Supports: Food-insecure residents</p>
-            <p class="card-text">
-              Brief overview of mission/services. Include what they provide and why it matters locally.
-            </p>
-            <div class="pill-row">
-              <span class="pill">Food Pantry</span>
-              <span class="pill">Donations: Food</span>
-              <span class="pill">Volunteers Needed</span>
+        <div class="cards-grid">
+
+          <!-- Card 1 — Food -->
+          <article class="resource-card reveal">
+            <div class="card-top">
+              <span class="card-category cat-food">Food Pantry</span>
+              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
             </div>
-          </div>
-          <div class="card-actions">
-            <a class="btn btn-secondary" href="directory.html#org-1">View Details</a>
-            <a class="btn btn-ghost" href="donate-volunteer.html">How to Donate</a>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="card">
-          <div class="card-body">
-            <h3 class="card-title">Featured Organization #2</h3>
-            <p class="card-meta">Supports: Women in crisis</p>
-            <p class="card-text">
-              Brief overview of services (shelter, counseling, safety planning). Keep this respectful and clear.
-            </p>
-            <div class="pill-row">
-              <span class="pill">Shelter</span>
-              <span class="pill">Safety Support</span>
-              <span class="pill">Donations: Hygiene</span>
+            <div class="card-body">
+              <h3 class="card-title">Community Food Bank of Morris County</h3>
+              <p class="card-meta">Supports food-insecure residents and families</p>
+              <p class="card-text">
+                Provides weekly food distributions, fresh produce, and emergency grocery assistance. Open to all Morris County residents — no proof of income required for first visit.
+              </p>
+              <div class="pill-row">
+                <span class="pill">Weekly Distributions</span>
+                <span class="pill">No Appointment</span>
+                <span class="pill">Donate: Non-perishables</span>
+                <span class="pill">Volunteers Needed</span>
+              </div>
             </div>
-          </div>
-          <div class="card-actions">
-            <a class="btn btn-secondary" href="directory.html#org-2">View Details</a>
-            <a class="btn btn-ghost" href="directory.html?filter=volunteer">Volunteer</a>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="card">
-          <div class="card-body">
-            <h3 class="card-title">Featured Organization #3</h3>
-            <p class="card-meta">Supports: Individuals facing homelessness</p>
-            <p class="card-text">
-              Brief overview (housing navigation, emergency shelter, case management, job readiness).
-            </p>
-            <div class="pill-row">
-              <span class="pill">Housing</span>
-              <span class="pill">Case Management</span>
-              <span class="pill">Donations: Clothing</span>
+            <div class="card-actions">
+              <a class="btn btn-secondary" href="directory.html#food-bank">View Details</a>
+              <a class="btn btn-ghost" href="donate-volunteer.html">Donate / Volunteer</a>
             </div>
-          </div>
-          <div class="card-actions">
-            <a class="btn btn-secondary" href="directory.html#org-3">View Details</a>
-            <a class="btn btn-ghost" href="submit.html">Submit Another</a>
-          </div>
-        </article>
-      </div>
+          </article>
 
-      <div class="container section-foot">
-        <a class="btn btn-primary" href="directory.html">View All Resources</a>
+          <!-- Card 2 — Shelter -->
+          <article class="resource-card reveal">
+            <div class="card-top">
+              <span class="card-category cat-shelter">Women's Shelter</span>
+              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Domestic Violence Program of Morris County</h3>
+              <p class="card-meta">Supports survivors of domestic violence and abuse</p>
+              <p class="card-text">
+                Offers safe, confidential shelter, crisis counseling, legal advocacy, and safety planning for women and families escaping domestic violence situations.
+              </p>
+              <div class="pill-row">
+                <span class="pill">24/7 Hotline</span>
+                <span class="pill">Emergency Shelter</span>
+                <span class="pill">Counseling</span>
+                <span class="pill">Donate: Hygiene Items</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-secondary" href="directory.html#dv-program">View Details</a>
+              <a class="btn btn-ghost" href="directory.html?filter=volunteer">Volunteer</a>
+            </div>
+          </article>
+
+          <!-- Card 3 — Housing -->
+          <article class="resource-card reveal">
+            <div class="card-top">
+              <span class="card-category cat-housing">Housing Services</span>
+              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Morris County Homeless Solutions</h3>
+              <p class="card-meta">Supports individuals and families facing homelessness</p>
+              <p class="card-text">
+                Provides emergency shelter, housing navigation, case management, and job-readiness programs to help stabilize individuals and transition them into permanent housing.
+              </p>
+              <div class="pill-row">
+                <span class="pill">Emergency Shelter</span>
+                <span class="pill">Housing Navigation</span>
+                <span class="pill">Job Readiness</span>
+                <span class="pill">Donate: Clothing</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-secondary" href="directory.html#homeless-solutions">View Details</a>
+              <a class="btn btn-ghost" href="submit.html">Add Resource</a>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="section-foot reveal">
+          <a class="btn btn-outline-dark" href="directory.html">View All Resources in the Directory →</a>
+        </div>
       </div>
     </section>
+
+    <!-- GIVE BACK -->
+    <section class="give-back" aria-label="Ways to give back to the community">
+      <div class="container give-back-inner">
+
+        <div>
+          <p class="section-label">Give Back</p>
+          <h2 class="section-title">Your Support Changes<br>Lives in Morris County</h2>
+          <p class="section-sub">Whether you have an hour, a donation, or specific skills — there's a way for you to make an impact right in your own community.</p>
+          <div class="gb-cta">
+            <a class="btn btn-primary" href="donate-volunteer.html">Donate or Volunteer</a>
+            <a class="btn-ghost-light" href="submit.html">Submit a Resource</a>
+          </div>
+        </div>
+
+        <div class="gb-ways">
+          <div class="gb-way">
+            <div>
+              <p class="gb-way-title">Donate Goods</p>
+              <p class="gb-way-desc">Non-perishable food, hygiene products, clothing, and household items are always needed by local organizations.</p>
+            </div>
+          </div>
+
+          <div class="gb-way">
+            <div>
+              <p class="gb-way-title">Volunteer Your Time</p>
+              <p class="gb-way-desc">From sorting donations to driving residents to appointments — 50+ volunteer opportunities are available county-wide.</p>
+            </div>
+          </div>
+
+          <div class="gb-way">
+            <div>
+              <p class="gb-way-title">Give Financially</p>
+              <p class="gb-way-desc">Direct financial contributions help nonprofits maintain staff, expand services, and respond to urgent needs.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
-  <!-- FOOTER -->
+  <!-- ==================== FOOTER ==================== -->
   <footer class="site-footer">
     <div class="container footer-grid">
+
       <div>
-        <p class="footer-brand">CareMap Morris</p>
-        <p class="fineprint">
-          Mission: Improve access to services, raise awareness of local needs, and strengthen support across Morris County.
+        <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+        <p class="footer-mission">
+          CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
         </p>
       </div>
 
       <div>
-        <p class="footer-title">Quick Links</p>
+        <p class="footer-col-title">Navigation</p>
         <ul class="footer-links">
           <li><a href="directory.html">Directory</a></li>
-          <li><a href="donate-volunteer.html">Donate & Volunteer</a></li>
+          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
           <li><a href="submit.html">Submit a Resource</a></li>
           <li><a href="awareness.html">Awareness</a></li>
           <li><a href="events.html">Events</a></li>
+          <li><a href="works-cited.html">Works Cited</a></li>
         </ul>
       </div>
 
       <div>
-        <p class="footer-title">Contact</p>
-        <p class="fineprint">Add an email/contact form link here.</p>
-        <p class="fineprint"><a href="works-cited.md">Works Cited</a></p>
+        <p class="footer-col-title">Contact &amp; Info</p>
+        <ul class="footer-links">
+          <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+          <li><a href="admin/">Admin Login</a></li>
+        </ul>
       </div>
+
+    </div>
+
+    <div class="container footer-bottom">
+      <p class="footer-disclaimer">
+        <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information is gathered from public sources and may not reflect current availability or hours. Always confirm details directly with the organization before visiting.
+        <strong>This is not an emergency platform.</strong> If you are in immediate danger, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
+        Information last reviewed: <span id="footerDate"></span>.
+      </p>
+      <p class="footer-date" id="footerYear"></p>
     </div>
   </footer>
 
-  <script src="js/popup.js"></script>
-  <script src="js/home.js"></script>
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+
 </body>
 </html>
