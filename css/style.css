@@ -757,6 +757,7 @@ body {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /* Responsive */
 @media (max-width: 900px){
   .hero-inner{ grid-template-columns: 1fr; }
@@ -767,6 +768,8 @@ body {
   .modal-grid{ grid-template-columns: 1fr; }
 }
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 .footer-disclaimer {
@@ -824,6 +827,10 @@ body {
   .mobile-nav-btn { display: flex; }
   .footer-grid   { grid-template-columns: 1fr; }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+}
+>>>>>>> Stashed changes
+=======
 }
 >>>>>>> Stashed changes
 =======
