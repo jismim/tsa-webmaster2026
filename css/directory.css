@@ -694,33 +694,187 @@
 }
 
 /* ============================================================
-   POPUP MODAL — make it feel less ugly and more premium
+   DETAIL MODAL / POPUP — fully opaque and readable
 ============================================================ */
 
-.modal-card {
+/* Backdrop: fully opaque dark */
+.detail-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 20, 16, 1); /* FULLY opaque dark */
+  backdrop-filter: none; /* remove blur if it reduces readability */
+  z-index: 200;
+}
+
+.detail-backdrop[hidden] {
+  display: none;
+}
+
+/* Modal wrapper */
+.detail-modal-wrap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 201;
+}
+
+.detail-modal-wrap[hidden] {
+  display: none;
+}
+
+/* Modal card: solid light background for contrast */
+.detail-card {
+  width: min(760px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: #FDF6ED; /* solid warm cream */
+  border: 1px solid #BDAF99; /* subtle border */
   border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--cream);
-  box-shadow: 0 30px 80px rgba(26,20,16,.25);
+  box-shadow: 0 30px 80px rgba(26, 20, 16, 0.35);
+  animation: popIn 0.3s cubic-bezier(.22,.68,0,1.2);
 }
 
-.modal-head h2 {
+/* Modal header */
+.detail-head {
+  padding: 1.6rem 1.7rem 1.2rem;
+  border-bottom: 1px solid #BDAF99;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  background: #FDF6ED; /* fully solid */
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.detail-title {
   font-family: var(--ff-display);
+  font-size: 1.6rem;
   font-weight: 900;
-  color: var(--bark);
+  color: #1A140F; /* very dark brown */
+  margin-top: 0.5rem;
+  line-height: 1.2;
 }
 
-.modal-body h3 {
+/* Close button */
+.detail-close {
+  background: #FFFFFF; /* solid */
+  border: 1px solid #BDAF99;
+  border-radius: 999px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.85rem;
+  color: #1A140F;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.detail-close:hover {
+  background: #C04B20; /* rust hover */
+  color: #FFFFFF;
+}
+
+/* Modal body */
+.detail-body {
+  padding: 1.5rem 2rem 1.5rem;
+  background: #FDF6ED; /* solid */
+}
+
+.detail-section {
+  margin-bottom: 1.5rem;
+}
+
+.detail-section-label {
   font-family: var(--ff-mono);
-  font-size: .7rem;
-  letter-spacing: .14em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--rust);
-  margin-bottom: .4rem;
+  color: #C04B20; /* rust */
+  margin-bottom: 0.5rem;
 }
 
-.modal-body p,
-.modal-body li {
-  color: #5A4F45;
-  line-height: 1.6;
+.detail-long-desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #1A140F; /* very dark brown for readability */
 }
+
+/* Contact info grid */
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.detail-info-item {
+  background: #FFFFFF; /* solid */
+  border: 1px solid #BDAF99;
+  border-radius: 8px;
+  padding: 0.85rem 0.95rem;
+}
+
+.detail-info-label {
+  font-family: var(--ff-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7A5C4A; /* dark warm gray */
+  margin-bottom: 0.35rem;
+}
+
+.detail-info-value {
+  font-size: 0.9rem;
+  color: #1A140F; /* very dark brown */
+  line-height: 1.45;
+}
+
+.detail-info-value a {
+  color: #C04B20; /* rust links */
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+/* Tags inside modal */
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+/* Modal actions footer */
+.detail-actions {
+  padding: 1.2rem 1.7rem 1.6rem;
+  border-top: 1px solid #BDAF99;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: #FDF6ED; /* solid */
+}
+
+.detail-actions .btn {
+  border-radius: 6px;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.85rem;
+  background: #C04B20; /* rust buttons */
+  color: #fff;
+  border: none;
+}
+
+/* Animation */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(22px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
