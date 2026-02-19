@@ -3,13 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareMap Morris - About</title>
+    <title>CareMap Morris | About</title>
+    <meta name = "description" content = "Learn why CareMap Morris exists, how we vet resources, and why we focus on Morris County." />
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+           .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin: 0 0 10px;
+    }
+
+    /* Page Hero */
+    .page-hero { padding: 56px 0 40px; border-bottom: 1px solid var(--line); }
+    .page-hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 40px;
+      align-items: center;
+    }
+    .page-hero h1 { font-size: clamp(28px, 3.5vw, 42px); margin: 0 0 14px; line-height: 1.2; }
+    .page-hero .subtitle { color: var(--muted); font-size: 1.05rem; margin: 0 0 24px; max-width: 520px; }
+
+    /* Quick-fact card */
+    .fact-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .fact-card-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 14px; }
+    .fact-list { list-style: none; padding: 0; margin: 0; }
+    .fact-list li { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+    .fact-list li:last-child { border-bottom: none; }
+    .fact-icon { display: none; }
+    /* Sections */
+    .section { padding: 52px 0; }
+    .section + .section { border-top: 1px solid var(--line); }
+    .section h2 { font-size: clamp(22px, 2.5vw, 32px); margin: 0 0 14px; line-height: 1.25; }
+    .section .lead { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin: 0 0 28px; }
+
+    /* Why grid */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 28px; }
+    .why-block { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+    .why-block h3 { margin: 0 0 10px; font-size: 1.1rem; }
+    .why-block p { margin: 0; color: var(--muted); font-size: 0.97rem; line-height: 1.65; }
+    .why-number { font-size: 2rem; font-weight: 800; color: var(--accent); margin: 0 0 8px; line-height: 1; }
+
+    /* Vetting steps */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+    .step { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 18px; box-shadow: var(--shadow); }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .step h3 { margin: 0 0 8px; font-size: 1rem; }
+    .step p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+    .vetting-callout { margin-top: 20px; background: rgba(9,129,74,0.07); border: 1px solid rgba(9,129,74,0.2); border-radius: var(--radius); padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px; }
+    .vetting-callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .vetting-callout p { margin: 0; font-size: 0.95rem; color: var(--muted); }
+    .vetting-callout strong { color: var(--text); }
+
+    /* Why Morris County */
+    .county-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; margin-top: 28px; }
+    .county-copy p { color: var(--muted); margin: 0 0 16px; font-size: 0.97rem; line-height: 1.7; }
+    .county-copy p:last-child { margin-bottom: 0; }
+    .county-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .county-stat { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); text-align: center; }
+    .county-stat .big { font-size: 1.8rem; font-weight: 800; color: var(--accent); display: block; margin-bottom: 4px; }
+    .county-stat .small { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+
+    /* Mission strip */
+    .mission-strip { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; }
+    .mission-strip h2 { font-size: 1.4rem; margin: 0 0 10px; }
+    .mission-strip p { margin: 0; color: var(--muted); max-width: 560px; font-size: 0.97rem; line-height: 1.65; }
+    .cta-group { display: flex; gap: 10px; flex-direction: column; }
+
+    @media (max-width: 900px) {
+      .page-hero-inner { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .county-grid { grid-template-columns: 1fr; }
+      .mission-strip { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .steps { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    
+    <a class = "skip-link" href = "#main">Skip to main content</a>
+    <header class = "site-header">
+        <div class = "container header-inner">
+            <a class = "brand" href = "index.html" aria-label="CareMap Morris Home">
+                <span class ="brand-mark" aria-hidden="true">●</span>
+                <span class = "brand-text">CareMap Morris</span>
+            </a>
+            <nav class = "nav" aria-label = "Primary navigation">
+                <a href = "directory.html">Directory</a>
+                <a href = "donate-volunteer.html">Donate & Volunteer</a>
+                <a href="submit.html">Submit a Resource</a>
+                <a href="awareness.html">Awareness</a>
+                <a href="events.html">Events</a>
+                <a href="about.html" aria-current="page">About</a>
+            </nav>
+        </div>
+    </header>
+    <main id ="main">
+        <section class = "page-hero" aria-label="About CareMap Morris">
+            <div class = "container page-hero-inner">
+                <div>
+                    <p class="section-label">About Us</p>
+          <h1>Building a stronger, more connected Morris County</h1>
+          <p class="subtitle">
+            CareMap Morris is a community-driven resource hub built to make it easier for residents
+            to find the support they need — and for neighbors to give back in meaningful ways.
+          </p>
+          <a class="btn btn-primary" href="directory.html">Explore the Directory</a>
+        </div>
 
+        <div class="fact-card" aria-label="Quick facts about CareMap Morris">
+          <p class="fact-card-title">Quick Facts</p>
+          <ul class="fact-list">
+            <li>Focused exclusively on Morris County, NJ</li>
+            <li>All resources reviewed before listing</li>
+            <li>Community-submitted &amp; community-maintained</li>
+            <li>Free to use — no accounts, no ads</li>
+            <li>Built with accessibility in mind</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="why-heading">
+      <div class="container">
+        <p class="section-label">Our Purpose</p>
+        <h2 id="why-heading">Why CareMap Morris exists</h2>
+        <p class="lead">Finding local support shouldn't require hours of searching scattered websites and outdated PDFs. We built CareMap Morris to change that — one neighborhood at a time.</p>
+        <div class="why-grid">
+          <div class="why-block">
+            <div class="why-number">01</div>
+            <h3>The gap between need and knowledge</h3>
+            <p>Many Morris County residents who qualify for local support services simply don't know they exist. Food pantries run low on donations while neighbors go hungry two miles away. CareMap Morris bridges that gap by putting everything in one searchable, up-to-date place.</p>
+          </div>
+          <div class="why-block">
+            <div class="why-number">02</div>
+            <h3>Making giving back easy</h3>
+            <p>Wanting to help and knowing how to help are two different things. CareMap Morris makes it simple to find volunteer opportunities and donation drives that match what you have to offer — whether that's your time, skills, or goods.</p>
+          </div>
+          <div class="why-block">
+            <div class="why-number">03</div>
+            <h3>Serving people in vulnerable moments</h3>
+            <p>When someone is facing homelessness, fleeing domestic violence, or struggling to feed their family, the last thing they need is confusion. CareMap Morris is designed to be clear, calm, and easy to navigate — even in a crisis.</p>
+          </div>
+          <div class="why-block">
+            <div class="why-number">04</div>
+            <h3>A living, community-driven resource</h3>
+            <p>Unlike a static pamphlet, CareMap Morris grows with the community. Organizations can submit themselves for listing, residents can suggest updates, and our review process keeps the directory accurate and trustworthy over time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="vetting-heading">
+      <div class="container">
+        <p class="section-label">Our Standards</p>
+        <h2 id="vetting-heading">How resources are vetted</h2>
+        <p class="lead">Every organization listed on CareMap Morris goes through a review process before it appears in the directory. Here's how we keep the information trustworthy.</p>
+        <div class="steps" role="list">
+          <div class="step" role="listitem">
+            <div class="step-num" aria-hidden="true">1</div>
+            <h3>Submission</h3>
+            <p>Anyone can submit a resource using our Submit form. We collect the organization name, type, services offered, location, contact details, and donation or volunteer opportunities.</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-num" aria-hidden="true">2</div>
+            <h3>Initial Review</h3>
+            <p>Our team checks that the organization is based in or directly serves Morris County, provides a legitimate community benefit, and has verifiable contact information.</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-num" aria-hidden="true">3</div>
+            <h3>Verification</h3>
+            <p>We cross-reference submissions against public nonprofit registries, official websites, and community sources to confirm the organization is active and accurately described.</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-num" aria-hidden="true">4</div>
+            <h3>Live &amp; Maintained</h3>
+            <p>Approved listings go live in the directory. We periodically re-verify listings and welcome community flags if any information becomes outdated or inaccurate.</p>
+          </div>
+        </div>
+        <div class="vetting-callout" role="note">
+          <p><strong>See something outdated?</strong> If a listing has incorrect hours, a changed address, or is no longer operating, please <a href="submit.html">submit an update</a> so we can keep the directory accurate for everyone.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="county-heading">
+      <div class="container">
+        <p class="section-label">Our Focus</p>
+        <h2 id="county-heading">Why Morris County</h2>
+        <div class="county-grid">
+          <div class="county-copy">
+            <p>Morris County is one of New Jersey's most affluent counties — but prosperity isn't evenly shared. Behind the well-known towns and busy commuter corridors are families navigating food insecurity, housing instability, domestic violence, and lack of access to mental health services.</p>
+            <p>Many of the county's most vulnerable residents fall into what's sometimes called the "invisible poor" — people who earn too much to qualify for some federal programs but not enough to meet basic needs in a high cost-of-living area. Local nonprofits fill that gap, but they're chronically under-resourced and underexposed.</p>
+            <p>CareMap Morris exists to give those organizations visibility, connect them with donors and volunteers, and make their services easier to find for the people who need them most.</p>
+            <p class="fineprint">*Replace with sourced statistics and add citations to <code>works-cited.md*</code>.</p>
+          </div>
+          <div class="county-stats" aria-label="Morris County at a glance">
+            <div class="county-stat"><span class="big">~500K</span><span class="small">Residents in Morris County (placeholder)</span></div>
+            <div class="county-stat"><span class="big">12%</span><span class="small">Estimated food insecurity rate (placeholder)</span></div>
+            <div class="county-stat"><span class="big">30+</span><span class="small">Local nonprofits serving residents</span></div>
+            <div class="county-stat"><span class="big">39</span><span class="small">Municipalities across the county</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Get involved">
+      <div class="container">
+        <div class="mission-strip">
+          <div>
+            <h2>Want to help strengthen this resource?</h2>
+            <p>CareMap Morris grows through community participation. If you know of a local organization that should be listed, submit it for review. If you'd like to volunteer your time or skills to the project itself, reach out — we'd love your help.</p>
+          </div>
+          <div class="cta-group">
+            <a class="btn btn-primary" href="submit.html">Submit a Resource</a>
+            <a class="btn btn-ghost" href="donate-volunteer.html">Donate &amp; Volunteer</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">CareMap Morris</p>
+        <p class="fineprint">Mission: Improve access to services, raise awareness of local needs, and strengthen support across Morris County.</p>
+      </div>
+      <div>
+        <p class="footer-title">Quick Links</p>
+        <ul class="footer-links">
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+          <li><a href="awareness.html">Awareness</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">Contact</p>
+        <p class="fineprint">Add an email/contact form link here.</p>
+        <p class="fineprint"><a href="works-cited.md">Works Cited</a></p>
+      </div>
+    </div>
+  </footer>
     <!-- link to JS -->
     <script src="js/script.js"></script>
 </body>
