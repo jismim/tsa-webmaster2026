@@ -1,11 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareMap Morris - Submit a Resource</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Submit a Resource</title>
+  <meta name="description" content="Suggest a Morris County community organization or resource for the CareMap Morris directory." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin: 0 0 10px;
+    }
+
+    /* Page layout */
+    .page-wrap { padding: 52px 0 72px; }
+    .page-grid { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; }
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: clamp(26px, 3vw, 38px); margin: 0 0 12px; line-height: 1.2; }
+    .page-header .subtitle { color: var(--muted); font-size: 1.05rem; margin: 0; max-width: 560px; }
+
+    /* Form card */
+    .form-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; }
+
+    /* Form sections */
+    .form-section { margin-bottom: 30px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .form-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .form-section-title { font-size: 1rem; font-weight: 700; margin: 0 0 18px; display: flex; align-items: center; gap: 8px; }
+    .form-section-icon { width: 28px; height: 28px; border-radius: 8px; background: rgba(9,129,74,0.1); color: var(--accent); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    /* Fields */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    label .required { color: var(--accent); margin-left: 2px; }
+    label .optional { color: var(--muted); font-weight: 400; font-size: 0.82rem; margin-left: 4px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 12px;
+      background: #fafafa;
+      color: var(--text);
+      font-size: 0.97rem;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(9,129,74,0.12);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 100px; line-height: 1.55; }
+    .hint { font-size: 0.82rem; color: var(--muted); margin-top: 5px; }
+
+    /* Checkboxes */
+    .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; transition: background 0.1s, border-color 0.1s; }
+    .checkbox-item:hover { background: rgba(9,129,74,0.04); border-color: rgba(9,129,74,0.25); }
+    .checkbox-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+    .checkbox-item span { font-size: 0.9rem; color: var(--text); }
+
+    /* Submit row */
+    .submit-row { display: flex; align-items: center; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+    .submit-row .btn-primary { padding: 13px 28px; }
+    .submit-note { font-size: 0.85rem; color: var(--muted); flex: 1; min-width: 200px; }
+
+    /* Success banner */
+    .success-banner { display: none; background: rgba(9,129,74,0.08); border: 1px solid rgba(9,129,74,0.25); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 24px; align-items: flex-start; gap: 14px; }
+    .success-banner.visible { display: flex; }
+    .success-banner p { margin: 0; font-size: 0.97rem; }
+    .success-banner strong { color: var(--accent); }
+
+    /* Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .sidebar-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .sidebar-card h3 { margin: 0 0 12px; font-size: 1rem; }
+    .sidebar-card p { margin: 0 0 10px; font-size: 0.92rem; color: var(--muted); line-height: 1.6; }
+    .sidebar-card p:last-child { margin-bottom: 0; }
+
+    /* Qualifies list */
+    .qualifies-list { list-style: none; padding: 0; margin: 0; }
+    .qualifies-list li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+    .qualifies-list li:last-child { border-bottom: none; }
+    .q-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 1px; }
+    .q-icon.yes { background: rgba(9,129,74,0.12); color: var(--accent); }
+    .q-icon.no { background: rgba(192,57,43,0.1); color: #c0392b; }
+
+    /* Timeline */
+    .timeline { margin: 0; padding: 0; list-style: none; }
+    .timeline li { display: flex; gap: 12px; padding-bottom: 16px; position: relative; }
+    .timeline li:last-child { padding-bottom: 0; }
+    .timeline li::before { content: ''; position: absolute; left: 10px; top: 22px; bottom: 0; width: 1px; background: var(--line); }
+    .timeline li:last-child::before { display: none; }
+    .t-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; z-index: 1; }
+    .t-content { flex: 1; }
+    .t-content strong { display: block; font-size: 0.9rem; margin-bottom: 2px; }
+    .t-content span { font-size: 0.85rem; color: var(--muted); }
+
+    /* Dev note card */
+    .dev-note { background: rgba(229,198,135,0.12); border-color: rgba(229,198,135,0.4); }
+
+    @media (max-width: 900px) {
+      .page-grid { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+    }
+    @media (max-width: 600px) {
+      .field-row { grid-template-columns: 1fr; }
+      .checkbox-group { grid-template-columns: 1fr; }
+      .form-card { padding: 20px; }
+    }
+  </style>
 </head>
 
 <body>
