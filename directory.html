@@ -3,319 +3,101 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resource Directory — CareMap Morris</title>
-  <meta name="description" content="Browse and search Morris County nonprofit organizations and community services by category, location, and service type." />
+  <title>Resource Directory | CareMap Morris</title>
+  <meta name="description" content="Browse Morris County community resources — food, housing, health, legal aid, and more." />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <!-- Stylesheets -->
+  <!-- Base styles from homepage (tokens, header, buttons, footer) -->
   <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Directory-specific styles -->
   <link rel="stylesheet" href="css/directory.css" />
 </head>
 
 <body>
-
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- Mobile Menu -->
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
-    <div class="mobile-menu-head">
-      <span class="mobile-menu-brand">CareMap Morris</span>
-      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
-    </div>
-    <a href="index.html">Home</a>
-    <a href="directory.html">Directory</a>
-    <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-    <a href="submit.html">Submit a Resource</a>
-    <a href="awareness.html">Awareness</a>
-    <a href="events.html">Events</a>
-  </nav>
-
-  <!-- HEADER -->
+  <!-- ==================== HEADER ==================== -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
+      <a class="brand" href="index.html" aria-label="CareMap Morris Home">
         <span class="brand-mark" aria-hidden="true"></span>
         <span class="brand-text">CareMap Morris</span>
       </a>
-      <nav class="primary-nav" aria-label="Primary navigation">
+
+      <nav class="nav" aria-label="Primary navigation">
         <a href="index.html">Home</a>
-        <a href="directory.html" aria-current="page" style="color:var(--cream)">Directory</a>
+        <a href="directory.html" aria-current="page" style="color:var(--text);font-weight:700">Directory</a>
         <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
         <a href="submit.html">Submit a Resource</a>
         <a href="awareness.html">Awareness</a>
         <a href="events.html">Events</a>
       </nav>
-      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
-        ☰ Menu
-      </button>
     </div>
   </header>
 
-  <!-- PAGE HERO -->
-  <div style="background:var(--ink);padding:2rem 0 1.75rem;border-bottom:3px solid var(--rust)">
-    <div class="container" style="display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap">
-      <div>
-        <p style="font-family:var(--ff-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem">
-          <span style="display:block;width:20px;height:2px;background:var(--rust)"></span>
-          Resource Directory
-        </p>
-        <h1 style="font-family:var(--ff-display);font-size:clamp(1.6rem,3vw,2.5rem);font-weight:900;color:var(--cream);line-height:1.15;letter-spacing:-.02em">
-          Find Help in Morris County
-        </h1>
-        <p style="color:rgba(247,242,234,.55);font-size:.9rem;margin-top:.4rem;max-width:500px">
-          50 verified organizations across food, housing, health, legal aid, and more.
-        </p>
-      </div>
-      <a href="submit.html" class="btn btn-ghost" style="border-color:rgba(247,242,234,.2);color:rgba(247,242,234,.7);flex-shrink:0">
-        + Submit a Resource
-      </a>
-    </div>
-  </div>
-
+  <!-- ==================== MAIN ==================== -->
   <main id="main">
-    <div class="dir-layout">
 
-      <!-- ==================== SIDEBAR FILTERS ==================== -->
-      <aside class="dir-sidebar" aria-label="Filter resources">
-
-        <!-- Search -->
-        <div style="margin-bottom:1.25rem">
-          <p class="filter-group-title">Search</p>
-          <div class="sidebar-search">
-            <input
-              id="dirSearch"
-              type="search"
-              placeholder='e.g. "food pantry", "shelter"…'
-              autocomplete="off"
-              aria-label="Search resources"
-            />
-            <button type="button" aria-label="Search">🔍</button>
-          </div>
-        </div>
-
-        <!-- Active filters display -->
-        <div class="active-filters" id="activeFilters" aria-live="polite"></div>
-
-        <!-- Category filter -->
-        <div class="filter-group">
-          <p class="filter-group-title">Category</p>
-          <div class="filter-pills" role="group" aria-label="Filter by category">
-            <button class="filter-pill active" data-category="all">
-              All Categories
-              <span class="filter-pill-count">50</span>
-            </button>
-            <button class="filter-pill" data-category="food">
-              🥫 Food &amp; Nutrition
-              <span class="filter-pill-count">8</span>
-            </button>
-            <button class="filter-pill" data-category="housing">
-              🏠 Housing &amp; Shelter
-              <span class="filter-pill-count">7</span>
-            </button>
-            <button class="filter-pill" data-category="domestic-violence">
-              🛡 Domestic Violence
-              <span class="filter-pill-count">2</span>
-            </button>
-            <button class="filter-pill" data-category="mental-health">
-              🧠 Mental Health
-              <span class="filter-pill-count">3</span>
-            </button>
-            <button class="filter-pill" data-category="substance-use">
-              💊 Substance Use
-              <span class="filter-pill-count">3</span>
-            </button>
-            <button class="filter-pill" data-category="health">
-              ❤️ Health Care
-              <span class="filter-pill-count">4</span>
-            </button>
-            <button class="filter-pill" data-category="legal">
-              ⚖️ Legal Services
-              <span class="filter-pill-count">3</span>
-            </button>
-            <button class="filter-pill" data-category="disability">
-              ♿ Disability Services
-              <span class="filter-pill-count">4</span>
-            </button>
-            <button class="filter-pill" data-category="youth">
-              🧒 Youth &amp; Children
-              <span class="filter-pill-count">5</span>
-            </button>
-            <button class="filter-pill" data-category="senior">
-              👴 Senior Services
-              <span class="filter-pill-count">1</span>
-            </button>
-            <button class="filter-pill" data-category="employment">
-              💼 Employment
-              <span class="filter-pill-count">1</span>
-            </button>
-            <button class="filter-pill" data-category="education">
-              📚 Education &amp; ESL
-              <span class="filter-pill-count">2</span>
-            </button>
-            <button class="filter-pill" data-category="social-services">
-              🤝 Social Services
-              <span class="filter-pill-count">5</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Town filter -->
-        <div class="filter-group">
-          <p class="filter-group-title">Location (Town)</p>
-          <select class="filter-select" id="townFilter" aria-label="Filter by town">
-            <option value="All Towns">All Towns</option>
-            <option value="Dover">Dover</option>
-            <option value="Flanders">Flanders</option>
-            <option value="Morristown">Morristown</option>
-            <option value="Morris Plains">Morris Plains</option>
-            <option value="Morris Township">Morris Township</option>
-            <option value="Mount Olive">Mount Olive</option>
-            <option value="Netcong">Netcong</option>
-            <option value="Parsippany">Parsippany</option>
-            <option value="Randolph">Randolph</option>
-            <option value="Rockaway">Rockaway</option>
-            <option value="Wharton">Wharton</option>
-            <option value="Whippany">Whippany</option>
-          </select>
-        </div>
-
-        <!-- Service type filter -->
-        <div class="filter-group">
-          <p class="filter-group-title">Services Provided</p>
-          <select class="filter-select" id="serviceFilter" aria-label="Filter by service type">
-            <option value="all">All Services</option>
-            <option value="food">Food / Meals</option>
-            <option value="housing">Housing / Shelter</option>
-            <option value="emergency">Emergency Services</option>
-            <option value="counseling">Counseling / Therapy</option>
-            <option value="legal">Legal Aid</option>
-            <option value="health">Health Care</option>
-            <option value="employment">Employment</option>
-            <option value="education">Education / ESL</option>
-            <option value="disability">Disability Support</option>
-            <option value="youth">Youth Programs</option>
-            <option value="benefits-navigation">Benefits Navigation</option>
-          </select>
-        </div>
-
-        <!-- Donate / Volunteer quick links -->
-        <div class="filter-group">
-          <p class="filter-group-title">Give Back</p>
-          <div style="display:flex;flex-direction:column;gap:.4rem">
-            <a href="donate-volunteer.html" class="filter-pill" style="text-decoration:none;display:flex;justify-content:space-between">
-              🎁 Donation Needs
-            </a>
-            <a href="donate-volunteer.html?tab=volunteer" class="filter-pill" style="text-decoration:none;display:flex;justify-content:space-between">
-              🙋 Volunteer Opportunities
-            </a>
-          </div>
-        </div>
-
-        <button class="clear-all-btn" id="clearAllFilters">Clear all filters</button>
-
-      </aside>
-
-      <!-- ==================== MAIN CONTENT ==================== -->
-      <div class="dir-main">
-
-        <!-- Sticky top bar -->
-        <div class="dir-topbar" role="status" aria-live="polite">
-          <p class="dir-result-count" id="resultCount">Loading resources…</p>
-          <div class="dir-topbar-right">
-            <select class="sort-select" id="sortFilter" aria-label="Sort resources">
-              <option value="alpha">A–Z</option>
-              <option value="category">By Category</option>
-              <option value="town">By Town</option>
-            </select>
-            <button class="view-btn active" id="viewGrid" aria-label="Grid view" title="Grid view">
-              ⊞ Grid
-            </button>
-            <button class="view-btn" id="viewList" aria-label="List view" title="List view">
-              ☰ List
-            </button>
-          </div>
-        </div>
-
-        <!-- Resource cards -->
-        <div class="resource-grid-wrap">
-          <div class="resource-grid" id="resourceGridWrap" aria-label="Resource listings">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
+    <!-- Page intro -->
+    <section class="dir-hero">
+      <div class="container">
+        <h1>Resource Directory</h1>
+        <p class="subtitle">
+          50 verified organizations across Morris County — food, housing, health, legal aid, and more.
+        </p>
       </div>
-    </div>
+    </section>
+
+    <!-- Resource cards grid -->
+    <section class="dir-section" aria-label="Community resources">
+      <div class="container">
+        <div class="resource-grid" id="resourceGrid" aria-label="Resource listings">
+          <!-- Cards are injected here by directory.js -->
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- ==================== HOVER CARD (tooltip) ==================== -->
-  <div class="hover-card" id="hoverCard" aria-hidden="true"></div>
-
   <!-- ==================== DETAIL MODAL ==================== -->
-  <div class="detail-backdrop" id="detailBackdrop" hidden aria-hidden="true"></div>
-  <div class="detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-label="Resource details" hidden>
-    <div class="detail-card" id="detailContent">
-      <!-- Populated by JS -->
-    </div>
-  </div>
+  <!-- Backdrop (click to close) -->
+  <div
+    class="detail-backdrop"
+    id="detailBackdrop"
+    hidden
+    aria-hidden="true"
+  ></div>
 
-  <!-- ==================== SAVE MODAL ==================== -->
-  <div class="detail-backdrop save-modal-backdrop" id="saveBackdrop" hidden aria-hidden="true"></div>
-  <div class="save-modal" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle" hidden>
-    <div class="save-modal-card">
-      <div class="save-modal-head">
-        <h2 class="save-modal-title" id="saveModalTitle">🔖 Saved Resources</h2>
-        <button class="save-modal-close" id="saveModalClose" aria-label="Close saved resources">✕</button>
-      </div>
-      <div class="save-modal-body">
-
-        <div id="savedListEl">
-          <!-- Populated by JS -->
-        </div>
-
-        <div style="margin-top:1.25rem">
-          <p style="font-family:var(--ff-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rust);margin-bottom:.6rem">
-            Send to Email
-          </p>
-          <div class="email-row">
-            <input
-              class="email-input"
-              id="emailInput"
-              type="email"
-              placeholder="your@email.com"
-              autocomplete="email"
-              aria-label="Email address to send saved resources"
-            />
-            <button class="btn btn-primary" id="sendEmailBtn" style="padding:.65rem 1rem;white-space:nowrap">
-              Send →
-            </button>
-          </div>
-          <p class="email-send-note" id="emailNote">Your saved resources will be sent as a formatted list via your email client.</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== FLOATING SAVE BUTTON ==================== -->
-  <div class="floating-saves" style="display:none" id="floatSavesWrap">
-    <button class="floating-saves-btn" id="floatSavesBtn" aria-label="View saved resources">
-      🔖 Saved
-      <span class="save-count-badge" id="saveCountBadge">0</span>
-    </button>
+  <!-- Modal wrapper (centres the card) -->
+  <div
+    class="detail-modal-wrap"
+    id="detailModalWrap"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detailTitle"
+  >
+    <!-- Card content is injected here by directory.js -->
+    <div class="detail-card" id="detailCard"></div>
   </div>
 
   <!-- ==================== FOOTER ==================== -->
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-        <p class="footer-mission">Connecting Morris County residents to trusted community resources and ways to give back.</p>
+        <p class="footer-brand">CareMap Morris</p>
+        <p class="fineprint">
+          Improve access to services, raise awareness of local needs, and strengthen support across Morris County.
+        </p>
+        <p class="fineprint" style="margin-top:10px;font-size:0.8rem">
+          <strong>Not an emergency platform.</strong>
+          Call <strong>911</strong> for immediate danger.
+          Call or text <strong>988</strong> for mental health crisis.
+        </p>
       </div>
+
       <div>
-        <p class="footer-col-title">Navigation</p>
+        <p class="footer-title">Quick Links</p>
         <ul class="footer-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="directory.html">Directory</a></li>
@@ -324,8 +106,9 @@
           <li><a href="works-cited.html">Works Cited</a></li>
         </ul>
       </div>
+
       <div>
-        <p class="footer-col-title">Emergency</p>
+        <p class="footer-title">Emergency Lines</p>
         <ul class="footer-links">
           <li><a href="tel:911">911 — Emergency</a></li>
           <li><a href="tel:988">988 — Mental Health Crisis</a></li>
@@ -333,42 +116,11 @@
         </ul>
       </div>
     </div>
-    <div class="container footer-bottom">
-      <p class="footer-disclaimer">
-        <strong>Disclaimer:</strong> Resource information is gathered from public sources and may not reflect current hours or availability. Always confirm directly with the organization.
-        <strong>This is not an emergency platform.</strong> Call <strong>911</strong> for immediate help.
-      </p>
-      <p class="footer-date" id="footerYear"></p>
-    </div>
   </footer>
 
-  <!-- Scripts: data first, then logic -->
+  <!-- ==================== SCRIPTS ==================== -->
+  <!-- Data must load before the directory logic -->
   <script src="js/resources.js"></script>
   <script src="js/directory.js"></script>
-  <script>
-    // Mobile menu
-    const mobileMenu = document.getElementById('mobileMenu');
-    const mobileNavBtn = document.getElementById('mobileNavBtn');
-    const mobileMenuClose = document.getElementById('mobileMenuClose');
-    mobileNavBtn.addEventListener('click', function() {
-      mobileMenu.classList.add('open');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      mobileNavBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    });
-    function closeMM() {
-      mobileMenu.classList.remove('open');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      mobileNavBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-    mobileMenuClose.addEventListener('click', closeMM);
-
-    // Footer year
-    document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' CareMap Morris';
-
-    // Show floating save btn wrapper once JS runs
-    document.getElementById('floatSavesWrap').style.display = 'block';
-  </script>
 </body>
 </html>
