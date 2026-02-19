@@ -41,21 +41,66 @@
     <!-- Page intro -->
     <section class="dir-hero">
       <div class="container">
-        <h1>Resource Directory</h1>
-        <p class="subtitle">
-          50 verified organizations across Morris County — food, housing, health, legal aid, and more.
+        <h1 class="dir-hero-title">Resource Directory for <em>Morris County</em></h1>
+        <p class="dir-hero-sub">
+          Browse trusted nonprofits, shelters, food resources, counseling, and community support services.
         </p>
+        
       </div>
     </section>
 
     <!-- Resource cards grid -->
-    <section class="dir-section" aria-label="Community resources">
-      <div class="container">
-        <div class="resource-grid" id="resourceGrid" aria-label="Resource listings">
-          <!-- Cards are injected here by directory.js -->
+<section class="dir-section" aria-label="Community resources">
+    <div class="container">
+  
+      <!-- FILTER BAR -->
+      <div class="dir-controls" aria-label="Directory filters">
+  
+        <div class="dir-search-wrap">
+          <label for="searchInput">Search Resources</label>
+          <input 
+            type="search"
+            id="searchInput"
+            placeholder='Try: "food pantry", "shelter", "counseling"...'
+          />
         </div>
+  
+        <div class="dir-filter-row">
+  
+          <div>
+            <label for="categoryFilter">Category</label>
+            <select id="categoryFilter">
+              <option value="all">All Categories</option>
+            </select>
+          </div>
+  
+          <div>
+            <label for="townFilter">Town</label>
+            <select id="townFilter">
+              <option value="all">All Towns</option>
+            </select>
+          </div>
+  
+          <button id="clearFilters" class="dir-clear-btn">
+            Clear
+          </button>
+  
+        </div>
+  
+        <p class="dir-results-count" id="resultsCount"></p>
+  
       </div>
-    </section>
+  
+      <!-- CARDS GRID -->
+      <div class="resource-grid" id="resourceGrid" aria-label="Resource listings">
+        <!-- Cards are injected here by directory.js -->
+      </div>
+  
+    </div>
+  </section>
+  
+ 
+      
 
   </main>
 
