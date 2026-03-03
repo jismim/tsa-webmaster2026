@@ -1,11 +1,4 @@
-/* ============================================================
-  CAREMAP MORRIS — Main Stylesheet
-  Warm editorial aesthetic / community newspaper
-============================================================ */
 
-/* ============================================================
-  DESIGN TOKENS
-============================================================ */
 :root {
   --cream:      #F7F2EA;
   --paper:      #EDE7D9;
@@ -26,10 +19,6 @@
 
   --container:  1180px;
 }
-
-/* ============================================================
-  RESET & BASE
-============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html  { scroll-behavior: smooth; }
 img   { display: block; max-width: 100%; }
@@ -57,9 +46,6 @@ body {
   clip: rect(0,0,0,0); overflow: hidden; white-space: nowrap;
 }
 
-/* ============================================================
-  SKIP LINK
-============================================================ */
 .skip-link {
   position: fixed; top: -100%; left: 1rem; z-index: 9999;
   background: var(--rust); color: #fff;
@@ -69,9 +55,6 @@ body {
 }
 .skip-link:focus { top: 1rem; }
 
-/* ============================================================
-  BUTTONS
-============================================================ */
 .btn {
   display: inline-flex; align-items: center; gap: .4rem;
   padding: .7rem 1.4rem;
@@ -120,9 +103,6 @@ body {
 }
 .btn-ghost:hover { border-color: var(--warm-gray); color: var(--ink); }
 
-/* ============================================================
-  HEADER
-============================================================ */
 .site-header {
   position: sticky; top: 0; z-index: 100;
   background: var(--ink);
@@ -222,9 +202,6 @@ body {
 }
 .mobile-menu a:hover { color: var(--cream); }
 
-/* ============================================================
-   MODAL — First-time popup
-============================================================ */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(26,20,16,.65);
@@ -313,10 +290,6 @@ body {
   border-radius: 0 var(--radius) var(--radius) 0;
 }
 .modal-urgent strong { color: var(--rust); }
-
-/* ============================================================
-   HERO
-============================================================ */
 .hero {
   background: var(--ink);
   position: relative; overflow: hidden;
@@ -459,9 +432,6 @@ body {
 .hp-tag.sage { background: rgba(74,103,65,.25);   color: #8DB888; }
 .hp-tag.sand { background: rgba(184,154,106,.2);  color: #D4B98C; }
 
-/* ============================================================
-   STATS
-============================================================ */
 .stats-section {
   background: var(--paper);
   border-bottom: 1px solid var(--border);
@@ -501,9 +471,7 @@ body {
 }
 .stats-note a { color: var(--rust); text-decoration: underline; }
 
-/* ============================================================
-   SECTION COMMON
-============================================================ */
+
 .section { padding-block: clamp(3.5rem, 6vw, 5.5rem); }
 
 .section-label {
@@ -532,9 +500,6 @@ body {
   margin-bottom: 2.5rem;
 }
 
-/* ============================================================
-   FEATURED RESOURCES
-============================================================ */
 .featured-section { background: var(--cream); }
 
 .cards-grid {
@@ -629,9 +594,6 @@ body {
 
 .section-foot { text-align: center; }
 
-/* ============================================================
-   GIVE BACK STRIP
-============================================================ */
 .give-back {
   background: var(--bark);
   padding-block: clamp(3rem, 5vw, 4.5rem);
@@ -698,9 +660,6 @@ body {
   border-color: rgba(247,242,234,.5); color: var(--cream);
 }
 
-/* ============================================================
-   FOOTER
-============================================================ */
 .site-footer {
   background: #0F0C09;
   padding-top: clamp(3rem, 5vw, 4.5rem);
@@ -755,23 +714,6 @@ body {
   flex-wrap: wrap; gap: .75rem;
 }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-/* Responsive */
-@media (max-width: 900px){
-  .hero-inner{ grid-template-columns: 1fr; }
-  .hero-art{ justify-content: start; }
-  .stats-grid{ grid-template-columns: 1fr; }
-  .card-grid{ grid-template-columns: 1fr; }
-  .footer-grid{ grid-template-columns: 1fr; }
-  .modal-grid{ grid-template-columns: 1fr; }
-}
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 .footer-disclaimer {
   font-size: .75rem;
   color: rgba(247,242,234,.3);
@@ -786,9 +728,6 @@ body {
   white-space: nowrap;
 }
 
-/* ============================================================
-   ANIMATIONS
-============================================================ */
 @keyframes fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -808,9 +747,6 @@ body {
   transform: translateY(0);
 }
 
-/* ============================================================
-  RESPONSIVE
-============================================================ */
 @media (max-width: 820px) {
   .hero-inner { grid-template-columns: 1fr; }
   .hero-panel { display: none; }
@@ -826,13 +762,4 @@ body {
   .primary-nav   { display: none; }
   .mobile-nav-btn { display: flex; }
   .footer-grid   { grid-template-columns: 1fr; }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 }
->>>>>>> Stashed changes
-=======
-}
->>>>>>> Stashed changes
-=======
-}
->>>>>>> Stashed changes
