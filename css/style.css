@@ -755,23 +755,6 @@ body {
   flex-wrap: wrap; gap: .75rem;
 }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-/* Responsive */
-@media (max-width: 900px){
-  .hero-inner{ grid-template-columns: 1fr; }
-  .hero-art{ justify-content: start; }
-  .stats-grid{ grid-template-columns: 1fr; }
-  .card-grid{ grid-template-columns: 1fr; }
-  .footer-grid{ grid-template-columns: 1fr; }
-  .modal-grid{ grid-template-columns: 1fr; }
-}
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 .footer-disclaimer {
   font-size: .75rem;
   color: rgba(247,242,234,.3);
@@ -826,13 +809,10 @@ body {
   .primary-nav   { display: none; }
   .mobile-nav-btn { display: flex; }
   .footer-grid   { grid-template-columns: 1fr; }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 }
->>>>>>> Stashed changes
-=======
 }
->>>>>>> Stashed changes
-=======
+
 }
->>>>>>> Stashed changes
+
+}
