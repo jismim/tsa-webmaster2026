@@ -1,10 +1,7 @@
 /* ============================================================
-   CAREMAP MORRIS — Directory Stylesheet
-   Extends style.css — import style.css first
 ============================================================ */
 
 /* ============================================================
-   DIRECTORY LAYOUT
 ============================================================ */
 .dir-layout {
   display: grid;
@@ -15,7 +12,6 @@
 }
 
 /* ============================================================
-   STICKY SIDEBAR FILTERS
 ============================================================ */
 .dir-sidebar {
   position: sticky;
@@ -159,7 +155,7 @@
 .clear-all-btn:hover { color: var(--rust); }
 
 /* ============================================================
-   MAIN CONTENT AREA
+  MAIN CONTENT AREA
 ============================================================ */
 .dir-main { padding: 0; }
 
@@ -436,7 +432,7 @@
 }
 
 /* ============================================================
-   FULL SCREEN DETAIL MODAL
+  FULL SCREEN DETAIL MODAL
 ============================================================ */
 .detail-backdrop {
   position: fixed; inset: 0; z-index: 800;
@@ -560,7 +556,7 @@
 }
 
 /* ============================================================
-   SAVE / EMAIL MODAL
+  SAVE / EMAIL MODAL
 ============================================================ */
 .save-modal-backdrop {
   position: fixed; inset: 0; z-index: 900;
@@ -711,7 +707,7 @@
 .dir-empty p { font-size: .9rem; line-height: 1.6; max-width: 360px; margin-inline: auto; }
 
 /* ============================================================
-   MOBILE — collapse sidebar to top filters
+  MOBILE — collapse sidebar to top filters
 ============================================================ */
 @media (max-width: 900px) {
   .dir-layout {
@@ -740,7 +736,7 @@
 }
 
 /* ============================================================
-   ANIMATIONS (shared with main)
+  ANIMATIONS (shared with main)
 ============================================================ */
 @keyframes fadein {
   from { opacity: 0; } to { opacity: 1; }
