@@ -328,6 +328,7 @@
    CAREMAP MORRIS — Directory Stylesheet
    Extends style.css — import style.css first
 ============================================================ */
+<<<<<<< HEAD
 
 /* ============================================================
    DIRECTORY LAYOUT
@@ -560,6 +561,8 @@
 /* ============================================================
    RESOURCE CARD — Grid
 ============================================================ */
+=======
+>>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
 .res-card {
   background: var(--paper);
   border: 1px solid var(--border);
@@ -956,6 +959,7 @@
 
 /* ============================================================
    RESOURCE CARD — List view
+<<<<<<< HEAD
 ============================================================ */
 .res-list-item {
   background: var(--paper);
@@ -1694,3 +1698,5 @@
 .res-list-item:nth-child(3)  { animation-delay: .09s; }
 .res-list-item:nth-child(n+4){ animation-delay: .12s; }
 >>>>>>> Stashed changes
+=======
+>>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb

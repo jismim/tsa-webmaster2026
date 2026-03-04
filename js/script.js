@@ -65,8 +65,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (searchBtn)  searchBtn.addEventListener('click', doSearch);
   if (searchInput) {
     searchInput.addEventListener('keydown', function (e) {
+<<<<<<< HEAD
       if (e.key === 'Enter') doSearch();
     });
+=======
+      if (e.key === 'Enter') doSearch();});
+>>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
   }
 
 
@@ -122,8 +126,12 @@ document.addEventListener('DOMContentLoaded', function () {
         clearInterval(timer);
         return;
       }
+<<<<<<< HEAD
       el.textContent = Math.floor(start);
     }, 16);
+=======
+      el.textContent = Math.floor(start);}, 16);
+>>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
   }
 
   const counters = document.querySelectorAll('.count-num');
@@ -159,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!entry.isIntersecting) return;
 
         // Stagger siblings that are also un-revealed
+<<<<<<< HEAD
         const siblings = Array.from(
           entry.target.parentElement.querySelectorAll('.reveal:not(.visible)')
         );
@@ -167,6 +176,12 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(function () {
           entry.target.classList.add('visible');
         }, Math.max(0, idx) * 80);
+=======
+        const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal:not(.visible)'));
+        const idx = siblings.indexOf(entry.target);
+
+        setTimeout(function () {entry.target.classList.add('visible');}, Math.max(0, idx) * 80);
+>>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
 
         revealObserver.unobserve(entry.target);
       });
@@ -188,8 +203,12 @@ document.addEventListener('DOMContentLoaded', function () {
       this.textContent = saved ? '♥' : '♡';
       this.setAttribute(
         'aria-label',
+<<<<<<< HEAD
         saved ? 'Unsave this organization' : 'Save this organization'
       );
+=======
+        saved ? 'Unsave this organization' : 'Save this organization');
+>>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
     });
   });
 

@@ -8,6 +8,7 @@
 =======
    CAREMAP MORRIS — Directory JavaScript
    Requires: resources.js loaded before this file
+<<<<<<< HEAD
 >>>>>>> Stashed changes
 ============================================================ */
 
@@ -1299,3 +1300,5 @@ document.addEventListener('DOMContentLoaded', function () {
 >>>>>>> Stashed changes
   init();
 });
+=======
+>>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
