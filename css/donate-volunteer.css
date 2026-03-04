@@ -10,7 +10,8 @@
       background: var(--ink);
       position: relative;
       overflow: hidden;
-      padding-block: clamp(3rem, 6vw, 5rem);
+      padding-block: cla
+      mp(3rem, 6vw, 5rem);
       border-bottom: 3px solid var(--rust);
     }
     .page-hero::before {
@@ -90,29 +91,62 @@
     }
 
     /* LAYOUT */
-    .dv-layout {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 28px;
-      padding-block: 40px 72px;
-      align-items: start;
-    }
-    @media (max-width: 900px) {
-      .dv-layout { grid-template-columns: 1fr; }
-    }
+.dv-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  padding: 32px 0 64px;
+}
+
+@media (max-width: 900px) {
+  .dv-layout { grid-template-columns: 1fr; }
+}
+
+.filter-sidebar {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  position: sticky;
+  top: 70px;
+  align-self: start;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.dv-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 18px 20px;
+  position: relative;
+  z-index: 1;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.dv-card:hover {
+  box-shadow: 0 14px 36px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .dv-card { grid-template-columns: 1fr; }
+}
 
     /* FILTER SIDEBAR */
-    .filter-sidebar {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(26,20,16,.06);
-      padding: 1.4rem;
-      position: sticky;
-      top: 76px;
-      max-height: calc(100vh - 96px);
-      overflow-y: auto;
-    }
+   .filter-sidebar {
+  position: sticky;
+  top: 70px;
+  align-self: start;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+}
     .filter-sidebar-title {
       font-family: var(--ff-display);
       font-size: 1.05rem;
