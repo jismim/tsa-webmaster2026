@@ -102,13 +102,18 @@
   .dv-layout { grid-template-columns: 1fr; }
 }
 
-s.filter-sidebar {
+.filter-sidebar {
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 20px;
-  position: static;
+  position: sticky;
+  top: 70px;
+  align-self: start;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  z-index: 10;
 }
 
 .dv-card {
