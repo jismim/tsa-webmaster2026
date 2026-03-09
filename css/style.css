@@ -1,4 +1,15 @@
+<<<<<<< Updated upstream
 
+=======
+/* ============================================================
+   CAREMAP MORRIS — Main Stylesheet
+   Warm editorial aesthetic / community newspaper
+============================================================ */
+
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+>>>>>>> Stashed changes
 :root {
   --cream:      #F7F2EA;
   --paper:      #EDE7D9;
@@ -21,7 +32,11 @@
 }
 
 /* ============================================================
+<<<<<<< Updated upstream
   RESET & BASE
+=======
+   RESET & BASE
+>>>>>>> Stashed changes
 ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html  { scroll-behavior: smooth; }
@@ -51,7 +66,11 @@ body {
 }
 
 /* ============================================================
+<<<<<<< Updated upstream
   SKIP LINK
+=======
+   SKIP LINK
+>>>>>>> Stashed changes
 ============================================================ */
 .skip-link {
   position: fixed; top: -100%; left: 1rem; z-index: 9999;
@@ -63,7 +82,11 @@ body {
 .skip-link:focus { top: 1rem; }
 
 /* ============================================================
+<<<<<<< Updated upstream
   BUTTONS
+=======
+   BUTTONS
+>>>>>>> Stashed changes
 ============================================================ */
 .btn {
   display: inline-flex; align-items: center; gap: .4rem;
@@ -111,10 +134,17 @@ body {
 .btn-ghost {
   background: transparent; color: var(--warm-gray); border-color: var(--border);
 }
+<<<<<<< Updated upstream
 .btn-ghost:hover { border-color: var(--warm-gray); color: var(--rust-lt); }
 
 /* ============================================================
   HEADER
+=======
+.btn-ghost:hover { border-color: var(--warm-gray); color: var(--ink); }
+
+/* ============================================================
+   HEADER
+>>>>>>> Stashed changes
 ============================================================ */
 .site-header {
   position: sticky; top: 0; z-index: 100;
@@ -150,11 +180,19 @@ body {
   letter-spacing: -.01em; line-height: 1;
 }
 
+<<<<<<< Updated upstream
 .nav {
   display: flex; align-items: center; gap: .15rem;
   flex-wrap: wrap;
 }
 .nav a {
+=======
+.primary-nav {
+  display: flex; align-items: center; gap: .15rem;
+  flex-wrap: wrap;
+}
+.primary-nav a {
+>>>>>>> Stashed changes
   color: rgba(247,242,234,.75);
   font-size: .82rem; font-weight: 500;
   letter-spacing: .02em;
@@ -163,11 +201,19 @@ body {
   transition: background .2s, color .2s;
   white-space: nowrap;
 }
+<<<<<<< Updated upstream
 .nav a:hover { background: rgba(255,255,255,.08); color: var(--cream); }
 .nav a.nav-cta {
   background: var(--rust); color: #fff; margin-left: .5rem;
 }
 .nav a.nav-cta:hover { background: var(--rust-lt); }
+=======
+.primary-nav a:hover { background: rgba(255,255,255,.08); color: var(--cream); }
+.primary-nav a.nav-cta {
+  background: var(--rust); color: #fff; margin-left: .5rem;
+}
+.primary-nav a.nav-cta:hover { background: var(--rust-lt); }
+>>>>>>> Stashed changes
 
 /* Mobile nav button */
 .mobile-nav-btn {
@@ -728,10 +774,16 @@ body {
 
 .footer-col-title {
   font-family: var(--ff-mono);
+<<<<<<< Updated upstream
   font-size: .80rem; letter-spacing: .12em;
   text-transform: uppercase;
   color: rgba(247,242,234,.4); margin-bottom: .85rem;
   font-weight : 500;
+=======
+  font-size: .68rem; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(247,242,234,.4); margin-bottom: .85rem;
+>>>>>>> Stashed changes
 }
 
 .footer-links li + li { margin-top: .4rem; }
@@ -740,13 +792,18 @@ body {
   color: rgba(247,242,234,.6);
   transition: color .2s;
 }
+<<<<<<< Updated upstream
 .footer-links a:hover { color: var(--rust-lt); font-weight: 700; }
+=======
+.footer-links a:hover { color: var(--cream); }
+>>>>>>> Stashed changes
 
 .footer-bottom {
   padding-block: 1.25rem;
   display: flex; align-items: center;
   justify-content: space-between;
   flex-wrap: wrap; gap: .75rem;
+<<<<<<< Updated upstream
 }
 
 .footer-disclaimer {
@@ -809,4 +866,62 @@ body {
 
 }
 
+=======
+}
+
+.footer-disclaimer {
+  font-size: .75rem;
+  color: rgba(247,242,234,.3);
+  line-height: 1.5; max-width: 620px;
+}
+.footer-disclaimer strong { color: rgba(247,242,234,.5); }
+
+.footer-date {
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  color: rgba(247,242,234,.2);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   ANIMATIONS
+============================================================ */
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideup {
+  from { opacity: 0; transform: translateY(20px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 820px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-panel { display: none; }
+  .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  .give-back-inner { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat-item:last-child { border-bottom: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+  .primary-nav   { display: none; }
+  .mobile-nav-btn { display: flex; }
+  .footer-grid   { grid-template-columns: 1fr; }
+>>>>>>> Stashed changes
 }
