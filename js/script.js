@@ -1,8 +1,3 @@
-/* ============================================================
-   CAREMAP MORRIS — Main JavaScript
-   Handles: modal, search, counters, scroll reveal,
-            mobile menu, bookmark toggle, footer dates
-============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -65,12 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (searchBtn)  searchBtn.addEventListener('click', doSearch);
   if (searchInput) {
     searchInput.addEventListener('keydown', function (e) {
-<<<<<<< HEAD
-      if (e.key === 'Enter') doSearch();
-    });
-=======
       if (e.key === 'Enter') doSearch();});
->>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
   }
 
 
@@ -115,47 +105,43 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ----------------------------------------------------------
      4. ANIMATED STAT COUNTERS
   ---------------------------------------------------------- */
-  function animateCount(el, target, duration) {
-    let start  = 0;
-    const step = target / (duration / 16);
+const counters = document.querySelectorAll('.count-num');
 
-    const timer = setInterval(function () {
-      start += step;
-      if (start >= target) {
-        el.textContent = target;
-        clearInterval(timer);
-        return;
+function animateCount(el, target, duration) {
+  let start = 0;
+  const startTime = performance.now();
+
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    el.textContent = Math.floor(progress * target);
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = target;
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = parseInt(entry.target.dataset.target, 10);
+        animateCount(entry.target, target, 1200);
+        observer.unobserve(entry.target);
       }
-<<<<<<< HEAD
-      el.textContent = Math.floor(start);
-    }, 16);
-=======
-      el.textContent = Math.floor(start);}, 16);
->>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
-  }
-
-  const counters = document.querySelectorAll('.count-num');
-
-  if (counters.length && 'IntersectionObserver' in window) {
-    const counterObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          const target = parseInt(entry.target.dataset.target, 10);
-          animateCount(entry.target, target, 1200);
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    counters.forEach(function (c) { counterObserver.observe(c); });
-  } else {
-    // Fallback: just set the final number immediately
-    counters.forEach(function (c) {
-      c.textContent = c.dataset.target;
     });
-  }
+  }, { threshold: 0 });
 
-
+  counters.forEach(c => observer.observe(c));
+} else {
+  counters.forEach(c => {
+    c.textContent = c.dataset.target;
+  });
+}
   /* ----------------------------------------------------------
      5. SCROLL REVEAL
   ---------------------------------------------------------- */
@@ -167,21 +153,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!entry.isIntersecting) return;
 
         // Stagger siblings that are also un-revealed
-<<<<<<< HEAD
-        const siblings = Array.from(
-          entry.target.parentElement.querySelectorAll('.reveal:not(.visible)')
-        );
-        const idx = siblings.indexOf(entry.target);
-
-        setTimeout(function () {
-          entry.target.classList.add('visible');
-        }, Math.max(0, idx) * 80);
-=======
         const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal:not(.visible)'));
         const idx = siblings.indexOf(entry.target);
 
         setTimeout(function () {entry.target.classList.add('visible');}, Math.max(0, idx) * 80);
->>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
 
         revealObserver.unobserve(entry.target);
       });
@@ -203,12 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
       this.textContent = saved ? '♥' : '♡';
       this.setAttribute(
         'aria-label',
-<<<<<<< HEAD
-        saved ? 'Unsave this organization' : 'Save this organization'
-      );
-=======
         saved ? 'Unsave this organization' : 'Save this organization');
->>>>>>> 11a7de31277276b8e2487a8d2e5505e2b9ead5eb
     });
   });
 
