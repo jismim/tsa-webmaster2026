@@ -4,12 +4,17 @@
 ============================================================ */
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 (function () {
 =======
 document.addEventListener('DOMContentLoaded', function () {
 >>>>>>> Stashed changes
 
+=======
+document.addEventListener('DOMContentLoaded', function () {
+
+>>>>>>> Stashed changes
   /* ----------------------------------------------------------
      STATE
   ---------------------------------------------------------- */
@@ -25,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     hoverActive: null,
   };
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   /* ── DOM refs ── */
   var grid          = document.getElementById("resourceGrid");
@@ -398,10 +404,137 @@ document.addEventListener('DOMContentLoaded', function () {
     gridWrap.className = state.view === 'grid' ? 'resource-grid' : 'resource-list';
     gridWrap.id = 'resourceGridWrap';
 
+=======
+  // Parse URL query params on load
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('q'))        state.query    = urlParams.get('q');
+  if (urlParams.get('category')) state.category = urlParams.get('category');
+
+  /* ----------------------------------------------------------
+     DOM REFS
+  ---------------------------------------------------------- */
+  const searchInput      = document.getElementById('dirSearch');
+  const categoryPills    = document.querySelectorAll('.filter-pill[data-category]');
+  const townSelect       = document.getElementById('townFilter');
+  const serviceSelect    = document.getElementById('serviceFilter');
+  const sortSelect       = document.getElementById('sortFilter');
+  const viewGrid         = document.getElementById('viewGrid');
+  const viewList         = document.getElementById('viewList');
+  const resultCount      = document.getElementById('resultCount');
+  const gridWrap         = document.getElementById('resourceGridWrap');
+  const activeFiltersEl  = document.getElementById('activeFilters');
+  const clearAllBtn      = document.getElementById('clearAllFilters');
+
+  const hoverCard        = document.getElementById('hoverCard');
+  const detailBackdrop   = document.getElementById('detailBackdrop');
+  const detailModal      = document.getElementById('detailModal');
+  const detailClose      = document.getElementById('detailClose');
+  const detailContent    = document.getElementById('detailContent');
+
+  const saveBackdrop     = document.getElementById('saveBackdrop');
+  const saveModal        = document.getElementById('saveModal');
+  const saveModalClose   = document.getElementById('saveModalClose');
+  const floatSavesBtn    = document.getElementById('floatSavesBtn');
+  const saveCountBadge   = document.getElementById('saveCountBadge');
+  const savedListEl      = document.getElementById('savedListEl');
+  const emailInput       = document.getElementById('emailInput');
+  const sendEmailBtn     = document.getElementById('sendEmailBtn');
+  const emailNote        = document.getElementById('emailNote');
+
+  /* ----------------------------------------------------------
+     INIT — populate filters from data
+  ---------------------------------------------------------- */
+  function init() {
+    if (state.query) searchInput.value = state.query;
+    if (state.category !== 'all') {
+      document.querySelector(`.filter-pill[data-category="${state.category}"]`)?.classList.add('active');
+      document.querySelector(`.filter-pill[data-category="all"]`)?.classList.remove('active');
+    }
+    render();
+  }
+
+  /* ----------------------------------------------------------
+     FILTERING
+  ---------------------------------------------------------- */
+  function getFiltered() {
+    let list = [...RESOURCES];
+
+    // Query
+    if (state.query.trim()) {
+      const q = state.query.toLowerCase();
+      list = list.filter(r =>
+        r.title.toLowerCase().includes(q) ||
+        r.shortDesc.toLowerCase().includes(q) ||
+        r.longDesc.toLowerCase().includes(q) ||
+        r.town.toLowerCase().includes(q) ||
+        r.tags.some(t => t.toLowerCase().includes(q))
+      );
+    }
+
+    // Category
+    if (state.category !== 'all') {
+      list = list.filter(r => r.category === state.category);
+    }
+
+    // Town
+    if (state.town !== 'All Towns') {
+      list = list.filter(r => r.town === state.town);
+    }
+
+    // Service
+    if (state.service !== 'all') {
+      list = list.filter(r => r.services.includes(state.service));
+    }
+
+    // Sort
+    if (state.sort === 'alpha') {
+      list.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (state.sort === 'category') {
+      list.sort((a, b) => a.category.localeCompare(b.category));
+    } else if (state.sort === 'town') {
+      list.sort((a, b) => a.town.localeCompare(b.town));
+    }
+
+    return list;
+  }
+
+  /* ----------------------------------------------------------
+     RENDER
+  ---------------------------------------------------------- */
+  function render() {
+    const filtered = getFiltered();
+
+    // Result count
+    resultCount.innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${RESOURCES.length}</strong> resources`;
+
+    // Active filters display
+    renderActiveFilters();
+
+    // Clear grid
+    gridWrap.innerHTML = '';
+
+    if (filtered.length === 0) {
+      gridWrap.innerHTML = `
+        <div class="dir-empty">
+          <div class="dir-empty-icon">🔍</div>
+          <h3>No resources found</h3>
+          <p>Try adjusting your filters or search term. You can also <a href="submit.html" style="color:var(--rust)">submit a resource</a> if you think one is missing.</p>
+        </div>`;
+      return;
+    }
+
+    // Update grid class
+    gridWrap.className = state.view === 'grid' ? 'resource-grid' : 'resource-list';
+    gridWrap.id = 'resourceGridWrap';
+
+>>>>>>> Stashed changes
     // Render cards
     filtered.forEach(function(r, i) {
       const el = state.view === 'grid' ? buildGridCard(r, i) : buildListItem(r, i);
       gridWrap.appendChild(el);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     });
   }
@@ -469,6 +602,7 @@ document.addEventListener('DOMContentLoaded', function () {
     card.addEventListener('mouseleave',  function()  { cancelHover(); });
 
     return card;
+<<<<<<< Updated upstream
   }
 
   /* ----------------------------------------------------------
@@ -709,6 +843,221 @@ document.addEventListener('DOMContentLoaded', function () {
 
 })();
 =======
+=======
+  }
+
+  /* ----------------------------------------------------------
+     BUILD LIST ITEM
+  ---------------------------------------------------------- */
+  function buildListItem(r, i) {
+    const catDef  = CATEGORIES.find(c => c.id === r.category) || CATEGORIES[0];
+    const isSaved = state.savedIds.includes(r.id);
+
+    const item = document.createElement('article');
+    item.className = 'res-list-item';
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-label', `View details for ${r.title}`);
+    item.innerHTML = `
+      <div class="res-list-badge-col">
+        <span class="res-cat-badge" style="background:${catDef.color}22;color:${catDef.color}">${catDef.label}</span>
+      </div>
+      <div class="res-list-content">
+        <h3>${r.title}</h3>
+        <div class="res-list-meta">
+          <span>📍 ${r.town}</span>
+          ${r.phone ? `<span>📞 ${r.phone}</span>` : ''}
+          ${r.hours ? `<span>🕐 ${r.hours}</span>` : ''}
+        </div>
+        <p class="res-list-desc">${r.shortDesc}</p>
+      </div>
+      <div class="res-list-actions">
+        <button class="res-save-btn ${isSaved ? 'saved' : ''}" data-id="${r.id}" aria-label="${isSaved ? 'Unsave' : 'Save'} ${r.title}">
+          ${isSaved ? '♥' : '♡'}
+        </button>
+        <button class="res-expand-btn" data-id="${r.id}">Details</button>
+      </div>
+    `;
+
+    item.addEventListener('click', function(e) {
+      if (e.target.closest('.res-save-btn') || e.target.closest('.res-expand-btn')) return;
+      openDetail(r.id);
+    });
+    item.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(r.id); }
+    });
+    item.querySelector('.res-expand-btn').addEventListener('click', function(e) {
+      e.stopPropagation(); openDetail(r.id);
+    });
+    item.querySelector('.res-save-btn').addEventListener('click', function(e) {
+      e.stopPropagation(); toggleSave(r.id);
+    });
+
+    item.addEventListener('mouseenter', function() { scheduleHover(r, item); });
+    item.addEventListener('mouseleave',  function() { cancelHover(); });
+
+    return item;
+  }
+
+  /* ----------------------------------------------------------
+     HOVER CARD
+  ---------------------------------------------------------- */
+  let hoverX = 0, hoverY = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    hoverX = e.clientX; hoverY = e.clientY;
+    if (hoverCard.classList.contains('visible')) positionHoverCard();
+  });
+
+  function positionHoverCard() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const cw = hoverCard.offsetWidth  || 300;
+    const ch = hoverCard.offsetHeight || 200;
+    const gap = 16;
+
+    let x = hoverX + gap;
+    let y = hoverY - ch / 2;
+
+    if (x + cw > vw - gap) x = hoverX - cw - gap;
+    if (y < gap)            y = gap;
+    if (y + ch > vh - gap)  y = vh - ch - gap;
+
+    hoverCard.style.left = x + 'px';
+    hoverCard.style.top  = y + 'px';
+  }
+
+  function scheduleHover(r, el) {
+    cancelHover();
+    state.hoverTimer = setTimeout(function() {
+      showHoverCard(r, el);
+    }, 300);
+  }
+
+  function cancelHover() {
+    clearTimeout(state.hoverTimer);
+    hoverCard.classList.remove('visible');
+    state.hoverActive = null;
+  }
+
+  function showHoverCard(r, el) {
+    const catDef = CATEGORIES.find(c => c.id === r.category) || CATEGORIES[0];
+    hoverCard.innerHTML = `
+      <div class="hover-card-inner">
+        <div class="hover-card-head">
+          <div>
+            <span class="res-cat-badge" style="background:${catDef.color}22;color:${catDef.color};font-size:.62rem">${catDef.label}</span>
+            <p class="hover-card-title" style="margin-top:.4rem">${r.title}</p>
+          </div>
+        </div>
+        <div class="hover-card-body">
+          <div class="hover-card-detail">
+            <span class="hover-card-detail-icon">📍</span>
+            <span>${r.address}</span>
+          </div>
+          ${r.phone ? `<div class="hover-card-detail"><span class="hover-card-detail-icon">📞</span><span>${r.phone}</span></div>` : ''}
+          ${r.hours ? `<div class="hover-card-detail"><span class="hover-card-detail-icon">🕐</span><span>${r.hours}</span></div>` : ''}
+        </div>
+        <div class="hover-card-foot">Click to view full details</div>
+      </div>
+    `;
+    positionHoverCard();
+    hoverCard.classList.add('visible');
+    state.hoverActive = r.id;
+  }
+
+  /* ----------------------------------------------------------
+     DETAIL MODAL
+  ---------------------------------------------------------- */
+  function openDetail(id) {
+    const r = RESOURCES.find(r => r.id === id);
+    if (!r) return;
+
+    const catDef  = CATEGORIES.find(c => c.id === r.category) || CATEGORIES[0];
+    const isSaved = state.savedIds.includes(r.id);
+
+    detailContent.innerHTML = `
+      <div class="detail-card-head">
+        <div class="detail-head-top">
+          <div>
+            <span class="res-cat-badge" style="background:${catDef.color}22;color:${catDef.color};margin-bottom:.5rem;display:inline-block">${catDef.label}</span>
+            <h2 class="detail-title">${r.title}</h2>
+          </div>
+          <button class="detail-close" id="detailClose" aria-label="Close details">✕</button>
+        </div>
+        <div class="detail-meta-row">
+          <span class="detail-meta-item">📍 <strong>${r.town}</strong></span>
+          ${r.phone  ? `<span class="detail-meta-item">📞 <strong>${r.phone}</strong></span>` : ''}
+          ${r.hours  ? `<span class="detail-meta-item">🕐 <strong>${r.hours}</strong></span>` : ''}
+        </div>
+      </div>
+
+      <div class="detail-card-body">
+        <div class="detail-section">
+          <p class="detail-section-title">About this organization</p>
+          <p class="detail-desc">${r.longDesc}</p>
+        </div>
+
+        <div class="detail-tags">
+          ${r.tags.map(t => `<span class="detail-tag">${t}</span>`).join('')}
+        </div>
+
+        <div class="detail-info-grid">
+          <div class="detail-info-item">
+            <p class="detail-info-label">Address</p>
+            <p class="detail-info-value">${r.address || 'Not listed'}</p>
+          </div>
+          <div class="detail-info-item">
+            <p class="detail-info-label">Phone</p>
+            <p class="detail-info-value">${r.phone ? `<a href="tel:${r.phone}">${r.phone}</a>` : 'Not listed'}</p>
+          </div>
+          <div class="detail-info-item">
+            <p class="detail-info-label">Hours</p>
+            <p class="detail-info-value">${r.hours || 'Call to confirm'}</p>
+          </div>
+          <div class="detail-info-item">
+            <p class="detail-info-label">Website</p>
+            <p class="detail-info-value">${r.website ? `<a href="${r.website}" target="_blank" rel="noopener">${r.website.replace('https://','')}</a>` : 'Not listed'}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card-foot">
+        <button class="btn btn-primary" id="detailSaveBtn">
+          ${isSaved ? '♥ Saved' : '♡ Save this resource'}
+        </button>
+        ${r.website ? `<a class="btn btn-secondary" href="${r.website}" target="_blank" rel="noopener">Visit Website →</a>` : ''}
+        ${r.phone   ? `<a class="btn btn-ghost" href="tel:${r.phone}">Call Now</a>` : ''}
+      </div>
+    `;
+
+    // Wire new close button
+    detailContent.querySelector('#detailClose').addEventListener('click', closeDetail);
+
+    // Wire save button inside modal
+    detailContent.querySelector('#detailSaveBtn').addEventListener('click', function() {
+      toggleSave(r.id);
+      this.innerHTML = state.savedIds.includes(r.id) ? '♥ Saved' : '♡ Save this resource';
+    });
+
+    detailBackdrop.hidden = false;
+    detailModal.hidden    = false;
+    document.body.style.overflow = 'hidden';
+    cancelHover();
+  }
+
+  function closeDetail() {
+    detailBackdrop.hidden = true;
+    detailModal.hidden    = true;
+    document.body.style.overflow = '';
+  }
+
+  detailBackdrop.addEventListener('click', closeDetail);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeDetail(); closeSaveModal(); }
+  });
+
+>>>>>>> Stashed changes
   /* ----------------------------------------------------------
      SAVE / BOOKMARK
   ---------------------------------------------------------- */
@@ -935,5 +1284,9 @@ document.addEventListener('DOMContentLoaded', function () {
   ---------------------------------------------------------- */
   updateSaveBadge();
   init();
+<<<<<<< Updated upstream
+});
+>>>>>>> Stashed changes
+=======
 });
 >>>>>>> Stashed changes
