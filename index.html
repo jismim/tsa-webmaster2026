@@ -20,19 +20,33 @@
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- ==================== MOBILE MENU ==================== -->
+  <!--
+    SECTION: Mobile Menu
+    Controls: js/main.js → openMobileMenu() / closeMobileMenu()
+    Styling:  css/style.css → .mobile-menu, .mobile-menu.open
+    To add links: add <a href="..."> inside this nav
+  -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
     <div class="mobile-menu-head">
       <span class="mobile-menu-brand">CareMap Morris</span>
       <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
     </div>
+    <a href="about.html">About</a>
     <a href="directory.html">Directory</a>
     <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
     <a href="submit.html">Submit a Resource</a>
-    <a href="awareness.html">Awareness</a>
-    <a href="events.html">Events</a>
+    <a href="highlights.html">Highlights</a>
   </nav>
 
   <!-- ==================== HEADER ==================== -->
+  <!--
+    SECTION: Header / Navigation Bar
+    FIX: Nav links now use class="nav" which is explicitly styled
+         with color: rgba(247,242,234,.8) — visible on dark background.
+    To change nav link color: css/style.css → .nav a { color: ... }
+    To add nav links: add <a href="..."> inside .nav
+    FIX: Removed duplicate "Highlights" link
+  -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
@@ -41,11 +55,10 @@
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
-        <a href = "about.html">About</a>
+        <a href="about.html">About</a>
         <a href="directory.html">Directory</a>
         <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
         <a href="submit.html">Submit a Resource</a>
-        <a href="highlights.html">Highlights</a>
         <a href="highlights.html">Highlights</a>
       </nav>
 
@@ -55,7 +68,17 @@
     </div>
   </header>
 
-  <!-- ==================== FIRST-TIME USER MODAL ==================== -->
+  <!-- ==================== FIRST-TIME USER WALKTHROUGH MODAL ==================== -->
+  <!--
+    SECTION: Welcome / Walkthrough Modal
+    Controls: js/main.js → openModal() / closeModal()
+    Styling:  css/style.css → .modal-backdrop, .modal-wrap, .modal-card, etc.
+    Trigger:  Shows automatically on first visit (session-based via sessionStorage).
+              To force re-show for testing: DevTools → Application → Session Storage
+              → delete the key "cm_welcomed"
+    To edit content: update text inside .modal-blocks or .modal-lead below
+    To add a new block: copy a .modal-block div and add it inside .modal-blocks
+  -->
   <div class="modal-backdrop" id="modalBackdrop" hidden></div>
   <div class="modal-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
     <div class="modal-card">
@@ -114,6 +137,13 @@
   <main id="main">
 
     <!-- HERO -->
+    <!--
+      SECTION: Hero
+      Styling: css/style.css → .hero, .hero-inner, .hero-copy, .hero-panel
+      Search:  js/main.js → doSearch() — redirects to directory.html?q=...
+      To change headline: edit the <h1> below
+      To change CTA buttons: edit .hero-ctas links
+    -->
     <section class="hero" aria-label="Site introduction">
       <div class="container hero-inner">
 
@@ -186,6 +216,14 @@
     </section>
 
     <!-- STATS -->
+    <!--
+      SECTION: Animated Statistics Counters
+      Controls: js/main.js → animateCount() — triggers when scrolled into view
+      FIX: Counter uses requestAnimationFrame for reliable animation.
+      To change a stat: update data-target="NUMBER" and the .stat-label text
+      To change suffix (+, %, etc.): update the .stat-suffix span
+      Styling: css/style.css → .stats-section, .stats-grid, .stat-item
+    -->
     <section class="stats-section" aria-label="Community need statistics">
       <div class="container">
         <div class="stats-grid">
@@ -218,6 +256,14 @@
     </section>
 
     <!-- FEATURED RESOURCES -->
+    <!--
+      SECTION: Featured Organization Cards
+      Styling: css/style.css → .featured-section, .cards-grid, .resource-card
+      Scroll animation: cards use class="reveal" — staggered by js/main.js
+      Bookmark: js/main.js → .card-bookmark click handler
+      To add a card: copy an <article class="resource-card"> block
+      To change category badge color: update .cat-food / .cat-shelter / .cat-housing
+    -->
     <section class="section featured-section" aria-label="Featured organizations">
       <div class="container">
         <p class="section-label reveal">Featured Organizations</p>
@@ -309,7 +355,94 @@
       </div>
     </section>
 
+    <!-- COMMUNITY MAP -->
+    <!--
+      SECTION: Resource Map
+      HOW TO IMPLEMENT:
+        Option A — Google Maps Embed (simplest, no API key needed):
+          1. Go to maps.google.com
+          2. Search "Morris County, NJ"
+          3. Click Share → Embed a map → Copy the <iframe> src URL
+          4. Replace the src="..." in the iframe below with that URL
+          5. Remove the .map-placeholder div once your real map is in
+
+        Option B — Google Maps JavaScript API (recommended for pins):
+          1. Get a Maps JavaScript API key from console.cloud.google.com
+          2. Add <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY"></script>
+          3. Replace the iframe with a <div id="map" style="width:100%;height:100%"></div>
+          4. Initialize the map in js/main.js with new google.maps.Map(...)
+          5. Add Marker objects for each organization location
+
+        Option C — Leaflet.js (free, no API key):
+          1. Add to <head>:
+             <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+             <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+          2. Replace iframe with: <div id="map" style="width:100%;height:100%"></div>
+          3. In js/main.js:
+             const map = L.map('map').setView([40.7968, -74.4773], 12); // Morris County center
+             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+             L.marker([40.7968, -74.4773]).addTo(map).bindPopup('Organization Name');
+
+      Styling: css/style.css → .map-section, .map-wrapper, .map-legend
+    -->
+    <section class="map-section" aria-label="Community resource map">
+      <div class="container">
+        <p class="section-label reveal">Find Resources Near You</p>
+        <h2 class="section-title reveal">Organizations Across<br>Morris County</h2>
+        <p class="section-sub reveal">Browse nonprofit locations across the county. Click any pin for details, hours, and contact info.</p>
+
+        <div class="map-wrapper reveal">
+          <!-- PLACEHOLDER: Replace with your real map embed -->
+          <!-- OPTION A — Google Embed: uncomment and paste your src below -->
+          <!--
+          <iframe
+            src="https://www.google.com/maps/embed?pb=YOUR_EMBED_URL_HERE"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Morris County community resource map">
+          </iframe>
+          -->
+
+          <!-- OPTION C — Leaflet placeholder: remove this div and uncomment above -->
+          <div class="map-placeholder">
+            <div class="map-placeholder-icon">🗺️</div>
+            <h3>Interactive Map Coming Soon</h3>
+            <p>
+              To add the map, see the HTML comment above this section.
+              Three implementation options are documented — Google Embed,
+              Google Maps API, or free Leaflet.js (no API key needed).
+            </p>
+            <a class="btn btn-secondary" href="directory.html">Browse Directory Instead →</a>
+          </div>
+        </div>
+
+        <div class="map-legend reveal">
+          <div class="map-legend-item">
+            <span class="legend-dot food"></span> Food &amp; Nutrition
+          </div>
+          <div class="map-legend-item">
+            <span class="legend-dot shelter"></span> Shelter &amp; Safety
+          </div>
+          <div class="map-legend-item">
+            <span class="legend-dot housing"></span> Housing Services
+          </div>
+          <div class="map-legend-item">
+            <span class="legend-dot other"></span> Other Services
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- GIVE BACK -->
+    <!--
+      SECTION: Give Back
+      Styling: css/style.css → .give-back, .give-back-inner, .gb-ways
+      To add a "way": copy a .gb-way block inside .gb-ways
+    -->
     <section class="give-back" aria-label="Ways to give back to the community">
       <div class="container give-back-inner">
 
@@ -352,6 +485,15 @@
   </main>
 
   <!-- ==================== FOOTER ==================== -->
+  <!--
+    SECTION: Footer
+    FIX: Removed broken/duplicate links. Pages not yet built are
+         marked "coming soon" via CSS (awareness.html, events.html).
+    FIX: Updated contact info placeholder.
+    Date/Year: auto-populated by js/main.js (#footerDate, #footerYear)
+    To add a footer link: add an <li><a href="...">Label</a></li>
+    Styling: css/style.css → .site-footer, .footer-grid, .footer-bottom
+  -->
   <footer class="site-footer">
     <div class="container footer-grid">
 
@@ -365,11 +507,11 @@
       <div>
         <p class="footer-col-title">Navigation</p>
         <ul class="footer-links">
+          <li><a href="about.html">About</a></li>
           <li><a href="directory.html">Directory</a></li>
           <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
           <li><a href="submit.html">Submit a Resource</a></li>
-          <li><a href="awareness.html">Awareness</a></li>
-          <li><a href="events.html">Events</a></li>
+          <li><a href="highlights.html">Highlights</a></li>
           <li><a href="works-cited.html">Works Cited</a></li>
         </ul>
       </div>
@@ -377,10 +519,16 @@
       <div>
         <p class="footer-col-title">Contact &amp; Info</p>
         <ul class="footer-links">
+          <!-- FIX: Update this email when you have a real address -->
           <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
           <li><a href="submit.html">Submit a Resource</a></li>
-          <li><a href="admin/">Admin Login</a></li>
+          <!-- FIX: Only include admin link if the admin page exists -->
+          <!-- <li><a href="admin/">Admin Login</a></li> -->
         </ul>
+        <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+          Morris County, New Jersey<br>
+          Crisis line: <strong style="color:rgba(247,242,234,.5)">988</strong> &nbsp;|&nbsp; Emergency: <strong style="color:rgba(247,242,234,.5)">911</strong>
+        </p>
       </div>
 
     </div>
@@ -389,7 +537,7 @@
       <p class="footer-disclaimer">
         <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information is gathered from public sources and may not reflect current availability or hours. Always confirm details directly with the organization before visiting.
         <strong>This is not an emergency platform.</strong> If you are in immediate danger, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
-        Information last reviewed: <span id="footerDate"></span>.
+        Information last reviewed: March 2026 <span id="footerDate"></span>.
       </p>
       <p class="footer-date" id="footerYear"></p>
     </div>
