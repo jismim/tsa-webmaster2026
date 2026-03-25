@@ -1,13 +1,16 @@
 /* ============================================================
    CAREMAP MORRIS — Main JavaScript
-   Handles: modal, search, counters, scroll reveal,
+   Handles: modal/walkthrough, search, counters, scroll reveal,
             mobile menu, bookmark toggle, footer dates
 ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ----------------------------------------------------------
-     1. FIRST-TIME USER MODAL
+     1. FIRST-TIME USER WALKTHROUGH MODAL
+     FIX: Restored - was functionally fine but re-documented clearly.
+     The modal HTML must exist in index.html for this to work.
+     It uses sessionStorage so it only shows once per browser session.
   ---------------------------------------------------------- */
   const backdrop   = document.getElementById('modalBackdrop');
   const modalWrap  = document.getElementById('modalWrap');
@@ -19,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     backdrop.hidden  = false;
     modalWrap.hidden = false;
     document.body.style.overflow = 'hidden';
-    // Focus first focusable element inside modal
+    // Focus first focusable element for accessibility
     const firstFocusable = modalWrap.querySelector('button, a[href]');
     if (firstFocusable) firstFocusable.focus();
   }
@@ -32,7 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
     sessionStorage.setItem('cm_welcomed', '1');
   }
 
-  // Show only on first visit per session
+  // Show only once per session (clears when browser tab closes)
+  // To test: open DevTools → Application → Session Storage → delete cm_welcomed
   if (!sessionStorage.getItem('cm_welcomed')) {
     setTimeout(openModal, 650);
   }
@@ -41,8 +45,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
   if (backdrop)   backdrop.addEventListener('click', closeModal);
 
+  // Close on Escape key
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') {
+      closeModal();
+      closeMobileMenu();
+    }
   });
 
 
@@ -62,10 +70,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  if (searchBtn)  searchBtn.addEventListener('click', doSearch);
+  if (searchBtn)   searchBtn.addEventListener('click', doSearch);
   if (searchInput) {
     searchInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') doSearch();});
+      if (e.key === 'Enter') doSearch();
+    });
   }
 
 
@@ -95,11 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
   if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeMobileMenu();
-  });
-
-  // Close mobile menu if a link inside it is clicked
+  // Close mobile menu when any link inside is clicked
   if (mobileMenu) {
     mobileMenu.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', closeMobileMenu);
@@ -109,66 +114,98 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ----------------------------------------------------------
      4. ANIMATED STAT COUNTERS
+     FIX: The original animateCount used setInterval with floating
+          point accumulation which caused it to sometimes never
+          reach the target. Replaced with a requestAnimationFrame
+          approach using elapsed time — reliable and smooth.
   ---------------------------------------------------------- */
   function animateCount(el, target, duration) {
-    let start  = 0;
-    const step = target / (duration / 16);
+    const start     = performance.now();
+    const startVal  = 0;
 
-    const timer = setInterval(function () {
-      start += step;
-      if (start >= target) {
-        el.textContent = target;
-        clearInterval(timer);
-        return;
+    function step(now) {
+      const elapsed  = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Ease out cubic for a natural deceleration
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(startVal + (target - startVal) * eased);
+
+      el.textContent = current;
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = target; // ensure exact final value
       }
-      el.textContent = Math.floor(start);}, 16);
+    }
+
+    requestAnimationFrame(step);
   }
 
   const counters = document.querySelectorAll('.count-num');
 
-  if (counters.length && 'IntersectionObserver' in window) {
-    const counterObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          const target = parseInt(entry.target.dataset.target, 10);
-          animateCount(entry.target, target, 1200);
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
+  if (counters.length) {
+    if ('IntersectionObserver' in window) {
+      const counterObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            const target = parseInt(entry.target.dataset.target, 10);
+            if (!isNaN(target)) {
+              animateCount(entry.target, target, 1400);
+            }
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
 
-    counters.forEach(function (c) { counterObserver.observe(c); });
-  } else {
-    // Fallback: just set the final number immediately
-    counters.forEach(function (c) {
-      c.textContent = c.dataset.target;
-    });
+      counters.forEach(function (c) { counterObserver.observe(c); });
+    } else {
+      // Fallback for browsers without IntersectionObserver
+      counters.forEach(function (c) {
+        c.textContent = c.dataset.target || '0';
+      });
+    }
   }
 
 
   /* ----------------------------------------------------------
      5. SCROLL REVEAL
+     ENHANCED: Supports .reveal, .reveal-left, .reveal-right,
+               .reveal-scale variants. Stagger is applied
+               automatically to siblings.
   ---------------------------------------------------------- */
-  const reveals = document.querySelectorAll('.reveal');
+  const revealSelectors = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
+  const reveals = document.querySelectorAll(revealSelectors);
 
   if (reveals.length && 'IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
 
-        // Stagger siblings that are also un-revealed
-        const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal:not(.visible)'));
-        const idx = siblings.indexOf(entry.target);
+        const el       = entry.target;
+        const parent   = el.parentElement;
 
-        setTimeout(function () {entry.target.classList.add('visible');}, Math.max(0, idx) * 80);
+        // Find un-revealed siblings to stagger them
+        const siblings = parent
+          ? Array.from(parent.querySelectorAll(revealSelectors + ':not(.visible)'))
+          : [];
+        const idx = siblings.indexOf(el);
 
-        revealObserver.unobserve(entry.target);
+        // Stagger delay: 80ms per sibling, max 400ms
+        const delay = Math.min(Math.max(0, idx) * 80, 400);
+
+        setTimeout(function () {
+          el.classList.add('visible');
+        }, delay);
+
+        revealObserver.unobserve(el);
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     reveals.forEach(function (r) { revealObserver.observe(r); });
   } else {
-    // Fallback: make all visible immediately
+    // Fallback: show everything immediately
     reveals.forEach(function (r) { r.classList.add('visible'); });
   }
 
@@ -182,13 +219,14 @@ document.addEventListener('DOMContentLoaded', function () {
       this.textContent = saved ? '♥' : '♡';
       this.setAttribute(
         'aria-label',
-        saved ? 'Unsave this organization' : 'Save this organization');
+        saved ? 'Unsave this organization' : 'Save this organization'
+      );
     });
   });
 
 
   /* ----------------------------------------------------------
-     7. FOOTER — auto-populate date and year
+     7. FOOTER — auto-populate review date and copyright year
   ---------------------------------------------------------- */
   const now      = new Date();
   const dateOpts = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -200,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     footerDateEl.textContent = now.toLocaleDateString('en-US', dateOpts);
   }
   if (footerYearEl) {
-    footerYearEl.textContent = '© ' + now.getFullYear() + ' CareMap Morris';
+    footerYearEl.textContent = '© ' + now.getFullYear() + ' CareMap Morris. All rights reserved.';
   }
 
 });
