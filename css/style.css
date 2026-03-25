@@ -1,10 +1,10 @@
 /* ============================================================
-   CAREMAP MORRIS — Main Stylesheet
-   Warm editorial aesthetic / community newspaper
+  CAREMAP MORRIS — Main Stylesheet
+  Warm editorial aesthetic / community newspaper
 ============================================================ */
 
 /* ============================================================
-   DESIGN TOKENS
+  DESIGN TOKENS
 ============================================================ */
 :root {
   --cream:      #F7F2EA;
@@ -28,7 +28,7 @@
 }
 
 /* ============================================================
-   RESET & BASE
+  RESET & BASE
 ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html  { scroll-behavior: smooth; }
@@ -58,7 +58,7 @@ body {
 }
 
 /* ============================================================
-   SKIP LINK
+  SKIP LINK
 ============================================================ */
 .skip-link {
   position: fixed; top: -100%; left: 1rem; z-index: 9999;
@@ -70,7 +70,7 @@ body {
 .skip-link:focus { top: 1rem; }
 
 /* ============================================================
-   BUTTONS
+  BUTTONS
 ============================================================ */
 .btn {
   display: inline-flex; align-items: center; gap: .4rem;
@@ -153,10 +153,11 @@ a[href="submit.html"].btn-ghost:hover,
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(192,75,32,.3);
 }
-.btn-ghost:hover { border-color: var(--warm-gray); color: var(--ink); }
 
 /* ============================================================
-   HEADER
+  HEADER
+  FIX: nav links were color:inherit → inheriting dark ink on dark bg.
+       Explicitly set to cream/light color.
 ============================================================ */
 .site-header {
   position: sticky; top: 0; z-index: 100;
@@ -193,6 +194,8 @@ a[href="submit.html"].btn-ghost:hover,
   letter-spacing: -.01em; line-height: 1;
 }
 
+/* FIX: The original CSS used .primary-nav but HTML uses .nav — unified here */
+.nav,
 .primary-nav {
   display: flex; align-items: center; gap: .15rem;
   flex-wrap: wrap;
@@ -201,7 +204,7 @@ a[href="submit.html"].btn-ghost:hover,
 /* FIX: Nav links — explicitly set to light color, not inherited ink */
 .nav a,
 .primary-nav a {
-  color: rgba(247,242,234,.75);
+  color: rgba(247,242,234,.8);   /* FIXED: was inheriting black, now cream */
   font-size: .82rem; font-weight: 500;
   letter-spacing: .02em;
   padding: .4rem .75rem;
@@ -215,7 +218,7 @@ a[href="submit.html"].btn-ghost:hover,
   background: rgba(255,255,255,.08);
   color: var(--cream);           /* FIX: hover → full cream */
 }
-.primary-nav a:hover { background: rgba(255,255,255,.08); color: var(--cream); }
+.nav a.nav-cta,
 .primary-nav a.nav-cta {
   background: var(--rust); color: #fff; margin-left: .5rem;
 }
@@ -858,11 +861,8 @@ a[href="submit.html"].btn-ghost:hover,
 
 .footer-col-title {
   font-family: var(--ff-mono);
-  font-size: .68rem; letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(247,242,234,.4); margin-bottom: .85rem;
-
-  font-size: .68rem; letter-spacing: .12em;
+  font-size: .80rem; letter-spacing: .12em;
+  font-weight: 500;
   text-transform: uppercase;
   color: rgba(247,242,234,.4); margin-bottom: .85rem;
 }
@@ -895,7 +895,6 @@ a[href="submit.html"].btn-ghost:hover,
   color: rgba(247,242,234,.2);
   font-family: var(--ff-mono);
 }
-.footer-links a:hover { color: var(--cream); }
 
 .footer-bottom {
   padding-block: 1.25rem;
@@ -994,6 +993,9 @@ a[href="submit.html"].btn-ghost:hover,
   50%       { transform: scale(1.4); opacity: .6; }
 }
 
+/* ============================================================
+  RESPONSIVE
+============================================================ */
 @media (max-width: 820px) {
   .hero-inner { grid-template-columns: 1fr; }
   .hero-panel { display: none; }
@@ -1007,69 +1009,8 @@ a[href="submit.html"].btn-ghost:hover,
 }
 
 @media (max-width: 560px) {
-  .nav   { display: none; }
+  .nav, .primary-nav { display: none; }
   .mobile-nav-btn { display: flex; }
-  .footer-grid   { grid-template-columns: 1fr; }
-
-}
-}
-
-}
-
-}
-
-.footer-disclaimer {
-  font-size: .75rem;
-  color: rgba(247,242,234,.3);
-  line-height: 1.5; max-width: 620px;
-}
-.footer-disclaimer strong { color: rgba(247,242,234,.5); }
-
-.footer-date {
-  font-family: var(--ff-mono);
-  font-size: .7rem;
-  color: rgba(247,242,234,.2);
-  white-space: nowrap;
-}
-
-/* ============================================================
-   ANIMATIONS**/
-@keyframes fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes slideup {
-  from { opacity: 0; transform: translateY(20px) scale(.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .55s ease, transform .55s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ============================================================
-   RESPONSIVE
-============================================================ */
-@media (max-width: 820px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero-panel { display: none; }
-  .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
-  .give-back-inner { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
-  .stat-item:last-child { border-bottom: none; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 560px) {
-  .primary-nav   { display: none; }
-  .mobile-nav-btn { display: flex; }
-  .footer-grid   { grid-template-columns: 1fr; }
-
+  .footer-grid { grid-template-columns: 1fr; }
+  .map-wrapper { height: 280px; }
 }
