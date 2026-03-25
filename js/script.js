@@ -1,8 +1,3 @@
-/* ============================================================
-   CAREMAP MORRIS — Main JavaScript
-   Handles: modal/walkthrough, search, counters, scroll reveal,
-            mobile menu, bookmark toggle, footer dates
-============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -119,56 +114,43 @@ document.addEventListener('DOMContentLoaded', function () {
           reach the target. Replaced with a requestAnimationFrame
           approach using elapsed time — reliable and smooth.
   ---------------------------------------------------------- */
-  function animateCount(el, target, duration) {
-    const start     = performance.now();
-    const startVal  = 0;
+const counters = document.querySelectorAll('.count-num');
 
-    function step(now) {
-      const elapsed  = now - start;
-      const progress = Math.min(elapsed / duration, 1);
+function animateCount(el, target, duration) {
+  let start = 0;
+  const startTime = performance.now();
 
-      // Ease out cubic for a natural deceleration
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(startVal + (target - startVal) * eased);
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    el.textContent = Math.floor(progress * target);
 
-      el.textContent = current;
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        el.textContent = target; // ensure exact final value
-      }
-    }
-
-    requestAnimationFrame(step);
-  }
-
-  const counters = document.querySelectorAll('.count-num');
-
-  if (counters.length) {
-    if ('IntersectionObserver' in window) {
-      const counterObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            const target = parseInt(entry.target.dataset.target, 10);
-            if (!isNaN(target)) {
-              animateCount(entry.target, target, 1400);
-            }
-            counterObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.4 });
-
-      counters.forEach(function (c) { counterObserver.observe(c); });
+    if (progress < 1) {
+      requestAnimationFrame(update);
     } else {
-      // Fallback for browsers without IntersectionObserver
-      counters.forEach(function (c) {
-        c.textContent = c.dataset.target || '0';
-      });
+      el.textContent = target;
     }
   }
 
+  requestAnimationFrame(update);
+}
 
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = parseInt(entry.target.dataset.target, 10);
+        animateCount(entry.target, target, 1200);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0 });
+
+  counters.forEach(c => observer.observe(c));
+} else {
+  counters.forEach(c => {
+    c.textContent = c.dataset.target;
+  });
+}
   /* ----------------------------------------------------------
      5. SCROLL REVEAL
      ENHANCED: Supports .reveal, .reveal-left, .reveal-right,
