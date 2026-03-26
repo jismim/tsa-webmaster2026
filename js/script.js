@@ -208,10 +208,57 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fallback: show everything immediately
     reveals.forEach(function (r) { r.classList.add('visible'); });
   }
+/**MAP */
 
+// Leaflet map initialization
+const map = L.map('map').setView([40.7968, -74.4773], 12); // Morris County center
 
+// Add OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Example markers — replace with real organization coordinates
+const organizations = [
+  {
+    name: "Morris Community Food Pantry",
+    coords: [40.798, -74.480],
+    category: "food",
+  },
+  {
+    name: "Domestic Violence Crisis Center",
+    coords: [40.810, -74.470],
+    category: "shelter",
+  },
+  {
+    name: "Morris Homeless Services",
+    coords: [40.790, -74.460],
+    category: "housing",
+  },
+];
+const iconMap = {
+  food: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
+  shelter: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+  housing: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
+  other: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
+};
+
+organizations.forEach(org => {
+  const icon = L.icon({
+    iconUrl: iconMap[org.category] || iconMap.other,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
+  });
+
+  L.marker(org.coords, { icon })
+    .addTo(map)
+    .bindPopup(`<strong>${org.name}</strong>`);
+});
   /* ----------------------------------------------------------
-     6. BOOKMARK / SAVE TOGGLE
+    6. BOOKMARK / SAVE TOGGLE
   ---------------------------------------------------------- */
   document.querySelectorAll('.card-bookmark').forEach(function (btn) {
     btn.addEventListener('click', function () {
