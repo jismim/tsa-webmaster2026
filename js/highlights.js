@@ -5,6 +5,7 @@
 ============================================================ */
 
 const HIGHLIGHTS = [
+
     { week:"Week of Mar 23", name:"Roxbury Social Services",                 location:"Roxbury",              focus:"Emergency Housing Stabilization",          why:"Township-level intervention prevents larger housing crises.",                                                   provides:["Rental assistance referrals","Food assistance","Crisis case management"],                                    giveback:["Donate gift cards","Support local drives"] },
     { week:"Week of Mar 19", name:"Cornerstone Family Programs",             location:"Morris County",        focus:"Domestic Violence & Counseling",           why:"Strengthens survivor safety planning and long-term recovery.",                                                 provides:["Crisis counseling","Shelter coordination","Support groups"],                                                  giveback:["Volunteer event support","Donate essentials"] },
     { week:"Week of Mar 9",  name:"Mount Olive Cares",                       location:"Mount Olive",          focus:"Emergency Food & Housing Assistance",      why:"Expands access to crisis support in western Morris County.",                                                    provides:["Food pantry support","Emergency financial assistance referrals"],                                             giveback:["Donate grocery items","Support seasonal drives"] },
