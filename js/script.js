@@ -222,26 +222,198 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Example markers — replace with real organization coordinates
 const organizations = [
   {
-    name: "Morris Community Food Pantry",
-    coords: [40.798, -74.480],
+    name: "Interfaith Food Pantry",
+    coords: [40.831599473789744, -74.4967387711644],
     category: "food",
   },
   {
-    name: "Domestic Violence Crisis Center",
-    coords: [40.810, -74.470],
+    name: "Booton Food Pantry",
+    coords: [40.9019471, -74.4068955],
+    category: "food",
+  },
+  {
+    name: "Loaves & Fishes Community Food Pantry",
+    coords: [40.906545, -74.409786],
+    category: "food",
+  },
+  {
+    name: "Chester Mendham Food Pantry",
+    coords: [40.7937, -74.6974],
+    category: "food",
+  },
+  {
+    name: "nourish.NJ",
+    coords: [40.8050444, -74.4845942],
+    category: "food",
+  },
+  {
+    name: "nourish.NJ",
+    coords: [40.8779, -74.5385],
+    category: "food",
+  },
+  {
+    name: "Faith Kitchen",
+    coords: [40.8851, -74.5521],
+    category: "food",
+  },
+  {
+    name: "Mount Olive Food Pantry",
+    coords: [40.864242169063566, -74.76509680000012],
+    category: "food",
+  },
+  {
+    name: "St. Peter's Food Pantry",
+    coords: [40.86494978034143, -74.39408306931551],
+    category: "food",
+  },
+  {
+    name: "Randolph Food Pantry",
+    coords: [40.84784658347127, -74.56295426376882],
+    category: "food",
+  },
+  {
+    name: "Rockaway Food Closet",
+    coords: [40.903988992120844, -74.51300020369783],
+    category: "food",
+  },
+  {
+    name: "Family Promise of Morris County",
+    coords: [40.79856105235971, -74.4834509449061],
     category: "shelter",
   },
   {
-    name: "Morris Homeless Services",
-    coords: [40.790, -74.460],
-    category: "housing",
+    name: "Market Street Mission - Morris County",
+    coords: [40.798585446529735, -74.48346167116411],
+    category: "shelter"
   },
+  {
+    name: "Morris Family Justice Center",
+    coords: [40.79723006613729, -74.48403157374204],
+    category: "support"
+  },
+  {
+    name: "Homeless Solutions Inc",
+    coords: [40.831283217856836, -74.4471109602484],
+    category: "shelter"
+  },
+  {
+    name: "Homeless Solutions Inc",
+    coords: [40.831880509255264, -74.52162566024835],
+    category: "shelter"
+  },
+    {
+    name: "Deirdre’s House",
+    coords: [40.7977545523217, -74.48360376024962],
+    category: "support"
+  },
+    {
+    name: "Jersey Battered Women’s Service (JBWS)",
+    coords: [40.797686995786044, -74.48359027797845],
+    category: "support"
+  },
+    {
+    name: "Morris Plains Teen Center",
+    coords: [40.82623300728235, -74.47964360257681],
+    category: "youth"
+  },
+      {
+    name: "Young Health Resources",
+    coords: [40.91279808390638, -74.52999068722995],
+    category: "youth"
+  },
+      {
+    name: "CASA of Morris & Sussex Counties",
+    coords: [40.81130908220087, -74.45855200257735],
+    category: "youth"
+  },
+      {
+    name: "Cornerstone Family Programs",
+    coords: [40.803089610756764, -74.48083271792117],
+    category: "youth"
+  },
+      {
+    name: "Roots & Wings",
+    coords: [40.89117504495456, -74.47447243141015],
+    category: "youth"
+  },
+      {
+    name: "Morris County Youth Shelter",
+    coords: [40.832075785570865, -74.52214704274178],
+    category: "shelter"
+  },
+      {
+    name: "Growing Stage",
+    coords: [40.90071317709448, -74.70426357373807],
+    category: "youth"
+  },
+      {
+    name: "DAWN Center for Independent Living",
+    coords: [40.91160110393633, -74.49426738908117],
+    category: "support"
+  },
+      {
+    name: "AVIDD Community Services",
+    coords: [40.89171681182489, -74.47431140257427],
+    category: "support"
+  },
+        {
+    name: "ArcMorris",
+    coords: [40.83067041207043, -74.49741557374077],
+    category: "support"
+  },
+        {
+    name: "Lennon’s House",
+    coords: [40.90559424640193, -74.50382761791732],
+    category: "support"
+  },
+        {
+    name: "Literacy Volunteers of Morris County",
+    coords: [40.79332643399677, -74.4759002602498],
+    category: "support"
+  },
+        {
+    name: "Morristown & Morris Township Library",
+    coords: [40.79399217493562, -74.47882624490622],
+    category: "support"
+  },
+        {
+    name: "Morris County Library",
+    coords: [40.80646109508215, -74.45300504729107],
+    category: "support"
+  },
+  {
+    name: "First Choice Women's Resource Centers",
+    coords: [40.80062942517182, -74.4820338602496],
+    category: "health"
+  },
+  {
+    name: "Parsippany's Rockaway Neck Volunteer First Aid Squad",
+    coords: [40.87585664412647, -74.38110460442618],
+    category: "health"
+  },
+  {
+    name: "EdgeNJ",
+    coords: [40.874729184442884, -74.42607387373907],
+    category: "health"
+  },
+  {
+    name: "Community Hope Inc",
+    coords: [40.8615472676916, -74.381067658396],
+    category: "health"
+  },
+  {
+    name: "CARE Center of New Jersey",
+    coords: [40.928350332400875, -74.48457642955759],
+    category: "health"
+  }
+
 ];
 const iconMap = {
   food: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
   shelter: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
-  housing: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
-  other: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
+  support: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
+  health: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+  youth: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png'
 };
 
 organizations.forEach(org => {
