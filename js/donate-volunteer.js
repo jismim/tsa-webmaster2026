@@ -29,52 +29,63 @@ const DATA = [
   {id:28, kind:"both", title:"Legal Services of Northwest Jersey", desc:"Provides free civil legal assistance to eligible low-income residents of Morris County, including help with housing, family law, and public benefits.", age:["adult","family","senior"], location:"morristown", services:["legal"], link:"https://www.lsnwj.org/", phone:"(973) 285-6911", address:"30 Schuyler Pl, Morristown, NJ 07960"}
 ];
 
-const cardsList     = document.getElementById('cardsList');
-const noResults     = document.getElementById('noResults');
-const resultsCount  = document.getElementById('resultsCount');
-const filterAge     = document.getElementById('filter-age');
-const filterLocation= document.getElementById('filter-location');
-const chips         = document.querySelectorAll('.chip');
-const tabBtns       = document.querySelectorAll('.tab-btn');
-const resetBtn      = document.getElementById('resetFilters');
+const cardsList      = document.getElementById('cardsList');
+const noResults      = document.getElementById('noResults');
+const resultsCount   = document.getElementById('resultsCount');
+const filterAge      = document.getElementById('filter-age');
+const filterLocation = document.getElementById('filter-location');
+const chips          = document.querySelectorAll('.chip');
+const tabBtns        = document.querySelectorAll('.tab-btn');
+const resetBtn       = document.getElementById('resetFilters');
 
 let activeTab      = 'all';
 let activeServices = [];
 
+// -------------------
+// Main render function
+// -------------------
 function render() {
-  const age      = filterAge.value;
-  const location = filterLocation.value;
+  const age = filterAge.value;
+  const location = filterLocation.value.toLowerCase();
 
   const filtered = DATA.filter(item => {
-    if (activeTab !== 'all' && item.kind !== activeTab && item.kind !== 'both') return false;
+    // KIND filter
+    if (activeTab === 'donate' && item.kind !== 'donate') return false;
+    if (activeTab === 'volunteer' && item.kind !== 'volunteer') return false;
+    if (activeTab === 'all' && item.kind !== 'both') return false;
+
+    // AGE filter
     if (age && !item.age.includes(age)) return false;
-    if (location && item.location !== location) return false;
+
+    // LOCATION filter
+    if (location && item.location.toLowerCase() !== location) return false;
+
+    // SERVICES filter
     if (activeServices.length && !activeServices.every(s => item.services.includes(s))) return false;
+
     return true;
   });
 
   cardsList.innerHTML = filtered.map(item => {
     const badgeClass = item.kind === 'donate' ? 'badge-donate' : item.kind === 'volunteer' ? 'badge-volunteer' : 'badge-both';
-    const badgeLabel = item.kind === 'both' ? 'Donate & Volunteer' : item.kind.charAt(0).toUpperCase() + item.kind.slice(1);
+    const badgeLabel = item.kind === 'both' ? 'Both' : item.kind.charAt(0).toUpperCase() + item.kind.slice(1);
     const pills = item.services.map(s => `<span class="card-pill">${s}</span>`).join('');
 
     return `
-    <article class="dv-card">
-      <div>
-        <span class="kind-badge ${badgeClass}">${badgeLabel}</span>
-        <h3>${item.title}</h3>
-        <!-- Address & Phone below -->
-        ${item.address ? `<p class="card-address">${item.address}</p>` : ''}
-        ${item.phone ? `<p class="card-phone">${item.phone}</p>` : ''}
-        <!-- DESC goes here in place of old address spot -->
-        <p class="card-desc">${item.desc}</p>
-                <div class="card-pills">${pills}</div>
-
-      </div>
-      <div class="dv-card-actions">
-        <a class="btn btn-primary" href="${item.link}" target="_blank" rel="noopener noreferrer">Visit Website</a>
-      </div>
-    </article>`;
+      <article class="dv-card">
+        <div>
+          <span class="kind-badge ${badgeClass}">${badgeLabel}</span>
+          <h3>${item.title}</h3>
+          ${item.address ? `<p class="card-address">${item.address}</p>` : ''}
+          ${item.phone ? `<p class="card-phone">${item.phone}</p>` : ''}
+          <p class="card-desc">${item.desc}</p>
+          <div class="card-pills">${pills}</div>
+        </div>
+        <div class="dv-card-actions">
+          ${item.link ? `<a class="btn btn-primary" href="${item.link}" target="_blank" rel="noopener noreferrer">Visit Website</a>` : ''}
+        </div>
+      </article>
+    `;
   }).join('');
 
   resultsCount.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
@@ -82,17 +93,20 @@ function render() {
   cardsList.hidden  = filtered.length === 0;
 }
 
+// -------------------
+// Tab buttons
+// -------------------
 tabBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+    tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
     btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('aria-selected','true');
     activeTab = btn.dataset.tab;
 
     const resultsHeading = document.getElementById('results-heading');
     if (resultsHeading) {
-      if (btn.dataset.tab === 'donate') resultsHeading.textContent = 'Donate Opportunities';
-      else if (btn.dataset.tab === 'volunteer') resultsHeading.textContent = 'Volunteer Opportunities';
+      if (activeTab === 'donate') resultsHeading.textContent = 'Donate Opportunities';
+      else if (activeTab === 'volunteer') resultsHeading.textContent = 'Volunteer Opportunities';
       else resultsHeading.textContent = 'All Opportunities';
     }
 
@@ -100,6 +114,9 @@ tabBtns.forEach(btn => {
   });
 });
 
+// -------------------
+// Service chips
+// -------------------
 chips.forEach(chip => {
   chip.addEventListener('click', () => {
     chip.classList.toggle('selected');
@@ -111,18 +128,24 @@ chips.forEach(chip => {
   });
 });
 
+// -------------------
+// Age & Location filters
+// -------------------
 filterAge.addEventListener('change', render);
 filterLocation.addEventListener('change', render);
 
+// -------------------
+// Reset button
+// -------------------
 resetBtn.addEventListener('click', () => {
   activeTab = 'all';
   activeServices = [];
   filterAge.value = '';
   filterLocation.value = '';
   chips.forEach(c => c.classList.remove('selected'));
-  tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+  tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
   tabBtns[0].classList.add('active');
-  tabBtns[0].setAttribute('aria-selected', 'true');
+  tabBtns[0].setAttribute('aria-selected','true');
   render();
 });
 
