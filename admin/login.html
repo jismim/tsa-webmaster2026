@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/index.html" aria-label="CareMap Morris Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+      <a class="btn btn-secondary" href="/submit.html">Back to public site</a>
+    </div>
+  </header>
+
+  <main id="main" class="login-wrap">
+    <section class="login-card" aria-labelledby="adminLoginHeading">
+      <p class="page-eyebrow">Admin access</p>
+      <h1 id="adminLoginHeading" class="page-title">Admin Login</h1>
+      <p class="page-subtitle">Sign in to review resource submissions and community questions from the CareMap Morris forms.</p>
+
+      <div class="auth-warning">Authorized personnel only</div>
+
+      <div class="credentials-box">
+        <p style="margin:0 0 .65rem;"><strong>Demo credentials for TSA judges</strong></p>
+        <p style="margin:.3rem 0;">Username: <code>admin@caremapmorris.org</code></p>
+        <p style="margin:.3rem 0;">Password: <code>CareMapAdmin2026!</code></p>
+      </div>
+
+      <form id="adminLoginForm" class="form-grid" novalidate>
+        <div class="form-field">
+          <label for="adminUsername">Username or email</label>
+          <input id="adminUsername" name="adminUsername" type="text" autocomplete="username" placeholder="admin@caremapmorris.org" required />
+        </div>
+        <div class="form-field">
+          <label for="adminPassword">Password</label>
+          <input id="adminPassword" name="adminPassword" type="password" autocomplete="current-password" placeholder="Enter password" required />
+        </div>
+        <button class="btn btn-primary" type="submit">Login</button>
+      </form>
+
+      <div id="loginError" class="error-message" role="alert" aria-live="polite"></div>
+
+      <p class="footer-note">This demo login uses session-based front-end protection for judging. For a production launch, swap this for a real auth provider.</p>
+    </section>
+  </main>
+
+  <script src="/js/admin-auth.js"></script>
+  <script src="/js/admin-login.js"></script>
+</body>
+</html>
