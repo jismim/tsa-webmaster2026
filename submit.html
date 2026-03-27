@@ -6,6 +6,9 @@
   <title>CareMap Morris | Submit a Resource</title>
   <meta name="description" content="Suggest a Morris County community organization or resource for the CareMap Morris directory." />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/submit.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     .section-label {
       font-size: 0.78rem;
@@ -127,49 +130,88 @@
 </head>
 
 <body>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+  <div class="mobile-menu-head">
+    <span class="mobile-menu-brand">CareMap Morris</span>
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
+  </div>
+  <a href="about.html">About</a>
+  <a href="directory.html">Directory</a>
+  <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
+  <a href="submit.html">Submit a Resource</a>
+  <a href="highlights.html">Highlights</a>
+  <a href="works-cited.html">Works Cited</a>
+</nav>
   <a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">CareMap Morris</span>
+    </a>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="CareMap Morris Home">
-        <span class="brand-mark" aria-hidden="true">●</span>
-        <span class="brand-text">CareMap Morris</span>
-      </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href = "about.html">About</a>
-        <a href="directory.html">Directory</a>
-        <a href="donate-volunteer.html">Donate & Volunteer</a>
-        <a href="submit.html">Submit a Resource</a>
-        <a href="highlights.html">Highlights</a>
-      </nav>
-    </div>
-  </header>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="about.html">About</a>
+      <a href="directory.html">Directory</a>
+      <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
+      <a href="submit.html">Submit a Resource</a>
+      <a href="highlights.html">Highlights</a>
+      <a href="works-cited.html">Works Cited</a>
+    </nav>
+
+    <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
+      ☰ Menu
+    </button>
+  </div>
+</header>
 
   <main id="main">
-    <div class="container page-wrap">
 
-      <div class="page-header">
-        <p class="section-label">Community Submissions</p>
-        <h1>Submit a Resource</h1>
-        <p class="subtitle">Know of a local organization that should be listed on CareMap Morris? Fill out the form below and we'll review it for inclusion in the directory.</p>
+    <!-- ═══ HERO ═══ -->
+    <section class="page-hero" aria-label="Submit a Resource">
+      <div class="container page-hero-inner">
+        <div class="hero-left reveal-hero">
+          <p class="section-label">Community Submissions</p>
+          <h1>Share a Resource, <em>Strengthen the Community</em></h1>
+          <p class="subtitle">Know of a Morris County organization that should be listed? Submit it below. We review every entry before it goes live.</p>
+          <div class="hero-cta-row">
+            <a class="btn btn-primary" href="directory.html">Resource Directory</a>
+            <a class="btn btn-sage" href="donate-volunteer.html">Volunteer Directory</a>
+          </div>
+        </div>
+        <div class="hero-right reveal-hero delay-2" aria-hidden="true">
+          <div class="hero-steps-mini">
+            <div class="hsm-item"><span class="hsm-num">1</span><span>Submit the form</span></div>
+            <div class="hsm-item"><span class="hsm-num">2</span><span>We verify the org</span></div>
+            <div class="hsm-item"><span class="hsm-num">3</span><span>Goes live in days</span></div>
+          </div>
+        </div>
       </div>
+    </section>
 
+    <!-- ═══ FORM + SIDEBAR ═══ -->
+    <div class="container page-wrap">
       <div class="page-grid">
 
-        <!-- FORM -->
+        <!-- FORM COLUMN -->
         <div>
+
+          <!-- Success banner -->
           <div class="success-banner" id="successBanner" role="alert" aria-live="polite">
-            <span aria-hidden="true" style="font-size:1.3rem; flex-shrink:0; margin-top:2px;">✅</span>
-            <p><strong>Submission received — thank you!</strong><br>We'll review this resource and be in touch if we have questions. If approved, it will appear in the directory within a few business days.</p>
+            <span aria-hidden="true" class="success-icon">✅</span>
+            <div>
+              <p><strong>Submission received. Thank you!</strong></p>
+              <p>We'll review this resource and be in touch if we have questions. If approved, it will appear in the directory within a few business days.</p>
+            </div>
           </div>
 
-          <div class="form-card">
+          <div class="form-card reveal">
             <form id="submitForm" novalidate aria-label="Submit a community resource">
 
-              <!-- Organization Info -->
+              <!-- 1 · Organization Info -->
               <div class="form-section">
                 <p class="form-section-title">
-                  <span class="form-section-icon" aria-hidden="true">🏢</span>
+                  <span class="fsec-num">1</span>
                   Organization Information
                 </p>
                 <div class="field">
@@ -181,18 +223,19 @@
                     <label for="orgType">Type of resource <span class="required" aria-label="required">*</span></label>
                     <select id="orgType" name="orgType" required>
                       <option value="" disabled selected>Select a type…</option>
-                      <option value="food-pantry">Food Pantry</option>
-                      <option value="shelter">Shelter / Housing</option>
-                      <option value="domestic-violence">Domestic Violence Support</option>
-                      <option value="homeless-services">Homeless Services</option>
-                      <option value="mental-health">Mental Health Services</option>
-                      <option value="legal-aid">Legal Aid</option>
-                      <option value="youth-services">Youth Services</option>
+                      <option value="food-pantry">Food &amp; Nutrition</option>
+                      <option value="shelter">Housing &amp; Shelter</option>
+                      <option value="domestic-violence">Domestic Violence</option>
+                      <option value="mental-health">Mental Health</option>
+                      <option value="legal-aid">Legal Services</option>
+                      <option value="youth-services">Youth &amp; Children</option>
                       <option value="senior-services">Senior Services</option>
                       <option value="disability-services">Disability Services</option>
-                      <option value="job-training">Job Training / Employment</option>
-                      <option value="healthcare">Healthcare / Clinics</option>
-                      <option value="childcare">Childcare / Family Support</option>
+                      <option value="job-training">Employment</option>
+                      <option value="healthcare">Health Care</option>
+                      <option value="social">Social Services</option>
+                      <option value="education">Education &amp; ESL</option>
+                      <option value="substance">Substance Use</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
@@ -208,10 +251,10 @@
                 </div>
               </div>
 
-              <!-- Location & Contact -->
+              <!-- 2 · Location & Contact -->
               <div class="form-section">
                 <p class="form-section-title">
-                  <span class="form-section-icon" aria-hidden="true">📍</span>
+                  <span class="fsec-num">2</span>
                   Location &amp; Contact
                 </p>
                 <div class="field">
@@ -235,36 +278,40 @@
                 </div>
               </div>
 
-              <!-- Services -->
+              <!-- 3 · Services -->
               <div class="form-section">
                 <p class="form-section-title">
-                  <span class="form-section-icon" aria-hidden="true">🛠</span>
+                  <span class="fsec-num">3</span>
                   Services Provided
                 </p>
-                <p style="color:var(--muted); font-size:0.92rem; margin:0 0 12px;">Check all that apply.</p>
-                <fieldset style="border:none; padding:0; margin:0;">
+                <p class="field-note">Check all that apply.</p>
+                <fieldset>
                   <legend class="sr-only">Services provided by this organization</legend>
                   <div class="checkbox-group">
-                    <label class="checkbox-item"><input type="checkbox" name="services" value="meals" /><span>Meals / Food</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="services" value="emergency-housing" /><span>Emergency Housing</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="services" value="counseling" /><span>Counseling / Mental Health</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="food" /><span>Food &amp; Nutrition</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="housing" /><span>Housing / Shelter</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="mental-health" /><span>Mental Health</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="substance" /><span>Substance Abuse</span></label>
                     <label class="checkbox-item"><input type="checkbox" name="services" value="legal" /><span>Legal Support</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="services" value="case-management" /><span>Case Management</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="senior" /><span>Senior Services</span></label>
                     <label class="checkbox-item"><input type="checkbox" name="services" value="job-readiness" /><span>Job Readiness / Training</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="services" value="childcare" /><span>Childcare / Youth Programs</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="services" value="transportation" /><span>Transportation</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="childcare" /><span>Childcare / Youth</span></label>
                     <label class="checkbox-item"><input type="checkbox" name="services" value="healthcare" /><span>Healthcare / Clinics</span></label>
-                    <label class="checkbox-item"><input type="checkbox" name="services" value="hygiene" /><span>Hygiene / Personal Care</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="violence" /><span>Domestic Violence Support</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="social" /><span>Social Services</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="disability" /><span>Disability Services</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="education" /><span>Education &amp; ESL</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="transportation" /><span>Transportation</span></label>
                   </div>
                 </fieldset>
               </div>
 
-              <!-- Donation & Volunteer -->
+              <!-- 4 · Donation & Volunteer -->
               <div class="form-section">
                 <p class="form-section-title">
-                  <span class="form-section-icon" aria-hidden="true">🤝</span>
+                  <span class="fsec-num">4</span>
                   Donation &amp; Volunteer Opportunities
-                  <span style="font-weight:400; font-size:0.85rem; color:var(--muted);">(optional)</span>
+                  <span class="fsec-opt">(optional)</span>
                 </p>
                 <div class="field">
                   <label for="donationNeeds">Donation needs</label>
@@ -273,17 +320,17 @@
                 </div>
                 <div class="field">
                   <label for="volunteerRoles">Volunteer opportunities</label>
-                  <textarea id="volunteerRoles" name="volunteerRoles" rows="3" placeholder="e.g. Weekly food sorting (Saturdays 9–11am), event support, office admin, driving..."></textarea>
-                  <p class="hint">Briefly describe available volunteer roles and any scheduling info.</p>
+                  <textarea id="volunteerRoles" name="volunteerRoles" rows="3" placeholder="e.g. Weekly food sorting (Saturdays 9–11am), event support, office admin, driving…"></textarea>
+                  <p class="hint">Briefly describe available roles and any scheduling info.</p>
                 </div>
               </div>
 
-              <!-- About You -->
+              <!-- 5 · About You -->
               <div class="form-section">
                 <p class="form-section-title">
-                  <span class="form-section-icon" aria-hidden="true">👤</span>
+                  <span class="fsec-num">5</span>
                   About You
-                  <span style="font-weight:400; font-size:0.85rem; color:var(--muted);">(optional but helpful)</span>
+                  <span class="fsec-opt">(optional but helpful)</span>
                 </p>
                 <div class="field-row">
                   <div class="field">
@@ -314,7 +361,10 @@
               </div>
 
               <div class="submit-row">
-                <button type="submit" class="btn btn-primary">Submit for Review</button>
+                <button type="submit" class="btn btn-primary btn-submit-lg">
+                  <span class="submit-btn-icon" aria-hidden="true">→</span>
+                  Submit for Review
+                </button>
                 <p class="submit-note">By submitting, you confirm this information is accurate to the best of your knowledge. Submissions are reviewed before appearing in the directory.</p>
               </div>
 
@@ -325,23 +375,21 @@
         <!-- SIDEBAR -->
         <aside class="sidebar" aria-label="Submission information">
 
-          <div class="sidebar-card">
-            <h3>What qualifies as a resource?</h3>
-            <p>We list organizations that meet these criteria:</p>
+          <div class="sidebar-card reveal delay-1">
+            <h3>What qualifies?</h3>
             <ul class="qualifies-list">
-              <li><span class="q-icon yes" aria-label="Yes">✓</span> Located in or directly serving Morris County, NJ</li>
-              <li><span class="q-icon yes" aria-label="Yes">✓</span> Provides a free or low-cost community benefit</li>
-              <li><span class="q-icon yes" aria-label="Yes">✓</span> Has verifiable contact information</li>
-              <li><span class="q-icon yes" aria-label="Yes">✓</span> Actively operating (not closed or paused)</li>
-              <li><span class="q-icon no" aria-label="No">✕</span> Not for-profit businesses or paid services</li>
-              <li><span class="q-icon no" aria-label="No">✕</span> No political campaigns or advocacy orgs</li>
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Located in or directly serving Morris County</li>
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Free or low-cost community benefit</li>
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Verifiable contact information</li>
+              <li><span class="q-icon yes" aria-label="Yes">✓</span> Actively operating</li>
+              <li><span class="q-icon no" aria-label="No">✕</span> For-profit businesses or paid services</li>
+              <li><span class="q-icon no" aria-label="No">✕</span> Political campaigns or advocacy orgs</li>
             </ul>
-            <p style="margin-top:12px;">Not sure if it qualifies? Submit it anyway — we'll review and reach out if needed.</p>
+            <p class="sidebar-note">Not sure? Submit it anyway. We'll review and reach out if needed.</p>
           </div>
 
-          <div class="sidebar-card">
+          <div class="sidebar-card reveal delay-2">
             <h3>Review process</h3>
-            <p>Here's what happens after you submit:</p>
             <ol class="timeline" role="list">
               <li>
                 <span class="t-dot" aria-hidden="true">1</span>
@@ -353,7 +401,7 @@
               </li>
               <li>
                 <span class="t-dot" aria-hidden="true">3</span>
-                <div class="t-content"><strong>Verification</strong><span>We confirm details via their website, public registries, or direct contact.</span></div>
+                <div class="t-content"><strong>Verification</strong><span>We confirm details via website, public registries, or direct contact.</span></div>
               </li>
               <li>
                 <span class="t-dot" aria-hidden="true">4</span>
@@ -361,58 +409,180 @@
               </li>
             </ol>
           </div>
+
         </aside>
       </div>
     </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <section class="faq-section" aria-labelledby="faq-heading">
+      <div class="container">
+        <div class="faq-header reveal">
+          <p class="section-label">Common Questions</p>
+          <h2 id="faq-heading">Frequently Asked Questions</h2>
+          <p class="faq-lead">Have a question before submitting? Browse the answers below.</p>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-list" role="list">
+
+            <div class="faq-item reveal" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                How long does the review take?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>Most submissions are reviewed within 3–5 business days. If we need more information, we'll reach out via the email you provided. </p>
+            </div>
+
+            <div class="faq-item reveal delay-1" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                Can I submit an organization I'm not affiliated with?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>Absolutely. Community members, case workers, or anyone who knows of a helpful resource is welcome to submit. You don't need to be connected to the organization, just have enough information to fill out the basics.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal delay-2" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                What if the organization's info changes after it's listed?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>Use this same form and note "update request" in the additional notes field. Describe what's changed (hours, address, contact info, services) and we'll verify and update the listing as quickly as possible.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal delay-3" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                Will my personal information be shared publicly?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>Never. Your name and email are only used by our review team to follow up if we have questions. They are never displayed publicly, shared with third parties, or used for marketing.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                What if my submission is rejected?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>If a submission doesn't meet our criteria (e.g. it's outside Morris County or is a for-profit service), we'll let you know why if you provided an email. You're always welcome to resubmit with updated information.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal delay-1" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                Can a for-profit business offer discounted services and get listed?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>Generally no, our directory focuses on nonprofits and government-backed services. However, if a program is specifically structured as a free community benefit (e.g. a free clinic run by a healthcare system), we'll consider it on a case-by-case basis.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal delay-2" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                How do I report an organization that's no longer operating?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>Submit the form above with the organization's name and note "please remove, no longer operating" in the additional notes field. We'll verify and remove it from the directory promptly.</p>
+              </div>
+            </div>
+
+            <div class="faq-item reveal delay-3" role="listitem">
+              <button class="faq-q" aria-expanded="false">
+                Is there a limit to how many resources I can submit?
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a" hidden>
+                <p>No limit at all. If you know of multiple organizations that should be listed, please submit each one separately so we can review them individually.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Ask your own question -->
+          <div class="faq-ask reveal delay-2">
+            <div class="faq-ask-card">
+              <div class="faq-ask-icon" aria-hidden="true">💬</div>
+              <h3>Still have a question?</h3>
+              <p>If your question isn't answered above, send it to us and we'll get back to you.</p>
+              <form class="ask-form" id="askForm" novalidate aria-label="Send us your question">
+                <div class="field">
+                  <label for="askEmail">Your email <span class="required" aria-label="required">*</span></label>
+                  <input type="email" id="askEmail" name="askEmail" required placeholder="you@example.com" autocomplete="email" />
+                </div>
+                <div class="field">
+                  <label for="askQuestion">Your question <span class="required" aria-label="required">*</span></label>
+                  <textarea id="askQuestion" name="askQuestion" required rows="4" placeholder="What would you like to know about submitting a resource, the directory, or CareMap Morris?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Send Question</button>
+                <div class="ask-success" id="askSuccess" role="alert" aria-live="polite" hidden>
+                  <span aria-hidden="true">✓</span> Thanks! We'll reply to your email soon.
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <p class="footer-brand">CareMap Morris</p>
-        <p class="fineprint">Mission: Improve access to services, raise awareness of local needs, and strengthen support across Morris County.</p>
-      </div>
-      <div>
-        <p class="footer-title">Quick Links</p>
-        <ul class="footer-links">
-          <li><a href="directory.html">Directory</a></li>
-          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
-          <li><a href="submit.html">Submit a Resource</a></li>
-          <li><a href="awareness.html">Awareness</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="about.html">About</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="footer-title">Contact</p>
-        <p class="fineprint">Add an email/contact form link here.</p>
-        <p class="fineprint"><a href="works-cited.md">Works Cited</a></p>
-      </div>
+ <footer class="site-footer">
+  <div class="container footer-grid">
+
+    <div>
+      <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+      <p class="footer-mission">
+        CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
+      </p>
     </div>
-  </footer>
 
-  <script>
-    document.getElementById('submitForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const required = this.querySelectorAll('[required]');
-      let valid = true;
-      required.forEach(function(field) {
-        if (!field.value.trim()) {
-          valid = false;
-          field.style.borderColor = '#c0392b';
-          field.addEventListener('input', function() { field.style.borderColor = ''; }, { once: true });
-        }
-      });
-      if (!valid) {
-        const first = this.querySelector('[required][style*="border-color"]');
-        if (first) first.focus();
-        return;
-      }
-      document.getElementById('successBanner').classList.add('visible');
-      document.querySelector('.form-card').style.display = 'none';
-      document.getElementById('successBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  </script>
+    <div>
+      <p class="footer-col-title">Navigation</p>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
+        <li><a href="submit.html">Submit a Resource</a></li>
+        <li><a href="highlights.html">Highlights</a></li>
+        <li><a href="works-cited.html">Works Cited</a></li>
+      </ul>
+    </div>
 
+    <div>
+      <p class="footer-col-title">Contact &amp; Info</p>
+      <ul class="footer-links">
+        <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+        <li><a href="submit.html">Submit a Resource</a></li>
+      </ul>
+      <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+        Morris County, New Jersey<br>
+        Crisis line: <strong style="color:rgba(247,242,234,.5)">988</strong> &nbsp;|&nbsp; Emergency: <strong style="color:rgba(247,242,234,.5)">911</strong>
+      </p>
+    </div>
+
+  </div>
+
+  <div class="container footer-bottom">
+    <p class="footer-disclaimer">
+      <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information is gathered from public sources and may not reflect current availability or hours. Always confirm details directly with the organization before visiting.
+      <strong>This is not an emergency platform.</strong> If you are in immediate danger, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
+      Information last reviewed: March 2026 <span id="footerDate"></span>.
+    </p>
+    <p class="footer-date" id="footerYear"></p>
+  </div>
+</footer>
+
+  <script src="js/submit.js"></script>
+  <script src="js/submit-new.js"></script>
 </body>
 </html>
