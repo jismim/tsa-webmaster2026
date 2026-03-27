@@ -1,0 +1,29 @@
+[
+  {
+    "id": "q-001",
+    "name": "Jordan Miles",
+    "email": "jmiles@example.com",
+    "question": "Do any of the food pantries on the site offer evening pickup hours for working families?",
+    "submissionDate": "2026-03-25T16:42:00Z",
+    "status": "New",
+    "adminResponse": ""
+  },
+  {
+    "id": "q-002",
+    "name": "",
+    "email": "",
+    "question": "Can your directory show which organizations need diapers and baby formula donations right now?",
+    "submissionDate": "2026-03-21T11:08:00Z",
+    "status": "In Progress",
+    "adminResponse": "We are reviewing donation-specific filters for the public directory and plan to tag listings with urgent donation needs."
+  },
+  {
+    "id": "q-003",
+    "name": "Amira Chen",
+    "email": "amira.chen@example.com",
+    "question": "Is there a place in Morris County where teens can get free mental health counseling after school?",
+    "submissionDate": "2026-03-16T09:22:00Z",
+    "status": "Answered",
+    "adminResponse": "Yes. We have mental health and youth-service listings that include after-school support hours. We are adding clearer hour filters to the public directory."
+  }
+]
