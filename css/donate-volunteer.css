@@ -30,7 +30,7 @@
       font-size: .72rem; letter-spacing: .14em;
       text-transform: uppercase; color: var(--rust);
       display: flex; align-items: center; gap: .5rem;
-      margin-bottom: 1rem;
+      margin-top: 2rem;
     }
     .page-hero-eyebrow::before {
       content: '';
@@ -327,12 +327,13 @@
       letter-spacing: .02em;
     }
     .card-desc {
-      font-size: .9rem;
+         margin: 1rem 0 1rem;
+    }
+.card-address, .card-phone {
+       font-size: .9rem;
       color: #5A4F45;
       line-height: 1.6;
-      margin: 0 0 .85rem;
-    }
-
+}
     /* Service pills on card */
     .card-pills {
       display: flex;

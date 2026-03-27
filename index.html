@@ -12,8 +12,13 @@
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
-</head>
 
+  <!-- Leaflet.js -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <body>
 
   <!-- Skip link -->
@@ -392,44 +397,19 @@
         <h2 class="section-title reveal">Organizations Across<br>Morris County</h2>
         <p class="section-sub reveal">Browse nonprofit locations across the county. Click any pin for details, hours, and contact info.</p>
 
-        <div class="map-wrapper reveal">
-          <!-- PLACEHOLDER: Replace with your real map embed -->
-          <!-- OPTION A — Google Embed: uncomment and paste your src below -->
-          <!--
-          <iframe
-            src="https://www.google.com/maps/embed?pb=YOUR_EMBED_URL_HERE"
-            width="100%"
-            height="100%"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Morris County community resource map">
-          </iframe>
-          -->
+       <div class="map-wrapper reveal">
+  <!-- Leaflet Map -->
+  <div id="map" style="width: 100%; height: 500px;"></div>
 
-          <!-- OPTION C — Leaflet placeholder: remove this div and uncomment above -->
-          <div class="map-placeholder">
-            <div class="map-placeholder-icon">🗺️</div>
-            <h3>Interactive Map Coming Soon</h3>
-            <a class="btn btn-secondary" href="directory.html">Browse Directory Instead →</a>
-          </div>
-        </div>
-
-        <div class="map-legend reveal">
-          <div class="map-legend-item">
-            <span class="legend-dot food"></span> Food &amp; Nutrition
-          </div>
-          <div class="map-legend-item">
-            <span class="legend-dot shelter"></span> Shelter &amp; Safety
-          </div>
-          <div class="map-legend-item">
-            <span class="legend-dot housing"></span> Housing Services
-          </div>
-          <div class="map-legend-item">
-            <span class="legend-dot other"></span> Other Services
-          </div>
-        </div>
+  <!-- Legend -->
+  <div class="map-legend reveal">
+    <div class="map-legend-item"><span class="legend-dot.food"></span> Food & Nutrition</div>
+    <div class="map-legend-item"><span class="legend-dot.shelter"></span> Shelter & Safety</div>
+    <div class="map-legend-item"><span class="legend-dot.housing"></span> Housing Services</div>
+    <div class="map-legend-item"><span class="legend-dot.youth"></span> Youth Services</div>
+    <div class="map-legend-item"><span class="legend-dot.health"></span> Health Services</div>
+  </div>
+</div>
       </div>
     </section>
 
