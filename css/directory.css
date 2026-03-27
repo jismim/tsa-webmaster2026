@@ -6,26 +6,117 @@
 /* ============================================================
    PAGE HERO
 ============================================================ */
+/* ============================================================
+   DIR HERO — Enhanced (like docs-hero but brown & cute)
+============================================================ */
+
 .dir-hero {
-  padding: 3.5rem 0 2.25rem;
-  background: var(--paper);
-  border-bottom: 1px solid var(--border);
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(4rem, 8vw, 6rem);
+  border-bottom: 3px solid var(--rust);
 }
 
-.dir-hero h1 {
+/* layered background glow + texture */
+.dir-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(192,75,32,.18), transparent 22%),
+    radial-gradient(circle at 80% 35%, rgba(74,103,65,.18), transparent 20%),
+    repeating-linear-gradient(
+      -60deg,
+      transparent,
+      transparent 38px,
+      rgba(255,255,255,.04) 38px,
+      rgba(255,255,255,.04) 39px
+    );
+  pointer-events: none;
+}
+
+/* layout like docs hero */
+.dir-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+/* LEFT TEXT */
+.dir-hero-copy h1 {
   font-family: var(--ff-display);
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.65rem;
-  color: var(--bark);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  color: var(--cream);
+  margin-bottom: 1rem;
 }
 
-.dir-hero .subtitle {
+.dir-hero-copy h1 em {
+  color: var(--rust);
+  font-style: italic;
+}
+
+.dir-hero-copy .subtitle {
+  color: rgba(247,242,234,.6);
+  font-size: clamp(.9rem, 1.3vw, 1.05rem);
+  line-height: 1.65;
+  max-width: 520px;
+  margin-bottom: 1.75rem;
+}
+
+/* RIGHT PANEL */
+.dir-hero-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+/* preview cards (like docs-preview) */
+.dir-preview {
+  background: rgba(247,242,234,.06);
+  border: 1px solid rgba(247,242,234,.12);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.dir-preview:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.15);
+}
+
+.dir-preview .label {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: .4rem;
+}
+
+.dir-preview h3 {
+  font-family: var(--ff-display);
+  color: var(--cream);
   font-size: 1.05rem;
-  color: var(--warm-gray);
-  max-width: 700px;
-  line-height: 1.6;
+  margin-bottom: .25rem;
+}
+
+.dir-preview p {
+  color: rgba(247,242,234,.6);
+  font-size: .85rem;
+  line-height: 1.5;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .dir-hero-inner {
+    grid-template-columns: 1fr;
+  }
 }
 
 
@@ -211,7 +302,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--warm-gray);
+  color: var(rgba(247,242,234,.6));
   display: flex;
   align-items: center;
   gap: 6px;
@@ -513,13 +604,7 @@
   color: var(--rust);
 }
 
-.dir-hero-sub {
-  max-width: 620px;
-  font-size: 1rem;
-  line-height: 1.65;
-  color: var(--warm-gray);
-  margin-bottom: 1.75rem;
-}
+
 
 /* ============================================================
    FILTER BAR / CONTROLS — make it pretty
