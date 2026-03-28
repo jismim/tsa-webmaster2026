@@ -17,7 +17,9 @@
 
 </head>
 <body>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+    <a class = "skip-link" href = "#main">Skip to main content</a>
+    <!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
   <div class="mobile-menu-head">
     <span class="mobile-menu-brand">CareMap Morris</span>
     <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
@@ -28,9 +30,10 @@
   <a href="submit.html">Submit a Resource</a>
   <a href="highlights.html">Highlights</a>
   <a href="works-cited.html">Works Cited</a>
+  <a href="/admin/login.html">Admin</a>
 </nav>
-  <a class="skip-link" href="#main">Skip to main content</a>
 
+<!-- HEADER -->
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
@@ -45,6 +48,7 @@
       <a href="submit.html">Submit a Resource</a>
       <a href="highlights.html">Highlights</a>
       <a href="works-cited.html">Works Cited</a>
+      <a href="/admin/login.html">Admin</a>
     </nav>
 
     <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
@@ -107,54 +111,80 @@ These documents show the research base, the development trail, and the final che
 
         <div class="docs-grid">
           <article class="doc-card" id="copyright">
-            <div class="doc-card-head">
-              <div>
-                <span class="doc-badge">Copyright</span>
-                <h3 class="doc-title">Copyright Checklist</h3>
-                <p class="doc-copy">
-                  Copyright Checklist provided by TSA ensuring all content has been legally attained and used. 
-                  <!-- Replace this block with a PDF embed or link when the file is ready. -->
-                </p>
-              </div>
-              <div class="doc-actions">
-                <a class="btn btn-secondary" href="#">Add Checklist File Later</a>
-              </div>
-            </div>
-            <div class="doc-frame-wrap">
-              <div class="placeholder-frame" role="img" aria-label="Placeholder for copyright checklist">
-                <div class="placeholder-inner">
-                  <h4>Copyright Checklist Placeholder</h4>
-                  <p>
-                    
-                  </p>
-                  <span class="placeholder-note">Placeholder only</span>
-                </div>
-              </div>
-            </div>
-          </article>
+  <div class="doc-card-head">
+    <div>
+      <span class="doc-badge">Copyright</span>
+      <h3 class="doc-title">Copyright Checklist</h3>
+      <p class="doc-copy">
+        Copyright Checklist provided by TSA ensuring all content has been legally attained and used.
+      </p>
+    </div>
+    <div class="doc-actions">
+      <a class="btn btn-primary" href="pdfs/copyrightchecklist2026.pdf" target="_blank" rel="noopener">
+        Open PDF
+      </a>
+    </div>
+  </div>
 
+  <div class="doc-frame-wrap">
+    <iframe
+      src="pdfs/copyrightchecklist2026.pdf"
+      class="document-frame"
+      title="Copyright Checklist PDF"
+      loading="lazy">
+    </iframe>
+  </div>
+</article>
           <article class="doc-card" id="references">
-            <div class="doc-card-head">
-              <div>
-                <span class="doc-badge">References</span>
-                <h3 class="doc-title">Works Cited &amp; References</h3>
-                <p class="doc-copy">
-                  Source material used to shape the project’s content, organization, and supporting claims.
-                </p>
-              </div>
-              <div class="doc-actions">
-                <a class="btn btn-primary" href="references.pdf" target="_blank" rel="noopener">Open PDF</a>
-              </div>
-            </div>
-            <div class="doc-frame-wrap">
-              <iframe
-                src="references.pdf"
-                class="document-frame"
-                title="References PDF"
-                loading="lazy">
-              </iframe>
-            </div>
-          </article>
+  <div class="doc-card-head">
+    <div>
+      <span class="doc-badge">References</span>
+      <h3 class="doc-title">Works Cited &amp; References</h3>
+      <p class="doc-copy">
+        Source material used to shape the project’s content, organization, and supporting claims.
+      </p>
+    </div>
+    <div class="doc-actions">
+      <a class="btn btn-primary active-ref-link" href="pdfs/researchworkscited.pdf" target="_blank" rel="noopener">Open Active PDF</a>
+    </div>
+  </div>
+
+  <div class="doc-frame-wrap">
+    <div class="references-tabs" role="tablist" aria-label="Reference categories">
+      <button
+        class="reference-tab active"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        aria-controls="research-panel"
+        id="research-tab"
+        data-pdf="pdfs/researchworkscited.pdf"
+        data-title="Research References PDF">
+        Research References
+      </button>
+
+      <button
+        class="reference-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="media-panel"
+        id="media-tab"
+        data-pdf="pdfs/mediaworkscited.pdf"
+        data-title="Media References PDF">
+        Media References
+      </button>
+    </div>
+
+    <iframe
+      src="pdfs/researchworkscited.pdf"
+      class="document-frame"
+      id="referencesFrame"
+      title="Research References PDF"
+      loading="lazy">
+    </iframe>
+  </div>
+</article>
 
           <article class="doc-card" id="worklog">
             <div class="doc-card-head">
@@ -166,12 +196,12 @@ These documents show the research base, the development trail, and the final che
                 </p>
               </div>
               <div class="doc-actions">
-                <a class="btn btn-primary" href="worklog.pdf" target="_blank" rel="noopener">Open PDF</a>
+                <a class="btn btn-primary" href="pdfs/worklog.pdf" target="_blank" rel="noopener">Open PDF</a>
               </div>
             </div>
             <div class="doc-frame-wrap">
               <iframe
-                src="worklog.pdf"
+                src="pdfs/worklog.pdf"
                 class="document-frame"
                 title="Worklog PDF"
                 loading="lazy">
@@ -229,5 +259,7 @@ These documents show the research base, the development trail, and the final che
     <p class="footer-date" id="footerYear"></p>
   </div>
 </footer>
+<!-- Scripts -->
+<script src="js/works-cited.js"></script>
 </body>
 </html>

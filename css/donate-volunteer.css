@@ -78,6 +78,7 @@
       color: rgba(247,242,234,.55);
       cursor: pointer;
       transition: background .15s, color .15s, border-color .15s;
+      margin-bottom: 2rem;
     }
     .tab-btn.active {
       background: var(--rust);

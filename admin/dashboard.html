@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+  <a class="brand" href="/index.html" aria-label="CareMap Morris Home">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-text">CareMap Morris</span>
+  </a>
+
+  <div class="header-actions">
+    <a class="btn btn-secondary" href="/index.html">Back to Public Site</a>
+    <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
+  </div>
+</div>
+</div>
+  </header>
+
+  <div class="admin-shell">
+    <aside class="sidebar" aria-label="Admin navigation">
+      <p class="sidebar-title">Admin</p>
+      <nav class="sidebar-group">
+        <a class="sidebar-link" href="/admin/dashboard.html" data-nav-path="/admin/dashboard.html">Dashboard</a>
+        <a class="sidebar-link" href="/admin/resource-submission.html" data-nav-path="/admin/resource-submission.html">Resource Submissions</a>
+        <a class="sidebar-link" href="/admin/questions.html" data-nav-path="/admin/questions.html">Community Questions</a>
+      </nav>
+      <!-- demo message -->
+      <!-- <div class="sidebar-note">
+        <strong>Demo moderation workflow</strong>
+        <p style="margin:.55rem 0 0;">Status controls on the admin pages are visual for the competition build. Once your backend is connected, those controls can update the JSON automatically.</p>
+      </div> -->
+      <button class="btn btn-dark logout-inline" type="button" data-admin-logout>Logout</button>
+    </aside>
+
+    <main id="main" class="main-panel">
+      <div class="container">
+        <div class="topbar-mobile">
+          <a class="btn btn-muted" href="/admin/resource-submission.html">Go to Resource Submissions</a>
+        </div>
+
+        <p class="page-eyebrow">Overview</p>
+        <h1 class="page-title">Welcome, Admin</h1>
+        <p class="page-subtitle">This dashboard gives you a high-level view of new activity from the public resource submission and community question forms.</p>
+
+        <div class="top-actions">
+          <a class="btn btn-green" href="/admin/resource-submission.html">Review resource submissions</a>
+          <a class="btn btn-primary" href="/admin/questions.html">Review community questions</a>
+        </div>
+
+        <div class="stats-grid">
+          <section class="card stat-card">
+            <div class="stat-label">Total resource submissions</div>
+            <div class="stat-value" id="totalResources">—</div>
+            <div class="stat-note">All entries received from the “Submit a Resource” form.</div>
+          </section>
+          <section class="card stat-card">
+            <div class="stat-label">Total questions received</div>
+            <div class="stat-value" id="totalQuestions">—</div>
+            <div class="stat-note">Questions submitted by site visitors through the public question form.</div>
+          </section>
+          <section class="card stat-card">
+            <div class="stat-label">Pending / new items</div>
+            <div class="stat-value" id="totalPending">—</div>
+            <div class="stat-note">Combined count of pending resource reviews and new questions.</div>
+          </section>
+        </div>
+
+        <div id="dashboardError" class="error-message" role="alert" aria-live="polite"></div>
+
+        <div class="grid-2">
+          <section class="card">
+            <div class="section-head">
+              <h2>Recent resource submissions</h2>
+              <a class="btn btn-secondary" href="/admin/resource-submission.html">View all</a>
+            </div>
+            <div id="recentSubmissions" class="list-stack"></div>
+          </section>
+
+          <section class="card">
+            <div class="section-head">
+              <h2>Recent community questions</h2>
+              <a class="btn btn-secondary" href="/admin/questions.html">View all</a>
+            </div>
+            <div id="recentQuestions" class="list-stack"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin-auth.js"></script>
+  <script src="/js/admin-data.js"></script>
+  <script src="/js/admin-dashboard.js"></script>
+</body>
+</html>
