@@ -176,17 +176,10 @@ a[href="submit.html"].btn-ghost:hover,
   color: var(--cream);           /* FIX: explicit cream so brand text is visible */
   text-decoration: none;
 }
-.brand-mark {
-  width: 28px; height: 28px;
-  background: var(--rust); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; position: relative;
-}
-.brand-mark::after {
-  content: '';
-  position: absolute; inset: 4px;
-  border: 2px solid rgba(255,255,255,.5);
-  border-radius: 50%;
+.brand-logo {
+  height: 42px;
+  width: auto;
+  display: block;
 }
 .brand-text {
   font-family: var(--ff-display);
@@ -253,9 +246,16 @@ a[href="submit.html"].btn-ghost:hover,
   padding-bottom: 1.25rem;
   border-bottom: 1px solid rgba(247,242,234,.1);
 }
-.mobile-menu-brand {
-  font-family: var(--ff-display);
-  color: var(--cream); font-size: 1.1rem; font-weight: 700;
+.mobile-menu-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:600;
+}
+
+.mobile-brand-logo{
+  height:32px;
+  width:auto;
 }
 .mobile-menu-close {
   background: none; border: none;
