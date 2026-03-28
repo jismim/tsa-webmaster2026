@@ -85,7 +85,7 @@ const HIGHLIGHTS = [
 
    {
     week: "Week of February 3",
-    org: "nourish.NJ",
+    org: "Nourish NJ",
     location: "Morristown & Dover",
     focus: "Hunger Relief",
     provides: ["Daily healthy meals", "Farmers markets", "Bilingual SNAP/WIC assistance", "Fresh produce distributions", "Housing stability support"],
