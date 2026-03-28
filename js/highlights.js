@@ -276,11 +276,6 @@ const HIGHLIGHTS = [
     image: ""
   },
 
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
 ];
 (function () {
 
