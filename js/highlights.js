@@ -7,6 +7,137 @@
 const HIGHLIGHTS = [
   // ── FOOD PANTRIES ──
   {
+    week: "Week of March 24",
+    org: "ArcMorris",
+    location: "Morris Plains",
+    focus: "Disability Services",
+    provides: ["Residential group homes & supervised apartments", "Day habilitation & employment training", "Youth transition programs", "Family support services", "Recreational activities"],
+    giveback: ["Volunteer with program participants", "Donate to support independence"],
+    why: "With over 70 years of service, ArcMorris helps individuals with intellectual and developmental disabilities build life skills and active community participation.",
+    url: "https://arcmorris.org/",
+    image: ""
+  },
+    {
+    week: "Week of March 17",
+    org: "CASA of Morris & Sussex Counties",
+    location: "Cedar Knolls",
+    focus: "Child Advocacy",
+    provides: ["Court-appointed advocates for children in foster care", "One-on-one volunteer advocacy", "Recommendations to family court", "Support for abused & neglected children"],
+    giveback: ["Become a CASA volunteer advocate", "Donate to support child advocacy"],
+    why: "CASA volunteers are trained community members who speak up for the best interests of vulnerable children during difficult court proceedings.",
+    url: "https://www.casamsc.org/",
+    image: ""
+  },
+   {
+    week: "Week of March 10",
+    org: "Family Promise of Morris County",
+    location: "Morristown",
+    focus: "Family Homelessness",
+    provides: ["Emergency shelter (motel model)", "Day-center resource hub", "Case management", "Transitional housing", "Long-term housing assistance"],
+    giveback: ["Volunteer through your congregation or group", "Donate to support families in crisis"],
+    why: "Family Promise works with a network of 75+ local congregations to help families move from homelessness to permanent stability.",
+    url: "https://www.familypromisemorris.org/",
+    image: ""
+  },
+    {
+    week: "Week of March 3",
+    org: "Literacy Volunteers of Morris County",
+    location: "Morristown",
+    focus: "Education & Literacy",
+    provides: ["Free one-on-one & small group ESL tutoring", "GED preparation", "Citizenship support", "Trained volunteer tutors", "Programs across 40+ communities"],
+    giveback: ["Become a volunteer tutor", "Donate to support adult learners"],
+    why: "Literacy Volunteers connects adult learners with free tutoring to build English skills, confidence, and opportunities in everyday life and work.",
+    url: "https://www.lvmorris.org/",
+    image: ""
+  },
+   {
+    week: "Week of February 24",
+    org: "Faith Kitchen",
+    location: "Dover",
+    focus: "Soup Kitchen",
+    provides: ["Free nutritious meals 6 days/week", "Fresh produce", "Referrals to additional services"],
+    giveback: ["Volunteer at the kitchen", "Donate funds or food"],
+    why: "Supported by dozens of faith communities, Faith Kitchen has served tens of thousands of meals with no questions or income verification.",
+    url: "https://www.faithkitchendover.org/",
+    image: ""
+  },
+    {
+    week: "Week of February 17",
+    org: "Morris Family Justice Center",
+    location: "Morristown",
+    focus: "Domestic Violence Support",
+    provides: ["Walk-in coordinated support", "Civil legal assistance", "Counseling & safety planning", "Children's services", "Immigration support with bilingual staff"],
+    giveback: ["Donate to support survivors", "Spread awareness"],
+    why: "One roof, multiple agencies — the Morris FJC means survivors don't have to navigate help alone.",
+    url: "https://morrisfjc.org/",
+    image: ""
+  },
+
+
+   {
+    week: "Week of February 10",
+    org: "DAWN Center for Independent Living",
+    location: "Denville",
+    focus: "Disability Services",
+    provides: ["Advocacy, information & referrals", "Peer support groups", "Independent living skills training", "Employment readiness programs", "Youth transition support"],
+    giveback: ["Volunteer with DAWN", "Donate to support independent living programs"],
+    why: "DAWN empowers individuals with disabilities across Morris, Sussex, and Warren counties to define their own goals and live fully in their communities.",
+    url: "https://dawncil.org/",
+    image: ""
+  },
+  {
+    week: "Week of February 3",
+    org: "Nourish NJ",
+    location: "Morristown & Dover",
+    focus: "Hunger Relief",
+    provides: ["Daily healthy meals", "Farmers markets", "Bilingual SNAP/WIC assistance", "Fresh produce distributions", "Housing stability support"],
+    giveback: ["Volunteer at food distributions", "Donate", "Help with meal prep & community events"],
+    why: "Nourish NJ tackles hunger and its root causes — no income verification, welcoming to all — at multiple Morris County locations.",
+    url: "https://www.nourishnj.org/",
+    image: ""
+  },
+
+
+  {
+    week: "Week of January 27",
+    org: "Cornerstone Family Programs",
+    location: "Morristown",
+    focus: "Youth & Family Services",
+    provides: ["Preschool & before/after school care", "Summer camps", "Teen enrichment & college prep", "Mental health workshops", "Mentorship & community connections"],
+    giveback: ["Volunteer as a mentor", "Donate to support youth programs"],
+    why: "Cornerstone provides children and teens with educational, recreational, and personal growth opportunities in a safe, nurturing environment.",
+    url: "https://cornerstonefamilyprograms.org/",
+    image: ""
+  },
+
+
+  {
+    week: "Week of January 20",
+    org: "Market Street Mission",
+    location: "Morristown",
+    focus: "Homeless Services",
+    provides: ["Overnight emergency shelter", "Free daily meals", "Showers & personal hygiene facilities", "Counseling & recovery programs", "Life skills support & clothing assistance"],
+    giveback: ["Donate clothing, food, or funds", "Volunteer at the Mission"],
+    why: "Serving the community since 1889, Market Street Mission provides safe shelter, nourishment, and holistic support to help people move from crisis to stability.",
+    url: "https://www.marketstreet.org/",
+    image: ""
+  },
+
+
+   {
+    week: "Week of January 13",
+    org: "Jersey Battered Women's Service (JBWS)",
+    location: "Morristown",
+    focus: "Domestic Violence Support",
+    provides: ["24/7 crisis hotline", "Emergency shelter", "Court & legal advocacy", "Safety planning & counseling", "Support groups & prevention education"],
+    giveback: ["Donate funds or supplies", "Volunteer", "Call 1-877-782-2873 to refer someone"],
+    why: "JBWS is Morris County's leading DV nonprofit, offering free, confidential services to people of all backgrounds.",
+    url: "https://jbws.org/",
+    image: ""
+  },
+
+
+  {
     week: "Week of January 6",
     org: "Interfaith Food Pantry",
     location: "Morris Plains",
@@ -17,130 +148,9 @@ const HIGHLIGHTS = [
     url: "https://www.mcifp.org/",
     image: ""
   },
-  {
-    week: "Week of January 13",
-    org: "Boonton Food Pantry",
-    location: "Boonton",
-    focus: "Food Assistance",
-    provides: ["Supplemental groceries", "Essential household items"],
-    giveback: ["Donate non-perishable food", "Donate hygiene & cleaning supplies", "Monetary donations"],
-    why: "Run entirely by local volunteers, the Boonton Food Pantry supports families facing short-term food insecurity right in the heart of town.",
-    url: "https://www.boonton.org/630/Food-Pantries-Financial-Assistance",
-    image: ""
-  },
-  {
-    week: "Week of January 20",
-    org: "Loaves & Fishes Community Food Pantry",
-    location: "Boonton",
-    focus: "Food Assistance",
-    provides: ["Free fresh and shelf-stable groceries", "Weekly food distribution"],
-    giveback: ["Volunteer at distributions", "Donate food or funds"],
-    why: "Run by local churches, Loaves & Fishes serves anyone in need — no questions asked — multiple days each week.",
-    url: "https://www.lfcfp.org/",
-    image: ""
-  },
-  {
-    week: "Week of January 27",
-    org: "Chester Mendham Food Pantry",
-    location: "Chester",
-    focus: "Food Assistance",
-    provides: ["Supplemental groceries", "Toiletries & household supplies"],
-    giveback: ["Donate food or funds", "Volunteer to sort and deliver food"],
-    why: "A volunteer-based pantry serving Chester and Mendham neighbors, collaborating with local schools, churches, and businesses.",
-    url: "https://www.chestermendhamfp.com/",
-    image: ""
-  },
-  {
-    week: "Week of February 3",
-    org: "nourish.NJ",
-    location: "Morristown & Dover",
-    focus: "Hunger Relief",
-    provides: ["Daily healthy meals", "Farmers markets", "Bilingual SNAP/WIC assistance", "Fresh produce distributions", "Housing stability support"],
-    giveback: ["Volunteer at food distributions", "Donate", "Help with meal prep & community events"],
-    why: "Nourish NJ tackles hunger and its root causes — no income verification, welcoming to all — at multiple Morris County locations.",
-    url: "https://www.nourishnj.org/",
-    image: ""
-  },
-  {
-    week: "Week of February 10",
-    org: "Faith Kitchen",
-    location: "Dover",
-    focus: "Soup Kitchen",
-    provides: ["Free nutritious meals 6 days/week", "Fresh produce", "Referrals to additional services"],
-    giveback: ["Volunteer at the kitchen", "Donate funds or food"],
-    why: "Supported by dozens of faith communities, Faith Kitchen has served tens of thousands of meals with no questions or income verification.",
-    url: "https://www.faithkitchendover.org/",
-    image: ""
-  },
-  {
-    week: "Week of February 17",
-    org: "Mount Olive Food Pantry",
-    location: "Budd Lake",
-    focus: "Food Assistance",
-    provides: ["Free supplemental groceries", "Essential household items", "Multiple weekly distributions"],
-    giveback: ["Donate food or funds", "Volunteer"],
-    why: "Partnering with local churches and community groups, the Mount Olive Food Pantry serves the Budd Lake area with dignity and care.",
-    url: "https://mountolivepantry.org/",
-    image: ""
-  },
-  {
-    week: "Week of February 24",
-    org: "St. Peter's Food Pantry",
-    location: "Parsippany",
-    focus: "Food Assistance",
-    provides: ["Monthly grocery supply per household", "Canned goods, produce & dry staples"],
-    giveback: ["Donate food or funds", "Volunteer"],
-    why: "Located at St. Peter the Apostle Parish, this pantry provides a full month's worth of food to those experiencing food depletion.",
-    url: "https://www.foodhelpline.org/resources/st-peter-s-food-pantry",
-    image: ""
-  },
-  {
-    week: "Week of March 3",
-    org: "Randolph Food Pantry",
-    location: "Randolph",
-    focus: "Food Assistance",
-    provides: ["Non-perishable grocery items", "Essential supplies by appointment"],
-    giveback: ["Donate food or funds", "Volunteer"],
-    why: "Operated by Randolph Township Community Services, this pantry serves residents in need with dignity and privacy.",
-    url: "https://www.randolphnj.org/175/Randolph-Food-Pantry",
-    image: ""
-  },
-  {
-    week: "Week of March 10",
-    org: "Rockaway Food Closet",
-    location: "Rockaway",
-    focus: "Food Assistance",
-    provides: ["Non-perishable grocery distribution", "Regular pick-up & drop-off hours"],
-    giveback: ["Donate non-perishable food", "Volunteer"],
-    why: "Housed at First Presbyterian Church, the Rockaway Food Closet serves borough and township residents with warmth and community support.",
-    url: "https://fpcrockaway.org/",
-    image: ""
-  },
 
-  // ── DOMESTIC VIOLENCE ──
-  {
-    week: "Week of March 17",
-    org: "Morris Family Justice Center",
-    location: "Morristown",
-    focus: "Domestic Violence Support",
-    provides: ["Walk-in coordinated support", "Civil legal assistance", "Counseling & safety planning", "Children's services", "Immigration support with bilingual staff"],
-    giveback: ["Donate to support survivors", "Spread awareness"],
-    why: "One roof, multiple agencies — the Morris FJC means survivors don't have to navigate help alone.",
-    url: "https://morrisfjc.org/",
-    image: ""
-  },
-  {
-    week: "Week of March 24",
-    org: "Jersey Battered Women's Service (JBWS)",
-    location: "Morristown",
-    focus: "Domestic Violence Support",
-    provides: ["24/7 crisis hotline", "Emergency shelter", "Court & legal advocacy", "Safety planning & counseling", "Support groups & prevention education"],
-    giveback: ["Donate funds or supplies", "Volunteer", "Call 1-877-782-2873 to refer someone"],
-    why: "JBWS is Morris County's leading DV nonprofit, offering free, confidential services to people of all backgrounds.",
-    url: "https://jbws.org/",
-    image: ""
-  },
- 
+
+
 ];
 (function () {
 
