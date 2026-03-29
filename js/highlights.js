@@ -35,7 +35,8 @@ const HIGHLIGHTS = [
     giveback: ["Volunteer through your congregation or group", "Donate to support families in crisis"],
     why: "Family Promise works with a network of 75+ local congregations to help families move from homelessness to permanent stability.",
     url: "https://www.familypromisemorris.org/",
-    image: ""
+    image: "",
+    donateVolunteer: true
   },
     {
     week: "Week of March 3",
@@ -92,7 +93,8 @@ const HIGHLIGHTS = [
     giveback: ["Volunteer at food distributions", "Donate", "Help with meal prep & community events"],
     why: "Nourish NJ tackles hunger and its root causes — no income verification, welcoming to all — at multiple Morris County locations.",
     url: "https://www.nourishnj.org/",
-    image: ""
+    image: "",
+    donateVolunteer: true
   },
    {
     week: "Week of January 27",
@@ -114,7 +116,8 @@ const HIGHLIGHTS = [
     giveback: ["Donate clothing, food, or funds", "Volunteer at the Mission"],
     why: "Serving the community since 1889, Market Street Mission provides safe shelter, nourishment, and holistic support to help people move from crisis to stability.",
     url: "https://www.marketstreet.org/",
-    image: ""
+    image: "",
+    donateVolunteer: true
   },
  {
     week: "Week of January 13",
@@ -125,7 +128,8 @@ const HIGHLIGHTS = [
     giveback: ["Donate funds or supplies", "Volunteer", "Call 1-877-782-2873 to refer someone"],
     why: "JBWS is Morris County's leading DV nonprofit, offering free, confidential services to people of all backgrounds.",
     url: "https://jbws.org/",
-    image: ""
+    image: "",
+    donateVolunteer: true
   },
   {
     week: "Week of January 6",
@@ -136,7 +140,8 @@ const HIGHLIGHTS = [
     giveback: ["Donate food or funds", "Volunteer at the pantry"],
     why: "For over 25 years, IFPN has distributed millions of pounds of food and ensures no one is turned away regardless of background.",
     url: "https://www.mcifp.org/",
-    image: ""
+    image: "",
+    donateVolunteer: true
   },
 
 ];
@@ -206,6 +211,13 @@ const HIGHLIGHTS = [
             visitBtn.style.display = 'inline-block';
         } else {
             visitBtn.style.display = 'none';
+        }
+
+        var donateBtn = document.getElementById('modalDonateBtn');
+        if (o.donateVolunteer) {
+            donateBtn.style.display = 'inline-block';
+        } else {
+            donateBtn.style.display = 'none';
         }
 
         backdrop.classList.add('open');
