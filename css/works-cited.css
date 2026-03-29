@@ -326,23 +326,17 @@ ul {
   position: relative;
   overflow: hidden;
   padding-block: clamp(4rem, 8vw, 6rem);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 3px solid var(--rust);   /* ← thick rust border like highlights */
 }
 
 .docs-hero::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(192, 75, 32, 0.18), transparent 22%),
-    radial-gradient(circle at 80% 35%, rgba(74, 103, 65, 0.18), transparent 20%),
-    repeating-linear-gradient(
-      -60deg,
-      transparent,
-      transparent 38px,
-      rgba(255,255,255,.025) 38px,
-      rgba(255,255,255,.025) 39px
-    );
+  position: absolute; top: 0; right: 0;
+  width: 55%; height: 100%;              /* ← right-half only, like highlights */
+  background: repeating-linear-gradient(
+    -60deg, transparent, transparent 38px,
+    rgba(255,255,255,.025) 38px, rgba(255,255,255,.025) 39px
+  );
   pointer-events: none;
 }
 
@@ -350,18 +344,18 @@ ul {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.1fr .9fr;
+  grid-template-columns: 1.1fr 380px;
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
 }
 
 .docs-hero-copy h1 {
   font-family: var(--ff-display);
-  font-size: clamp(2.4rem, 5vw, 4.25rem);
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
   line-height: 1.05;
   letter-spacing: -.02em;
   color: var(--cream);
-  margin-bottom: 1rem;
+  margin-bottom: .75rem;
 }
 
 .docs-hero-copy h1 em {
@@ -369,12 +363,11 @@ ul {
   font-style: italic;
 }
 
-.docs-hero-copy p {
-  color: rgba(247,242,234,.72);
-  max-width: 58ch;
-  margin-bottom: 1.8rem;
+.docs-hero-copy > p:not(.hero-eyebrow) {
+  color: rgba(247,242,234,.6);
+  max-width: 480px;
+  margin-bottom: 1.65rem;
 }
-
 .docs-hero-panel {
   display: grid;
   gap: 1rem;

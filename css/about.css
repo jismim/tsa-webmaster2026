@@ -8,6 +8,16 @@
 .page-hero .section-label {
   color: var(--rust);
   margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.page-hero .section-label::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--rust);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -17,7 +27,7 @@
   background: var(--ink);
   position: relative;
   overflow: hidden;
-  padding-block: clamp(2rem, 4vw, 3.2rem);   /* shorter than before */
+  padding-block: clamp(3rem, 6vw, 5rem);
   border-bottom: 3px solid var(--rust);
 }
 
@@ -46,12 +56,11 @@
 
 .page-hero h1 {
   font-family: var(--ff-display);
-  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-  font-weight: 900;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);  font-weight: 900;
   line-height: 1.18;
   letter-spacing: -0.02em;
   color: var(--cream);
-  margin: 0 0 14px;
+  margin: 0 0 .75rem;
 }
 
 .page-hero h1 em {
@@ -61,7 +70,7 @@
 
 .page-hero .subtitle {
   color: rgba(247,242,234,.6);
-  font-size: 0.97rem;
+  font-size: 1rem;
   margin: 0 0 22px;
   max-width: 480px;
   line-height: 1.65;

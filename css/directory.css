@@ -14,25 +14,19 @@
   background: var(--ink);
   position: relative;
   overflow: hidden;
-  padding-block: clamp(4rem, 8vw, 6rem);
+  padding-block: clamp(3rem, 6vw, 5rem);
   border-bottom: 3px solid var(--rust);
 }
 
 /* layered background glow + texture */
 .dir-hero::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(192,75,32,.18), transparent 22%),
-    radial-gradient(circle at 80% 35%, rgba(74,103,65,.18), transparent 20%),
-    repeating-linear-gradient(
-      -60deg,
-      transparent,
-      transparent 38px,
-      rgba(255,255,255,.04) 38px,
-      rgba(255,255,255,.04) 39px
-    );
+  position: absolute; top: 0; right: 0;
+  width: 55%; height: 100%;
+  background: repeating-linear-gradient(
+    -60deg, transparent, transparent 38px,
+    rgba(255,255,255,.025) 38px, rgba(255,255,255,.025) 39px
+  );
   pointer-events: none;
 }
 
@@ -41,7 +35,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.1fr .9fr;
+  grid-template-columns: 1fr 380px;
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
 }
@@ -49,11 +43,11 @@
 /* LEFT TEXT */
 .dir-hero-copy h1 {
   font-family: var(--ff-display);
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
   line-height: 1.05;
   letter-spacing: -.02em;
   color: var(--cream);
-  margin-bottom: 1rem;
+  margin-bottom: .75rem;
 }
 
 .dir-hero-copy h1 em {
@@ -65,7 +59,7 @@
   color: rgba(247,242,234,.6);
   font-size: clamp(.9rem, 1.3vw, 1.05rem);
   line-height: 1.65;
-  max-width: 520px;
+  max-width: 480px;
   margin-bottom: 1.75rem;
 }
 

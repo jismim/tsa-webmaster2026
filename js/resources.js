@@ -68,7 +68,7 @@ const RESOURCES = [
   },
   {
     id: 5,
-    title: "nourish.NJ",
+    title: "Nourish.NJ",
     category: "food",
     town: "Morristown",
     address: "36 Sussex Avenue, Morristown, NJ 07960",
