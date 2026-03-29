@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="css/highlights.css">
 </head>
 <body>
-    <a class = "skip-link" href = "#main">Skip to main content</a>
+
+<a class="skip-link" href="#main">Skip to main content</a>
     <!-- MOBILE MENU -->
 <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
   <div class="mobile-menu-head">
@@ -67,19 +68,19 @@
         <!-- Featured: Week of March 30 -->
         <div class="featured-card" aria-label="Featured organization this week">
             <p class="featured-card-eyebrow">Featured This Week — March 30</p>
-            <h2>Lincoln Park Food Pantry</h2>
-            <p class="fc-focus">Community Hunger Relief · Lincoln Park</p>
+            <h2>Mount Olive Food Pantry</h2>
+            <p class="fc-focus">Community Hunger Relief · Mount Olive</p>
             <div class="fc-divider"></div>
             <p class="fc-label">What They Provide</p>
             <ul>
-                <li>Monthly grocery distribution</li>
-                <li>Senior meal assistance</li>
+                <li>Groceries</li>
+                <li>Nutrition support</li>
+                <li>Food distribution</li>
             </ul>
             <div class="fc-divider"></div>
             <p class="fc-label">How to Give Back</p>
             <ul>
-                <li>Donate shelf-stable goods</li>
-                <li>Senior meal assistance</li>
+                <li>Donate food or funds</li>
             </ul>
         </div>
     </div>
@@ -124,6 +125,7 @@
 
         <div class="modal-actions">
             <a class="btn btn-primary" href="donate-volunteer.html">Donate &amp; Volunteer</a>
+            <a class="btn btn-primary" id="modalVisitBtn" href="#" target="_blank" rel="noopener noreferrer">Visit Website ↗</a>
             <button class="btn btn-ghost" id="modalCloseBtn">Close</button>
         </div>
     </div>
@@ -131,49 +133,42 @@
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <div class="container footer-grid">
-
-    <div>
-      <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-      <p class="footer-mission">
-        CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
-      </p>
+    <div class="container footer-grid">
+        <div>
+            <p class="footer-brand">
+                <span class="footer-brand-dot"></span> CareMap Morris
+            </p>
+            <p class="footer-mission">
+                Mission: Improve access to services, raise awareness of local needs,
+                and strengthen support across Morris County.
+            </p>
+        </div>
+        <div>
+            <p class="footer-col-title">Quick Links</p>
+            <ul class="footer-links">
+                <li><a href="directory.html">Directory</a></li>
+                <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
+                <li><a href="submit.html">Submit a Resource</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="highlights.html">Highlights</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Emergency Lines</p>
+            <ul class="footer-links">
+                <li><a href="tel:911">911 — Emergency</a></li>
+                <li><a href="tel:988">988 — Mental Health Crisis</a></li>
+                <li><a href="tel:18007997233">1-800-799-7233 — DV Hotline</a></li>
+            </ul>
+        </div>
     </div>
-
-    <div>
-      <p class="footer-col-title">Navigation</p>
-      <ul class="footer-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="directory.html">Directory</a></li>
-        <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
-        <li><a href="submit.html">Submit a Resource</a></li>
-        <li><a href="highlights.html">Highlights</a></li>
-        <li><a href="works-cited.html">Works Cited</a></li>
-      </ul>
+    <div class="container footer-bottom">
+        <p class="footer-disclaimer">
+            <strong>Disclaimer:</strong> CareMap Morris is a community resource guide.
+            Listings are not endorsements. Always verify details directly with each
+            organization before visiting or donating.
+        </p>
     </div>
-
-    <div>
-      <p class="footer-col-title">Contact &amp; Info</p>
-      <ul class="footer-links">
-        <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
-        <li><a href="submit.html">Submit a Resource</a></li>
-      </ul>
-      <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
-        Morris County, New Jersey<br>
-        Crisis line: <strong style="color:rgba(247,242,234,.5)">988</strong> &nbsp;|&nbsp; Emergency: <strong style="color:rgba(247,242,234,.5)">911</strong>
-      </p>
-    </div>
-
-  </div>
-
-  <div class="container footer-bottom">
-    <p class="footer-disclaimer">
-      <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information is gathered from public sources and may not reflect current availability or hours. Always confirm details directly with the organization before visiting.
-      <strong>This is not an emergency platform.</strong> If you are in immediate danger, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
-      Information last reviewed: March 2026 <span id="footerDate"></span>.
-    </p>
-    <p class="footer-date" id="footerYear"></p>
-  </div>
 </footer>
 
 <!-- Scripts -->
