@@ -333,7 +333,7 @@
             </div>
             <div class="card-actions">
               <a class="btn btn-secondary" href="directory.html#dv-program">View Details</a>
-              <a class="btn btn-ghost" href="directory.html?filter=volunteer">Volunteer</a>
+              <a class="btn btn-ghost" href="donate-volunteer.html">Donate / Volunteer</a>
             </div>
           </article>
 
@@ -358,7 +358,7 @@
             </div>
             <div class="card-actions">
               <a class="btn btn-secondary" href="directory.html#homeless-solutions">View Details</a>
-              <a class="btn btn-ghost" href="submit.html">Add Resource</a>
+              <a class="btn btn-ghost" href="donate-volunteer.html">Donate / Volunteer</a>
             </div>
           </article>
 
@@ -405,21 +405,19 @@
         <p class="section-label reveal">Find Resources Near You</p>
         <h2 class="section-title reveal">Organizations Across<br>Morris County</h2>
         <p class="section-sub reveal">Browse nonprofit locations across the county. Click any pin for details, hours, and contact info.</p>
-
-       <div class="map-wrapper reveal">
-  <!-- Leaflet Map -->
-  <div id="map" style="width: 100%; height: 500px;"></div>
-
-  <!-- Legend -->
-  <div class="map-legend reveal">
-    <div class="map-legend-item"><span class="legend-dot.food"></span> Food & Nutrition</div>
-    <div class="map-legend-item"><span class="legend-dot.shelter"></span> Shelter & Safety</div>
-    <div class="map-legend-item"><span class="legend-dot.housing"></span> Housing Services</div>
-    <div class="map-legend-item"><span class="legend-dot.youth"></span> Youth Services</div>
-    <div class="map-legend-item"><span class="legend-dot.health"></span> Health Services</div>
+<div class="map-wrapper reveal">
+  <div id="map" style="width:100%; height:500px;"></div>
+  <div class="map-bar">
+    <p class="map-bar-hint">📍 Click any pin for details. Drag &amp; scroll to explore.</p>
+    <ul class="map-bar-dots">
+      <li><span class="legend-dot food"></span> Food</li>
+      <li><span class="legend-dot shelter"></span> Shelter</li>
+      <li><span class="legend-dot support"></span> Support</li>
+      <li><span class="legend-dot health"></span> Health</li>
+      <li><span class="legend-dot youth"></span> Youth</li>
+    </ul>
   </div>
 </div>
-      </div>
     </section>
 
     <!-- GIVE BACK -->

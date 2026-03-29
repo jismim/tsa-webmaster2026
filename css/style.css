@@ -129,26 +129,26 @@ body {
 
 /* btn-ghost used on light backgrounds (cards) */
 .card-actions .btn-ghost {
-  color: var(--warm-gray);
-  border-color: var(--border);
+  color: var(--sage);
+  border-color: var(--sage);
 }
 .card-actions .btn-ghost:hover {
-  border-color: var(--warm-gray);
-  color: var(--ink);
-  background: transparent;
+  border-color: var(--sage);
+  color: var(--cream);
+  background: var(--sage);
 }
 
 /* FIX: "Submit a Resource" button hover — rust background with white text */
 .btn-submit,
 a[href="submit.html"].btn-ghost {
   background: transparent;
-  color: var(--cream);
-  border: 2px solid rgba(247,242,234,.35);
+  color: var(--sand);
+  border: 2px solid var(--sand);
 }
 a[href="submit.html"].btn-ghost:hover,
 .btn-submit:hover {
-  background: var(--rust);
-  border-color: var(--rust);
+  background: var(--sand);
+  border-color: var(--sand);
   color: #fff;
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(192,75,32,.3);
@@ -709,7 +709,6 @@ a[href="submit.html"].btn-ghost:hover,
   overflow: hidden;
   border: 1px solid var(--border);
   box-shadow: 0 8px 32px rgba(26,20,16,.1);
-  height: 480px;
   background: var(--paper);
 }
 
@@ -738,23 +737,57 @@ a[href="submit.html"].btn-ghost:hover,
   border: none; display: block;
 }
 
-.map-legend {
-  display: flex; gap: 1.25rem; flex-wrap: wrap;
-  margin-top: 1rem; justify-content: center;
+.map-bar {
+  background: var(--paper);
+  border-top: 2px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 }
-.map-legend-item {
-  display: flex; align-items: center; gap: .4rem;
-  font-size: .78rem; color: var(--warm-gray);
-}
-.legend-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%; flex-shrink: 0;
-}
-.legend-dot.food    { background: #E8974E; }
-.legend-dot.shelter { background: #7CB5B0; }
-.legend-dot.housing { background: #8DB888; }
-.legend-dot.other   { background: var(--sand); }
 
+.map-bar-hint {
+  font-family: var(--ff-body);
+  font-size: 1rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.map-bar-dots {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.map-bar-dots li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--ff-body);
+  font-size: .9rem;
+  color: var(--bark);
+}
+
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--cream);
+  display: inline-block;
+}
+
+.legend-dot.food     { background-color: #ffd326; }
+.legend-dot.shelter  { background-color: #CB8325; }
+.legend-dot.support  { background-color: #a13fce; }
+.legend-dot.health   { background-color: #cb253d; }
+.legend-dot.youth    { background-color: #267fca; }
 /* ============================================================
    GIVE BACK STRIP
 ============================================================ */
@@ -809,9 +842,9 @@ a[href="submit.html"].btn-ghost:hover,
 
 .gb-cta { margin-top: 1.5rem; display: flex; gap: .75rem; flex-wrap: wrap; }
 .gb-cta .btn-ghost-light {
-  background: transparent;
-  border: 2px solid rgba(247,242,234,.25);
-  color: rgba(247,242,234,.7);
+  background: var(--sand);
+  border: 2px solid var(--sand);
+  color: var(--cream);
   border-radius: var(--radius);
   padding: .7rem 1.4rem;
   font-size: .875rem; font-weight: 500;
@@ -820,7 +853,9 @@ a[href="submit.html"].btn-ghost:hover,
   transition: all .22s;
 }
 .gb-cta .btn-ghost-light:hover {
-  border-color: rgba(247,242,234,.5); color: var(--cream);
+  background: #C9AC80; border-color: #C9AC80;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(192,75,32,.3);
 }
 
 /* ============================================================
