@@ -315,7 +315,7 @@
     background: var(--cream);
     border: 1px solid var(--border);
     border-radius: 10px;
-    max-width: 620px; width: 100%;
+    max-width: 780px; width: 100%;
     max-height: 88vh;
     overflow-y: auto;
     box-shadow: 0 28px 72px rgba(26,20,16,.28);
