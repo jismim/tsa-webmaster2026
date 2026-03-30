@@ -80,11 +80,13 @@ document.addEventListener('DOMContentLoaded', function () {
 const toggle = document.querySelector('.dropdown-toggle');
 const menu = document.querySelector('.dropdown-menu');
 
-toggle.addEventListener('click', () => {
-  const isOpen = menu.style.display === 'flex';
-  menu.style.display = isOpen ? 'none' : 'flex';
-  toggle.setAttribute('aria-expanded', !isOpen);
-});
+if (toggle && menu) {
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.style.display === 'flex';
+    menu.style.display = isOpen ? 'none' : 'flex';
+    toggle.setAttribute('aria-expanded', !isOpen);
+  });
+}
   /* ----------------------------------------------------------
      3. MOBILE MENU
   ---------------------------------------------------------- */
@@ -513,24 +515,6 @@ const organizations = [
     coords: [40.883856359774995, -74.47998177125463],
     category: "other"
   }
-
-];
-const iconMap = {
-  food: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
-  shelter: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
-  support: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
-  health: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-  youth: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png'
-};
-
-organizations.forEach(org => {
-  const icon = L.icon({
-    iconUrl: iconMap[org.category] || iconMap.other,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
-  });
 
 ];
 const iconMap = {
