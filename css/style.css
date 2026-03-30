@@ -792,6 +792,7 @@ a[href="submit.html"].btn-ghost:hover,
 .legend-dot.support  { background-color: #a13fce; }
 .legend-dot.health   { background-color: #cb253d; }
 .legend-dot.youth    { background-color: #267fca; }
+.legend-dot.other    { background-color: #4CAF50; }
 /* ============================================================
    GIVE BACK STRIP
 ============================================================ */
