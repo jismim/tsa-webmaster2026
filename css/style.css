@@ -218,6 +218,53 @@ a[href="submit.html"].btn-ghost:hover,
 .nav a.nav-cta:hover,
 .primary-nav a.nav-cta:hover { background: var(--rust-lt); }
 
+/* Dropdown container */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Button styling (match your nav links) */
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: rgba(247,242,234,0.9);
+  cursor: pointer;
+  font-size: .85rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #1A1410; /* match your theme */
+  padding: 0.5rem 0;
+  min-width: 180px;
+  display: none;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid var(--cream);
+}
+
+/* Links inside dropdown */
+.dropdown-menu a {
+  padding: 0.5rem 1rem;
+  display: block;
+  font-size: .85rem;
+  color: rgba(247,242,234,0.9);
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Show on hover (desktop) */
+.nav-dropdown:hover .dropdown-menu {
+  display: flex;
+}
 /* Mobile nav button */
 .mobile-nav-btn {
   display: none;
@@ -270,11 +317,12 @@ a[href="submit.html"].btn-ghost:hover,
   display: block;
   transition: color .2s;
 }
+
 .mobile-menu a:hover { color: var(--cream); }
 
-/* ============================================================
-   MODAL — First-time walkthrough popup
-   FIX: Restored full modal styles that were stripped
+/* ============================================================ 
+MODAL — First-time walkthrough popup
+FIX: Restored full modal styles that were stripped
 ============================================================ */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 200;
