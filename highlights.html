@@ -11,28 +11,49 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Highlights page styles -->
     <link rel="stylesheet" href="css/highlights.css">
+    <link rel="icon" type="image/png" href="images/logo.png"/>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
+    <!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+  <div class="mobile-menu-head">
+    <span class="mobile-menu-brand">CareMap Morris</span>
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
+  </div>
+  <a href="about.html">About</a>
+  <a href="directory.html">Resource Directory</a>
+  <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
+  <a href="submit.html">Submit a Resource</a>
+  <a href="highlights.html">Highlights</a>
+  <a href="works-cited.html">Works Cited</a>
+  <a href="/admin/login.html">Admin</a>
+</nav>
 
 <!-- HEADER -->
 <header class="site-header">
-    <div class="container header-inner">
-        <a class="brand" href="index.html" aria-label="CareMap Morris Home">
-            <span class="brand-mark" aria-hidden="true"></span>
-            <span class="brand-text">CareMap Morris</span>
-        </a>
-        <nav class="nav" aria-label="Primary navigation">
-            <a href="about.html">About</a>
-            <a href="directory.html">Directory</a>
-            <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-            <a href="submit.html">Submit a Resource</a>
-            <a href="highlights.html" class="active">Highlights</a>
-        </nav>
-    </div>
-</header>
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
+  <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
+  <span class="brand-text">CareMap Morris</span>
+</a>
 
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="about.html">About</a>
+      <a href="directory.html">Resource Directory</a>
+      <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
+      <a href="submit.html">Submit a Resource</a>
+      <a href="highlights.html">Highlights</a>
+      <a href="works-cited.html">Works Cited</a>
+      <a href="/admin/login.html">Admin</a>
+    </nav>
+
+    <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
+      ☰ Menu
+    </button>
+  </div>
+</header>
 <!-- PAGE HERO -->
 <section class="page-hero" aria-label="Community Highlights">
     <div class="container page-hero-inner">
@@ -45,23 +66,22 @@
             </p>
         </div>
 
-        <!-- Featured: Week of April 27 -->
+        <!-- Featured: Week of March 30 -->
         <div class="featured-card" aria-label="Featured organization this week">
-            <p class="featured-card-eyebrow">Featured This Week — Apr 27</p>
-            <h2>Butler Borough Assistance Programs</h2>
-            <p class="fc-focus">Food &amp; Emergency Housing · Butler</p>
+            <p class="featured-card-eyebrow">Featured This Week — March 30</p>
+            <h2>Mount Olive Food Pantry</h2>
+            <p class="fc-focus">Community Hunger Relief · Mount Olive</p>
             <div class="fc-divider"></div>
             <p class="fc-label">What They Provide</p>
             <ul>
-                <li>Emergency grocery assistance</li>
-                <li>Crisis housing referrals</li>
-                <li>Seasonal assistance drives</li>
+                <li>Groceries</li>
+                <li>Nutrition support</li>
+                <li>Food distribution</li>
             </ul>
             <div class="fc-divider"></div>
             <p class="fc-label">How to Give Back</p>
             <ul>
-                <li>Participate in borough drives</li>
-                <li>Donate essentials</li>
+                <li>Donate food or funds</li>
             </ul>
         </div>
     </div>
@@ -105,8 +125,9 @@
         </div>
 
         <div class="modal-actions">
-            <a class="btn btn-primary" href="donate-volunteer.html">Donate &amp; Volunteer</a>
-            <button class="btn btn-ghost" id="modalCloseBtn">Close</button>
+            <a class="btn btn-primary" id="modalDonateBtn" href="donate-volunteer.html">Donate &amp; Volunteer</a>
+            <a class="btn btn-primary" href="directory.html">View in Resource Directory →</a>
+            <a class="btn btn-secondary" id="modalVisitBtn" href="#" target="_blank" rel="noopener noreferrer">Visit Website ↗</a>
         </div>
     </div>
 </div>
@@ -126,7 +147,7 @@
         <div>
             <p class="footer-col-title">Quick Links</p>
             <ul class="footer-links">
-                <li><a href="directory.html">Directory</a></li>
+                <li><a href="directory.html">Resource Directory</a></li>
                 <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
                 <li><a href="submit.html">Submit a Resource</a></li>
                 <li><a href="about.html">About</a></li>

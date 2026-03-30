@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Resource Submissions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/index.html" aria-label="CareMap Morris Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+      <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
+    </div>
+  </header>
+
+  <div class="admin-shell">
+    <aside class="sidebar" aria-label="Admin navigation">
+      <p class="sidebar-title">Admin</p>
+      <nav class="sidebar-group">
+        <a class="sidebar-link" href="/admin/dashboard.html" data-nav-path="/admin/dashboard.html">Dashboard</a>
+        <a class="sidebar-link" href="/admin/resource-submission.html" data-nav-path="/admin/resource-submission.html">Resource Submissions</a>
+        <a class="sidebar-link" href="/admin/questions.html" data-nav-path="/admin/questions.html">Community Questions</a>
+      </nav>
+      <button class="btn btn-dark logout-inline" type="button" data-admin-logout>Logout</button>
+    </aside>
+
+    <main id="main" class="main-panel">
+      <div class="container">
+        <p class="page-eyebrow">Moderation queue</p>
+        <h1 class="page-title">Resource Submissions</h1>
+        <p class="page-subtitle">Every entry below is loaded from the public “Submit a Resource” form. This layout mirrors your submit form fields so judges can clearly see the moderation flow.</p>
+
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <div class="search-wrap">
+              <label class="sr-only" for="resourceSearch">Search submissions</label>
+              <input id="resourceSearch" type="search" placeholder="Search by organization, submitter, category, service, or address" />
+            </div>
+            <div>
+              <label class="sr-only" for="resourceStatusFilter">Filter by status</label>
+              <select id="resourceStatusFilter">
+                <option>All</option>
+                <option>Pending</option>
+                <option>Approved</option>
+                <option>Rejected</option>
+              </select>
+            </div>
+          </div>
+          <a class="btn btn-secondary" href="/admin/dashboard.html">Back to dashboard</a>
+        </div>
+
+        <div id="resourceError" class="error-message" role="alert" aria-live="polite"></div>
+
+        <section class="table-card">
+          <div class="table-scroll">
+            <table class="admin-table" aria-label="Resource submissions table">
+              <thead>
+                <tr>
+                  <th>Organization</th>
+                  <th>Website</th>
+                  <th>Contact</th>
+                  <th>Services provided</th>
+                  <th>Submission date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="resourceTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="stack" style="margin-top:1rem;" aria-label="Detailed submission cards">
+          <div class="section-head">
+            <h2>Detailed submission view</h2>
+          </div>
+          <div id="resourceCards" class="stack"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin-auth.js"></script>
+  <script src="/js/admin-data.js"></script>
+  <script src="/js/admin-resource-submission.js"></script>
+</body>
+</html>

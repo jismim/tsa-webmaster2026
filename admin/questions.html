@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareMap Morris | Community Questions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/index.html" aria-label="CareMap Morris Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+      <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
+    </div>
+  </header>
+
+  <div class="admin-shell">
+    <aside class="sidebar" aria-label="Admin navigation">
+      <p class="sidebar-title">Admin</p>
+      <nav class="sidebar-group">
+        <a class="sidebar-link" href="/admin/dashboard.html" data-nav-path="/admin/dashboard.html">Dashboard</a>
+        <a class="sidebar-link" href="/admin/resource-submission.html" data-nav-path="/admin/resource-submission.html">Resource Submissions</a>
+        <a class="sidebar-link" href="/admin/questions.html" data-nav-path="/admin/questions.html">Community Questions</a>
+      </nav>
+      <button class="btn btn-dark logout-inline" type="button" data-admin-logout>Logout</button>
+    </aside>
+
+    <main id="main" class="main-panel">
+      <div class="container">
+        <p class="page-eyebrow">Community inbox</p>
+        <h1 class="page-title">Community Questions</h1>
+        <p class="page-subtitle">This page shows user-submitted questions with name, email, question text, date, and moderation status. It also includes an optional admin response area for your demo workflow.</p>
+
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <div class="search-wrap">
+              <label class="sr-only" for="questionSearch">Search questions</label>
+              <input id="questionSearch" type="search" placeholder="Search by name, email, question text, or response" />
+            </div>
+            <div>
+              <label class="sr-only" for="questionStatusFilter">Filter questions by status</label>
+              <select id="questionStatusFilter">
+                <option>All</option>
+                <option>New</option>
+                <option>In Progress</option>
+                <option>Answered</option>
+              </select>
+            </div>
+          </div>
+          <a class="btn btn-secondary" href="/admin/dashboard.html">Back to dashboard</a>
+        </div>
+
+        <div id="questionsError" class="error-message" role="alert" aria-live="polite"></div>
+        <section id="questionsList" class="stack" aria-label="Question entries"></section>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin-auth.js"></script>
+  <script src="/js/admin-data.js"></script>
+  <script src="/js/admin-questions.js"></script>
+</body>
+</html>
