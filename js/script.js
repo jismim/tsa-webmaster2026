@@ -77,7 +77,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+const toggle = document.querySelector('.dropdown-toggle');
+const menu = document.querySelector('.dropdown-menu');
 
+if (toggle && menu) {
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.style.display === 'flex';
+    menu.style.display = isOpen ? 'none' : 'flex';
+    toggle.setAttribute('aria-expanded', !isOpen);
+  });
+}
   /* ----------------------------------------------------------
      3. MOBILE MENU
   ---------------------------------------------------------- */
