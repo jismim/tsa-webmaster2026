@@ -262,8 +262,6 @@
     display: inline-flex;
     margin-top: .25rem;
     font-size: .65rem;
-    font-family: var(--ff-mono);
-    letter-spacing: .08em;
     text-transform: uppercase;
     color: var(--rust);
     border: 1px solid rgba(192,75,32,.3);
@@ -450,6 +448,14 @@
     display: flex;
     gap: .75rem;
     flex-wrap: wrap;
+    justify-content: center;
+}
+.modal-actions .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    padding: .65rem 1rem;
 }
 
 /* ── RESPONSIVE ── */
@@ -469,16 +475,14 @@
     background: transparent;
     border: 1px solid var(--bark);
     color: var(--bark);
-    font-family: var(--ff-mono);
-    font-size: .72rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    padding: .55rem 1.1rem;
+    padding: .65rem 1rem;
     border-radius: 4px;
     text-decoration: none;
     transition: background .2s, color .2s;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 .btn-secondary:hover {
     background: var(--bark);

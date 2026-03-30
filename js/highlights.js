@@ -236,7 +236,6 @@ const HIGHLIGHTS = [
 
     /* ── Event listeners ── */
     document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
 
     backdrop.addEventListener('click', function (e) {
         if (e.target === backdrop) closeModal();
