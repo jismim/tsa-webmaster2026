@@ -52,7 +52,6 @@ function render() {
     // KIND filter
     if (activeTab === 'donate' && item.kind !== 'donate') return false;
     if (activeTab === 'volunteer' && item.kind !== 'volunteer') return false;
-    if (activeTab === 'all' && item.kind !== 'both') return false;
 
     // AGE filter
     if (age && !item.age.includes(age)) return false;
