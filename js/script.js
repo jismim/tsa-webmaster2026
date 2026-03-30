@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 /**MAP */
 
 // Leaflet map initialization
-const map = L.map('map').setView([40.7968, -74.4773], 12); // Morris County center
+const map = L.map('map').setView([40.8925, -74.4788], 11.25); // Morris County center
 
 // Add OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -405,6 +405,106 @@ const organizations = [
     name: "CARE Center of New Jersey",
     coords: [40.928350332400875, -74.48457642955759],
     category: "health"
+  },
+  {
+    name: "Legal Services of Northwest Jersey",
+    coords: [40.79662297465631, -74.48355830010377],
+    category: "support"
+  },
+  {
+    name: "ProBono Partnership",
+    coords: [40.877853455214, -74.44696502707635],
+    category: "support"
+  },
+  {
+    name: "New Chapter Youth Program",
+    coords: [40.86794792719892, -74.41444721534225],
+    category: "youth"
+  },
+  {
+    name: "Community Hope — Mental Health",
+    coords: [40.86172910714738, -74.38142671904005],
+    category: "health"
+  },
+  {
+    name: "True Life Care Mental Health",
+    coords: [40.86238346057868, -74.49607819328992],
+    category: "health"
+  },
+  {
+    name: "Mental Health Association of Morris County",
+    coords: [40.86737726118494, -74.42343992883555],
+    category: "health"
+  },
+  {
+    name: "Florham Park Rehabilitation & Healthcare Center",
+    coords: [40.78770830141692, -74.43203738650666],
+    category: "support"
+  },
+  {
+    name: "Integral Home Care",
+    coords: [40.824383036609134, -74.49355781349333],
+    category: "support"
+  },
+  {
+    name: "Excelcare at Troy Hills",
+    coords: [40.84835147338429, -74.40243757116444],
+    category: "support"
+  },
+  {
+    name: "Caring Senior Service",
+    coords: [40.78772924776525, -74.46809968650668],
+    category: "support"
+  },
+  {
+    name: "Absolute Awakenings",
+    coords: [40.86242426680515, -74.49609012883555],
+    category: "other"
+  },
+  {
+    name: "The Milestone House",
+    coords: [40.886449566445165, -74.55858335767111],
+    category: "other"
+  },
+  {
+    name: "New Pathway Counseling",
+    coords: [40.86599408106594, -74.351141],
+    category: "other"
+  },
+  {
+    name: "Better Life Recovery & Wellness",
+    coords: [40.79075328786209, -74.38283997116446],
+    category: "other"
+  },
+  {
+    name: "The Milestone House",
+    coords: [40.886449566445165, -74.55858335767111],
+    category: "other"
+  },
+  {
+    name: "Prevention is Key (PIK)",
+    coords: [40.90067877772641, -74.5132934],
+    category: "other"
+  },
+  {
+    name: "Morris County Aftercare",
+    coords: [40.883856359774995, -74.47998177125463],
+    category: "other"
+  },
+{
+    name: "New Chapter Recovery of NJ",
+    coords: [40.86789924704041, -74.41438284241306],
+    category: "other"
+  },
+{
+    name: "Morris County Aftercare",
+    coords: [40.883856359774995, -74.47998177125463],
+    category: "other"
+  },
+{
+    name: "Morris County Aftercare",
+    coords: [40.883856359774995, -74.47998177125463],
+    category: "other"
   }
 
 ];
@@ -413,7 +513,8 @@ const iconMap = {
   shelter: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
   support: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
   health: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-  youth: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png'
+  youth: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+  other: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
 };
 
 organizations.forEach(org => {

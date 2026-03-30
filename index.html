@@ -18,6 +18,9 @@
   rel="stylesheet"
   href="https://unpkg.com/leaflet/dist/leaflet.css"
 />
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="images/logo.png"/>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <body>
 
@@ -33,9 +36,13 @@
   -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
     <div class="mobile-menu-head">
-      <span class="mobile-menu-brand">CareMap Morris</span>
+      <div class="mobile-menu-brand">
+        <img src="images/logo.png" alt="CareMap Morris logo" class="mobile-brand-logo">
+        <span>CareMap Morris</span>
+      </div>
       <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
     </div>
+    
     <a href="about.html">About</a>
     <a href="directory.html">Directory</a>
     <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
@@ -56,7 +63,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
-        <span class="brand-mark" aria-hidden="true"></span>
+        <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
         <span class="brand-text">CareMap Morris</span>
       </a>
 
@@ -326,7 +333,7 @@
             </div>
             <div class="card-actions">
               <a class="btn btn-secondary" href="directory.html#dv-program">View Details</a>
-              <a class="btn btn-ghost" href="directory.html?filter=volunteer">Volunteer</a>
+              <a class="btn btn-ghost" href="donate-volunteer.html">Donate / Volunteer</a>
             </div>
           </article>
 
@@ -351,7 +358,7 @@
             </div>
             <div class="card-actions">
               <a class="btn btn-secondary" href="directory.html#homeless-solutions">View Details</a>
-              <a class="btn btn-ghost" href="submit.html">Add Resource</a>
+              <a class="btn btn-ghost" href="donate-volunteer.html">Donate / Volunteer</a>
             </div>
           </article>
 
@@ -398,21 +405,20 @@
         <p class="section-label reveal">Find Resources Near You</p>
         <h2 class="section-title reveal">Organizations Across<br>Morris County</h2>
         <p class="section-sub reveal">Browse nonprofit locations across the county. Click any pin for details, hours, and contact info.</p>
-
-       <div class="map-wrapper reveal">
-  <!-- Leaflet Map -->
-  <div id="map" style="width: 100%; height: 500px;"></div>
-
-  <!-- Legend -->
-  <div class="map-legend reveal">
-    <div class="map-legend-item"><span class="legend-dot.food"></span> Food & Nutrition</div>
-    <div class="map-legend-item"><span class="legend-dot.shelter"></span> Shelter & Safety</div>
-    <div class="map-legend-item"><span class="legend-dot.housing"></span> Housing Services</div>
-    <div class="map-legend-item"><span class="legend-dot.youth"></span> Youth Services</div>
-    <div class="map-legend-item"><span class="legend-dot.health"></span> Health Services</div>
+<div class="map-wrapper reveal">
+  <div id="map" style="width:100%; height:500px;"></div>
+  <div class="map-bar">
+    <p class="map-bar-hint">📍 Click any pin for details. Drag &amp; scroll to explore.</p>
+    <ul class="map-bar-dots">
+      <li><span class="legend-dot food"></span> Food</li>
+      <li><span class="legend-dot shelter"></span> Shelter</li>
+      <li><span class="legend-dot support"></span> Support</li>
+      <li><span class="legend-dot health"></span> Health</li>
+      <li><span class="legend-dot youth"></span> Youth</li>
+      <li><span class="legend-dot other"></span> Other</li>
+    </ul>
   </div>
 </div>
-      </div>
     </section>
 
     <!-- GIVE BACK -->
