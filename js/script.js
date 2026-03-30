@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 /**MAP */
 
 // Leaflet map initialization
-const map = L.map('map').setView([40.7968, -74.4773], 12); // Morris County center
+const map = L.map('map').setView([40.8925, -74.4788], 11.25); // Morris County center
 
 // Add OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

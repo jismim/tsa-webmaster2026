@@ -379,19 +379,23 @@ a[href="submit.html"].btn-ghost:hover,
 /* ============================================================
    HERO
 ============================================================ */
+/* AFTER */
 .hero {
   background: var(--ink);
   position: relative; overflow: hidden;
   padding-block: clamp(4rem, 8vw, 7rem);
+  border-bottom: 3px solid var(--rust);   /* ← ADD THIS */
 }
 .hero::before {
   content: '';
-  position: absolute; top: 0; right: 0;
-  width: 55%; height: 100%;
-  background: repeating-linear-gradient(
-    -60deg, transparent, transparent 38px,
-    rgba(255,255,255,.025) 38px, rgba(255,255,255,.025) 39px
-  );
+  position: absolute; inset: 0;           /* ← change top/right/width/height to inset:0 */
+  background:
+    radial-gradient(circle at 20% 20%, rgba(192,75,32,.18), transparent 22%),
+    radial-gradient(circle at 80% 35%, rgba(74,103,65,.18), transparent 20%),
+    repeating-linear-gradient(
+      -60deg, transparent, transparent 38px,
+      rgba(255,255,255,.025) 38px, rgba(255,255,255,.025) 39px
+    );
   pointer-events: none;
 }
 
