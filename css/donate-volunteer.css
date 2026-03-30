@@ -244,12 +244,19 @@
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 20, 16, 0.06);
   padding: 1.25rem;
-  position: static;
+  position: static; /* default for mobile */
   top: 70px;
   align-self: start;
   max-height: calc(100vh - 90px);
   overflow-y: auto;
   z-index: 10;
+}
+
+/* Sticky for laptops and larger screens */
+@media (min-width: 1024px) {
+  .filter-sidebar {
+    position: sticky;
+  }
 }
 
 .dv-card {
