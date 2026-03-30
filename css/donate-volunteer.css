@@ -244,7 +244,7 @@
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 20, 16, 0.06);
   padding: 1.25rem;
-  position: sticky;
+  position: static;
   top: 70px;
   align-self: start;
   max-height: calc(100vh - 90px);
