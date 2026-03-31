@@ -16,26 +16,22 @@
 <body>
     <a class = "skip-link" href = "#main">Skip to main content</a>
     <!-- MOBILE MENU -->
-<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
-    <div class="mobile-menu-head">
-      <div class="mobile-menu-brand">
-        <img src="images/logo.png" alt="CareMap Morris logo" class="mobile-brand-logo">
-        <span>CareMap Morris</span>
+ <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+      <div class="mobile-menu-head">
+        <span class="mobile-menu-brand">CareMap Morris</span>
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
       </div>
-      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
-    </div>
-    
-    <a href="about.html">About</a>
-    <a href="directory.html">Directory</a>
-    <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-    <a href="submit.html">Submit a Resource</a>
-    <a href="highlights.html">Highlights</a>
-    <a href="works-cited.html">Works Cited</a>
-    <a href="/admin/login.html">Admin</a>
-  </nav>
+      <a href="about.html">About</a>
+      <a href="directory.html">Directory</a>
+      <a href="donate-volunteer.html">Give Back</a>
+      <a href="submit.html">Contact Us</a>
+      <a href="highlights.html">Highlights</a>
+      <a href="works-cited.html">Works Cited</a>
+      <a href="/admin/login.html">Admin</a>
+    </nav>
 
-<!-- HEADER -->
-<header class="site-header">
+    <!-- HEADER -->
+ <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
         <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
@@ -49,7 +45,7 @@
   <!-- Resources Dropdown -->
   <div class="nav-dropdown">
     <button class="dropdown-toggle" aria-expanded="false">
-      Resources
+      Resources ⮟
     </button>
     <div class="dropdown-menu">
       <a href="directory.html">Directory</a>
@@ -59,18 +55,17 @@
     </div>
   </div>
 
-  <a href="submit.html">Submit</a>
+  <a href="submit.html">Contact Us</a>
   <a href="works-cited.html">Works Cited</a>
+  <a href="/admin/login.html">Admin</a>
 </nav>
+        <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
+          ☰ Menu
+        </button>
+      </div>
+    </header>
 
-    <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
-      ☰ Menu
-    </button>
-  </div>
-</header>
-
-  <!-- ==================== MAIN ==================== -->
-  <main id="main">
+    <main id="main">
 
     <!-- Page intro -->
     <section class="dir-hero">
@@ -196,50 +191,44 @@
 
   <!-- ==================== FOOTER ==================== -->
  <footer class="site-footer">
-  <div class="container footer-grid">
-
-    <div>
-      <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-      <p class="footer-mission">
-        CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
-      </p>
-    </div>
-
-    <div>
-      <p class="footer-col-title">Navigation</p>
-      <ul class="footer-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="directory.html">Directory</a></li>
-        <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
-        <li><a href="submit.html">Submit a Resource</a></li>
-        <li><a href="highlights.html">Highlights</a></li>
-        <li><a href="works-cited.html">Works Cited</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <p class="footer-col-title">Contact &amp; Info</p>
-      <ul class="footer-links">
-        <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
-        <li><a href="submit.html">Submit a Resource</a></li>
-      </ul>
-      <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
-        Morris County, New Jersey<br>
-        Crisis line: <strong style="color:rgba(247,242,234,.5)">988</strong> &nbsp;|&nbsp; Emergency: <strong style="color:rgba(247,242,234,.5)">911</strong>
-      </p>
-    </div>
-
-  </div>
-
-  <div class="container footer-bottom">
-    <p class="footer-disclaimer">
-      <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information is gathered from public sources and may not reflect current availability or hours. Always confirm details directly with the organization before visiting.
-      <strong>This is not an emergency platform.</strong> If you are in immediate danger, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
-      Information last reviewed: March 2026 <span id="footerDate"></span>.
-    </p>
-    <p class="footer-date" id="footerYear"></p>
-  </div>
-</footer>
+      <div class="container footer-grid">
+        <div>
+          <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+          <p class="footer-mission">
+            CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
+          </p>
+        </div>
+        <div>
+          <p class="footer-col-title">Navigation</p>
+          <ul class="footer-links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="donate-volunteer.html">Give Back</a></li>
+            <li><a href="highlights.html">Highlights</a></li>
+            <li><a href="works-cited.html">Works Cited</a></li>
+            <li><a href="/admin/login.html">Admin</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Contact &amp; Info</p>
+          <ul class="footer-links">
+            <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+            <li><a href="submit.html">Submit a Resource</a></li>
+          </ul>
+          <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+            Morris County, New Jersey<br>
+            Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
+          </p>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="footer-disclaimer">
+          <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
+          <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+        </p>
+        <p class="footer-date" id="footerYear"></p>
+      </div>
+    </footer>
 
   <!-- ==================== SCRIPTS ==================== -->
   <!-- Data must load before the directory logic -->

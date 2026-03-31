@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CareMap Morris | Donate & Volunteer</title>
+  <title>CareMap Morris | Give Back</title>
   <meta name="description" content="Find ways to donate or volunteer with Morris County nonprofits. Filter by age, location, and service type." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,8 +29,8 @@
     
     <a href="about.html">About</a>
     <a href="directory.html">Directory</a>
-    <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-    <a href="submit.html">Submit a Resource</a>
+    <a href="donate-volunteer.html">Give Back</a>
+    <a href="submit.html">Contact Us</a>
     <a href="highlights.html">Highlights</a>
     <a href="works-cited.html">Works Cited</a>
     <a href="/admin/login.html">Admin</a>
@@ -51,7 +51,7 @@
   <!-- Resources Dropdown -->
   <div class="nav-dropdown">
     <button class="dropdown-toggle" aria-expanded="false">
-      Resources
+      Resources ⮟
     </button>
     <div class="dropdown-menu">
       <a href="directory.html">Directory</a>
@@ -61,8 +61,9 @@
     </div>
   </div>
 
-  <a href="submit.html">Submit</a>
+  <a href="submit.html">Contact Us</a>
   <a href="works-cited.html">Works Cited</a>
+  <a href="/admin/login.html">Admin</a>
 </nav>
 
     <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
@@ -75,8 +76,8 @@
     <section class="page-hero">
   <div class="container page-hero-inner">
     <div class="page-hero-copy">
-      <p class="hero-eyebrow">Give Back</p>
-      <h1>Donate &amp; <em>Volunteer</em></h1>
+      <p class="hero-eyebrow">Donate &amp Volunteer</p>
+      <h1>Give Back <em>to Your Community</em></h1>
       <p class="subtitle">
         Give your time, money, or supplies to organizations making a real difference in Morris County.
         Filter below to find the right opportunity for you.
@@ -180,35 +181,44 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-        <p class="footer-mission">Mission: Improve access to services, raise awareness of local needs, and strengthen support across Morris County.</p>
+      <div class="container footer-grid">
+        <div>
+          <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+          <p class="footer-mission">
+            CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
+          </p>
+        </div>
+        <div>
+          <p class="footer-col-title">Navigation</p>
+          <ul class="footer-links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="directory.html">Directory</a></li>
+            <li><a href="donate-volunteer.html">Give Back</a></li>
+            <li><a href="highlights.html">Highlights</a></li>
+            <li><a href="works-cited.html">Works Cited</a></li>
+            <li><a href="/admin/login.html">Admin</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Contact &amp; Info</p>
+          <ul class="footer-links">
+            <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+            <li><a href="submit.html">Submit a Resource</a></li>
+          </ul>
+          <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+            Morris County, New Jersey<br>
+            Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
+          </p>
+        </div>
       </div>
-      <div>
-        <p class="footer-col-title">Quick Links</p>
-        <ul class="footer-links">
-          <li><a href="directory.html">Directory</a></li>
-          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
-          <li><a href="submit.html">Submit a Resource</a></li>
-          <li><a href="awareness.html">Awareness</a></li>
-          <li><a href="events.html">Events</a></li>
-        </ul>
+      <div class="container footer-bottom">
+        <p class="footer-disclaimer">
+          <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
+          <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+        </p>
+        <p class="footer-date" id="footerYear"></p>
       </div>
-      <div>
-        <p class="footer-col-title">Contact</p>
-        <p class="footer-mission">Add an email/contact form link here.</p>
-        <p class="footer-mission" style="margin-top:.5rem;"><a href="works-cited.md" style="color:rgba(247,242,234,.6);">Works Cited</a></p>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p class="footer-disclaimer">
-        <strong>Disclaimer:</strong> CareMap Morris is a community resource guide. Listings are not endorsements.
-        Always verify details directly with each organization before visiting or donating.
-      </p>
-      <span class="footer-date">Updated 2025</span>
-    </div>
-  </footer>
+    </footer>
     <div class="detail-backdrop" id="detailBackdrop" hidden aria-hidden="true"></div>
   <div class="detail-modal-wrap" id="detailModalWrap" hidden role="dialog" aria-modal="true" aria-labelledby="detailTitle">
     <div class="detail-card" id="detailCard"></div>
