@@ -11,116 +11,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href="images/logo.png"/>
-    <style>
-      /* ── PHOTO STRIP after Why We Exist ── */
-      .photo-strip {
-        display: grid;
-        grid-template-columns: 1.6fr 1fr;
-        gap: 12px;
-        margin-top: 32px;
-        border-radius: var(--radius);
-        overflow: hidden;
-      }
-
-      .photo-strip-main {
-        position: relative;
-        overflow: hidden;
-        border-radius: var(--radius) 0 0 var(--radius);
-        max-height: 320px;
-      }
-
-      .photo-strip-main img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform .5s ease;
-      }
-
-      .photo-strip-main:hover img {
-        transform: scale(1.03);
-      }
-
-      .photo-strip-side {
-        position: relative;
-        overflow: hidden;
-        border-radius: 0 var(--radius) var(--radius) 0;
-        max-height: 320px;
-      }
-
-      .photo-strip-side img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform .5s ease;
-      }
-
-      .photo-strip-side:hover img {
-        transform: scale(1.03);
-      }
-
-      .photo-caption {
-        margin-top: 10px;
-        font-family: var(--ff-mono);
-        font-size: 0.72rem;
-        color: var(--sand);
-        letter-spacing: 0.06em;
-        text-align: right;
-      }
-
-      /* ── County section: photo alongside copy ── */
-      .county-grid {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 36px;
-        align-items: start;
-        margin-top: 24px;
-      }
-
-      .county-photo-block {
-        position: relative;
-        border-radius: var(--radius);
-        overflow: hidden;
-      }
-
-      .county-photo-block img {
-        width: 100%;
-        height: 100%;
-        max-height: 400px;
-        object-fit: cover;
-        display: block;
-        border-radius: var(--radius);
-        transition: transform .5s ease;
-      }
-
-      .county-photo-block:hover img {
-        transform: scale(1.025);
-      }
-
-      .county-photo-caption {
-        font-family: var(--ff-mono);
-        font-size: 0.7rem;
-        color: var(--sand);
-        letter-spacing: 0.05em;
-        margin-top: 8px;
-      }
-
-      /* Stack county grid on small screens */
-      @media (max-width: 900px) {
-        .photo-strip {
-          grid-template-columns: 1fr;
-        }
-        .photo-strip-main,
-        .photo-strip-side {
-          border-radius: var(--radius);
-          max-height: 220px;
-        }
-        .county-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
 </head>
 
 <body>
@@ -134,8 +24,8 @@
       </div>
       <a href="about.html">About</a>
       <a href="directory.html">Directory</a>
-      <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-      <a href="submit.html">Submit a Resource</a>
+      <a href="donate-volunteer.html">Give Back</a>
+      <a href="submit.html">Contact Us</a>
       <a href="highlights.html">Highlights</a>
       <a href="works-cited.html">Works Cited</a>
       <a href="/admin/login.html">Admin</a>
@@ -145,15 +35,27 @@
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
-  <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
-  <span class="brand-text">CareMap Morris</span>
-</a>
+          <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
+          <span class="brand-text">CareMap Morris</span>
+        </a>
+
         <nav class="nav" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
           <a href="about.html">About</a>
-          <a href="directory.html">Directory</a>
-          <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-          <a href="submit.html">Submit a Resource</a>
-          <a href="highlights.html">Highlights</a>
+
+          <!-- Resources Dropdown -->
+          <div class="nav-dropdown">
+            <button class="dropdown-toggle" aria-expanded="false">
+              Resources ⮟
+            </button>
+            <div class="dropdown-menu">
+              <a href="directory.html">Directory</a>
+              <a href="donate-volunteer.html">Give Back</a>
+              <a href="highlights.html">Highlights</a>
+            </div>
+          </div>
+
+          <a href="submit.html">Contact Us</a>
           <a href="works-cited.html">Works Cited</a>
           <a href="/admin/login.html">Admin</a>
         </nav>
@@ -165,12 +67,12 @@
 
     <main id="main">
 
-      <!-- ═══ HERO ═══ -->
+      <!-- ═══ 1. HERO ═══ -->
       <section class="page-hero" aria-label="About CareMap Morris">
         <div class="container page-hero-inner">
           <div>
             <p class="section-label">About Us</p>
-            <h1>Building a stronger, more connected Morris County</h1>
+            <h1>Building a stronger, more connected <em>Morris County</em></h1>
             <p class="subtitle">
               A community-driven resource hub making it easier for residents to find support
               and for neighbors to give back in meaningful ways.
@@ -195,7 +97,7 @@
         </div>
       </section>
 
-      <!-- ═══ WHY WE EXIST ═══ -->
+      <!-- ═══ 2. WHY WE EXIST ═══ -->
       <section class="section" aria-labelledby="why-heading">
         <div class="container">
           <p class="section-label reveal">Our Purpose</p>
@@ -224,7 +126,7 @@
             </div>
           </div>
 
-          <!-- ── PHOTO STRIP: two volunteer photos side by side ── -->
+          <!-- ── PHOTO STRIP ── -->
           <div class="photo-strip reveal">
             <div class="photo-strip-main">
               <img
@@ -246,7 +148,7 @@
         </div>
       </section>
 
-      <!-- ═══ COUNTY STATS ═══ -->
+      <!-- ═══ 4. COUNTY STATS ═══ -->
       <section class="stats-band" aria-label="Morris County at a glance">
         <div class="container">
           <div class="county-stats-row">
@@ -259,7 +161,7 @@
               <span class="small">Estimated food insecurity rate</span>
             </div>
             <div class="county-stat reveal delay-3">
-            <span class="big" data-target="100" data-suffix="+">0</span>
+              <span class="big" data-target="100" data-suffix="+">0</span>
               <span class="small">Local nonprofits serving residents</span>
             </div>
             <div class="county-stat reveal delay-4">
@@ -270,7 +172,7 @@
         </div>
       </section>
 
-      <!-- ═══ VETTING STEPS ═══ -->
+      <!-- ═══ 5. VETTING STEPS ═══ -->
       <section class="section" aria-labelledby="vetting-heading">
         <div class="container">
           <p class="section-label reveal">Our Standards</p>
@@ -304,24 +206,33 @@
         </div>
       </section>
 
-      <!-- ═══ WHY MORRIS COUNTY ═══ -->
+      <!-- ═══ 6. QUOTE OVER VIDEO ═══ -->
+      <section class="quote-video-section" aria-label="Mission quote">
+        <video autoplay muted loop playsinline>
+          <source src="images/6893741-uhd_3840_2160_25fps.mp4" type="video/mp4" />
+        </video>
+        <div class="quote-video-overlay" aria-hidden="true"></div>
+        <div class="quote-video-content">
+          <h2 class="quote-video-text">"The people who need help most are often the least visible — and the resources that could help them aren't much more visible."</h2>
+          <p class="quote-video-attr">— CareMap Morris mission statement</p>
+        </div>
+      </section>
+
+      <!-- ═══ 7. WHY MORRIS COUNTY ═══ -->
       <section class="section section-alt" aria-labelledby="county-heading">
         <div class="container">
           <p class="section-label reveal">Our Focus</p>
           <h2 id="county-heading" class="reveal delay-1">Why Morris County</h2>
-          <div class="county-grid">
+
+          <div class="county-grid-3">
             <div class="county-copy reveal delay-1">
               <p>Morris County is one of New Jersey's most affluent counties, but prosperity isn't evenly shared. Behind the well-known towns and busy commuter corridors are families navigating food insecurity, housing instability, domestic violence, and lack of access to mental health services.</p>
-              <p>Many of the county's most vulnerable residents fall into what's sometimes called the "invisible poor", people who earn too much to qualify for some federal programs but not enough to meet basic needs in a high cost-of-living area. Local nonprofits fill that gap, but they're chronically under-resourced and underexposed.</p>
+              <p>Many of the county's most vulnerable residents fall into what's sometimes called the "invisible poor," people who earn too much to qualify for some federal programs but not enough to meet basic needs in a high cost-of-living area. Local nonprofits fill that gap, but they're chronically under-resourced and underexposed.</p>
               <p>CareMap Morris exists to give those organizations visibility, connect them with donors and volunteers, and make their services easier to find for the people who need them most.</p>
             </div>
-            <div class="county-copy reveal delay-3">
-              <div class="county-pull">
-                <blockquote>"The people who need help most are often the least visible and the resources that could help them aren't much more visible."</blockquote>
-                <p class="pull-attr">— CareMap Morris mission statement</p>
-              </div>
-              <!-- ── Community outreach photo ── -->
-              <div class="county-photo-block" style="margin-top: 20px;">
+
+            <div class="reveal delay-2">
+              <div class="county-photo-inline">
                 <img
                   src="images/community-outreach.jpg"
                   alt="Volunteers distributing supplies to community members including an elderly person in a wheelchair"
@@ -334,18 +245,16 @@
         </div>
       </section>
 
-      <!-- ═══ GET INVOLVED STRIP ═══ -->
-      <section class="section" aria-label="Get involved">
-        <div class="container">
-          <div class="mission-strip reveal">
-            <div>
-              <h2>Want to help strengthen this resource?</h2>
-              <p>CareMap Morris grows through community participation. Know of a local organization that should be listed? Submit it for review. Want to give back? Browse volunteer opportunities across Morris County.</p>
-            </div>
-            <div class="cta-group">
-              <a class="btn btn-primary" href="submit.html">Submit a Resource</a>
-              <a class="btn btn-ghost" href="donate-volunteer.html">Donate &amp; Volunteer</a>
-            </div>
+      <!-- ═══ 7. GET INVOLVED — FULL WIDTH ═══ -->
+      <section class="section strengthen-section" aria-label="Get involved">
+        <div class="strengthen-inner reveal">
+          <div class="strengthen-text">
+            <h2>Want to help strengthen this resource?</h2>
+            <p>CareMap Morris grows through community participation. Know of a local organization that should be listed? Submit it for review. Want to give back? Browse volunteer opportunities across Morris County.</p>
+          </div>
+          <div class="cta-group">
+            <a class="btn btn-primary" href="submit.html">Submit a Resource</a>
+            <a class="btn btn-sage" href="donate-volunteer.html">Donate &amp; Volunteer</a>
           </div>
         </div>
       </section>
@@ -365,10 +274,10 @@
           <ul class="footer-links">
             <li><a href="about.html">About</a></li>
             <li><a href="directory.html">Directory</a></li>
-            <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
-            <li><a href="submit.html">Submit a Resource</a></li>
+            <li><a href="donate-volunteer.html">Give Back</a></li>
             <li><a href="highlights.html">Highlights</a></li>
             <li><a href="works-cited.html">Works Cited</a></li>
+            <li><a href="/admin/login.html">Admin</a></li>
           </ul>
         </div>
         <div>

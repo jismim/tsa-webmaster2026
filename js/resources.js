@@ -919,6 +919,7 @@ const TOWNS = [
   "Randolph",
   "Rockaway",
   "Whippany",
+  "East Hanover",
 ];
 
 // ── SERVICE TYPES ──────────────────────────────────────────
