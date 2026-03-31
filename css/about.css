@@ -349,57 +349,74 @@
   border: 1px solid var(--border);
 }
 
-/* ── MISSION STRIP ── */
-.mission-strip {
+/* ════════════════════════════════════════════════════════════
+   STRENGTHEN SECTION — full-width, edge-to-edge dark band
+════════════════════════════════════════════════════════════ */
+.strengthen-section {
   background: var(--bark);
-  border-radius: var(--radius);
-  padding: 32px 36px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 24px;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
+  padding: 0;
+  border-top: none;
 }
 
-.mission-strip::after {
+.strengthen-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  padding: 52px clamp(1.5rem, 5vw, 4rem);
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* Subtle diagonal texture overlay */
+.strengthen-inner::after {
   content: '';
   position: absolute; inset: 0;
-  background: repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(255,255,255,.015) 28px, rgba(255,255,255,.015) 29px);
+  background: repeating-linear-gradient(
+    45deg,
+    transparent, transparent 28px,
+    rgba(255,255,255,.015) 28px, rgba(255,255,255,.015) 29px
+  );
   pointer-events: none;
 }
 
-.mission-strip h2 {
-  font-family: var(--ff-display);
-  font-size: 1.4rem;
-  margin: 0 0 8px;
-  color: var(--cream);
-  position: relative; z-index: 1;
+.strengthen-text {
+  position: relative;
+  z-index: 1;
 }
 
-.mission-strip p {
+.strengthen-text h2 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  margin: 0 0 10px;
+  color: var(--cream);
+  line-height: 1.25;
+}
+
+.strengthen-text p {
   margin: 0;
   color: rgba(247,242,234,.65);
-  max-width: 480px;
-  font-size: 0.92rem;
+  max-width: 580px;
+  font-size: 0.95rem;
   line-height: 1.7;
-  position: relative; z-index: 1;
 }
 
 .cta-group {
   display: flex;
   gap: 10px;
   flex-direction: column;
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
-/* Green "Donate & Volunteer" button inside the dark mission strip */
-.mission-strip .btn-sage {
+/* Buttons inside dark strengthen strip */
+.strengthen-inner .btn-sage {
   background: var(--sage);
   color: #fff;
   border: 2px solid var(--sage);
 }
-.mission-strip .btn-sage:hover {
+.strengthen-inner .btn-sage:hover {
   background: var(--sage-lt);
   border-color: var(--sage-lt);
   transform: translateY(-1px);
@@ -615,9 +632,9 @@
 
 .quote-video-attr {
   font-family: var(--ff-mono);
-  font-size: 0.72rem;
-  color: rgba(247,242,234,.45);
-  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  color: rgba(247,242,234,.75);
+  letter-spacing: 0.1em;
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -634,7 +651,7 @@
   .county-stat { border-right: none; border-bottom: 1px solid rgba(247,242,234,.1); }
   .county-stat:nth-child(odd) { border-right: 1px solid rgba(247,242,234,.1); }
   .county-stat:last-child, .county-stat:nth-last-child(2):nth-child(odd) { border-bottom: none; }
-  .mission-strip { grid-template-columns: 1fr; padding: 24px 22px; }
+  .strengthen-inner { grid-template-columns: 1fr; padding: 36px clamp(1.5rem, 5vw, 4rem); }
   .cta-group { flex-direction: row; flex-wrap: wrap; }
   .photo-strip { grid-template-columns: 1fr; }
   .photo-strip-main,
@@ -653,7 +670,7 @@
   .steps { grid-template-columns: 1fr; }
   .county-stats-row { grid-template-columns: 1fr 1fr; }
   .fact-card { padding: 16px; }
-  .mission-strip { padding: 20px 16px; }
+  .strengthen-inner { padding: 28px 1.25rem; }
   .quote-video-section { height: 300px; }
   .quote-video-text { font-size: 1.25rem; }
 }

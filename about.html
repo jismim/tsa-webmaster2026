@@ -55,10 +55,10 @@
             </div>
           </div>
 
-  <a href="submit.html">Contact Us</a>
-  <a href="works-cited.html">Works Cited</a>
-  <a href="/admin/login.html">Admin</a>
-</nav>
+          <a href="submit.html">Contact Us</a>
+          <a href="works-cited.html">Works Cited</a>
+          <a href="/admin/login.html">Admin</a>
+        </nav>
         <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
           ☰ Menu
         </button>
@@ -67,12 +67,11 @@
 
     <main id="main">
 
-      <!-- ═══ HERO ═══ -->
+      <!-- ═══ 1. HERO ═══ -->
       <section class="page-hero" aria-label="About CareMap Morris">
         <div class="container page-hero-inner">
           <div>
             <p class="section-label">About Us</p>
-            <!-- "Morris County" italicised to match site-wide heading style -->
             <h1>Building a stronger, more connected <em>Morris County</em></h1>
             <p class="subtitle">
               A community-driven resource hub making it easier for residents to find support
@@ -98,7 +97,7 @@
         </div>
       </section>
 
-      <!-- ═══ WHY WE EXIST ═══ -->
+      <!-- ═══ 2. WHY WE EXIST ═══ -->
       <section class="section" aria-labelledby="why-heading">
         <div class="container">
           <p class="section-label reveal">Our Purpose</p>
@@ -127,7 +126,7 @@
             </div>
           </div>
 
-          <!-- ── PHOTO STRIP: two volunteer photos side by side ── -->
+          <!-- ── PHOTO STRIP ── -->
           <div class="photo-strip reveal">
             <div class="photo-strip-main">
               <img
@@ -149,7 +148,7 @@
         </div>
       </section>
 
-      <!-- ═══ COUNTY STATS ═══ -->
+      <!-- ═══ 4. COUNTY STATS ═══ -->
       <section class="stats-band" aria-label="Morris County at a glance">
         <div class="container">
           <div class="county-stats-row">
@@ -173,7 +172,7 @@
         </div>
       </section>
 
-      <!-- ═══ VETTING STEPS ═══ -->
+      <!-- ═══ 5. VETTING STEPS ═══ -->
       <section class="section" aria-labelledby="vetting-heading">
         <div class="container">
           <p class="section-label reveal">Our Standards</p>
@@ -207,17 +206,28 @@
         </div>
       </section>
 
-      <!-- ═══ WHY MORRIS COUNTY ═══ -->
+      <!-- ═══ 6. QUOTE OVER VIDEO ═══ -->
+      <section class="quote-video-section" aria-label="Mission quote">
+        <video autoplay muted loop playsinline>
+          <source src="images/6893741-uhd_3840_2160_25fps.mp4" type="video/mp4" />
+        </video>
+        <div class="quote-video-overlay" aria-hidden="true"></div>
+        <div class="quote-video-content">
+          <h2 class="quote-video-text">"The people who need help most are often the least visible — and the resources that could help them aren't much more visible."</h2>
+          <p class="quote-video-attr">— CareMap Morris mission statement</p>
+        </div>
+      </section>
+
+      <!-- ═══ 7. WHY MORRIS COUNTY ═══ -->
       <section class="section section-alt" aria-labelledby="county-heading">
         <div class="container">
           <p class="section-label reveal">Our Focus</p>
           <h2 id="county-heading" class="reveal delay-1">Why Morris County</h2>
 
-          <!-- Two-column: text left, outreach photo right — no wasted space -->
           <div class="county-grid-3">
             <div class="county-copy reveal delay-1">
               <p>Morris County is one of New Jersey's most affluent counties, but prosperity isn't evenly shared. Behind the well-known towns and busy commuter corridors are families navigating food insecurity, housing instability, domestic violence, and lack of access to mental health services.</p>
-              <p>Many of the county's most vulnerable residents fall into what's sometimes called the "invisible poor" — people who earn too much to qualify for some federal programs but not enough to meet basic needs in a high cost-of-living area. Local nonprofits fill that gap, but they're chronically under-resourced and underexposed.</p>
+              <p>Many of the county's most vulnerable residents fall into what's sometimes called the "invisible poor," people who earn too much to qualify for some federal programs but not enough to meet basic needs in a high cost-of-living area. Local nonprofits fill that gap, but they're chronically under-resourced and underexposed.</p>
               <p>CareMap Morris exists to give those organizations visibility, connect them with donors and volunteers, and make their services easier to find for the people who need them most.</p>
             </div>
 
@@ -235,32 +245,16 @@
         </div>
       </section>
 
-      <!-- ═══ QUOTE OVER VIDEO ═══ -->
-      <section class="quote-video-section" aria-label="Mission quote">
-        <video autoplay muted loop playsinline>
-          <source src="images/6893741-uhd_3840_2160_25fps.mp4" type="video/mp4" />
-        </video>
-        <div class="quote-video-overlay" aria-hidden="true"></div>
-        <div class="quote-video-content">
-          <p class="quote-video-eyebrow">CareMap Morris — Mission</p>
-          <h2 class="quote-video-text">"The people who need help most are often the least visible — and the resources that could help them aren't much more visible."</h2>
-          <p class="quote-video-attr">— CareMap Morris mission statement</p>
-        </div>
-      </section>
-
-      <!-- ═══ GET INVOLVED STRIP ═══ -->
-      <section class="section" aria-label="Get involved">
-        <div class="container">
-          <div class="mission-strip reveal">
-            <div>
-              <h2>Want to help strengthen this resource?</h2>
-              <p>CareMap Morris grows through community participation. Know of a local organization that should be listed? Submit it for review. Want to give back? Browse volunteer opportunities across Morris County.</p>
-            </div>
-            <div class="cta-group">
-              <a class="btn btn-primary" href="submit.html">Submit a Resource</a>
-              <!-- Green button — changed from btn-ghost to btn-sage -->
-              <a class="btn btn-sage" href="donate-volunteer.html">Donate &amp; Volunteer</a>
-            </div>
+      <!-- ═══ 7. GET INVOLVED — FULL WIDTH ═══ -->
+      <section class="section strengthen-section" aria-label="Get involved">
+        <div class="strengthen-inner reveal">
+          <div class="strengthen-text">
+            <h2>Want to help strengthen this resource?</h2>
+            <p>CareMap Morris grows through community participation. Know of a local organization that should be listed? Submit it for review. Want to give back? Browse volunteer opportunities across Morris County.</p>
+          </div>
+          <div class="cta-group">
+            <a class="btn btn-primary" href="submit.html">Submit a Resource</a>
+            <a class="btn btn-sage" href="donate-volunteer.html">Donate &amp; Volunteer</a>
           </div>
         </div>
       </section>
