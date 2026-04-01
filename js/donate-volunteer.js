@@ -26,7 +26,7 @@ const DATA = [
   {id:25, kind:"donate & volunteer", title:"Community Hope Inc", desc:"Provides housing, mental health services, and community support programs.", age:["adult","family"], location:"parsippany", services:["housing","counseling"], link:"https://www.communityhope-nj.org/", phone:"(973) 463-9600", address:"959 US-46 #402, Parsippany, NJ 07054"},
   {id:26, kind:"donate & volunteer", title:"First Presbyterian Church of Rockaway", desc:"Operates a food closet providing groceries to local residents.", age:["adult","family"], location:"rockaway", services:["food","hygiene"], link:"https://fpcrockaway.org/", phone:"(973) 627-1059", address:"35 Church St, Rockaway, NJ 07866"},
   {id:27, kind:"donate & volunteer", title:"First Presbyterian Church of Whippany", desc:"Food pantry offering grocery assistance to Whippany residents by appointment.", age:["adult","family"], location:"whippany", services:["food","hygiene"], link:"https://www.whippanychurch.com/", phone:"(973) 887-2197", address:"494 NJ-10, Whippany, NJ 07981"},
-  {id:28, kind:"donate & volunteer", title:"Legal Services of Northwest Jersey", desc:"Provides free civil legal assistance to eligible low-income residents of Morris County, including help with housing, family law, and public benefits.", age:["adult","family","senior"], location:"morristown", services:["legal"], link:"https://www.lsnwj.org/", phone:"(973) 285-6911", address:"30 Schuyler Pl, Morristown, NJ 07960"}
+  {id:28, kind:"donate", title:"Legal Services of Northwest Jersey", desc:"Provides free civil legal assistance to eligible low-income residents of Morris County, including help with housing, family law, and public benefits.", age:["adult","family","senior"], location:"morristown", services:["legal"], link:"https://www.lsnwj.org/", phone:"(973) 285-6911", address:"30 Schuyler Pl, Morristown, NJ 07960"}
 ];
 
 const cardsList      = document.getElementById('cardsList');
@@ -38,50 +38,79 @@ const chips          = document.querySelectorAll('.chip');
 const tabBtns        = document.querySelectorAll('.tab-btn');
 const resetBtn       = document.getElementById('resetFilters');
 
+/* Detail modal DOM refs */
+const backdrop   = document.getElementById('detailBackdrop');
+const modalWrap  = document.getElementById('detailModalWrap');
+const detailCard = document.getElementById('detailCard');
+
 let activeTab      = 'all';
 let activeServices = [];
+let lastFocused    = null;
+let currentPage    = 1;
+const PAGE_SIZE    = 8;
+
+// -------------------
+// Badge helper
+// -------------------
+function kindBadgesHtml(kind) {
+  if (kind === 'donate & volunteer') {
+    return `<span class="kind-badge badge-donate">Donate</span><span class="kind-badge badge-volunteer">Volunteer</span>`;
+  }
+  if (kind === 'volunteer') {
+    return `<span class="kind-badge badge-volunteer">Volunteer</span>`;
+  }
+  return `<span class="kind-badge badge-donate">Donate</span>`;
+}
 
 // -------------------
 // Main render function
 // -------------------
 function render() {
-  const age = filterAge.value;
+  const age      = filterAge.value;
   const location = filterLocation.value.toLowerCase();
 
   const filtered = DATA.filter(item => {
-    // KIND filter
-    if (activeTab === 'donate' && item.kind !== 'donate') return false;
-    if (activeTab === 'volunteer' && item.kind !== 'volunteer') return false;
-
-    // AGE filter
-    if (age && !item.age.includes(age)) return false;
-
-    // LOCATION filter
-    if (location && item.location.toLowerCase() !== location) return false;
-
-    // SERVICES filter
+    if (activeTab === 'donate'    && !item.kind.includes('donate'))    return false;
+    if (activeTab === 'volunteer' && !item.kind.includes('volunteer')) return false;
+    if (age      && !item.age.includes(age))                           return false;
+    if (location && item.location.toLowerCase() !== location)          return false;
     if (activeServices.length && !activeServices.every(s => item.services.includes(s))) return false;
-
     return true;
   });
 
-  cardsList.innerHTML = filtered.map(item => {
-    const badgeClass = item.kind === 'donate' ? 'badge-donate' : item.kind === 'volunteer' ? 'badge-volunteer' : 'badge-both';
-    const badgeLabel = item.kind === 'donate & volunteer' ? 'Donate & Volunteer' : item.kind.charAt(0).toUpperCase() + item.kind.slice(1);
+  /* When filtering by tab, push "both" items to bottom */
+  if (activeTab !== 'all') {
+    filtered.sort((a, b) => {
+      const aIsBoth = a.kind === 'donate & volunteer' ? 1 : 0;
+      const bIsBoth = b.kind === 'donate & volunteer' ? 1 : 0;
+      return aIsBoth - bIsBoth;
+    });
+  }
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  if (currentPage > totalPages) currentPage = 1;
+
+  const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  cardsList.innerHTML = pageItems.map(item => {
     const pills = item.services.map(s => `<span class="card-pill">${s}</span>`).join('');
+    const townDisplay = item.location
+      .split('-')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
 
     return `
-      <article class="dv-card">
+      <article class="dv-card" tabindex="0" role="button" aria-label="View details for ${item.title}" data-id="${item.id}">
         <div>
-          <span class="kind-badge ${badgeClass}">${badgeLabel}</span>
+          <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
           <h3>${item.title}</h3>
-          ${item.address ? `<p class="card-address">${item.address}</p>` : ''}
-          ${item.phone ? `<p class="card-phone">${item.phone}</p>` : ''}
+          ${item.address ? `<p class="card-address">${item.address}</p>` : `<p class="card-address">${townDisplay}</p>`}
+          ${item.phone   ? `<p class="card-phone">${item.phone}</p>`     : ''}
           <p class="card-desc">${item.desc}</p>
           <div class="card-pills">${pills}</div>
         </div>
         <div class="dv-card-actions">
-          ${item.link ? `<a class="btn btn-primary" href="${item.link}" target="_blank" rel="noopener noreferrer">Visit Website</a>` : ''}
+          <button class="btn btn-secondary view-details-btn" data-id="${item.id}">View details</button>
         </div>
       </article>
     `;
@@ -89,24 +118,240 @@ function render() {
 
   resultsCount.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
   noResults.hidden = filtered.length > 0;
-  cardsList.hidden  = filtered.length === 0;
+  cardsList.hidden = filtered.length === 0;
+
+  renderPagination(filtered.length, totalPages);
+
+  /* Whole card opens modal */
+  cardsList.querySelectorAll('.dv-card').forEach(card => {
+    const item = DATA.find(d => d.id === Number(card.dataset.id));
+    if (!item) return;
+
+    card.addEventListener('click', e => {
+      if (e.target.closest('a')) return;
+      openDetail(item, card);
+    });
+
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDetail(item, card);
+      }
+    });
+  });
 }
+
+// -------------------
+// Pagination renderer
+// -------------------
+function renderPagination(total, totalPages) {
+  let pager = document.getElementById('dvPagination');
+  if (!pager) {
+    pager = document.createElement('nav');
+    pager.id = 'dvPagination';
+    pager.setAttribute('aria-label', 'Results pages');
+    cardsList.parentNode.insertBefore(pager, cardsList.nextSibling);
+  }
+
+  if (totalPages <= 1) {
+    pager.innerHTML = '';
+    return;
+  }
+
+  const start = (currentPage - 1) * PAGE_SIZE + 1;
+  const end   = Math.min(currentPage * PAGE_SIZE, total);
+
+  let html = `<p class="pagination-info">Showing ${start}–${end} of ${total}</p>`;
+  html += `<div class="pagination-btns">`;
+
+  // Double-left arrow → first page
+  html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="First page" id="pgFirst">&#8676;</button>`;
+  // Single-left arrow → previous page
+  html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="Previous page" id="pgPrev">&#8592;</button>`;
+
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}" aria-label="Page ${i}" aria-current="${i === currentPage ? 'page' : 'false'}">${i}</button>`;
+  }
+
+  // Single-right arrow → next page
+  html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Next page" id="pgNext">&#8594;</button>`;
+  // Double-right arrow → last page
+  html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Last page" id="pgLast">&#8677;</button>`;
+
+  html += `</div>`;
+
+  pager.innerHTML = html;
+
+  pager.querySelector('#pgFirst').addEventListener('click', () => {
+    if (currentPage > 1) { currentPage = 1; render(); scrollToList(); }
+  });
+  pager.querySelector('#pgPrev').addEventListener('click', () => {
+    if (currentPage > 1) { currentPage--; render(); scrollToList(); }
+  });
+  pager.querySelector('#pgNext').addEventListener('click', () => {
+    if (currentPage < totalPages) { currentPage++; render(); scrollToList(); }
+  });
+  pager.querySelector('#pgLast').addEventListener('click', () => {
+    if (currentPage < totalPages) { currentPage = totalPages; render(); scrollToList(); }
+  });
+
+  pager.querySelectorAll('.page-btn[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentPage = Number(btn.dataset.page);
+      render();
+      scrollToList();
+    });
+  });
+}
+
+// -------------------
+// Scroll to card list
+// (80px offset so it lands above the results header, not flush against it)
+// -------------------
+function scrollToList() {
+  const top = cardsList.getBoundingClientRect().top + window.scrollY - 80;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+// -------------------
+// Open detail modal
+// -------------------
+function openDetail(item, triggerEl) {
+  lastFocused = triggerEl || document.activeElement;
+
+  const pills = item.services.map(s => `<span class="card-pill">${s}</span>`).join('');
+
+  const websiteHtml = item.link
+    ? `<a href="${item.link}" target="_blank" rel="noopener">${item.link.replace(/^https?:\/\//, '')}</a>`
+    : `<span style="color:var(--muted)">Not listed</span>`;
+
+  const phoneHtml = item.phone
+    ? `<a href="tel:${item.phone}">${item.phone}</a>`
+    : `<span style="color:var(--muted)">Not listed</span>`;
+
+  const mapsUrl = item.address
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`
+    : '';
+
+  detailCard.innerHTML = `
+    <div class="detail-head">
+      <div class="detail-head-left">
+        <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
+        <h2 class="detail-title" id="detailTitle">${item.title}</h2>
+      </div>
+      <button class="detail-close" id="detailCloseX" aria-label="Close details">&#x2715;</button>
+    </div>
+
+    <div class="detail-body">
+
+      <div class="detail-section">
+        <p class="detail-section-label">About</p>
+        <p class="detail-long-desc">${item.desc}</p>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-label">Services</p>
+        <div class="detail-tags">${pills || "<span style='color:var(--muted)'>No services listed</span>"}</div>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-label">Who it serves</p>
+        <div class="detail-tags">
+          ${item.age.map(a => `<span class="card-pill">${a}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-label">Contact & Location</p>
+        <div class="detail-info-grid">
+
+          <div class="detail-info-item">
+            <p class="detail-info-label">Location</p>
+            <p class="detail-info-value">${item.location.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</p>
+          </div>
+
+          <div class="detail-info-item">
+            <p class="detail-info-label">Phone</p>
+            <p class="detail-info-value">${phoneHtml}</p>
+          </div>
+
+          <div class="detail-info-item" style="grid-column:1/-1;">
+            <p class="detail-info-label">Address</p>
+            <p class="detail-info-value">${item.address || "<span style='color:var(--muted)'>Not listed</span>"}</p>
+          </div>
+
+          <div class="detail-info-item" style="grid-column:1/-1;">
+            <p class="detail-info-label">Website</p>
+            <p class="detail-info-value">${websiteHtml}</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="detail-actions">
+      ${item.link    ? `<a class="btn btn-primary"   href="${item.link}" target="_blank" rel="noopener">Visit Website</a>` : ''}
+      ${item.phone   ? `<a class="btn btn-secondary" href="tel:${item.phone}">Call</a>` : ''}
+      ${mapsUrl      ? `<a class="btn btn-secondary" href="${mapsUrl}" target="_blank" rel="noopener">Open in Maps</a>` : ''}
+      ${item.address ? `<button class="btn btn-ghost" id="copyAddressBtn">Copy Address</button>` : ''}
+      <button class="btn btn-ghost" id="detailCloseBtn">Close</button>
+    </div>
+  `;
+
+  detailCard.querySelector('#detailCloseX').addEventListener('click',   closeDetail);
+  detailCard.querySelector('#detailCloseBtn').addEventListener('click', closeDetail);
+
+  if (item.address) {
+    detailCard.querySelector('#copyAddressBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText(item.address).then(() => {
+        alert('Address copied to clipboard!');
+      });
+    });
+  }
+
+  backdrop.hidden  = false;
+  modalWrap.hidden = false;
+  document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(() => {
+    const first = detailCard.querySelector('button, a[href]');
+    if (first) first.focus();
+  });
+}
+
+// -------------------
+// Close detail modal
+// -------------------
+function closeDetail() {
+  backdrop.hidden  = true;
+  modalWrap.hidden = true;
+  document.body.style.overflow = '';
+  if (lastFocused) lastFocused.focus();
+}
+
+backdrop.addEventListener('click', closeDetail);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !modalWrap.hidden) closeDetail();
+});
 
 // -------------------
 // Tab buttons
 // -------------------
 tabBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
     btn.classList.add('active');
-    btn.setAttribute('aria-selected','true');
-    activeTab = btn.dataset.tab;
+    btn.setAttribute('aria-selected', 'true');
+    activeTab   = btn.dataset.tab;
+    currentPage = 1;
 
     const resultsHeading = document.getElementById('results-heading');
     if (resultsHeading) {
-      if (activeTab === 'donate') resultsHeading.textContent = 'Donate Opportunities';
+      if (activeTab === 'donate')         resultsHeading.textContent = 'Donate Opportunities';
       else if (activeTab === 'volunteer') resultsHeading.textContent = 'Volunteer Opportunities';
-      else resultsHeading.textContent = 'All Opportunities';
+      else                                resultsHeading.textContent = 'All Opportunities';
     }
 
     render();
@@ -123,6 +368,7 @@ chips.forEach(chip => {
     activeServices = activeServices.includes(val)
       ? activeServices.filter(s => s !== val)
       : [...activeServices, val];
+    currentPage = 1;
     render();
   });
 });
@@ -130,21 +376,22 @@ chips.forEach(chip => {
 // -------------------
 // Age & Location filters
 // -------------------
-filterAge.addEventListener('change', render);
-filterLocation.addEventListener('change', render);
+filterAge.addEventListener('change',      () => { currentPage = 1; render(); });
+filterLocation.addEventListener('change', () => { currentPage = 1; render(); });
 
 // -------------------
 // Reset button
 // -------------------
 resetBtn.addEventListener('click', () => {
-  activeTab = 'all';
+  activeTab      = 'all';
   activeServices = [];
-  filterAge.value = '';
+  currentPage    = 1;
+  filterAge.value      = '';
   filterLocation.value = '';
   chips.forEach(c => c.classList.remove('selected'));
-  tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+  tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
   tabBtns[0].classList.add('active');
-  tabBtns[0].setAttribute('aria-selected','true');
+  tabBtns[0].setAttribute('aria-selected', 'true');
   render();
 });
 
