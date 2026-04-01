@@ -561,7 +561,8 @@ a[href="submit.html"].btn-ghost:hover,
 }
 
 .mobile-menu a:hover { color: var(--cream); }
-.mobile-nav a.nav-saved-link {
+
+.mobile-menu a.nav-saved-link {
   color: var(--rust);
   font-weight: 600;
 }
