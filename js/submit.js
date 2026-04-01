@@ -202,7 +202,7 @@ if (!rootFolders.length) {
 
 })();
 // anohter resource button 
-document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
+// document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("submitAnotherBtn");
 
