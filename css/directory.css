@@ -266,8 +266,8 @@
 .res-card:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 20px 50px rgba(26, 20, 16, 0.18),
-    0 6px 18px rgba(26, 20, 16, 0.10);
+    0 20px 50px rgba(26, 20, 16, .18),
+    0 6px 18px rgba(26, 20, 16, .10);
   outline: 2px solid var(--rust);
   outline-offset: 0;
 }
@@ -275,7 +275,7 @@
 .res-card:focus-visible {
   outline: 2px solid var(--rust);
   outline-offset: 2px;
-  box-shadow: 0 20px 50px rgba(26,20,16,.15);
+  box-shadow: 0 20px 50px rgba(26, 20, 16, .15);
 }
 
 /* ── BOOKMARK HEART ON DIRECTORY CARDS ───────────────────────
@@ -288,13 +288,12 @@
   font-size: 1.15rem;
   line-height: 1;
   padding: .2rem .3rem;
-  color: rgba(247,242,234,.22);
+  /* Dim white on dark background */
+  color: rgba(247, 242, 234, .22);
   transition: color .2s, transform .15s;
   flex-shrink: 0;
   font-family: 'DM Sans', sans-serif;
-  border-radius: 3px;
 }
-
 .res-card-top .card-bookmark:hover {
   color: var(--rust);
   transform: scale(1.2);
@@ -304,9 +303,34 @@
   color: var(--rust) !important;
 }
 
+.res-card-top .card-bookmark.bookmark-pop {
+  animation: bookmark-pop .35s cubic-bezier(.36, .07, .19, .97) both;
+}
 /* ── BOOKMARK HEART INSIDE DETAIL MODAL ──────────────────────
    Pill-shaped button next to the close X in the modal header.
 ------------------------------------------------------------ */
+
+.detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.6rem 1.7rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.detail-head-left {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  flex: 1;
+  min-width: 0;
+}
+
 .detail-head-right {
   display: flex;
   align-items: center;
@@ -316,26 +340,29 @@
 
 .detail-bookmark {
   background: var(--paper);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 999px;
-  padding: .45rem .9rem;
-  font-size: 1rem;
+  padding: .4rem .85rem;
+  font-size: 1.05rem;
   line-height: 1;
-  color: rgba(58,40,28,.3);
+  color: var(--rust) !important;
   cursor: pointer;
-  transition: color .2s, background .2s, transform .15s;
+  transition: color .2s, background .2s, border-color .2s, transform .15s;
   font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
 }
 
 .detail-bookmark:hover {
   color: var(--rust);
-  background: rgba(192,75,32,.08);
+  background: rgba(192, 75, 32, .07);
+  border-color: var(--rust);
   transform: scale(1.08);
 }
 
 .detail-bookmark.saved {
   color: var(--rust) !important;
-  background: rgba(192,75,32,.1);
+  background: rgba(192, 75, 32, .1);
+  border-color: var(--rust);
 }
 
 /* ── BOOKMARK POP ANIMATION ──────────────────────────────────
@@ -343,14 +370,14 @@
 ------------------------------------------------------------ */
 @keyframes bookmark-pop {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.45); }
-  70%  { transform: scale(0.88); }
+  40%  { transform: scale(1.5); }
+  70%  { transform: scale(.88); }
   100% { transform: scale(1); }
 }
 
 .card-bookmark.bookmark-pop,
 .detail-bookmark.bookmark-pop {
-  animation: bookmark-pop 0.35s cubic-bezier(.36,.07,.19,.97) both;
+  animation: bookmark-pop .35s cubic-bezier(.36, .07, .19, .97) both;
 }
 
 /* ── NAV SAVED LINK ──────────────────────────────────────────
@@ -363,12 +390,13 @@
   align-items: center;
   gap: .3rem;
 }
-
+ 
 .nav-saved-link:hover {
-  background: rgba(192,75,32,.1) !important;
+  background: rgba(192, 75, 32, .1) !important;
   color: var(--rust) !important;
 }
-
+ 
+/* Bookmark count badge pill */
 .bookmark-count {
   background: var(--rust);
   color: #fff;
@@ -444,20 +472,18 @@
 }
 
 /* Softer category color hints (matches warm theme) */
-.badge-food             { background: #C96A3A; color: rgba(255,255,255,0.9); }
-.badge-housing          { background: #4A7A48; color: rgba(255,255,255,0.9); }
-.badge-domestic-violence{ background: #B23A3A; color: rgba(255,255,255,0.92); }
-.badge-mental-health    { background: #3A5FBF; color: rgba(255,255,255,0.92); }
-.badge-substance-use    { background: #7A42B0; color: rgba(255,255,255,0.92); }
-.badge-health           { background: #2F8A70; color: rgba(255,255,255,0.92); }
-.badge-legal            { background: #B08A1A; color: rgba(255,255,255,0.92); }
-.badge-disability       { background: #3A6FA8; color: rgba(255,255,255,0.92); }
-.badge-youth            { background: #C7683A; color: rgba(255,255,255,0.92); }
-.badge-senior           { background: #5F8A3A; color: rgba(255,255,255,0.92); }
-.badge-employment       { background: #3A7AA8; color: rgba(255,255,255,0.92); }
-.badge-education        { background: #8A3AA8; color: rgba(255,255,255,0.92); }
-.badge-social-services  { background: #A85A3A; color: rgba(255,255,255,0.92); }
-
+.badge-food             { background: rgba(201, 106, 58, 0.5); color: rgba(255,255,255,0.5); }
+.badge-housing          { background: rgba(74, 122, 72, 0.5); color: rgba(255,255,255,0.5); }
+.badge-domestic-violence{ background: rgba(178, 58, 58, 0.5); color: rgba(255,255,255,0.5); }
+.badge-mental-health    { background: rgba(58, 95, 191, 0.5); color: rgba(255,255,255,0.5); }
+.badge-substance-use    { background: rgba(122, 66, 176, 0.5); color: rgba(255,255,255,0.5); }
+.badge-health           { background: rgba(47, 138, 112, 0.5); color: rgba(255,255,255,0.5); }
+.badge-legal            { background: rgba(176, 138, 26, 0.5); color: rgba(255,255,255,0.5); }
+.badge-disability       { background: rgba(58, 111, 168, 0.5); color: rgba(255,255,255,0.5); }
+.badge-youth            { background: rgba(199, 104, 58, 0.5); color: rgba(255,255,255,0.5); }
+.badge-senior           { background: rgba(95, 138, 58, 0.5); color: rgba(255,255,255, 0.5); }
+.badge-education        { background: rgba(138, 58, 168, 0.5); color: rgba(255,255,255,0.5); }
+.badge-social-services  { background: rgba(168, 90, 58, 0.5); color: rgba(255,255,255,0.5); }
 /* ============================================================
    CARD CONTENT
 ============================================================ */

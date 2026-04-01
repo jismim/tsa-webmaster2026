@@ -470,8 +470,8 @@ FIX: Restored full modal styles that were stripped
   content: '';
   position: absolute; inset: 0;           /* ← change top/right/width/height to inset:0 */
   background:
-    radial-gradient(circle at 20% 20%, rgba(192, 75, 32, 0.354), transparent 22%),
-    radial-gradient(circle at 80% 35%, rgba(74, 103, 65, 0.562), transparent 20%),
+    radial-gradient(circle at 20% 20%, rgba(192, 75, 32, 0.200), transparent 22%),
+    radial-gradient(circle at 80% 85%, rgba(74, 103, 65, 0.350), transparent 20%),
     repeating-linear-gradient(
       -60deg, transparent, transparent 38px,
       rgba(255,255,255,.025) 38px, rgba(255,255,255,.025) 39px
