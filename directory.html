@@ -11,27 +11,69 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="images/logo.png"/>
-  <script src="js/script.js" defer></script>
+
+  <style>
+    /* ── PAGE LOAD-IN ANIMATION ───────────────────────────────
+       Hero elements animate in on page load (not scroll).
+       Cards and filter bar animate in via IntersectionObserver.
+    --------------------------------------------------------- */
+
+    /* Hero copy: slides up + fades in */
+    .reveal-hero {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .65s cubic-bezier(.16,1,.3,1),
+                  transform .65s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal-hero.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Scroll-reveal cards */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .55s cubic-bezier(.16,1,.3,1),
+                  transform .55s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger helpers */
+    .delay-1 { transition-delay: .08s !important; }
+    .delay-2 { transition-delay: .16s !important; }
+    .delay-3 { transition-delay: .24s !important; }
+    .delay-4 { transition-delay: .32s !important; }
+  </style>
 </head>
 <body>
-    <a class = "skip-link" href = "#main">Skip to main content</a>
-    <!-- MOBILE MENU -->
- <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
-      <div class="mobile-menu-head">
-        <span class="mobile-menu-brand">CareMap Morris</span>
-        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
-      </div>
-      <a href="about.html">About</a>
-      <a href="directory.html">Directory</a>
-      <a href="donate-volunteer.html">Give Back</a>
-      <a href="submit.html">Contact Us</a>
-      <a href="highlights.html">Highlights</a>
-      <a href="works-cited.html">Works Cited</a>
-      <a href="/admin/login.html">Admin</a>
-    </nav>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- HEADER -->
- <header class="site-header">
+  <!-- MOBILE MENU -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+    <div class="mobile-menu-head">
+      <div class="mobile-menu-brand">
+        <img src="images/logo.png" alt="CareMap Morris logo" class="mobile-brand-logo">
+        <span>CareMap Morris</span>
+      </div>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
+    </div>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="directory.html">Directory</a>
+    <a href="donate-volunteer.html">Give Back</a>
+    <a href="submit.html">Contact Us</a>
+    <a href="highlights.html">Highlights</a>
+    <a href="works-cited.html">Works Cited</a>
+    <a href="bookmarks.html">♥ Saved Resources</a>
+    <a href="/admin/login.html">Admin</a>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
         <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
@@ -39,200 +81,305 @@
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
 
-  <!-- Resources Dropdown -->
-  <div class="nav-dropdown">
-    <button class="dropdown-toggle" aria-expanded="false">
-      Resources ⮟
-    </button>
-    <div class="dropdown-menu">
-      <a href="directory.html">Directory</a>
-      <a href="donate-volunteer.html">Give Back</a>
-      <a href="highlights.html">Highlights</a>
-      
+        <!-- Resources Dropdown — SVG arrow (cross-platform safe) -->
+        <div class="nav-dropdown">
+          <button class="dropdown-toggle" aria-expanded="false">
+            Resources
+            <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="directory.html">Directory</a>
+            <a href="donate-volunteer.html">Give Back</a>
+            <a href="highlights.html">Highlights</a>
+          </div>
+        </div>
+
+        <a href="submit.html">Contact Us</a>
+        <a href="works-cited.html">Works Cited</a>
+
+        <a href="/admin/login.html">Admin</a>
+        <a href="bookmarks.html" class="nav-saved-link">
+          ♥ Saved
+          <span class="bookmark-count" style="display:none;">0</span>
+        </a>  
+      </nav>
+
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
+        ☰ Menu
+      </button>
     </div>
-  </div>
+  </header>
 
-  <a href="submit.html">Contact Us</a>
-  <a href="works-cited.html">Works Cited</a>
-  <a href="/admin/login.html">Admin</a>
-</nav>
-        <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
-          ☰ Menu
-        </button>
-      </div>
-    </header>
+  <main id="main">
 
-    <main id="main">
-
-    <!-- Page intro -->
-    <section class="dir-hero">
+    <!-- PAGE HERO -->
+    <section class="dir-hero" aria-label="Directory introduction">
       <div class="container dir-hero-inner">
-    
+
         <!-- LEFT SIDE -->
-        <div class="dir-hero-copy">
+        <div class="dir-hero-copy reveal-hero">
           <p class="hero-eyebrow">Explore Resources</p>
-    
           <h1>
             Resource Directory for <br>
             <em>Morris County</em>
           </h1>
-    
           <p class="subtitle">
-            Browse trusted nonprofits, shelters, food resources, counseling, 
+            Browse trusted nonprofits, shelters, food resources, counseling,
             and community support services across your area.
           </p>
+          <!-- View All shortcut -->
+          <div style="margin-top:1.5rem; display:flex; gap:.75rem; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="#resourceGrid">Browse All Resources →</a>
+            <a class="btn btn-sage" href="donate-volunteer.html">Give Back →</a>
+          </div>
         </div>
-    
-        <!-- RIGHT SIDE (CUTE HIGHLIGHTS PANEL) -->
-        <div class="dir-hero-panel" aria-hidden="true">
-    
+
+        <!-- RIGHT PANEL -->
+        <div class="dir-hero-panel reveal-hero delay-2" aria-hidden="true">
           <div class="dir-preview">
-            <span class="label">Food & Essentials</span>
+            <span class="label">Food &amp; Essentials</span>
             <h3>Food Pantries</h3>
             <p>Find free groceries and meal programs near you.</p>
           </div>
-    
           <div class="dir-preview">
             <span class="label">Housing</span>
-            <h3>Shelters & Housing</h3>
+            <h3>Shelters &amp; Housing</h3>
             <p>Emergency shelter and long-term housing support.</p>
           </div>
-    
           <div class="dir-preview">
             <span class="label">Health</span>
             <h3>Mental Health</h3>
             <p>Counseling, crisis lines, and therapy services.</p>
           </div>
-    
         </div>
-    
+
       </div>
     </section>
 
-    <!-- Resource cards grid -->
-<section class="dir-section" aria-label="Community resources">
-    <div class="container">
-  
-      <!-- FILTER BAR -->
-      <div class="dir-controls" aria-label="Directory filters">
-  
-        <div class="dir-search-wrap">
-          <label for="searchInput">Search Resources</label>
-          <input 
-            type="search"
-            id="searchInput"
-            placeholder='Try: "food pantry", "shelter", "counseling"...'
-          />
-        </div>
-  
-        <div class="dir-filter-row">
-  
-          <div>
-            <label for="categoryFilter">Category</label>
-            <select id="categoryFilter">
-              <option value="all">All Categories</option>
-            </select>
+    <!-- RESOURCE CARDS GRID -->
+    <section class="dir-section" aria-label="Community resources">
+      <div class="container">
+
+        <!-- FILTER BAR -->
+        <div class="dir-controls reveal" aria-label="Directory filters">
+
+          <div class="dir-search-wrap">
+            <label for="searchInput">Search Resources</label>
+            <input
+              type="search"
+              id="searchInput"
+              placeholder='Try: "food pantry", "shelter", "counseling"...'
+            />
           </div>
-  
-          <div>
-            <label for="townFilter">Town</label>
-            <select id="townFilter">
-              <option value="all">All Towns</option>
-            </select>
+
+          <div class="dir-filter-row">
+            <div>
+              <label for="categoryFilter">Category</label>
+              <select id="categoryFilter">
+                <option value="all">All Categories</option>
+              </select>
+            </div>
+            <div>
+              <label for="townFilter">Town</label>
+              <select id="townFilter">
+                <option value="all">All Towns</option>
+              </select>
+            </div>
+            <button id="clearFilters" class="dir-clear-btn">Clear</button>
           </div>
-  
-          <button id="clearFilters" class="dir-clear-btn">
-            Clear
-          </button>
-  
+
+          <p class="dir-results-count" id="resultsCount"></p>
         </div>
-  
-        <p class="dir-results-count" id="resultsCount"></p>
-  
+
+        <!-- CARDS GRID — cards get .reveal class added by directory.js -->
+        <div class="resource-grid" id="resourceGrid" aria-label="Resource listings"></div>
+
+        <!-- VIEW ALL / LOAD MORE note -->
+        <div class="dir-view-all reveal" style="text-align:center; margin-top:2.5rem;">
+          <p style="font-size:.85rem; color:var(--warm-gray); margin-bottom:.75rem;">
+            Showing all <strong id="totalCount"></strong> resources in Morris County.
+          </p>
+          <a class="btn btn-outline-dark" href="donate-volunteer.html">Looking to Give Back? →</a>
+        </div>
+
       </div>
-  
-      <!-- CARDS GRID -->
-      <div class="resource-grid" id="resourceGrid" aria-label="Resource listings">
-        <!-- Cards are injected here by directory.js -->
-      </div>
-  
-    </div>
-  </section>
-  
- 
-      
+    </section>
 
   </main>
 
-  <!-- ==================== DETAIL MODAL ==================== -->
-  <!-- Backdrop (click to close) -->
-  <div
-    class="detail-backdrop"
-    id="detailBackdrop"
-    hidden
-    aria-hidden="true"
-  ></div>
-
-  <!-- Modal wrapper (centres the card) -->
-  <div
-    class="detail-modal-wrap"
-    id="detailModalWrap"
-    hidden
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="detailTitle"
-  >
-    <!-- Card content is injected here by directory.js -->
+  <!-- DETAIL MODAL -->
+  <div class="detail-backdrop" id="detailBackdrop" hidden aria-hidden="true"></div>
+  <div class="detail-modal-wrap" id="detailModalWrap" hidden role="dialog" aria-modal="true" aria-labelledby="detailTitle">
     <div class="detail-card" id="detailCard"></div>
   </div>
 
-  <!-- ==================== FOOTER ==================== -->
- <footer class="site-footer">
-      <div class="container footer-grid">
-        <div>
-          <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-          <p class="footer-mission">
-            CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
-          </p>
-        </div>
-        <div>
-          <p class="footer-col-title">Navigation</p>
-          <ul class="footer-links">
-            <li><a href="about.html">About</a></li>
-            <li><a href="directory.html">Directory</a></li>
-            <li><a href="donate-volunteer.html">Give Back</a></li>
-            <li><a href="highlights.html">Highlights</a></li>
-            <li><a href="works-cited.html">Works Cited</a></li>
-            <li><a href="/admin/login.html">Admin</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="footer-col-title">Contact &amp; Info</p>
-          <ul class="footer-links">
-            <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
-            <li><a href="submit.html">Submit a Resource</a></li>
-          </ul>
-          <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
-            Morris County, New Jersey<br>
-            Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
-          </p>
-        </div>
-      </div>
-      <div class="container footer-bottom">
-        <p class="footer-disclaimer">
-          <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
-          <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+        <p class="footer-mission">
+          CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
         </p>
-        <p class="footer-date" id="footerYear"></p>
       </div>
-    </footer>
+      <div>
+        <p class="footer-col-title">Navigation</p>
+        <ul class="footer-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Give Back</a></li>
+          <li><a href="highlights.html">Highlights</a></li>
+          <li><a href="works-cited.html">Works Cited</a></li>
+          <li><a href="bookmarks.html">♥ Saved Resources</a></li>
+          <li><a href="/admin/login.html">Admin</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Contact &amp; Info</p>
+        <ul class="footer-links">
+          <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+        </ul>
+        <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+          Morris County, New Jersey<br>
+          Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
+        </p>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p class="footer-disclaimer">
+        <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
+        <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+      </p>
+      <p class="footer-date" id="footerYear"></p>
+    </div>
+  </footer>
 
-  <!-- ==================== SCRIPTS ==================== -->
-  <!-- Data must load before the directory logic -->
+  <!-- SCRIPTS — order matters -->
   <script src="js/resources.js"></script>
+  <script src="js/bookmarks.js"></script>
   <script src="js/directory.js"></script>
+
+  <script>
+  /* ── PAGE-LEVEL JS ──────────────────────────────────────────
+     Mobile menu, dropdown, footer year, load-in animations.
+     Kept here so directory.html doesn't depend on script.js
+     (which also boots the homepage map, modal, etc.)
+  ----------------------------------------------------------- */
+  document.addEventListener('DOMContentLoaded', function () {
+
+    /* ── Mobile menu ── */
+    var mobileMenu      = document.getElementById('mobileMenu');
+    var mobileNavBtn    = document.getElementById('mobileNavBtn');
+    var mobileMenuClose = document.getElementById('mobileMenuClose');
+
+    function openMobileMenu() {
+      if (!mobileMenu) return;
+      mobileMenu.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileMenu() {
+      if (!mobileMenu) return;
+      mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
+    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+    if (mobileMenu) {
+      mobileMenu.querySelectorAll('a').forEach(function (l) {
+        l.addEventListener('click', closeMobileMenu);
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMobileMenu();
+    });
+
+    /* ── Dropdown ── */
+    var toggle = document.querySelector('.dropdown-toggle');
+    var menu   = document.querySelector('.dropdown-menu');
+    if (toggle && menu) {
+      toggle.addEventListener('click', function () {
+        var isOpen = menu.style.display === 'flex';
+        menu.style.display = isOpen ? 'none' : 'flex';
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+      document.addEventListener('click', function (e) {
+        if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+          menu.style.display = 'none';
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    /* ── Footer year ── */
+    var yearEl = document.getElementById('footerYear');
+    if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+
+    /* ── HERO LOAD-IN ─────────────────────────────────────────
+       Fire on DOMContentLoaded (not scroll) so hero animates
+       the moment the page is ready — matching submit.html's
+       reveal-hero pattern.
+    --------------------------------------------------------- */
+    setTimeout(function () {
+      document.querySelectorAll('.reveal-hero').forEach(function (el) {
+        el.classList.add('visible');
+      });
+    }, 80); /* tiny delay so browser has painted the initial frame */
+
+    /* ── SCROLL REVEAL (filter bar, cards, footer cta) ───── */
+    var revealEls = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el     = entry.target;
+          var parent = el.parentElement;
+
+          /* Stagger siblings that haven't appeared yet */
+          var siblings = parent
+            ? Array.from(parent.querySelectorAll('.reveal:not(.visible)'))
+            : [];
+          var idx   = siblings.indexOf(el);
+          var delay = Math.min(idx * 70, 360);
+
+          setTimeout(function () { el.classList.add('visible'); }, delay);
+          io.unobserve(el);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+      revealEls.forEach(function (el) { io.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add('visible'); });
+    }
+
+    /* ── Total count label ── */
+    var totalEl = document.getElementById('totalCount');
+    if (totalEl && typeof RESOURCES !== 'undefined') {
+      totalEl.textContent = RESOURCES.length;
+    }
+
+    /* ── Bookmark badge on load ── */
+    if (typeof CareMapBookmarks !== 'undefined') {
+      document.querySelectorAll('.bookmark-count').forEach(function (el) {
+        var c = CareMapBookmarks.count();
+        el.textContent = c;
+        el.style.display = c > 0 ? 'inline-flex' : 'none';
+      });
+    }
+
+  });
+  </script>
+
 </body>
 </html>

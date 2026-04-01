@@ -26,7 +26,7 @@
       </div>
       <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
     </div>
-    
+    <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="directory.html">Directory</a>
     <a href="donate-volunteer.html">Give Back</a>
@@ -37,7 +37,7 @@
   </nav>
 
 <!-- HEADER -->
-<header class="site-header">
+  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
         <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
@@ -45,27 +45,33 @@
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
 
-  <!-- Resources Dropdown -->
-  <div class="nav-dropdown">
-    <button class="dropdown-toggle" aria-expanded="false">
-      Resources ⮟
-    </button>
-    <div class="dropdown-menu">
-      <a href="directory.html">Directory</a>
-      <a href="donate-volunteer.html">Give Back</a>
-      <a href="highlights.html">Highlights</a>
-      
-    </div>
-  </div>
+        <!-- Resources Dropdown — SVG arrow (cross-platform safe) -->
+        <div class="nav-dropdown">
+          <button class="dropdown-toggle" aria-expanded="false">
+            Resources
+            <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="directory.html">Directory</a>
+            <a href="donate-volunteer.html">Give Back</a>
+            <a href="highlights.html">Highlights</a>
+          </div>
+        </div>
 
-  <a href="submit.html">Contact Us</a>
-  <a href="works-cited.html">Works Cited</a>
-  <a href="/admin/login.html">Admin</a>
-</nav>
+        <a href="submit.html">Contact Us</a>
+        <a href="works-cited.html">Works Cited</a>
 
+        <a href="/admin/login.html">Admin</a>
+        <a href="bookmarks.html" class="nav-saved-link">
+          ♥ Saved
+          <span class="bookmark-count" style="display:none;">0</span>
+        </a>  
+      </nav>
     <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
       ☰ Menu
     </button>

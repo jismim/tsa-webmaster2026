@@ -190,26 +190,39 @@ a[href="submit.html"].btn-ghost:hover,
 /* FIX: The original CSS used .primary-nav but HTML uses .nav — unified here */
 .nav,
 .primary-nav {
-  display: flex; align-items: center; gap: .15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
   flex-wrap: wrap;
 }
 
 /* FIX: Nav links — explicitly set to light color, not inherited ink */
 .nav a,
 .primary-nav a {
-  color: rgba(247,242,234,.8);   /* FIXED: was inheriting black, now cream */
-  font-size: .82rem; font-weight: 500;
-  letter-spacing: .02em;
-  padding: .4rem .75rem;
-  border-radius: var(--radius);
-  transition: background .2s, color .2s;
-  white-space: nowrap;
+  color: rgba(247,242,234,0.8); /* default cream/light color */
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
   text-decoration: none;
+  transition: background 0.2s, color 0.2s;
 }
 .nav a:hover,
 .primary-nav a:hover {
-  background: rgba(255,255,255,.08);
-  color: var(--cream);           /* FIX: hover → full cream */
+  background: rgba(255,255,255,0.08);
+  color: var(--cream);        /* FIX: hover → full cream */
+}/* Saved/Heart link — overrides default nav link color */
+.primary-nav a.nav-saved,
+.nav a.nav-saved-link {
+  color: var(--rust); /* your orange/gold theme color */
+  font-weight: 600;
+}
+
+.primary-nav a.nav-saved:hover,
+.nav a.nav-saved-link:hover {
+  background: rgba(196, 80, 37, 0.1); 
+  color: var(--rust);/* lighter accent on hover */
 }
 .nav a.nav-cta,
 .primary-nav a.nav-cta {
@@ -232,6 +245,18 @@ a[href="submit.html"].btn-ghost:hover,
   cursor: pointer;
   font-size: .85rem;
   padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dropdown-arrow {
+  transition: transform 0.25s ease;
+}
+
+/* rotate when open */
+.dropdown-toggle[aria-expanded="true"] .dropdown-arrow {
+  transform: rotate(180deg);
 }
 
 /* Dropdown menu */
@@ -319,7 +344,14 @@ a[href="submit.html"].btn-ghost:hover,
 }
 
 .mobile-menu a:hover { color: var(--cream); }
+.mobile-nav a.nav-saved-link {
+  color: var(--rust);
+  font-weight: 600;
+}
 
+.mobile-nav a.nav-saved-link:hover {
+  color: var(--rust);
+}
 /* ============================================================ 
 MODAL — First-time walkthrough popup
 FIX: Restored full modal styles that were stripped
@@ -438,8 +470,8 @@ FIX: Restored full modal styles that were stripped
   content: '';
   position: absolute; inset: 0;           /* ← change top/right/width/height to inset:0 */
   background:
-    radial-gradient(circle at 20% 20%, rgba(192,75,32,.18), transparent 22%),
-    radial-gradient(circle at 80% 35%, rgba(74,103,65,.18), transparent 20%),
+    radial-gradient(circle at 20% 20%, rgba(192, 75, 32, 0.354), transparent 22%),
+    radial-gradient(circle at 80% 35%, rgba(74, 103, 65, 0.562), transparent 20%),
     repeating-linear-gradient(
       -60deg, transparent, transparent 38px,
       rgba(255,255,255,.025) 38px, rgba(255,255,255,.025) 39px
@@ -690,7 +722,7 @@ FIX: Restored full modal styles that were stripped
 
 .card-bookmark {
   background: none; border: none;
-  color: rgba(247,242,234,.3);
+  color: rgba(247,242,234,.3) !important;
   font-size: 1.1rem; line-height: 1;
   padding: .15rem; transition: color .2s;
 }
