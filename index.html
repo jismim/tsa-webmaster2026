@@ -23,6 +23,26 @@
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <body>
+  <div id="loader">
+    <div class="load-icon">
+      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13 3C8.03 3 4 7.03 4 12c0 3.1 1.5 5.84 3.8 7.55L13 23l5.2-3.45A9 9 0 0 0 22 12c0-4.97-4.03-9-9-9Z" fill="rgba(247,242,234,0.07)" stroke="var(--rust)" stroke-width="1.2"/>
+        <circle cx="13" cy="11.5" r="2.5" fill="var(--rust)" opacity="0.8"/>
+      </svg>
+    </div>
+    <div class="load-title">CareMap Morris</div>
+    <div class="load-sub">Finding resources near you</div>
+    <div class="load-bar-track">
+      <div class="load-bar-fill"></div>
+    </div>
+    <div class="load-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  <div id="page-wrap">
+    <!-- all your existing homepage HTML goes here -->
+  
+  
     <a class = "skip-link" href = "#main">Skip to main content</a>
     <!-- MOBILE MENU -->
 <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
@@ -522,7 +542,7 @@
         <p class="footer-date" id="footerYear"></p>
       </div>
     </footer>
-
+  </div>
   <!-- JavaScript -->
 <script src="js/resources.js"></script>
 <script src="js/bookmarks.js"></script>
