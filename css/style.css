@@ -171,13 +171,18 @@
   animation: fadeOut 0.6s ease forwards;
 }
 
-.load-icon {
-  width: 52px; height: 52px; border-radius: 14px;
-  background: rgba(247, 242, 234, 0.07);
-  border: 1px solid rgba(247, 242, 234, 0.15);
-  display: flex; align-items: center; justify-content: center;
-  animation: fadeUp 0.5s ease 0.1s both;
-  margin-bottom: 20px;
+.loader-logo{
+  width:70px;
+  height:auto;
+  display:block;
+  margin:auto;
+  animation: loaderFloat 1.6s ease-in-out infinite;
+}
+
+@keyframes loaderFloat{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+  100%{transform:translateY(0);}
 }
 
 .load-title {
