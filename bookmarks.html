@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Saved Resources — CareMap Morris</title>
+  <meta name="description" content="Your saved CareMap Morris resources, bookmarked for easy access." />
+ 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="images/logo.png"/>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+ 
+  <!-- MOBILE MENU -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+    <div class="mobile-menu-head">
+      <div class="mobile-menu-brand">
+        <img src="images/logo.png" alt="CareMap Morris logo" class="mobile-brand-logo">
+        <span>CareMap Morris</span>
+      </div>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
+    </div>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="directory.html">Directory</a>
+    <a href="donate-volunteer.html">Give Back</a>
+    <a href="submit.html">Contact Us</a>
+    <a href="highlights.html">Highlights</a>
+    <a href="works-cited.html">Works Cited</a>
+    <a href="/admin/login.html">Admin</a>
+  </nav>
+ 
+  <!-- HEADER -->
+   <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
+        <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
+        <span class="brand-text">CareMap Morris</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+
+        <!-- Resources Dropdown — SVG arrow (cross-platform safe) -->
+        <div class="nav-dropdown">
+          <button class="dropdown-toggle" aria-expanded="false">
+            Resources
+            <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="directory.html">Directory</a>
+            <a href="donate-volunteer.html">Give Back</a>
+            <a href="highlights.html">Highlights</a>
+          </div>
+        </div>
+
+        <a href="submit.html">Contact Us</a>
+        <a href="works-cited.html">Works Cited</a>
+
+        <a href="/admin/login.html">Admin</a>
+        <a href="bookmarks.html" class="nav-saved-link">
+          ♥ Saved
+          <span class="bookmark-count" style="display:none;">0</span>
+        </a>  
+      </nav>
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">☰ Menu</button>
+    </div>
+  </header>
+ 
+  <main id="main">
+    <section class="section" style="min-height: 60vh;">
+      <div class="container">
+        <p class="section-label">Your Bookmarks</p>
+        <h1 class="section-title">Saved Resources</h1>
+        <p class="section-sub" id="bookmarkSubtitle">Loading your saved organizations…</p>
+ 
+        <!-- Empty state -->
+        <div id="bookmarkEmpty" style="display:none; text-align:center; padding: 4rem 1rem;">
+          <p style="font-size:3rem; margin-bottom:1rem;">♡</p>
+          <h2 style="font-family:var(--ff-display); color:var(--bark); font-size:1.5rem; margin-bottom:.75rem;">No saved resources yet</h2>
+          <p style="color:var(--warm-gray); margin-bottom:1.5rem;">Browse the directory and click ♡ on any organization to save it here for easy access.</p>
+          <a class="btn btn-primary" href="directory.html">Browse Directory →</a>
+        </div>
+ 
+        <!-- Cards grid -->
+        <div class="cards-grid" id="bookmarkGrid"></div>
+ 
+        <!-- Clear all -->
+        <div id="bookmarkClearRow" style="display:none; text-align:center; margin-top:2rem;">
+          <button class="btn btn-outline-dark" id="clearAllBookmarks">Clear All Saved Resources</button>
+        </div>
+      </div>
+    </section>
+  </main>
+ 
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+        <p class="footer-mission">CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Navigation</p>
+        <ul class="footer-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Give Back</a></li>
+          <li><a href="bookmarks.html">Saved Resources</a></li>
+          <li><a href="works-cited.html">Works Cited</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Contact &amp; Info</p>
+        <ul class="footer-links">
+          <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+        </ul>
+        <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+          Morris County, New Jersey<br>
+          Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
+        </p>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p class="footer-disclaimer">
+        <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Always confirm details directly with organizations.
+        <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+      </p>
+      <p class="footer-date" id="footerYear"></p>
+    </div>
+  </footer>
+ 
+  <!-- Load data and scripts -->
+  <script src="js/resources.js"></script>
+  <script src="js/bookmarks.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+ 
+    // ── Mobile menu ──────────────────────────────────────
+    const mobileMenu      = document.getElementById('mobileMenu');
+    const mobileNavBtn    = document.getElementById('mobileNavBtn');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+    function openMobileMenu()  { mobileMenu.classList.add('open'); mobileMenu.setAttribute('aria-hidden','false'); mobileNavBtn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    function closeMobileMenu() { mobileMenu.classList.remove('open'); mobileMenu.setAttribute('aria-hidden','true'); mobileNavBtn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
+    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+    if (mobileMenu) mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMobileMenu));
+ 
+    // ── Dropdown ──────────────────────────────────────────
+    const toggle = document.querySelector('.dropdown-toggle');
+    const menu   = document.querySelector('.dropdown-menu');
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const isOpen = menu.style.display === 'flex';
+        menu.style.display = isOpen ? 'none' : 'flex';
+        toggle.setAttribute('aria-expanded', !isOpen);
+      });
+    }
+ 
+    // ── Footer year ───────────────────────────────────────
+    const yearEl = document.getElementById('footerYear');
+    if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+ 
+    // ── Render bookmarks ──────────────────────────────────
+    const grid        = document.getElementById('bookmarkGrid');
+    const emptyState  = document.getElementById('bookmarkEmpty');
+    const subtitle    = document.getElementById('bookmarkSubtitle');
+    const clearRow    = document.getElementById('bookmarkClearRow');
+    const clearBtn    = document.getElementById('clearAllBookmarks');
+ 
+    // Category → CSS class map
+    const catClass = {
+      'food': 'cat-food',
+      'housing': 'cat-shelter',
+      'domestic-violence': 'cat-shelter',
+      'youth': 'cat-food',
+      'health': 'cat-housing',
+      'legal': 'cat-housing',
+      'mental-health': 'cat-shelter',
+      'substance-use': 'cat-food',
+      'disability': 'cat-housing',
+      'education': 'cat-housing',
+      'senior': 'cat-housing',
+    };
+ 
+    function renderBookmarks() {
+      const savedIds = CareMapBookmarks.getAll();
+      grid.innerHTML = '';
+ 
+      if (savedIds.length === 0) {
+        emptyState.style.display = 'block';
+        subtitle.textContent     = 'Save organizations from the directory to access them here.';
+        clearRow.style.display   = 'none';
+        return;
+      }
+ 
+      emptyState.style.display = 'none';
+      clearRow.style.display   = 'block';
+      subtitle.textContent     = savedIds.length === 1
+        ? 'You have 1 saved organization.'
+        : `You have ${savedIds.length} saved organizations.`;
+ 
+      savedIds.forEach(function (id) {
+        // RESOURCES is loaded from js/resources.js
+        const resource = typeof RESOURCES !== 'undefined'
+          ? RESOURCES.find(r => r.id === id)
+          : null;
+ 
+        if (!resource) return;
+ 
+        const cls  = catClass[resource.category] || 'cat-food';
+        const tags = (resource.tags || []).slice(0, 4)
+          .map(t => `<span class="pill">${t}</span>`).join('');
+ 
+        const card = document.createElement('article');
+        card.className = 'resource-card';
+        card.id        = 'bookmark-card-' + resource.id;
+        card.innerHTML = `
+          <div class="card-top">
+            <span class="card-category ${cls}">${resource.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+            <button class="card-bookmark saved" data-id="${resource.id}" aria-label="Unsave this organization" title="Remove bookmark">♥</button>
+          </div>
+          <div class="card-body">
+            <h2 class="card-title">${resource.title}</h2>
+            <p class="card-meta">${resource.town || ''}</p>
+            <p class="card-text">${resource.shortDesc || ''}</p>
+            <div class="pill-row">${tags}</div>
+          </div>
+          <div class="card-actions">
+            <a class="btn btn-secondary" href="directory.html?id=${resource.id}">View in Directory</a>
+            ${resource.website ? `<a class="btn btn-ghost" href="${resource.website}" target="_blank" rel="noopener">Website ↗</a>` : ''}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+ 
+      // After rendering, re-wire bookmarks so removing heart removes card too
+      grid.querySelectorAll('.card-bookmark[data-id]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const id = this.dataset.id;
+          CareMapBookmarks.remove(id);
+          const card = document.getElementById('bookmark-card-' + id);
+          if (card) {
+            card.style.transition = 'opacity .3s, transform .3s';
+            card.style.opacity    = '0';
+            card.style.transform  = 'scale(.95)';
+            setTimeout(() => { card.remove(); renderBookmarks(); }, 320);
+          }
+        });
+      });
+    }
+ 
+    renderBookmarks();
+ 
+    // Update badge counts in nav
+    CareMapBookmarks.applyToPage();
+ 
+    // Clear all button
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        if (confirm('Remove all saved resources?')) {
+          localStorage.removeItem('cm_bookmarks');
+          renderBookmarks();
+        }
+      });
+    }
+  });
+  </script>
+</body>
+</html>
+ 

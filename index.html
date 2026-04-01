@@ -17,39 +17,38 @@
 <link
   rel="stylesheet"
   href="https://unpkg.com/leaflet/dist/leaflet.css"
-/>
+/><link rel="stylesheet" href="css/bookmarks.css" />
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="images/logo.png"/>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <body>
-
-  <!-- Skip link -->
-  <a class="skip-link" href="#main">Skip to main content</a>
-
-  <!-- ==================== MOBILE MENU ==================== -->
-  <!--
-    SECTION: Mobile Menu
-    Controls: js/main.js → openMobileMenu() / closeMobileMenu()
-    Styling:  css/style.css → .mobile-menu, .mobile-menu.open
-    To add links: add <a href="..."> inside this nav
-  -->
- <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
-      <div class="mobile-menu-head">
-        <span class="mobile-menu-brand">CareMap Morris</span>
-        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
+    <a class = "skip-link" href = "#main">Skip to main content</a>
+    <!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+    <div class="mobile-menu-head">
+      <div class="mobile-menu-brand">
+        <img src="images/logo.png" alt="CareMap Morris logo" class="mobile-brand-logo">
+        <span>CareMap Morris</span>
       </div>
-      <a href="about.html">About</a>
-      <a href="directory.html">Directory</a>
-      <a href="donate-volunteer.html">Give Back</a>
-      <a href="submit.html">Contact Us</a>
-      <a href="highlights.html">Highlights</a>
-      <a href="works-cited.html">Works Cited</a>
-      <a href="/admin/login.html">Admin</a>
-    </nav>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
+    </div>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="directory.html">Directory</a>
+    <a href="donate-volunteer.html">Give Back</a>
+    <a href="submit.html">Contact Us</a>
+    <a href="highlights.html">Highlights</a>
+    <a href="works-cited.html">Works Cited</a>
+    <a href="bookmarks.html" class="nav-saved-link">
+  ♥ Saved
+  <span class="bookmark-count" style="display:none;">0</span>
+  </a>
+    <a href="/admin/login.html">Admin</a>
+  </nav>
 
-    <!-- HEADER -->
- <header class="site-header">
+<!-- HEADER -->
+  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
         <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
@@ -57,31 +56,37 @@
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
 
-  <!-- Resources Dropdown -->
-  <div class="nav-dropdown">
-    <button class="dropdown-toggle" aria-expanded="false">
-      Resources ⮟
-    </button>
-    <div class="dropdown-menu">
-      <a href="directory.html">Directory</a>
-      <a href="donate-volunteer.html">Give Back</a>
-      <a href="highlights.html">Highlights</a>
-      
+        <!-- Resources Dropdown — SVG arrow (cross-platform safe) -->
+        <div class="nav-dropdown">
+          <button class="dropdown-toggle" aria-expanded="false">
+            Resources
+            <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="directory.html">Directory</a>
+            <a href="donate-volunteer.html">Give Back</a>
+            <a href="highlights.html">Highlights</a>
+          </div>
+        </div>
+
+        <a href="submit.html">Contact Us</a>
+        <a href="works-cited.html">Works Cited</a>
+
+        <a href="/admin/login.html">Admin</a>
+        <a href="bookmarks.html" class="nav-saved-link">
+          ♥ Saved
+          <span class="bookmark-count" style="display:none;">0</span>
+        </a>  
+      </nav>
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">☰ Menu</button>
     </div>
-  </div>
+  </header>
 
-  <a href="submit.html">Contact Us</a>
-  <a href="works-cited.html">Works Cited</a>
-  <a href="/admin/login.html">Admin</a>
-</nav>
-        <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
-          ☰ Menu
-        </button>
-      </div>
-    </header>
   <!-- ==================== FIRST-TIME USER WALKTHROUGH MODAL ==================== -->
   <!--
     SECTION: Welcome / Walkthrough Modal
@@ -290,8 +295,7 @@
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-food">Food Pantry</span>
-              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
-            </div>
+              <button class="card-bookmark" data-id="1" aria-label="Save this organization" title="Save for later">♡</button>            </div>
             <div class="card-body">
               <h3 class="card-title">Community Food Bank of Morris County</h3>
               <p class="card-meta">Supports food-insecure residents and families</p>
@@ -315,7 +319,7 @@
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-shelter">Women's Shelter</span>
-              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
+              <button class="card-bookmark" data-id="14" aria-label="Save this organization" title="Save for later">♡</button>
             </div>
             <div class="card-body">
               <h3 class="card-title">Domestic Violence Program of Morris County</h3>
@@ -340,8 +344,7 @@
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-housing">Housing Services</span>
-              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
-            </div>
+              <button class="card-bookmark" data-id="17" aria-label="Save this organization" title="Save for later">♡</button>            </div>
             <div class="card-body">
               <h3 class="card-title">Morris County Homeless Solutions</h3>
               <p class="card-meta">Supports individuals and families facing homelessness</p>
@@ -518,7 +521,9 @@
     </footer>
 
   <!-- JavaScript -->
-  <script src="js/script.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/bookmarks.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
