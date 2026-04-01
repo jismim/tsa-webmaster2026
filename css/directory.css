@@ -225,9 +225,189 @@
   box-shadow: 0 12px 30px rgba(26, 20, 16, 0.05);
 }
 
+/* ============================================================
+   CAREMAP MORRIS — directory-additions.css
+   ADD these rules to the BOTTOM of css/directory.css
+   (or paste into a new file and link it after directory.css)
+============================================================ */
+
+/* ── CARD REVEAL ANIMATION ───────────────────────────────────
+   Cards start invisible and slide up when they enter viewport.
+   The .reveal and .visible classes are managed by directory.js.
+------------------------------------------------------------ */
+.res-card.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .5s cubic-bezier(.16,1,.3,1),
+              transform .5s cubic-bezier(.16,1,.3,1);
+}
+
+.res-card.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── CARD TOP BAR ─────────────────────────────────────────────
+   Dark strip at the top of each card.
+   Badge sits on the left, bookmark heart on the right.
+------------------------------------------------------------ */
+.res-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: 1rem 1.3rem .75rem;
+  background: var(--ink);
+}
+
+/* ── CARD HOVER — deeper shadow + 2px rust outline ───────────
+   Amplified hover state requested.
+------------------------------------------------------------ */
 .res-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 45px rgba(26, 20, 16, 0.10);
+  transform: translateY(-5px);
+  box-shadow:
+    0 20px 50px rgba(26, 20, 16, 0.18),
+    0 6px 18px rgba(26, 20, 16, 0.10);
+  outline: 2px solid var(--rust);
+  outline-offset: 0;
+}
+
+.res-card:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+  box-shadow: 0 20px 50px rgba(26,20,16,.15);
+}
+
+/* ── BOOKMARK HEART ON DIRECTORY CARDS ───────────────────────
+   Lives inside .res-card-top (dark background).
+------------------------------------------------------------ */
+.res-card-top .card-bookmark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  padding: .2rem .3rem;
+  color: rgba(247,242,234,.22);
+  transition: color .2s, transform .15s;
+  flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 3px;
+}
+
+.res-card-top .card-bookmark:hover {
+  color: var(--rust);
+  transform: scale(1.2);
+}
+
+.res-card-top .card-bookmark.saved {
+  color: var(--rust) !important;
+}
+
+/* ── BOOKMARK HEART INSIDE DETAIL MODAL ──────────────────────
+   Pill-shaped button next to the close X in the modal header.
+------------------------------------------------------------ */
+.detail-head-right {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-shrink: 0;
+}
+
+.detail-bookmark {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: .45rem .9rem;
+  font-size: 1rem;
+  line-height: 1;
+  color: rgba(58,40,28,.3);
+  cursor: pointer;
+  transition: color .2s, background .2s, transform .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.detail-bookmark:hover {
+  color: var(--rust);
+  background: rgba(192,75,32,.08);
+  transform: scale(1.08);
+}
+
+.detail-bookmark.saved {
+  color: var(--rust) !important;
+  background: rgba(192,75,32,.1);
+}
+
+/* ── BOOKMARK POP ANIMATION ──────────────────────────────────
+   Fires on every heart click for a satisfying micro-interaction.
+------------------------------------------------------------ */
+@keyframes bookmark-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.45); }
+  70%  { transform: scale(0.88); }
+  100% { transform: scale(1); }
+}
+
+.card-bookmark.bookmark-pop,
+.detail-bookmark.bookmark-pop {
+  animation: bookmark-pop 0.35s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* ── NAV SAVED LINK ──────────────────────────────────────────
+   "♥ Saved" link in the header nav.
+------------------------------------------------------------ */
+.nav-saved-link {
+  color: var(--rust) !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: .3rem;
+}
+
+.nav-saved-link:hover {
+  background: rgba(192,75,32,.1) !important;
+  color: var(--rust) !important;
+}
+
+.bookmark-count {
+  background: var(--rust);
+  color: #fff;
+  border-radius: 2rem;
+  padding: .1rem .45rem;
+  font-size: .68rem;
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  vertical-align: middle;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ── DIR VIEW ALL FOOTER ─────────────────────────────────────
+   "Showing all X resources" row at bottom of grid.
+------------------------------------------------------------ */
+.dir-view-all {
+  padding-top: .5rem;
+}
+
+.dir-view-all p {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: .75rem;
+}
+
+.dir-view-all strong {
+  color: var(--rust);
+}
+
+/* ── HERO LOAD-IN — ensure hero eyebrow inherits correctly ── */
+.dir-hero .hero-eyebrow {
+  color: var(--rust);
 }
 
 .res-card:focus-visible {
@@ -264,20 +444,19 @@
 }
 
 /* Softer category color hints (matches warm theme) */
-.badge-food             { color: #A14A1F; background: rgba(192,75,32,.12); }
-.badge-housing          { color: #2F5A2D; background: rgba(74,103,65,.12); }
-.badge-domestic-violence{ color: #8C1D1D; background: rgba(192,40,40,.12); }
-.badge-mental-health    { color: #1A3B8B; background: rgba(30,70,160,.10); }
-.badge-substance-use    { color: #5A2080; background: rgba(120,60,170,.10); }
-.badge-health           { color: #0D5C45; background: rgba(30,150,120,.10); }
-.badge-legal            { color: #7A5800; background: rgba(200,150,50,.12); }
-.badge-disability       { color: #0D3E6B; background: rgba(70,140,210,.10); }
-.badge-youth            { color: #7A3010; background: rgba(232,151,78,.14); }
-.badge-senior           { color: #3A5C1A; background: rgba(110,170,80,.12); }
-.badge-employment       { color: #1A4A6B; background: rgba(90,150,210,.10); }
-.badge-education        { color: #5A1A6B; background: rgba(160,90,190,.10); }
-.badge-social-services  { color: #6B2A1A; background: rgba(184,154,106,.16); }
-
+.badge-food             { background: #C96A3A; color: rgba(255,255,255,0.9); }
+.badge-housing          { background: #4A7A48; color: rgba(255,255,255,0.9); }
+.badge-domestic-violence{ background: #B23A3A; color: rgba(255,255,255,0.92); }
+.badge-mental-health    { background: #3A5FBF; color: rgba(255,255,255,0.92); }
+.badge-substance-use    { background: #7A42B0; color: rgba(255,255,255,0.92); }
+.badge-health           { background: #2F8A70; color: rgba(255,255,255,0.92); }
+.badge-legal            { background: #B08A1A; color: rgba(255,255,255,0.92); }
+.badge-disability       { background: #3A6FA8; color: rgba(255,255,255,0.92); }
+.badge-youth            { background: #C7683A; color: rgba(255,255,255,0.92); }
+.badge-senior           { background: #5F8A3A; color: rgba(255,255,255,0.92); }
+.badge-employment       { background: #3A7AA8; color: rgba(255,255,255,0.92); }
+.badge-education        { background: #8A3AA8; color: rgba(255,255,255,0.92); }
+.badge-social-services  { background: #A85A3A; color: rgba(255,255,255,0.92); }
 
 /* ============================================================
    CARD CONTENT

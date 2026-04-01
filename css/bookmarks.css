@@ -1,0 +1,144 @@
+
+/* ============================================================
+   CAREMAP MORRIS — Bookmark & Nav Additions
+   ADD these rules to the bottom of css/style.css
+============================================================ */
+ 
+/* ── NAV DROPDOWN ARROW FIX ──────────────────────────────────
+   Replace the SVG path with a pure CSS triangle.
+   This ensures pixel-perfect rendering on Mac, Windows, Linux.
+   The SVG in the HTML still works — this just makes the
+   dropdown-toggle arrow reliable cross-platform.
+   No HTML changes needed; the SVG already rotates via CSS.
+   --------------------------------------------------------- */
+.dropdown-arrow {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  /* Use a CSS-drawn chevron that renders identically everywhere */
+  background: none;
+  border: none;
+  flex-shrink: 0;
+}
+ 
+/* Ensure the SVG arrow (already in HTML) stays crisp */
+.dropdown-toggle svg.dropdown-arrow {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  /* Force hardware-accelerated transform for smooth rotation */
+  will-change: transform;
+  transition: transform 0.25s ease;
+}
+ 
+.dropdown-toggle[aria-expanded="true"] svg.dropdown-arrow {
+  transform: rotate(180deg);
+}
+ 
+/* ── BOOKMARK HEART ANIMATION ────────────────────────────────
+   .bookmark-pop fires on every click for a satisfying pulse.
+----------------------------------------------------------- */
+@keyframes bookmark-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.45); }
+  70%  { transform: scale(0.88); }
+  100% { transform: scale(1); }
+}
+ 
+.card-bookmark.bookmark-pop {
+  animation: bookmark-pop 0.35s cubic-bezier(.36,.07,.19,.97) both;
+}
+ 
+/* ── BOOKMARK BADGE IN NAV ───────────────────────────────────
+   Small pill showing count of saved resources.
+   Added to nav links that point to bookmarks.html
+----------------------------------------------------------- */
+.bookmark-count {
+  background: var(--rust);
+  color: #fff;
+  border-radius: 2rem;
+  padding: .1rem .45rem;
+  font-size: .68rem;
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  margin-left: .25rem;
+  vertical-align: middle;
+  display: none; /* shown by JS when count > 0 */
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  text-align: center;
+}
+ 
+/* ── SAVED LINK IN NAV (bookmarks.html) ──────────────────────
+   A subtle rust-colored "♥ Saved" link in the header nav.
+   Add this anchor to your nav in all pages:
+   
+   <a href="bookmarks.html" class="nav-saved-link">
+     ♥ Saved
+     <span class="bookmark-count">0</span>
+   </a>
+----------------------------------------------------------- */
+.nav-saved-link {
+  color: var(--rust) !important;
+  font-weight: 600 !important;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.nav-saved-link:hover {
+  background: rgba(192,75,32,.1) !important;
+  color: var(--rust) !important;
+}
+ 
+/* ── BOOKMARK BUTTON — base style reinforcement ───────────── */
+.card-bookmark {
+  background: none;
+  border: none;
+  color: rgba(247,242,234,.3);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: .15rem;
+  cursor: pointer;
+  transition: color .2s, transform .15s;
+  /* Prevent system emoji rendering differences */
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+ 
+.card-bookmark:hover {
+  color: var(--rust);
+  transform: scale(1.15);
+}
+ 
+.card-bookmark.saved {
+  color: var(--rust) !important;
+}
+ 
+/* Directory page — bookmark on light bg cards */
+.resource-card .card-bookmark {
+  color: rgba(58,40,28,.25);
+}
+.resource-card .card-bookmark:hover,
+.resource-card .card-bookmark.saved {
+  color: var(--rust);
+}
+ 
+/* ── MAP POPUP STYLING ───────────────────────────────────────
+   Leaflet popup overrides to match site aesthetic.
+----------------------------------------------------------- */
+.leaflet-popup-content-wrapper {
+  border-radius: 6px !important;
+  box-shadow: 0 6px 24px rgba(26,20,16,.18) !important;
+  border: 1px solid rgba(58,40,28,.12);
+}
+ 
+.leaflet-popup-content {
+  margin: 12px 14px !important;
+
+}
+ 
+.leaflet-popup-tip {
+  box-shadow: none !important;
+}
+ 
