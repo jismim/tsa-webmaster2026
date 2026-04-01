@@ -34,6 +34,10 @@
     <a href="highlights.html">Highlights</a>
     <a href="works-cited.html">Works Cited</a>
     <a href="/admin/login.html">Admin</a>
+    <a href="bookmarks.html" class="nav-saved-link">
+          ♥ Saved
+          <span class="bookmark-count" style="display:none;">0</span>
+        </a>
   </nav>
 
 <!-- HEADER -->
@@ -80,7 +84,9 @@
 <!-- PAGE HERO -->
 <section class="page-hero" aria-label="Community Highlights">
     <div class="container page-hero-inner">
-        <div>
+
+        <!-- Left: hero copy -->
+        <div class="reveal-hero">
             <p class="hero-eyebrow">Community Highlights</p>
             <h1>Organizations Making a<br><em>Real Difference</em></h1>
             <p class="subtitle">
@@ -89,8 +95,8 @@
             </p>
         </div>
 
-        <!-- Featured: Week of March 30 -->
-        <div class="featured-card" aria-label="Featured organization this week">
+        <!-- Right: Featured card -->
+        <div class="featured-card reveal-hero delay-2" aria-label="Featured organization this week">
             <p class="featured-card-eyebrow">Featured This Week — March 30</p>
             <h2>Mount Olive Food Pantry</h2>
             <p class="fc-focus">Community Hunger Relief · Mount Olive</p>
@@ -115,10 +121,10 @@
     <section class="highlights-section">
         <div class="container">
             <div class="section-header">
-                <div>
-                    <p class="section-label-row">All Organizations</p>
-                    <h2 class="section-heading">Browse Every Weekly Highlight</h2>
-                </div>
+            <div class="reveal">
+              <p class="section-label-row">All Organizations</p>
+              <h2 class="section-heading">Browse Every Weekly Highlight</h2>
+            </div>
                 <span class="section-hint">Click any card to expand</span>
             </div>
             <div class="highlights-grid" id="highlightsGrid"></div>
