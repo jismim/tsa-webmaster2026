@@ -1,3 +1,37 @@
+
+document.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+
+  /* ── 1. Hero load-in (fires on page load, not scroll) ── */
+  setTimeout(function () {
+    document.querySelectorAll('.reveal-hero').forEach(function (el) {
+      el.classList.add('visible');
+    });
+  }, 80);
+
+  /* ── 2. Scroll Reveal ── */
+  var revealEls = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+
+    revealEls.forEach(function (el) { revealObserver.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
+
+  /* ── 3. Footer year ── */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+
+  /* ── Initial render ── */
 const DATA = [
   {id:1, kind:"donate & volunteer", title:"St. Peter's Food Pantry", desc:"Food pantry providing groceries to individuals and families in need.", age:["adult","family"], location:"clifton", services:["food","hygiene"], link:"https://www.saintpetershaven.org/", phone:"(973) 546-3406", address:"380 Clifton Ave, Clifton, NJ 07011"},
   {id:2, kind:"donate & volunteer", title:"Morris County Nutrition Project", desc:"Provides meal services and nutrition support for seniors in Morris County.", age:["senior"], location:"county-wide", services:["food"], link:"", phone:"", address:"Morris County, NJ"},
@@ -395,4 +429,6 @@ resetBtn.addEventListener('click', () => {
   render();
 });
 
+/* Initial render */
 render();
+});

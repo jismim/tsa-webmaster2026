@@ -24,12 +24,9 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <body>
   <div id="loader">
-    <div class="load-icon">
-      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13 3C8.03 3 4 7.03 4 12c0 3.1 1.5 5.84 3.8 7.55L13 23l5.2-3.45A9 9 0 0 0 22 12c0-4.97-4.03-9-9-9Z" fill="rgba(247,242,234,0.07)" stroke="var(--rust)" stroke-width="1.2"/>
-        <circle cx="13" cy="11.5" r="2.5" fill="var(--rust)" opacity="0.8"/>
-      </svg>
-    </div>
+    <<div class="load-icon">
+      <img src="images/logo.png" alt="CareMap Morris logo" class="loader-logo">
+        </div>
     <div class="load-title">CareMap Morris</div>
     <div class="load-sub">Finding resources near you</div>
     <div class="load-bar-track">
@@ -40,7 +37,6 @@
     </div>
   </div>
   <div id="page-wrap">
-    <!-- all your existing homepage HTML goes here -->
   
   
     <a class = "skip-link" href = "#main">Skip to main content</a>
@@ -60,11 +56,11 @@
     <a href="submit.html">Contact Us</a>
     <a href="highlights.html">Highlights</a>
     <a href="works-cited.html">Works Cited</a>
+    <a href="/admin/login.html">Admin</a>
     <a href="bookmarks.html" class="nav-saved-link">
   ♥ Saved
   <span class="bookmark-count" style="display:none;">0</span>
   </a>
-    <a href="/admin/login.html">Admin</a>
   </nav>
 
 <!-- HEADER -->
@@ -103,7 +99,10 @@
           <span class="bookmark-count" style="display:none;">0</span>
         </a>  
       </nav>
-      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">☰ Menu</button>
+
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
+        ☰ Menu
+      </button>
     </div>
   </header>
 

@@ -1,9 +1,9 @@
 /* ============================================================
-   CAREMAP MORRIS — Directory JavaScript
+   CareMap Morris — Directory JavaScript
    Requires: resources.js and bookmarks.js loaded before this file
 ============================================================ */
 
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
   /* ── Category label + badge class map ── */
@@ -34,13 +34,13 @@
   var clearBtn       = document.getElementById("clearFilters");
   var resultsCount   = document.getElementById("resultsCount");
 
-  var lastFocused = null;
-  var showAll = false;
+  var lastFocused         = null;
+  var showAll             = false;
   var currentFilteredList = [];
 
   /* ── Populate dropdown filters ── */
   function populateFilters() {
-    var towns = {};
+    var towns      = {};
     var categories = {};
 
     RESOURCES.forEach(function (r) {
@@ -64,6 +64,16 @@
     });
   }
 
+  /* ── Update nav bookmark badge ── */
+  function updateBadge() {
+    if (typeof CareMapBookmarks === "undefined") return;
+    var c = CareMapBookmarks.count();
+    document.querySelectorAll(".bookmark-count").forEach(function (el) {
+      el.textContent   = c;
+      el.style.display = c > 0 ? "inline-flex" : "none";
+    });
+  }
+
   /* ── Render card grid ── */
   function renderResources(list) {
     currentFilteredList = list;
@@ -72,8 +82,7 @@
     if (list.length === 0) {
       grid.innerHTML =
         '<p style="grid-column:1/-1; color:var(--warm-gray); font-size:1rem; padding:18px;">' +
-        "No results found. Try changing your search or filters." +
-        "</p>";
+        "No results found. Try changing your search or filters.</p>";
       return;
     }
 
@@ -83,13 +92,13 @@
     displayList.forEach(function (r, idx) {
       var cat = CAT[r.category] || { label: r.category, cls: "" };
 
-      /* ── Bookmark state ── */
+      /* Bookmark state */
       var isSaved    = typeof CareMapBookmarks !== "undefined" && CareMapBookmarks.isSaved(r.id);
       var heartChar  = isSaved ? "♥" : "♡";
       var heartCls   = "card-bookmark" + (isSaved ? " saved" : "");
       var heartLabel = isSaved ? "Unsave this organization" : "Save this organization";
 
-      /* ── Tags ── */
+      /* Tags */
       var tagsHtml = r.tags.slice(0, 3).map(function (t) {
         return '<span class="res-tag">' + t + "</span>";
       }).join("");
@@ -98,7 +107,6 @@
       }
 
       var card = document.createElement("article");
-      /* Only first 12 cards get reveal animation to avoid over-animating */
       var revealClass = idx < 12 ? " reveal" : "";
       card.className = "res-card" + revealClass;
       card.setAttribute("tabindex", "0");
@@ -107,7 +115,6 @@
       card.dataset.resourceId = r.id;
 
       card.innerHTML =
-        /* Top bar: badge + bookmark heart */
         '<div class="res-card-top">' +
           '<span class="res-badge ' + cat.cls + '">' + cat.label + "</span>" +
           '<button class="' + heartCls + '" data-id="' + r.id + '" ' +
@@ -115,7 +122,6 @@
             heartChar +
           "</button>" +
         "</div>" +
-
         '<div class="res-card-body">' +
           '<h3 class="res-card-title">' + r.title + "</h3>" +
           '<p class="res-card-location">' +
@@ -127,7 +133,6 @@
           '<p class="res-card-desc">' + r.shortDesc + "</p>" +
           '<div class="res-card-tags">' + tagsHtml + "</div>" +
         "</div>" +
-
         '<div class="res-card-footer">' +
           '<span class="res-card-phone">' + (r.phone || "") + "</span>" +
           '<button class="res-expand-btn" aria-label="View full details for ' + r.title + '">' +
@@ -138,7 +143,7 @@
           "</button>" +
         "</div>";
 
-      /* Open modal — but NOT when clicking the bookmark button */
+      /* Open modal — NOT when clicking the bookmark button */
       card.addEventListener("click", function (e) {
         if (e.target.closest(".card-bookmark")) return;
         openDetail(r, card);
@@ -155,28 +160,25 @@
       grid.appendChild(card);
     });
 
-    /* ── Add View All button if there are more than 20 results ── */
+    /* View All button if capped */
     if (list.length > 20 && !showAll) {
-      var viewAllContainer = document.createElement("div");
-      viewAllContainer.style.gridColumn = "1 / -1";
-      viewAllContainer.style.textAlign = "center";
-      viewAllContainer.style.padding = "32px 0";
-      viewAllContainer.className = "reveal";
+      var viewAllWrap = document.createElement("div");
+      viewAllWrap.style.cssText = "grid-column:1/-1; text-align:center; padding:32px 0;";
+      viewAllWrap.className = "reveal";
 
       var viewAllBtn = document.createElement("button");
-      viewAllBtn.className = "btn btn-outline-dark";
+      viewAllBtn.className   = "btn btn-outline-dark";
       viewAllBtn.textContent = "View All " + list.length + " Resources →";
-      viewAllBtn.style.marginTop = "8px";
       viewAllBtn.addEventListener("click", function () {
         showAll = true;
         renderResources(list);
       });
 
-      viewAllContainer.appendChild(viewAllBtn);
-      grid.appendChild(viewAllContainer);
+      viewAllWrap.appendChild(viewAllBtn);
+      grid.appendChild(viewAllWrap);
     }
 
-    /* ── Trigger staggered reveal on rendered cards ── */
+    /* Staggered reveal on cards */
     if ('IntersectionObserver' in window) {
       var cardObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -228,10 +230,12 @@
       return matchesCategory && matchesTown && matchesSearch;
     });
 
-    showAll = false; /* Reset showAll when filters change */
+    showAll = false;
 
     resultsCount.textContent =
-      "Showing " + Math.min(filtered.length, 20) + " of " + filtered.length + " resources";
+      filtered.length <= 20
+        ? "Showing " + filtered.length + " of " + RESOURCES.length + " resources"
+        : "Showing 20 of " + filtered.length + " resources";
 
     renderResources(filtered);
   }
@@ -240,7 +244,8 @@
   function openDetail(r, triggerEl) {
     lastFocused = triggerEl || document.activeElement;
 
-    var cat      = CAT[r.category] || { label: r.category, cls: "" };
+    var cat = CAT[r.category] || { label: r.category, cls: "" };
+
     var tagsHtml = (r.tags || []).map(function (t) {
       return '<span class="res-tag">' + t + "</span>";
     }).join("");
@@ -259,53 +264,90 @@
       ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(addressText)
       : "";
 
-    /* Bookmark state in modal */
+    /* Bookmark state for modal heart */
     var isSaved    = typeof CareMapBookmarks !== "undefined" && CareMapBookmarks.isSaved(r.id);
     var heartChar  = isSaved ? "♥" : "♡";
-    var heartCls   = "card-bookmark detail-bookmark" + (isSaved ? " saved" : "");
     var heartLabel = isSaved ? "Unsave this organization" : "Save this organization";
+    var heartSaved = isSaved ? " saved" : "";
 
     detailCard.innerHTML =
+      /* ── Header ── */
       '<div class="detail-head">' +
         '<div class="detail-head-left">' +
           '<span class="res-badge ' + cat.cls + '">' + cat.label + "</span>" +
           '<h2 class="detail-title" id="detailTitle">' + r.title + "</h2>" +
         "</div>" +
+        /* heart + close sit together on the right */
         '<div class="detail-head-right">' +
-          '<button class="' + heartCls + '" data-id="' + r.id + '" ' +
-            'aria-label="' + heartLabel + '" title="' + heartLabel + '">' +
+          '<button class="detail-bookmark card-bookmark' + heartSaved + '" ' +
+            'data-id="' + r.id + '" ' +
+            'aria-label="' + heartLabel + '" ' +
+            'title="' + heartLabel + '">' +
             heartChar +
           "</button>" +
           '<button class="detail-close" id="detailCloseX" aria-label="Close details">&#x2715;</button>' +
         "</div>" +
       "</div>" +
 
+      /* ── Body ── */
       '<div class="detail-body">' +
         '<div class="detail-section">' +
           '<p class="detail-section-label">Summary</p>' +
-          '<p class="detail-long-desc">' + (r.longDesc || r.shortDesc || "No description available.") + "</p>" +
+          '<p class="detail-long-desc">' +
+            (r.longDesc || r.shortDesc || "No description available.") +
+          "</p>" +
         "</div>" +
         '<div class="detail-section">' +
           '<p class="detail-section-label">Tags</p>' +
-          '<div class="detail-tags">' + (tagsHtml || "<span style='color:var(--warm-gray)'>No tags listed</span>") + "</div>" +
+          '<div class="detail-tags">' +
+            (tagsHtml || "<span style='color:var(--warm-gray)'>No tags listed</span>") +
+          "</div>" +
         "</div>" +
         '<div class="detail-section">' +
           '<p class="detail-section-label">Contact &amp; Location</p>' +
           '<div class="detail-info-grid">' +
-            '<div class="detail-info-item"><p class="detail-info-label">Town</p><p class="detail-info-value">' + (r.town || "Morris County") + "</p></div>" +
-            '<div class="detail-info-item"><p class="detail-info-label">Phone</p><p class="detail-info-value">' + phoneHtml + "</p></div>" +
-            '<div class="detail-info-item"><p class="detail-info-label">Address</p><p class="detail-info-value">' + (r.address || "<span style='color:var(--warm-gray)'>Not listed</span>") + "</p></div>" +
-            '<div class="detail-info-item"><p class="detail-info-label">Hours</p><p class="detail-info-value">' + (r.hours || "<span style='color:var(--warm-gray)'>Call to confirm</span>") + "</p></div>" +
-            '<div class="detail-info-item" style="grid-column:1/-1;"><p class="detail-info-label">Website</p><p class="detail-info-value">' + websiteHtml + "</p></div>" +
+            '<div class="detail-info-item">' +
+              '<p class="detail-info-label">Town</p>' +
+              '<p class="detail-info-value">' + (r.town || "Morris County") + "</p>" +
+            "</div>" +
+            '<div class="detail-info-item">' +
+              '<p class="detail-info-label">Phone</p>' +
+              '<p class="detail-info-value">' + phoneHtml + "</p>" +
+            "</div>" +
+            '<div class="detail-info-item">' +
+              '<p class="detail-info-label">Address</p>' +
+              '<p class="detail-info-value">' +
+                (r.address || "<span style='color:var(--warm-gray)'>Not listed</span>") +
+              "</p>" +
+            "</div>" +
+            '<div class="detail-info-item">' +
+              '<p class="detail-info-label">Hours</p>' +
+              '<p class="detail-info-value">' +
+                (r.hours || "<span style='color:var(--warm-gray)'>Call to confirm</span>") +
+              "</p>" +
+            "</div>" +
+            '<div class="detail-info-item" style="grid-column:1/-1;">' +
+              '<p class="detail-info-label">Website</p>' +
+              '<p class="detail-info-value">' + websiteHtml + "</p>" +
+            "</div>" +
           "</div>" +
         "</div>" +
       "</div>" +
 
+      /* ── Actions ── */
       '<div class="detail-actions">' +
-        (r.website ? '<a class="btn btn-primary" href="' + r.website + '" target="_blank" rel="noopener">Visit Website</a>' : "") +
-        (r.phone   ? '<a class="btn btn-secondary" href="tel:' + r.phone + '">Call</a>' : "") +
-        (mapsUrl   ? '<a class="btn btn-secondary" href="' + mapsUrl + '" target="_blank" rel="noopener">Open in Maps</a>' : "") +
-        (addressText ? '<button class="btn btn-ghost" id="copyAddressBtn">Copy Address</button>' : "") +
+        (r.website
+          ? '<a class="btn btn-primary" href="' + r.website + '" target="_blank" rel="noopener">Visit Website</a>'
+          : "") +
+        (r.phone
+          ? '<a class="btn btn-secondary" href="tel:' + r.phone + '">Call</a>'
+          : "") +
+        (mapsUrl
+          ? '<a class="btn btn-secondary" href="' + mapsUrl + '" target="_blank" rel="noopener">Open in Maps</a>'
+          : "") +
+        (addressText
+          ? '<button class="btn btn-ghost" id="copyAddressBtn">Copy Address</button>'
+          : "") +
         '<button class="btn btn-ghost" id="detailCloseBtn">Close</button>' +
       "</div>";
 
@@ -313,7 +355,7 @@
     detailCard.querySelector("#detailCloseX").addEventListener("click", closeDetail);
     detailCard.querySelector("#detailCloseBtn").addEventListener("click", closeDetail);
 
-    /* Copy address with inline feedback */
+    /* Copy address */
     if (addressText) {
       detailCard.querySelector("#copyAddressBtn").addEventListener("click", function () {
         var btn = detailCard.querySelector("#copyAddressBtn");
@@ -324,27 +366,33 @@
       });
     }
 
-    /* ── Modal bookmark button ── */
+    /* ── Modal bookmark heart ── */
     var modalHeart = detailCard.querySelector(".detail-bookmark");
     if (modalHeart && typeof CareMapBookmarks !== "undefined") {
       modalHeart.addEventListener("click", function () {
         var nowSaved = CareMapBookmarks.toggle(r.id);
+
+        /* Update modal heart */
         modalHeart.textContent = nowSaved ? "♥" : "♡";
         modalHeart.classList.toggle("saved", nowSaved);
-        modalHeart.setAttribute("aria-label", nowSaved ? "Unsave this organization" : "Save this organization");
+        modalHeart.setAttribute("aria-label",
+          nowSaved ? "Unsave this organization" : "Save this organization");
 
-        /* Sync matching card in grid */
+        /* Sync grid card heart */
         var gridHeart = grid.querySelector('.card-bookmark[data-id="' + r.id + '"]');
         if (gridHeart) {
           gridHeart.textContent = nowSaved ? "♥" : "♡";
           gridHeart.classList.toggle("saved", nowSaved);
+          gridHeart.setAttribute("aria-label",
+            nowSaved ? "Unsave this organization" : "Save this organization");
         }
 
+        /* Update nav badge */
         updateBadge();
 
         /* Pop animation */
         modalHeart.classList.remove("bookmark-pop");
-        void modalHeart.offsetWidth;
+        void modalHeart.offsetWidth; /* force reflow */
         modalHeart.classList.add("bookmark-pop");
       });
     }
@@ -372,16 +420,6 @@
     if (e.key === "Escape" && !modalWrap.hidden) closeDetail();
   });
 
-  /* ── Update nav bookmark badge ── */
-  function updateBadge() {
-    if (typeof CareMapBookmarks === "undefined") return;
-    document.querySelectorAll(".bookmark-count").forEach(function (el) {
-      var c = CareMapBookmarks.count();
-      el.textContent   = c;
-      el.style.display = c > 0 ? "inline-flex" : "none";
-    });
-  }
-
   /* ── Clear filters ── */
   clearBtn.addEventListener("click", function () {
     searchInput.value    = "";
@@ -395,12 +433,20 @@
   categoryFilter.addEventListener("change", applyFilters);
   townFilter.addEventListener("change",     applyFilters);
 
-  /* ── Handle ?id=X deep link (from map pins) and ?q= (hero search) ── */
+  /* ── Grid-level bookmark click → update badge ── */
+  grid.addEventListener("click", function (e) {
+    if (e.target.closest(".card-bookmark[data-id]")) {
+      updateBadge();
+    }
+  });
+
+  /* ── Deep link: ?id=X from map pins, ?q= from hero search ── */
   function handleDeepLink() {
     var params   = new URLSearchParams(window.location.search);
     var targetId = params.get("id");
     var queryStr = params.get("q");
 
+    /* Hero search redirect */
     if (queryStr) {
       searchInput.value = queryStr;
       applyFilters();
@@ -413,27 +459,36 @@
     var resource = RESOURCES.find(function (r) { return r.id === numId; });
     if (!resource) return;
 
+    /* Force ALL cards to render so the target card exists in the DOM */
+    showAll = true;
+    applyFilters();
+
+    /* Wait for render then scroll + highlight + open */
     setTimeout(function () {
       var card = grid.querySelector('[data-resource-id="' + numId + '"]');
+
       if (card) {
+        /* Smooth scroll to card */
         card.scrollIntoView({ behavior: "smooth", block: "center" });
-        card.style.outline       = "3px solid var(--rust)";
+
+        /* Rust outline pulse */
+        card.style.transition   = "outline 0s, box-shadow .3s";
+        card.style.outline      = "3px solid var(--rust)";
         card.style.outlineOffset = "3px";
+        card.style.boxShadow    = "0 0 0 6px rgba(192,75,32,.18)";
+
         setTimeout(function () {
-          card.style.outline       = "";
+          card.style.outline      = "";
           card.style.outlineOffset = "";
+          card.style.boxShadow    = "";
           openDetail(resource, card);
-        }, 700);
+        }, 750);
       } else {
+        /* Fallback: open modal without scroll */
         openDetail(resource, null);
       }
     }, 200);
   }
-
-  /* ── Sync badge when grid bookmark buttons are clicked ── */
-  grid.addEventListener("click", function (e) {
-    if (e.target.closest(".card-bookmark[data-id]")) updateBadge();
-  });
 
   /* ── Init ── */
   populateFilters();
@@ -446,4 +501,4 @@
 
   handleDeepLink();
 
-})();
+});
