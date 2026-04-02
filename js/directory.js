@@ -204,6 +204,43 @@ document.addEventListener('DOMContentLoaded', function () {
     if (typeof CareMapBookmarks !== "undefined") {
       CareMapBookmarks.applyToPage();
     }
+
+    /* Bind grid-level bookmarks */
+    bindGridBookmarks();
+  }
+
+  /* ── Grid bookmark click handler ── */
+  function bindGridBookmarks() {
+    grid.querySelectorAll('.card-bookmark[data-id]').forEach(function (btn) {
+      btn.removeEventListener('click', handleGridBookmarkClick);
+      btn.addEventListener('click', handleGridBookmarkClick);
+    });
+  }
+
+  function handleGridBookmarkClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var btn = e.currentTarget;
+    var resourceId = parseInt(btn.dataset.id, 10);
+
+    if (typeof CareMapBookmarks === "undefined") return;
+
+    var nowSaved = CareMapBookmarks.toggle(resourceId);
+
+    /* Update button */
+    btn.textContent = nowSaved ? "♥" : "♡";
+    btn.classList.toggle("saved", nowSaved);
+    btn.setAttribute("aria-label",
+      nowSaved ? "Unsave this organization" : "Save this organization");
+
+    /* Animate */
+    btn.classList.remove("bookmark-pop");
+    void btn.offsetWidth;
+    btn.classList.add("bookmark-pop");
+
+    /* Update nav badge */
+    updateBadge();
   }
 
   /* ── Filtering logic ── */
@@ -369,7 +406,10 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ── Modal bookmark heart ── */
     var modalHeart = detailCard.querySelector(".detail-bookmark");
     if (modalHeart && typeof CareMapBookmarks !== "undefined") {
-      modalHeart.addEventListener("click", function () {
+      modalHeart.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
         var nowSaved = CareMapBookmarks.toggle(r.id);
 
         /* Update modal heart */
@@ -433,13 +473,6 @@ document.addEventListener('DOMContentLoaded', function () {
   categoryFilter.addEventListener("change", applyFilters);
   townFilter.addEventListener("change",     applyFilters);
 
-  /* ── Grid-level bookmark click → update badge ── */
-  grid.addEventListener("click", function (e) {
-    if (e.target.closest(".card-bookmark[data-id]")) {
-      updateBadge();
-    }
-  });
-
   /* ── Deep link: ?id=X from map pins, ?q= from hero search ── */
   function handleDeepLink() {
     var params   = new URLSearchParams(window.location.search);
@@ -468,10 +501,10 @@ document.addEventListener('DOMContentLoaded', function () {
       var card = grid.querySelector('[data-resource-id="' + numId + '"]');
 
       if (card) {
-        /* Smooth scroll to card */
+        /* Smooth scroll to card with a little offset for better visibility */
         card.scrollIntoView({ behavior: "smooth", block: "center" });
 
-        /* Rust outline pulse */
+        /* Rust outline pulse animation */
         card.style.transition   = "outline 0s, box-shadow .3s";
         card.style.outline      = "3px solid var(--rust)";
         card.style.outlineOffset = "3px";

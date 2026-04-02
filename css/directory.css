@@ -301,6 +301,7 @@
 
 .res-card-top .card-bookmark.saved {
   color: var(--rust) !important;
+  font-weight: 600;
 }
 
 .res-card-top .card-bookmark.bookmark-pop {
@@ -369,15 +370,14 @@
    Fires on every heart click for a satisfying micro-interaction.
 ------------------------------------------------------------ */
 @keyframes bookmark-pop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.5); }
-  70%  { transform: scale(.88); }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
 
 .card-bookmark.bookmark-pop,
 .detail-bookmark.bookmark-pop {
-  animation: bookmark-pop .35s cubic-bezier(.36, .07, .19, .97) both;
+  animation: bookmark-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ── NAV SAVED LINK ──────────────────────────────────────────
