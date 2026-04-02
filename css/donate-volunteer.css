@@ -1,9 +1,9 @@
 /* ============================================================
-       DONATE & VOLUNTEER — Page-specific styles
-       All tokens from style.css: --cream, --paper, --ink, --bark,
-       --rust, --rust-lt, --sage, --sage-lt, --sand, --warm-gray,
-       --border, --radius, --ff-display, --ff-body, --ff-mono
-    ============================================================ */
+   DONATE & VOLUNTEER — Page-specific styles
+   All tokens from style.css: --cream, --paper, --ink, --bark,
+   --rust, --rust-lt, --sage, --sage-lt, --sand, --warm-gray,
+   --border, --radius, --ff-display, --ff-body, --ff-mono
+============================================================ */
 .reveal-hero {
   opacity: 0;
   transform: translateY(24px);
@@ -11,7 +11,7 @@
               transform .65s cubic-bezier(.16,1,.3,1);
 }
 .reveal-hero.visible { opacity: 1; transform: translateY(0); }
- 
+
 .reveal {
   opacity: 0;
   transform: translateY(22px);
@@ -19,12 +19,13 @@
               transform .55s cubic-bezier(.16,1,.3,1);
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
- 
+
 .delay-1 { transition-delay: .08s !important; }
 .delay-2 { transition-delay: .16s !important; }
 .delay-3 { transition-delay: .24s !important; }
 .delay-4 { transition-delay: .32s !important; }
-    /* HERO should hold attached tabs */
+
+/* HERO should hold attached tabs */
 .page-hero {
   background: var(--ink);
   position: relative;
@@ -73,7 +74,7 @@
   display: flex;
   align-items: center;
   gap: .5rem;
-  margin-bottom: 1rem;  
+  margin-bottom: 1rem;
   margin-top: 0;
 }
 
@@ -444,7 +445,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: .65rem;
 }
 
 .kind-badge {
@@ -560,7 +560,6 @@
 
 /* ============================================================
    DETAIL MODAL
-   Ported from directory page styles
 ============================================================ */
 
 .detail-backdrop {
@@ -618,6 +617,15 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-head-right {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-shrink: 0;
 }
 
 .detail-title {
@@ -730,24 +738,6 @@
 }
 
 /* ============================================================
-   ANIMATION
-============================================================ */
-@keyframes popIn {
-  from { opacity: 0; transform: translateY(22px) scale(.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* ============================================================
-   RESPONSIVE — modal
-============================================================ */
-@media (max-width: 900px) {
-  .detail-info-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* ============================================================
    PAGINATION
 ============================================================ */
 #dvPagination {
@@ -816,4 +806,126 @@
 .page-arrow {
   font-size: 1rem;
   color: var(--warm-gray);
+}
+
+/* ============================================================
+   ANIMATION
+============================================================ */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(22px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   GIVE BACK — Bookmark Hearts
+============================================================ */
+
+/* Top bar inside each dv-card: badges on left, heart on right */
+.dv-card-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .65rem;
+}
+
+/* Heart button on the card */
+.dv-bookmark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: .2rem .3rem;
+  color: rgba(58, 40, 28, .75) !important;
+  transition: color .2s, transform .15s;
+  flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.dv-bookmark:hover {
+  color: var(--rust);
+  transform: scale(1.2);
+}
+
+.dv-bookmark.saved {
+  color: var(--rust) !important;
+  font-weight: 600;
+}
+
+/* Modal heart pill */
+.detail-bookmark {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: .4rem .85rem;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--rust);
+  cursor: pointer;
+  transition: color .2s, background .2s, border-color .2s, transform .15s;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+
+.detail-bookmark:hover {
+  background: rgba(192, 75, 32, .07);
+  border-color: var(--rust);
+  transform: scale(1.08);
+}
+
+.detail-bookmark.saved {
+  color: var(--rust) !important;
+  background: rgba(192, 75, 32, .1);
+  border-color: var(--rust);
+}
+
+/* Nav bookmark badge */
+.nav-saved-link {
+  color: var(--rust) !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: .3rem;
+}
+
+.nav-saved-link:hover {
+  background: rgba(192, 75, 32, .1) !important;
+  color: var(--rust) !important;
+}
+
+.bookmark-count {
+  background: var(--rust);
+  color: #fff;
+  border-radius: 2rem;
+  padding: .1rem .45rem;
+  font-size: .68rem;
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  vertical-align: middle;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Pop animation */
+@keyframes bookmark-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+.card-bookmark.bookmark-pop,
+.detail-bookmark.bookmark-pop {
+  animation: bookmark-pop .4s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* ============================================================
+   RESPONSIVE — modal info grid
+============================================================ */
+@media (max-width: 900px) {
+  .detail-info-grid {
+    grid-template-columns: 1fr;
+  }
 }
