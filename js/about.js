@@ -2,7 +2,20 @@
    CareMap Morris — About Page JS
    Handles: scroll-reveal animations + number counter animation
 ============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
 
+  /* ── Hero load-in (fires on page load, not scroll) ── */
+  setTimeout(function () {
+    document.querySelectorAll('.reveal-hero').forEach(function (el) {
+      el.classList.add('visible');
+    });
+  }, 80);
+
+  /* ── Footer year ── */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+
+});
 (function () {
   'use strict';
 

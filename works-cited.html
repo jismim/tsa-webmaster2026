@@ -36,6 +36,10 @@
     <a href="highlights.html">Highlights</a>
     <a href="works-cited.html">Works Cited</a>
     <a href="/admin/login.html">Admin</a>
+    <a href="bookmarks.html" class="nav-saved-link">
+  ♥ Saved
+  <span class="bookmark-count" style="display:none;">0</span>
+  </a>
   </nav>
 
 <!-- HEADER -->
@@ -85,7 +89,7 @@
     <section class="docs-hero" aria-label="References page introduction">
       <div class="container docs-hero-inner">
         <div class="docs-hero-copy">
-          <p class="hero-eyebrow">Project Documentation</p>
+          <p class="hero-eyebrow">Project Documentation | Team #2237-2</p>
           <h1>References &amp;<br><em>Worklog</em></h1>
           <p>
             This page gathers the supporting material behind CareMap Morris: 
@@ -100,7 +104,7 @@
           </div>
         </div>
 
-        <div class="docs-hero-panel" aria-hidden="true">
+        <div class="docs-hero-panel reveal-hero delay-2" aria-hidden="true">
           <article class="docs-preview">
             <span class="label">Rights & Permissions</span>
             <h3>Copyright Checklist</h3>
@@ -111,7 +115,7 @@
             <span class="label">Research</span>
             <h3>References</h3>
             <p>
-               Works Cited Page that lists all sources used in the project to ensure proper credit is given.
+              Works Cited Page that lists all sources used in the project to ensure proper credit is given.
             </p>
           </article>
 
@@ -127,14 +131,14 @@
 
     <section class="docs-section">
       <div class="container">
-        <p class="section-label">Documentation</p>
-        <h2 class="section-title">Project Materials</h2>
-        <p class="section-sub">
+        <p class="section-label reveal">Documentation</p>
+        <h2 class="section-title reveal delay-1">Project Materials</h2>
+        <p class="section-sub reveal delay-2">
 These documents show the research base, the development trail, and the final checklist that support the completed site.
         </p>
 
         <div class="docs-grid">
-          <article class="doc-card" id="copyright">
+          <article class="doc-card reveal" id="copyright">
   <div class="doc-card-head">
     <div>
       <span class="doc-badge">Copyright</span>
@@ -159,7 +163,7 @@ These documents show the research base, the development trail, and the final che
     </iframe>
   </div>
 </article>
-          <article class="doc-card" id="references">
+          <article class="doc-card reveal delay-1" id="references">
   <div class="doc-card-head">
     <div>
       <span class="doc-badge">References</span>
@@ -210,7 +214,7 @@ These documents show the research base, the development trail, and the final che
   </div>
 </article>
 
-          <article class="doc-card" id="worklog">
+          <article class="doc-card reveal delay-2" id="worklog">
             <div class="doc-card-head">
               <div>
                 <span class="doc-badge">Worklog</span>
@@ -238,45 +242,49 @@ These documents show the research base, the development trail, and the final che
   </main>
 
   <!-- ==================== FOOTER ==================== -->
- <footer class="site-footer">
-      <div class="container footer-grid">
-        <div>
-          <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-          <p class="footer-mission">
-            CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
-          </p>
-        </div>
-        <div>
-          <p class="footer-col-title">Navigation</p>
-          <ul class="footer-links">
-            <li><a href="about.html">About</a></li>
-            <li><a href="directory.html">Directory</a></li>
-            <li><a href="donate-volunteer.html">Give Back</a></li>
-            <li><a href="highlights.html">Highlights</a></li>
-            <li><a href="works-cited.html">Works Cited</a></li>
-            <li><a href="/admin/login.html">Admin</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="footer-col-title">Contact &amp; Info</p>
-          <ul class="footer-links">
-            <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
-            <li><a href="submit.html">Submit a Resource</a></li>
-          </ul>
-          <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
-            Morris County, New Jersey<br>
-            Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
-          </p>
-        </div>
-      </div>
-      <div class="container footer-bottom">
-        <p class="footer-disclaimer">
-          <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
-          <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
-        </p>
-        <p class="footer-date" id="footerYear"></p>
-      </div>
-    </footer>
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+      <p class="footer-mission">
+        CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
+      </p>
+    </div>
+    <div>
+      <p class="footer-col-title">Navigation</p>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="donate-volunteer.html">Give Back</a></li>
+        <li><a href="highlights.html">Highlights</a></li>
+        <li><a href="works-cited.html">Works Cited</a></li>
+        <li><a href="bookmarks.html">♥ Saved Resources</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Contact &amp; Info</p>
+      <ul class="footer-links">
+        <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+        <li><a href="submit.html">Submit a Resource</a></li>
+      </ul>
+      <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+        Morris County, New Jersey<br>
+        Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
+      </p>
+      <!-- Admin button moved here -->
+      <p class="admin-label" style="margin-top:1rem; font-size: .8rem ; color: rgba(247,242,234,.4); font-weight:500">Administrator</p>
+      <a href="/admin/login.html" class="admin-link">Admin Login</a>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p class="footer-disclaimer">
+      <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
+      <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+    </p>
+    <p class="footer-date" id="footerYear"></p>
+  </div>
+</footer>
 <!-- Scripts -->
 <script src="js/works-cited.js"></script>
 </body>

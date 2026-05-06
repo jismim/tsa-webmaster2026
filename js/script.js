@@ -5,7 +5,29 @@
 ============================================================ */
  
 document.addEventListener('DOMContentLoaded', function () {
- 
+// loader js
+(function () {
+  const loader = document.getElementById('loader');
+  const page = document.getElementById('page-wrap');
+  if (!loader) return;
+
+  const hasVisited = sessionStorage.getItem('cm_visited');
+
+  if (hasVisited) {
+    loader.style.display = 'none';
+  } else {
+    sessionStorage.setItem('cm_visited', 'true');
+    document.body.classList.add('loading');
+    if (page) page.style.opacity = '0';
+
+    setTimeout(() => {
+      loader.classList.add('hide');
+      if (page) page.style.opacity = '1';
+      document.body.classList.remove('loading');
+      setTimeout(() => loader.style.display = 'none', 600);
+    }, 2400);
+  }
+})();
   /* ----------------------------------------------------------
      1. FIRST-TIME USER WALKTHROUGH MODAL
   ---------------------------------------------------------- */

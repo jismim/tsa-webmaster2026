@@ -1,3 +1,5 @@
+
+
 // Home search: redirect into directory with query param (?q=...)
 (function () {
   const form = document.getElementById("homeSearchForm");
@@ -56,3 +58,4 @@
 
   counters.forEach((el) => observer.observe(el));
 })();
+
