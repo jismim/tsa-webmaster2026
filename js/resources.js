@@ -1,9 +1,28 @@
 /* ============================================================
-   CAREMAP MORRIS — Resource Data
-   Community organizations in Morris County, NJ
+   CAREMAP MORRIS — js/resources.js
+   
+   This file exports the RESOURCES array so it can be loaded
+   by bookmarks.html, directory.html, and any other page that
+   needs resource data.
+
+   HOW TO USE:
+   Add this to any page that needs resource data, BEFORE
+   bookmarks.js or your directory script:
+   
+     <script src="js/resources.js"></script>
+
+   Then RESOURCES is available globally.
+   
+   NOTE: If your directory already defines RESOURCES inline,
+   you can either:
+   A) Remove the inline definition and use this file instead
+   B) Keep both (this file defines it as a global fallback)
 ============================================================ */
 
-const RESOURCES = [
+// Guard: don't redefine if already loaded by directory.js
+if (typeof RESOURCES === 'undefined') {
+
+var RESOURCES = [
 
   // ── FOOD PANTRIES ──────────────────────────────────────────
   {
@@ -16,10 +35,8 @@ const RESOURCES = [
     website: "https://www.mcifp.org/",
     hours: "Mon–Fri: 9:30 AM – 4:30 PM",
     shortDesc: "A key food assistance provider in Morris County offering emergency and supplemental groceries, fresh produce, and nutrition support through a community-focused pantry network.",
-    longDesc: "The Interfaith Food Pantry Network has worked for more than 25 years to fight hunger in Morris County, distributing millions of pounds of food and meals to people in need. It operates at a main pantry in Morris Plains and a satellite site in Morristown, offering emergency and supplemental food, free farmers markets, and a client-choice shopping model where visitors can select their own groceries. IFPN also partners with smaller pantries, providing mobile delivery programs for seniors and homebound residents, and offers nutrition education and fresh produce distributions to promote healthy eating. No one is turned away based on religion or background, and services are designed to support families, older adults, and individuals experiencing food insecurity.",
     tags: ["Food Pantry", "Client Choice", "Mobile Delivery", "Fresh Produce", "Seniors"],
     services: ["food", "emergency"],
-    saves: 0
   },
   {
     id: 2,
@@ -31,10 +48,8 @@ const RESOURCES = [
     website: "https://www.boonton.org/630/Food-Pantries-Financial-Assistance",
     hours: "Mon and Fri: 2:00 PM – 5:00 PM",
     shortDesc: "A community pantry in Boonton providing supplemental groceries and essential items to local residents in need through regular weekday distribution.",
-    longDesc: "The Boonton Food Pantry serves residents of Boonton by distributing free groceries and essential household items from a central location next to Town Hall. Operated by local volunteers, the pantry is open on Mondays and Fridays in the afternoon and accepts donations of non-perishable food, hygiene products, and cleaning supplies. It aims to support families and individuals facing short-term food insecurity in the community, and welcomes both monetary and item contributions to further its mission.",
     tags: ["Food Pantry", "Volunteer-Run", "Groceries", "Household Items"],
     services: ["food"],
-    saves: 0
   },
   {
     id: 3,
@@ -45,11 +60,9 @@ const RESOURCES = [
     phone: "(973) 352-7668",
     website: "https://www.lfcfp.org/",
     hours: "Wed: 4:00 PM – 6:00 PM; Sat: 9:00 AM – 11:00 AM",
-    shortDesc: "A faith-based food pantry in Boonton offering weekly food distribution to those experiencing hunger and food insecurity in the community and surrounding areas.",
-    longDesc: "Loaves & Fishes Community Food Pantry is run by local churches in Boonton and provides free groceries to individuals and families struggling with food insecurity. It is open multiple days each week, and the pantry offers fresh and shelf-stable food items to anyone in need, no questions asked. It operates as a community-supported nonprofit, encouraging volunteers and donations from neighbors to help ensure consistent food access for all who visit.",
+    shortDesc: "A faith-based food pantry in Boonton offering weekly food distribution to those experiencing hunger and food insecurity.",
     tags: ["Food Pantry", "Faith-Based", "No Questions Asked", "Fresh Food"],
     services: ["food"],
-    saves: 0
   },
   {
     id: 4,
@@ -60,11 +73,9 @@ const RESOURCES = [
     phone: "(862) 419-3373",
     website: "https://www.chestermendhamfp.com/",
     hours: "Wednesdays: 9:00 AM – 11:00 AM",
-    shortDesc: "A volunteer-based pantry in Chester that provides supplemental groceries, toiletries, and household supplies to residents of Chester and Mendham in need.",
-    longDesc: "The Chester Mendham Food Pantry is a nonprofit organization serving neighbors in Chester and Mendham, New Jersey, by offering free supplemental food, toiletries, and essential household items. Founded through a collaboration of local community groups, the pantry operates from its location on North Road and supports dozens of families each month through food distributions and community partnerships. Volunteers help collect, sort, and deliver food, and the pantry also hosts donation drives and collaborations with local schools, churches, and businesses to meet the needs of the pantry. Services are open to those facing food insecurity, and donations of both food and monetary support are welcome to sustain operations.",
+    shortDesc: "A volunteer-based pantry in Chester that provides supplemental groceries, toiletries, and household supplies to residents of Chester and Mendham.",
     tags: ["Food Pantry", "Volunteer-Run", "Toiletries", "Household Supplies"],
     services: ["food"],
-    saves: 0
   },
   {
     id: 5,
@@ -75,11 +86,9 @@ const RESOURCES = [
     phone: "",
     website: "https://www.nourishnj.org/",
     hours: "Morristown: Mon–Fri 9:00 AM – 1:00 PM; Dover: Mon–Fri 8:00 AM – 4:00 PM",
-    shortDesc: "A community-focused hunger relief organization in New Jersey that provides daily healthy meals, fresh produce, food assistance, and support services to neighbors facing food insecurity.",
-    longDesc: "Nourish NJ works year-round to address hunger and its root causes by offering immediate access to nutritious food and connecting individuals and families with essential community resources. Operating multiple locations in Morris County and beyond, it provides daily meals, farmers markets, bilingual SNAP/WIC assistance, and fresh produce distributions at no cost to guests. Beyond food, Nourish NJ also supports housing stability and other social services to help people move toward lasting wellbeing. Services are offered in a welcoming, inclusive environment without income verification, and volunteers help power its mission through food distribution, meal prep, and community events.",
+    shortDesc: "A community-focused hunger relief organization providing daily healthy meals, fresh produce, food assistance, and support services to neighbors facing food insecurity.",
     tags: ["Hot Meals", "Fresh Produce", "SNAP/WIC Assistance", "Bilingual", "No Income Verification"],
     services: ["food", "emergency"],
-    saves: 0
   },
   {
     id: 6,
@@ -90,11 +99,9 @@ const RESOURCES = [
     phone: "(973) 219-7560",
     website: "https://www.faithkitchendover.org/",
     hours: "Mon–Sat: 11:30 AM – 12:30 PM",
-    shortDesc: "A community-supported soup kitchen in Dover that serves free, nutritious meals 6 days a week while offering a welcoming space and support to neighbors experiencing hunger.",
-    longDesc: "Faith Kitchen is a nonprofit soup kitchen located at Trinity Lutheran Church in Dover, New Jersey, dedicated to feeding anyone in need with free, healthy meals served Monday through Saturday around lunchtime. Supported by dozens of faith communities and volunteers, it has provided tens of thousands of meals over the years and also offers fresh produce and referrals to additional services for guests seeking help. In addition to food, Faith Kitchen fosters a friendly, inclusive environment where visitors can connect with others in the community without questions or income verification.",
+    shortDesc: "A community-supported soup kitchen in Dover that serves free, nutritious meals 6 days a week.",
     tags: ["Hot Meals", "6 Days a Week", "No Questions Asked", "Referrals"],
     services: ["food"],
-    saves: 0
   },
   {
     id: 7,
@@ -105,11 +112,9 @@ const RESOURCES = [
     phone: "(862) 251-3938",
     website: "https://mountolivepantry.org/",
     hours: "2nd & 4th Monday: 6:30 PM – 8:00 PM; Every Tuesday: 12:00 PM – 2:30 PM; Every Saturday: 11:00 AM – 1:00 PM",
-    shortDesc: "A community food pantry in Mount Olive providing free groceries and essentials to support local residents who are facing food insecurity through regular weekday and weekend distributions.",
-    longDesc: "The Mount Olive Food Pantry works to reduce hunger in the Budd Lake and Mount Olive area by offering free supplemental groceries and household essentials to individuals and families whose grocery dollars are depleted. The pantry partners with local volunteers, churches, and community groups, operating multiple weekly distributions. It welcomes anyone in need, encourages community donations, and provides resources to support neighbors experiencing food insecurity.",
+    shortDesc: "A community food pantry in Mount Olive providing free groceries and essentials through regular weekday and weekend distributions.",
     tags: ["Food Pantry", "Multiple Weekly Hours", "Groceries", "Household Essentials"],
     services: ["food"],
-    saves: 0
   },
   {
     id: 8,
@@ -120,11 +125,9 @@ const RESOURCES = [
     phone: "(973) 334-2090",
     website: "https://www.foodhelpline.org/resources/st-peter-s-food-pantry",
     hours: "Mon–Fri: 9:00 AM – 4:00 PM (call to confirm)",
-    shortDesc: "A food pantry at St. Peter the Apostle in Parsippany offering free grocery assistance to local residents with scheduled weekday service by appointment.",
-    longDesc: "St. Peter's Food Pantry at St. Peter The Apostle Parish in Parsippany, New Jersey provides supplemental groceries and essential food items to people experiencing food depletion. Guests can receive a month's worth of food once per month, including canned goods, produce, and dry staples. The pantry requires advance registration and appointments, and clients should bring identification, proof of address, and their own bags when visiting.",
+    shortDesc: "A food pantry at St. Peter the Apostle in Parsippany offering free grocery assistance with scheduled weekday service.",
     tags: ["Food Pantry", "By Appointment", "Monthly Visit", "Canned Goods"],
     services: ["food"],
-    saves: 0
   },
   {
     id: 9,
@@ -135,11 +138,9 @@ const RESOURCES = [
     phone: "(973) 989-7100",
     website: "https://www.randolphnj.org/175/Randolph-Food-Pantry",
     hours: "Mon–Fri: 8:30 AM – 4:30 PM (call to confirm)",
-    shortDesc: "A township-operated food pantry in Randolph providing supplemental groceries and essential support to local residents experiencing food insecurity.",
-    longDesc: "The Randolph Food Pantry is operated through the Randolph Township Community Services Department and provides free supplemental groceries to residents in need. The pantry supports individuals and families facing temporary or ongoing food insecurity by offering non-perishable items and other essential supplies. Services are available by scheduled appointment to ensure privacy and accessibility for clients. Community donations and local partnerships help sustain the pantry's efforts, allowing it to serve Randolph residents with dignity and care.",
+    shortDesc: "A township-operated food pantry in Randolph providing supplemental groceries and essential support to local residents.",
     tags: ["Food Pantry", "Township-Operated", "By Appointment", "Non-Perishables"],
     services: ["food"],
-    saves: 0
   },
   {
     id: 10,
@@ -150,13 +151,10 @@ const RESOURCES = [
     phone: "(973) 627-1059",
     website: "https://fpcrockaway.org/",
     hours: "Tue–Thu: 8:30 AM – 12:30 PM; Sun: 9:00 AM – 12:30 PM",
-    shortDesc: "A local community pantry at the First Presbyterian Church in Rockaway providing free non-perishable groceries and food assistance to neighbors in need.",
-    longDesc: "The Rockaway Food Closet is a nonprofit organization housed at First Presbyterian Church in Rockaway, New Jersey, dedicated to helping individuals and families facing food insecurity in Rockaway Borough and Township. Volunteers collect and distribute non-perishable food items to anyone who needs them, and donations from the community help keep the shelves stocked. The pantry offers regular pick-up and drop-off hours so that residents can receive groceries and essential items with dignity and support in a welcoming environment.",
+    shortDesc: "A local community pantry at the First Presbyterian Church in Rockaway providing free non-perishable groceries.",
     tags: ["Food Pantry", "Non-Perishables", "Faith-Based", "Volunteer-Run"],
     services: ["food"],
-    saves: 0
   },
-
   // ── DOMESTIC VIOLENCE ──────────────────────────────────────
   {
     id: 11,
@@ -167,11 +165,9 @@ const RESOURCES = [
     phone: "",
     website: "https://www.justia.com/lawyers/domestic-violence/new-jersey/morris-county/legal-aid-and-pro-bono-services",
     hours: "Website accessible 24 hours a day",
-    shortDesc: "An online directory listing legal aid and pro bono domestic violence attorneys and organizations serving Morris County, New Jersey.",
-    longDesc: "The Justia Domestic Violence Legal Aid and Pro Bono Services page for Morris County provides a centralized directory of attorneys and nonprofit organizations that offer free or low-cost legal assistance to individuals experiencing domestic violence. The site allows users to search for services related to restraining orders, family court matters, custody issues, and other domestic violence-related legal needs. Each listing includes contact information and a brief overview of services, making it easier for residents to locate professional legal support in their area.",
+    shortDesc: "An online directory listing legal aid and pro bono domestic violence attorneys and organizations serving Morris County.",
     tags: ["Legal Aid", "Pro Bono", "Restraining Orders", "Family Court", "Online Directory"],
     services: ["legal"],
-    saves: 0
   },
   {
     id: 12,
@@ -182,11 +178,9 @@ const RESOURCES = [
     phone: "(973) 829-4050",
     website: "https://morrisfjc.org/",
     hours: "Mon–Fri: 8:30 AM – 4:30 PM",
-    shortDesc: "A walk-in resource center in Morristown where survivors of domestic violence can access coordinated support, legal help, counseling, and protection services from multiple partner agencies under one roof.",
-    longDesc: "The Morris Family Justice Center provides comprehensive, coordinated services for survivors of domestic violence, dating abuse, sexual assault, and related trauma in Morris County, New Jersey. Instead of having to visit multiple agencies, individuals and families can walk into the center and receive counseling, civil legal assistance, safety planning, children's services, and immigration support with bilingual staff available. The center brings together representatives from partner agencies including Jersey Battered Women's Service, the Morris County Prosecutor's Office, legal aid organizations, and county support services in one welcoming location to streamline access to help and support.",
+    shortDesc: "A walk-in resource center in Morristown where survivors can access coordinated support, legal help, counseling, and protection services.",
     tags: ["Walk-In", "Legal Advocacy", "Counseling", "Bilingual", "Safety Planning"],
     services: ["counseling", "legal", "emergency"],
-    saves: 0
   },
   {
     id: 13,
@@ -197,11 +191,9 @@ const RESOURCES = [
     phone: "(973) 631-5000",
     website: "https://www.deirdreshouse.org/",
     hours: "Mon–Fri: 9:00 AM – 4:30 PM",
-    shortDesc: "A child advocacy center providing abuse response, counseling, and forensic services to child victims and witnesses of violence in Morris County.",
-    longDesc: "Deirdre's House serves as the central child advocacy center in Morris County for children who have experienced abuse or witnessed violence. The center offers forensic interviews, medical examinations, clinical counseling, legal support, and advocacy in a trauma-informed, child-friendly environment designed to reduce re-traumatization. In addition, Deirdre's House provides guidance for caregivers, community education programs, and prevention initiatives to strengthen families and communities, ensuring that young victims receive coordinated, compassionate care every step of the way.",
+    shortDesc: "A child advocacy center providing abuse response, counseling, and forensic services to child victims in Morris County.",
     tags: ["Child Advocacy", "Forensic Interviews", "Trauma-Informed", "Counseling"],
     services: ["counseling", "youth", "legal"],
-    saves: 0
   },
   {
     id: 14,
@@ -212,14 +204,11 @@ const RESOURCES = [
     phone: "(973) 539-7060",
     website: "https://jbws.org/",
     hours: "Crisis Hotline: 24/7 | Admin Office: Mon–Fri 9:00 AM – 5:00 PM",
-    shortDesc: "A Morris County domestic violence agency offering 24/7 crisis support, legal advocacy, shelter, and counseling for survivors and families.",
-    longDesc: "Jersey Battered Women's Service (JBWS) is the leading nonprofit organization dedicated to supporting survivors of domestic violence, dating abuse, and relationship trauma in Morris County, New Jersey. JBWS provides confidential, free services including a 24-hour crisis hotline (1-877-782-2873), emergency shelter, court and legal advocacy, safety planning, counseling, and support groups. The organization also offers prevention education and community outreach programs to raise awareness and help individuals and families move toward safety and healing. Services are available to people of all backgrounds and are designed to help survivors regain stability and confidence in a supportive environment.",
+    shortDesc: "A Morris County domestic violence agency offering 24/7 crisis support, legal advocacy, shelter, and counseling for survivors.",
     tags: ["24/7 Hotline", "Emergency Shelter", "Legal Advocacy", "Counseling", "Confidential"],
     services: ["counseling", "emergency", "legal", "housing"],
-    saves: 0
   },
-
-  // ── HOMELESS SHELTERS ──────────────────────────────────────
+  // ── HOUSING / SHELTER ──────────────────────────────────────
   {
     id: 15,
     title: "Family Promise of Morris County",
@@ -228,12 +217,10 @@ const RESOURCES = [
     address: "51 Washington St, Morristown, NJ 07960",
     phone: "(973) 998-0820",
     website: "https://www.familypromisemorris.org/",
-    hours: "Mon–Thu: 11:00 AM – 3:00 PM; Outreach support: Mon–Fri 9:00 AM – 5:00 PM",
-    shortDesc: "A nonprofit shelter and housing support organization in Morris County providing emergency housing, case management, and outreach services to families and individuals experiencing homelessness.",
-    longDesc: "Family Promise of Morris County works to prevent and end homelessness by offering safe shelter, housing assistance, and comprehensive support services to families and individuals facing housing insecurity. Through a large network of more than 75 local congregations and volunteers, the organization provides shelter programs, transitional housing, outreach support, and case management to help guests move from crisis to permanent stability. Programs include emergency shelter via a motel model, a day-center resource hub with access to computers and basic services, coordinated outreach, and assistance with long-term housing solutions. Family Promise focuses on dignity, individualized care, and long-term success for those they serve.",
+    hours: "Mon–Thu: 11:00 AM – 3:00 PM",
+    shortDesc: "A nonprofit shelter providing emergency housing, case management, and outreach for families experiencing homelessness.",
     tags: ["Family Shelter", "Case Management", "Transitional Housing", "Outreach"],
     services: ["housing", "emergency"],
-    saves: 0
   },
   {
     id: 16,
@@ -244,11 +231,9 @@ const RESOURCES = [
     phone: "(973) 538-0431",
     website: "https://www.marketstreet.org/",
     hours: "24 Hours",
-    shortDesc: "A long-standing nonprofit shelter in Morristown offering emergency housing, free meals, personal care services, and supportive programs for people facing homelessness.",
-    longDesc: "Market Street Mission has served the community since 1889, providing a safe place to sleep, nourishment, and supportive services to men, women, and children facing homelessness and hardship. The Mission offers overnight shelter, free daily meals, showers and personal hygiene facilities, food distribution, and holistic support designed to help people transition from crisis to stability. In addition, it provides counseling, recovery programs, life skills support, and access to clothing and household items through its thrift store — all offered free of charge. Market Street Mission's holistic approach includes spiritual and emotional care as well as essential basic needs, making it a cornerstone resource for those experiencing homelessness in Morris County and throughout northern New Jersey.",
+    shortDesc: "A long-standing nonprofit shelter offering emergency housing, free meals, and supportive programs for people facing homelessness.",
     tags: ["Emergency Shelter", "Hot Meals", "24/7", "Recovery Programs", "Life Skills"],
     services: ["housing", "food", "counseling", "emergency"],
-    saves: 0
   },
   {
     id: 17,
@@ -259,13 +244,10 @@ const RESOURCES = [
     phone: "(973) 993-0900",
     website: "https://homelesssolutions.org/",
     hours: "24 Hours",
-    shortDesc: "A nonprofit shelter and housing support organization in Morris County providing emergency housing, transitional programs, and services to help individuals and families experiencing homelessness move toward stability.",
-    longDesc: "Homeless Solutions Inc. is a Morris County-based nonprofit dedicated to supporting people who are homeless or at risk of homelessness through a series of housing and support services. Since 1983, the organization has offered emergency overnight shelter, transitional housing programs, and affordable housing options designed to help guests achieve stability and self-sufficiency. Programs include case management, life-skills support, employment assistance, and referrals for medical, mental health, and substance use resources. Homeless Solutions works with families, single adults, and vulnerable populations to address the root causes of homelessness and empower individuals to rebuild their lives.",
+    shortDesc: "A nonprofit providing emergency housing, transitional programs, and services to help individuals and families move toward stability.",
     tags: ["Emergency Shelter", "Transitional Housing", "24/7", "Case Management", "Employment"],
     services: ["housing", "emergency", "employment"],
-    saves: 0
   },
-
   // ── YOUTH & CHILDREN ───────────────────────────────────────
   {
     id: 18,
@@ -276,11 +258,9 @@ const RESOURCES = [
     phone: "(973) 538-2224",
     website: "https://morrisplainsboro.org/teen-center/",
     hours: "Mon–Fri: 8:30 AM – 4:30 PM",
-    shortDesc: "A community teen center offering fun, supervised social events and activities for middle school students in Morris Plains.",
-    longDesc: "The Morris Plains Teen Center provides local youth in grades 6–8 with a safe, supervised space to socialize and participate in community events like dances, game nights, skate nights, and other activities. The center is staffed by volunteers and supported through local partnerships and fundraising, helping teens build social skills, make positive connections, and develop a sense of belonging outside school. Programs encourage teamwork, leadership, and healthy recreation while fostering a supportive community environment.",
+    shortDesc: "A community teen center offering supervised social events and activities for middle school students.",
     tags: ["Teens", "Grades 6-8", "After-School", "Social Activities"],
     services: ["youth"],
-    saves: 0
   },
   {
     id: 19,
@@ -291,11 +271,9 @@ const RESOURCES = [
     phone: "(973) 627-7200",
     website: "https://www.rockawaytownship.org/554/Youth-Health-Resources",
     hours: "Mon–Fri: 8:30 AM – 4:30 PM",
-    shortDesc: "A local resource page offering teens and families information on mental health, healthy relationships, crisis support, and youth programs.",
-    longDesc: "Rockaway Township's Youth Health Resources page provides families with trusted information and links to support the emotional, mental, and physical well-being of local teens. Topics include mental health guidance, coping strategies, healthy decision-making, suicide prevention resources like the 988 Lifeline, and connections to community programs, after-school activities, and counseling. The site helps parents and teens identify local services for youth development, safety, and resilience, ensuring families have access to timely support and education.",
+    shortDesc: "A local resource page offering teens and families information on mental health, crisis support, and youth programs.",
     tags: ["Mental Health", "Teens", "Crisis Support", "988 Lifeline", "Family Resources"],
     services: ["youth", "counseling"],
-    saves: 0
   },
   {
     id: 20,
@@ -306,11 +284,9 @@ const RESOURCES = [
     phone: "(973) 998-7590",
     website: "https://www.casamsc.org/",
     hours: "Mon–Fri: 9:00 AM – 5:00 PM",
-    shortDesc: "A nonprofit that trains volunteers to advocate in family court for the safety and best interests of abused and neglected children.",
-    longDesc: "CASA of Morris & Sussex Counties (Court Appointed Special Advocates) recruits and trains community volunteers to serve as advocates for children who have been abused, neglected, or placed in foster care. Each trained volunteer is assigned one child and works one-on-one to gather information, speak with teachers and caregivers, and make recommendations to the court about that child's best interests. CASA volunteers help ensure that judges have a complete picture of each child's needs so that decisions about placement, services, and long-term well-being are made with strong support and stability in mind. Through advocacy, encouragement, and ongoing involvement, CASA empowers children to have their voices heard during difficult legal proceedings.",
+    shortDesc: "A nonprofit that trains volunteers to advocate in family court for abused and neglected children.",
     tags: ["Child Advocacy", "Foster Care", "Court Advocacy", "Volunteers"],
     services: ["youth", "legal"],
-    saves: 0
   },
   {
     id: 21,
@@ -321,11 +297,9 @@ const RESOURCES = [
     phone: "(973) 631-5000",
     website: "https://www.deirdreshouse.org/",
     hours: "Mon–Fri: 9:00 AM – 4:30 PM",
-    shortDesc: "A child advocacy center providing abuse response, counseling, and forensic services to child victims and witnesses of violence in Morris County.",
-    longDesc: "Deirdre's House serves as the central child advocacy center in Morris County for children who have experienced abuse or witnessed violence. The center offers forensic interviews, medical examinations, clinical counseling, legal support, and advocacy in a trauma-informed, child-friendly environment designed to reduce re-traumatization. In addition, Deirdre's House provides guidance for caregivers, community education programs, and prevention initiatives to strengthen families and communities, ensuring that young victims receive coordinated, compassionate care every step of the way.",
+    shortDesc: "A child advocacy center providing abuse response, counseling, and forensic services to child victims in Morris County.",
     tags: ["Child Advocacy", "Forensic Interviews", "Trauma-Informed", "Counseling"],
     services: ["counseling", "youth", "legal"],
-    saves: 0
   },
   {
     id: 22,
@@ -336,11 +310,9 @@ const RESOURCES = [
     phone: "(973) 538-1229",
     website: "https://cornerstonefamilyprograms.org/",
     hours: "Mon–Fri: 7:00 AM – 5:30 PM",
-    shortDesc: "A community nonprofit in Morristown offering preschool, school-age programs, teen enrichment, and youth development services.",
-    longDesc: "Cornerstone Family Programs provides children and teens with educational, recreational, and personal growth opportunities. Programs include preschool, before and after school care, summer camps, teen enrichment, college preparation, and mental health workshops. The organization focuses on fostering confidence, creativity, and leadership skills while supporting families with high-quality programs in a safe, nurturing environment. Cornerstone also connects youth with mentors, volunteers, and community resources to ensure each participant receives guidance and encouragement to thrive academically, socially, and emotionally.",
+    shortDesc: "A nonprofit offering preschool, school-age programs, teen enrichment, and youth development services.",
     tags: ["Preschool", "After-School", "Summer Camp", "Teen Programs", "Mental Health"],
     services: ["youth", "education", "counseling"],
-    saves: 0
   },
   {
     id: 23,
@@ -351,26 +323,22 @@ const RESOURCES = [
     phone: "(973) 453-6668",
     website: "https://rootsandwingsnj.org/",
     hours: "Mon–Fri: 9:00 AM – 5:00 PM",
-    shortDesc: "A nonprofit empowering young adults aging out of foster care with housing, life skills, and support toward independence.",
-    longDesc: "Roots & Wings provides safe housing and comprehensive support for youth transitioning out of foster care in New Jersey. Services include life skills training, educational planning, emotional and career support, and temporary coverage of rent and utilities. The organization helps participants navigate independent living, build confidence, and develop the skills needed for long-term success. Through mentorship, community engagement, and personalized guidance, Roots & Wings fosters independence while ensuring youth maintain access to critical resources and a supportive network during this vulnerable life stage.",
+    shortDesc: "A nonprofit empowering young adults aging out of foster care with housing, life skills, and support.",
     tags: ["Foster Care", "Transitional Housing", "Life Skills", "Young Adults"],
     services: ["youth", "housing", "employment"],
-    saves: 0
   },
   {
     id: 24,
     title: "Morris County Youth Shelter",
     category: "youth",
     town: "Morristown",
-    address: "400 W Hanover Ave, Morristown, NJ 07960 (call for directions)",
+    address: "400 W Hanover Ave, Morristown, NJ 07960",
     phone: "(973) 285-2970",
     website: "https://www.morriscountynj.gov/Departments/Youth-Shelter",
     hours: "24/7",
-    shortDesc: "A 24/7 emergency shelter for adolescents ages 13–17 offering meals, shelter, supervision, and life-skills support.",
-    longDesc: "The Morris County Youth Shelter provides safe temporary housing and structured programs for teens in crisis. Residents receive meals, recreation, education support, life skills training, and counseling in a secure, supportive environment. The shelter emphasizes stability, personal growth, and resilience, helping at-risk adolescents navigate challenges such as family conflict, homelessness, or behavioral issues. Staff work closely with families, schools, and community agencies to create individualized plans for each teen, ensuring that residents gain the tools and confidence to transition successfully back into their communities.",
+    shortDesc: "A 24/7 emergency shelter for adolescents ages 13–17 offering meals, shelter, and life-skills support.",
     tags: ["Youth Shelter", "Ages 13-17", "24/7", "Crisis Services", "Life Skills"],
     services: ["youth", "housing", "emergency", "counseling"],
-    saves: 0
   },
   {
     id: 25,
@@ -381,14 +349,11 @@ const RESOURCES = [
     phone: "(973) 347-4946",
     website: "https://growingstage.com/",
     hours: "Mon–Fri: 10:00 AM – 3:00 PM",
-    shortDesc: "A professional children's theater in Netcong offering live performances, acting classes, and summer theater camps for kids and teens.",
-    longDesc: "Growing Stage is a professional children's theater dedicated to providing high-quality theatrical performances and educational programs for youth in Morris County. The theater hosts plays and musicals designed for children and families, as well as workshops, acting classes, and summer theater camps for kids and teens of all skill levels. By combining performance opportunities with arts education, Growing Stage fosters creativity, teamwork, confidence, and self-expression while giving young people a safe, engaging environment to explore the performing arts.",
+    shortDesc: "A professional children's theater offering live performances, classes, and summer camps for kids and teens.",
     tags: ["Youth Theater", "Arts Education", "Summer Camp", "Acting Classes"],
     services: ["youth", "education"],
-    saves: 0
   },
-
-  // ── DISABILITY SERVICES ────────────────────────────────────
+  // ── DISABILITY ─────────────────────────────────────────────
   {
     id: 26,
     title: "DAWN Center for Independent Living",
@@ -398,11 +363,9 @@ const RESOURCES = [
     phone: "(973) 625-1940",
     website: "https://dawncil.org/",
     hours: "Mon–Fri: 9:00 AM – 5:00 PM",
-    shortDesc: "A nonprofit organization that helps people with disabilities live independently through advocacy, life skills training, peer support, and employment services.",
-    longDesc: "The DAWN Center for Independent Living is a nonprofit organization that supports individuals with disabilities across Morris, Sussex, and Warren counties. The organization promotes independence by providing services such as advocacy, information and referrals, peer support groups, and independent living skills training. DAWN also offers employment readiness programs, recreational activities, youth transition programs, and caregiver support. By empowering individuals to define their own goals and access community resources, DAWN helps people with disabilities build independence, confidence, and full participation in their communities.",
+    shortDesc: "A nonprofit helping people with disabilities live independently through advocacy, peer support, and employment services.",
     tags: ["Independent Living", "Peer Support", "Employment", "Advocacy", "Youth Transition"],
     services: ["disability", "employment"],
-    saves: 0
   },
   {
     id: 27,
@@ -412,12 +375,10 @@ const RESOURCES = [
     address: "92 Broadway, Suite 101, Denville, NJ 07834",
     phone: "(973) 664-1770",
     website: "https://aviddnj.org/",
-    hours: "Contact the organization for current office hours.",
-    shortDesc: "A nonprofit organization that provides housing, employment training, and community support services for individuals with intellectual and developmental disabilities.",
-    longDesc: "AVIDD Community Services of NJ is a nonprofit organization dedicated to supporting individuals with intellectual and developmental disabilities. Founded in 1986, the organization provides community-based services such as residential group homes, supervised apartments, employment training, and supported job placement programs. AVIDD also offers transition services for students with disabilities, recreational activities, and independent living support to help individuals build life skills and participate fully in their communities. Through personalized programs and caring staff, AVIDD works to empower people with disabilities to achieve independence, dignity, and meaningful involvement in everyday life.",
+    hours: "Contact for hours",
+    shortDesc: "A nonprofit providing housing, employment training, and support for individuals with intellectual and developmental disabilities.",
     tags: ["Group Homes", "Supported Employment", "Life Skills", "Developmental Disabilities"],
     services: ["disability", "employment", "housing"],
-    saves: 0
   },
   {
     id: 28,
@@ -428,11 +389,9 @@ const RESOURCES = [
     phone: "(973) 326-9750",
     website: "https://arcmorris.org/",
     hours: "Mon–Fri: 8:30 AM – 5:00 PM",
-    shortDesc: "A nonprofit in Morris County providing housing, employment training, and life skills programs for individuals with intellectual and developmental disabilities.",
-    longDesc: "ArcMorris is a major nonprofit organization serving individuals with intellectual and developmental disabilities and their families throughout Morris County. With over 70 years of service, the organization offers a wide range of programs including residential group homes, supervised apartments, day habilitation, employment training, and recreational activities. ArcMorris also provides transition programs for youth, family support services, and clinical care to promote independence and wellbeing. Through community-based programs and personalized support, ArcMorris helps individuals build life skills, gain employment, and actively participate in their communities.",
+    shortDesc: "A nonprofit providing housing, employment training, and life skills for individuals with intellectual and developmental disabilities.",
     tags: ["Developmental Disabilities", "Group Homes", "Employment Training", "Day Habilitation"],
     services: ["disability", "employment", "housing"],
-    saves: 0
   },
   {
     id: 29,
@@ -443,14 +402,11 @@ const RESOURCES = [
     phone: "(973) 326-9750",
     website: "https://lennonshouse.com/",
     hours: "Mon–Sun: 9:00 AM – 5:00 PM",
-    shortDesc: "A nonprofit organization that provides social, recreational, and life enrichment programs for individuals with developmental disabilities.",
-    longDesc: "Lennon's House is a nonprofit organization based in Rockaway, New Jersey, dedicated to supporting individuals with developmental and intellectual disabilities. The organization offers social day programs, recreational activities, and community events designed to promote inclusion, friendship, and independence. Participants engage in activities such as games, volunteer opportunities, and Special Olympics programs, helping them build confidence and life skills in a supportive environment. Lennon's House also works to create a welcoming community space where individuals with disabilities can connect, grow, and participate fully in everyday life.",
+    shortDesc: "A nonprofit providing social, recreational, and life enrichment programs for individuals with developmental disabilities.",
     tags: ["Day Programs", "Special Olympics", "Social Activities", "Developmental Disabilities"],
     services: ["disability"],
-    saves: 0
   },
-
-  // ── EDUCATION & ESL ────────────────────────────────────────
+  // ── EDUCATION ──────────────────────────────────────────────
   {
     id: 30,
     title: "Literacy Volunteers of Morris County",
@@ -459,27 +415,23 @@ const RESOURCES = [
     address: "16 Elm St, 1st Floor, Morristown, NJ 07960",
     phone: "(973) 984-1998",
     website: "https://www.lvmorris.org/",
-    hours: "Mon: 9:00 AM – 2:00 PM; Tue: 9:00 AM – 7:00 PM; Wed–Thu: 9:00 AM – 2:00 PM",
-    shortDesc: "A nonprofit providing free ESL tutoring, literacy instruction, and citizenship preparation for adults in Morris County.",
-    longDesc: "Literacy Volunteers of Morris County offers free one-on-one and small group tutoring for adults who want to improve their English reading, writing, and speaking skills. The program serves residents across more than 40 communities and includes ESL instruction, GED preparation, and citizenship support. Trained volunteer tutors work closely with students to build confidence and communication skills, helping them succeed in everyday life, work, and community involvement.",
+    hours: "Mon: 9–2; Tue: 9–7; Wed–Thu: 9–2",
+    shortDesc: "A nonprofit providing free ESL tutoring, literacy instruction, and citizenship preparation for adults.",
     tags: ["ESL", "Literacy", "GED Prep", "Citizenship", "Free Tutoring"],
     services: ["education"],
-    saves: 0
   },
   {
     id: 31,
-    title: "Morristown & Morris Township Library — ESL Resources",
+    title: "Morristown & Morris Township Library",
     category: "education",
     town: "Morristown",
     address: "1 Miller Rd., Morristown, NJ 07960",
     phone: "(973) 538-6161",
     website: "https://mmtlibrary.org/resources/english-as-a-second-language/",
-    hours: "Mon–Thu: 9:00 AM – 9:00 PM; Fri: 9:00 AM – 5:00 PM; Sat (Sept–June): 9:00 AM – 5:00 PM; Sat (Jul–Aug): 10:00 AM – 2:00 PM; Sun: 1:00 PM – 5:00 PM",
-    shortDesc: "A county library resource page listing free and low-cost ESL classes, tutoring programs, and language learning opportunities.",
-    longDesc: "The Morris County Library ESL resources page connects residents with a wide range of English language learning opportunities, including free tutoring programs, adult education classes, and workforce-based ESL training. It features local programs such as Literacy Volunteers, vocational school classes, and immigrant support organizations. The page also includes both free and paid options, helping learners of all levels find accessible pathways to improve their English skills.",
+    hours: "Mon–Thu: 9–9; Fri: 9–5; Sat: 9–5; Sun: 1–5",
+    shortDesc: "A library resource page listing free and low-cost ESL classes, tutoring programs, and language learning opportunities.",
     tags: ["ESL", "Adult Education", "Free Classes", "Language Learning"],
     services: ["education"],
-    saves: 0
   },
   {
     id: 32,
@@ -489,15 +441,12 @@ const RESOURCES = [
     address: "30 East Hanover Avenue, Whippany, NJ 07981",
     phone: "(973) 285-6930",
     website: "https://www.mclib.info/Research/Local-Resources/ESL-Classes",
-    hours: "Mon–Thu: 9:00 AM – 9:00 PM; Fri–Sat: 9:00 AM – 5:00 PM; Sun: Closed",
-    shortDesc: "A public library offering ESL learning materials, study spaces, and access to language learning tools for adults.",
-    longDesc: "The Morristown & Morris Township Library provides resources to support English language learners, including books, media kits, and online programs like Mango Languages. The library also offers study rooms and access to local ESL class information, helping learners practice reading, writing, and speaking skills. By combining educational materials with access to community programs, the library supports independent learning and skills development for non-native English speakers.",
+    hours: "Mon–Thu: 9–9; Fri–Sat: 9–5",
+    shortDesc: "A public library offering ESL learning materials, study spaces, and language learning tools for adults.",
     tags: ["ESL", "Language Learning", "Study Rooms", "Mango Languages"],
     services: ["education"],
-    saves: 0
   },
-
-  // ── HEALTH CARE ────────────────────────────────────────────
+  // ── HEALTH ─────────────────────────────────────────────────
   {
     id: 33,
     title: "First Choice Women's Resource Centers",
@@ -506,12 +455,10 @@ const RESOURCES = [
     address: "82 Speedwell Ave, Morristown, NJ 07960",
     phone: "(973) 538-1426",
     website: "https://1stchoice.org/",
-    hours: "Mon: 8:00 AM – 4:00 PM; Wed: 8:00 AM – 4:00 PM; Thu: 9:00 AM – 6:00 PM; Fri: 11:00 AM – 3:00 PM",
-    shortDesc: "A nonprofit health resource center offering free pregnancy tests, ultrasounds, STI services, and counseling for women and families.",
-    longDesc: "First Choice Women's Resource Centers provides free and confidential support for people facing pregnancy-related decisions. Services include pregnancy testing, limited obstetrical ultrasounds, select STI testing, options counseling, parenting education, and material assistance such as baby and maternity items. The organization focuses on helping clients understand their options and connect with medical and social support services in a caring environment.",
+    hours: "Mon & Wed: 8–4; Thu: 9–6; Fri: 11–3",
+    shortDesc: "A nonprofit offering free pregnancy tests, ultrasounds, STI services, and counseling for women.",
     tags: ["Women's Health", "Pregnancy", "Free Services", "Confidential", "Counseling"],
     services: ["health", "counseling"],
-    saves: 0
   },
   {
     id: 34,
@@ -522,11 +469,9 @@ const RESOURCES = [
     phone: "(973) 263-8383",
     website: "https://www.rockawayneckfirstaid.org/",
     hours: "24/7",
-    shortDesc: "A volunteer emergency medical service providing 24/7 ambulance and rescue response to eastern Parsippany and Lake Hiawatha.",
-    longDesc: "The Rockaway Neck First Aid Squad is a volunteer-based emergency medical service that has served the Parsippany area for decades. Staffed by certified EMTs and emergency vehicle operators, the squad provides round-the-clock ambulance and rescue services to residents in eastern Parsippany and Lake Hiawatha. Its work helps ensure rapid emergency response and community access to lifesaving pre-hospital care.",
+    shortDesc: "A volunteer EMS providing 24/7 ambulance and rescue response to eastern Parsippany.",
     tags: ["Emergency Medical", "Ambulance", "24/7", "Volunteer EMTs"],
     services: ["health", "emergency"],
-    saves: 0
   },
   {
     id: 35,
@@ -536,12 +481,10 @@ const RESOURCES = [
     address: "35 Waterview Blvd Suite 201, Parsippany, NJ 07054",
     phone: "(973) 285-0006",
     website: "https://edgenj.org/",
-    hours: "Mon–Thu: 8:00 AM – 8:00 PM; Fri: 8:00 AM – 5:00 PM",
-    shortDesc: "A public health organization providing HIV prevention, LGBTQ+ health services, behavioral healthcare, and supportive programs in Morris County.",
-    longDesc: "EDGE New Jersey advances health and wellness for HIV+ and LGBTQ+ communities through public health programs, behavioral healthcare, education, and housing support. Services include PrEP and PEP education, HIV prevention resources, harm reduction services, and access to affirming care. The organization also offers a broad range of support programs designed to improve health outcomes and connect clients with trusted resources in a welcoming environment.",
+    hours: "Mon–Thu: 8–8; Fri: 8–5",
+    shortDesc: "A public health org providing HIV prevention, LGBTQ+ health services, and behavioral healthcare.",
     tags: ["HIV Prevention", "LGBTQ+ Health", "Harm Reduction", "Behavioral Health", "PrEP"],
     services: ["health", "counseling"],
-    saves: 0
   },
   {
     id: 36,
@@ -552,11 +495,9 @@ const RESOURCES = [
     phone: "(973) 463-9600",
     website: "https://www.communityhope-nj.org/",
     hours: "24/7",
-    shortDesc: "A nonprofit organization providing mental health, addiction recovery, supportive housing, and wellness services for individuals and families in need.",
-    longDesc: "Community Hope helps individuals and families facing mental illness, substance use challenges, homelessness, and poverty through a combination of behavioral health, housing, and supportive services. The organization is especially known for its mental health and recovery-focused programs, as well as services for veterans and people in crisis. By combining treatment support with stable housing and case management, Community Hope works to improve long-term health and well-being.",
+    shortDesc: "A nonprofit providing mental health, addiction recovery, supportive housing, and wellness services.",
     tags: ["Mental Health", "Addiction Recovery", "Veterans", "Supportive Housing", "24/7"],
     services: ["health", "counseling", "housing"],
-    saves: 0
   },
   {
     id: 37,
@@ -566,15 +507,12 @@ const RESOURCES = [
     address: "140 Green Pond Rd, Rockaway Township, NJ 07866",
     phone: "(973) 888-1256",
     website: "https://carecenterofnewjersey.org/",
-    hours: "Mon–Fri: 9:00 AM – 5:00 PM",
-    shortDesc: "A community nonprofit offering mental health counseling and support services to help individuals and families improve stability and well-being.",
-    longDesc: "The CARE Center of New Jersey provides a mix of community and wellness services aimed at helping families build stability and healthier lives. In addition to food and clothing support, the organization offers mental health counseling, legal assistance, business development help, and other family support services. Its programs focus on reducing hardship while giving individuals access to practical resources that strengthen overall well-being.",
+    hours: "Mon–Fri: 9–5",
+    shortDesc: "A community nonprofit offering mental health counseling and support services.",
     tags: ["Mental Health Counseling", "Family Support", "Legal Assistance", "Community Services"],
     services: ["health", "counseling", "legal"],
-    saves: 0
   },
-
-  // ── LEGAL SERVICES ─────────────────────────────────────────
+  // ── LEGAL ──────────────────────────────────────────────────
   {
     id: 38,
     title: "Legal Services of Northwest Jersey",
@@ -584,11 +522,9 @@ const RESOURCES = [
     phone: "(973) 285-6911",
     website: "https://www.lsnwj.org/",
     hours: "Mon–Fri: 8:30 AM – 4:30 PM",
-    shortDesc: "A nonprofit organization providing free legal assistance to low-income residents in Morris County and surrounding areas.",
-    longDesc: "Legal Services of Northwest Jersey is a nonprofit organization that provides free civil legal assistance to low-income individuals and families in Morris County and nearby regions. Services include help with housing issues such as eviction and foreclosure, family law matters including domestic violence and custody, access to public benefits, healthcare access, and consumer protection. The organization also offers legal advice, representation, and community education to help individuals understand their rights and navigate the legal system. By focusing on vulnerable populations, Legal Services of Northwest Jersey works to ensure equal access to justice and improve stability for those in need.",
+    shortDesc: "A nonprofit providing free legal assistance to low-income residents in Morris County.",
     tags: ["Free Legal Aid", "Eviction Defense", "Family Law", "Benefits Appeals", "Housing"],
     services: ["legal"],
-    saves: 0
   },
   {
     id: 39,
@@ -598,14 +534,11 @@ const RESOURCES = [
     address: "3799 Route 46, Suite 211, Parsippany, NJ 07054",
     phone: "(973) 240-6955",
     website: "https://probonopartner.org/",
-    hours: "Call for more information",
-    shortDesc: "A nonprofit that provides free legal services to other nonprofits, helping them operate effectively and comply with the law.",
-    longDesc: "Pro Bono Partnership connects eligible nonprofit organizations with volunteer attorneys who provide free legal assistance on a wide range of issues. Services include help with contracts, employment law, nonprofit governance, intellectual property, and regulatory compliance. While the organization does not directly represent individuals, it strengthens the nonprofit sector by ensuring that organizations serving communities — such as shelters, food pantries, and youth programs — have access to quality legal guidance. This support helps nonprofits operate more effectively and continue providing essential services.",
+    hours: "Call for information",
+    shortDesc: "A nonprofit providing free legal services to other nonprofits.",
     tags: ["Pro Bono", "Nonprofit Legal Help", "Contracts", "Governance"],
     services: ["legal"],
-    saves: 0
   },
-
   // ── MENTAL HEALTH ──────────────────────────────────────────
   {
     id: 40,
@@ -616,11 +549,9 @@ const RESOURCES = [
     phone: "(551) 209-0235",
     website: "https://newchapteryouthprogram.com/",
     hours: "Open 24 hours",
-    shortDesc: "A youth-focused program providing mentorship, mental health support, and personal development services for teens.",
-    longDesc: "New Chapter Youth Program supports adolescents through mentorship, mental health awareness, and personal development initiatives. The program focuses on building confidence, emotional resilience, and leadership skills while providing a safe and supportive environment for teens to express themselves. Through workshops, group sessions, and community engagement, New Chapter helps youth navigate challenges such as stress, identity, and peer pressure while promoting overall well-being.",
+    shortDesc: "A youth-focused program providing mentorship, mental health support, and personal development for teens.",
     tags: ["Youth", "Mentorship", "Mental Health", "Teens", "Personal Development"],
     services: ["counseling", "youth"],
-    saves: 0
   },
   {
     id: 41,
@@ -631,11 +562,9 @@ const RESOURCES = [
     phone: "(973) 463-9600",
     website: "https://www.communityhope-nj.org/",
     hours: "24/7",
-    shortDesc: "A nonprofit organization providing mental health, addiction recovery, supportive housing, and wellness services for individuals and families in need.",
-    longDesc: "Community Hope helps individuals and families facing mental illness, substance use challenges, homelessness, and poverty through a combination of behavioral health, housing, and supportive services. The organization is especially known for its mental health and recovery-focused programs, as well as services for veterans and people in crisis. By combining treatment support with stable housing and case management, Community Hope works to improve long-term health and well-being.",
+    shortDesc: "Mental health, addiction recovery, supportive housing, and wellness services.",
     tags: ["Mental Health", "Addiction Recovery", "Veterans", "Supportive Housing", "24/7"],
     services: ["counseling", "housing"],
-    saves: 0
   },
   {
     id: 42,
@@ -646,26 +575,9 @@ const RESOURCES = [
     phone: "(973) 490-4563",
     website: "https://truelifecarementalhealth.com/",
     hours: "Open 24 hours",
-    shortDesc: "A mental health provider offering therapy, psychiatric services, and personalized treatment plans for individuals of all ages.",
-    longDesc: "True Life Care Mental Health provides outpatient mental health services including individual therapy, medication management, and treatment for conditions such as anxiety, depression, trauma, and mood disorders. The organization focuses on personalized care plans tailored to each client's needs, helping individuals improve emotional well-being and develop coping strategies. Their services aim to support long-term mental health through professional guidance and evidence-based treatment.",
+    shortDesc: "A mental health provider offering therapy, psychiatric services, and personalized treatment plans.",
     tags: ["Therapy", "Psychiatric Services", "Medication Management", "Outpatient", "All Ages"],
     services: ["counseling"],
-    saves: 0
-  },
-  {
-    id: 43,
-    title: "NovaMind Wellness",
-    category: "mental-health",
-    town: "Denville",
-    address: "3000 NJ-10 Suite C, Denville, NJ 07834",
-    phone: "(973) 339-0085",
-    website: "https://novamindwellness.com/",
-    hours: "Open 24 hours",
-    shortDesc: "A wellness center offering therapy, counseling, and holistic mental health services for individuals and families.",
-    longDesc: "Nova Mind Wellness provides a range of mental health services designed to support emotional and psychological well-being. Services include individual therapy, family counseling, and holistic approaches to mental health care. The center focuses on creating a supportive environment where clients can explore challenges, build coping skills, and improve overall mental wellness through personalized and compassionate care.",
-    tags: ["Therapy", "Family Counseling", "Holistic Care", "Mental Wellness"],
-    services: ["counseling"],
-    saves: 0
   },
   {
     id: 44,
@@ -675,15 +587,12 @@ const RESOURCES = [
     address: "1160 Parsippany Blvd, Parsippany, NJ 07054",
     phone: "(973) 334-3496",
     website: "https://www.mhainspire.org/",
-    hours: "Mon–Fri: 9:00 AM – 5:00 PM",
-    shortDesc: "A nonprofit organization offering mental health education, support programs, and community resources for individuals and families.",
-    longDesc: "The Mental Health Association of Morris County provides a wide range of services including education, advocacy, and support programs for individuals experiencing mental health challenges. Services include support groups, youth programs, housing assistance, and community outreach initiatives. The organization works to reduce stigma, promote mental wellness, and ensure access to resources that help individuals live stable and fulfilling lives.",
+    hours: "Mon–Fri: 9–5",
+    shortDesc: "A nonprofit offering mental health education, support programs, and community resources.",
     tags: ["Mental Health", "Support Groups", "Education", "Advocacy", "Youth Programs"],
     services: ["counseling", "youth"],
-    saves: 0
   },
-
-  // ── SENIOR SERVICES ────────────────────────────────────────
+  // ── SENIOR ─────────────────────────────────────────────────
   {
     id: 45,
     title: "Florham Park Rehabilitation & Healthcare Center",
@@ -694,25 +603,8 @@ const RESOURCES = [
     website: "https://florhamparkrehab.com/",
     hours: "Open 24 hours",
     shortDesc: "A rehabilitation and nursing facility providing short-term recovery and long-term care for seniors.",
-    longDesc: "Florham Park Rehabilitation and Healthcare Center offers skilled nursing care, physical therapy, and rehabilitation services for seniors recovering from illness, injury, or surgery. The facility also provides long-term care, memory care, and medical supervision for residents who require ongoing support. With a focus on recovery and quality care, the center helps seniors regain independence while ensuring comfort and safety.",
     tags: ["Senior Care", "Rehabilitation", "Skilled Nursing", "Memory Care", "24/7"],
     services: ["health"],
-    saves: 0
-  },
-  {
-    id: 46,
-    title: "Sunrise Senior Living",
-    category: "senior",
-    town: "Morris County",
-    address: "Multiple locations in Morris County",
-    phone: "Varies by location",
-    website: "https://www.sunriseseniorliving.com/",
-    hours: "24/7 residential care",
-    shortDesc: "An assisted living provider offering housing, personal care, and memory care services for seniors.",
-    longDesc: "Sunrise Senior Living operates communities that provide assisted living, memory care, and short-term stays for seniors. Residents receive support with daily activities, medication management, and personalized care in a safe and comfortable environment. Programs also include social activities, wellness programs, and dining services designed to promote independence and quality of life. Sunrise focuses on creating a community atmosphere where seniors can stay active and engaged.",
-    tags: ["Assisted Living", "Memory Care", "Senior Housing", "Wellness Programs"],
-    services: ["health"],
-    saves: 0
   },
   {
     id: 47,
@@ -723,11 +615,9 @@ const RESOURCES = [
     phone: "(973) 363-3200",
     website: "https://integralcarehc.com/",
     hours: "Open 24 hours",
-    shortDesc: "A home care provider offering personal care, companionship, and support services for seniors and individuals with disabilities.",
-    longDesc: "Integral Care Home Care Services provides non-medical support to seniors and individuals who need assistance with daily living. Services include personal care, meal preparation, transportation, and companionship. Caregivers work closely with clients and families to create customized care plans that promote independence and safety at home. The organization focuses on improving quality of life while helping individuals remain in familiar surroundings.",
+    shortDesc: "A home care provider offering personal care, companionship, and support for seniors.",
     tags: ["Home Care", "Personal Care", "Companionship", "Transportation", "Seniors"],
     services: ["health"],
-    saves: 0
   },
   {
     id: 48,
@@ -737,12 +627,10 @@ const RESOURCES = [
     address: "200 Reynolds Ave, Parsippany, NJ 07054",
     phone: "(973) 887-8080",
     website: "https://excelcaretroyhills.com/",
-    hours: "Call for more information",
-    shortDesc: "A skilled nursing and rehabilitation center offering medical care, therapy, and long-term support for seniors.",
-    longDesc: "Excelcare at Troy Hills provides comprehensive care for seniors, including short-term rehabilitation, long-term nursing care, and memory support services. The facility offers physical, occupational, and speech therapy along with 24-hour medical supervision. Programs are designed to help residents recover, maintain health, and improve overall well-being in a structured and supportive environment.",
+    hours: "Call for information",
+    shortDesc: "A skilled nursing and rehabilitation center for seniors.",
     tags: ["Skilled Nursing", "Rehabilitation", "Memory Support", "Long-Term Care"],
     services: ["health"],
-    saves: 0
   },
   {
     id: 49,
@@ -753,13 +641,10 @@ const RESOURCES = [
     phone: "(973) 447-3471",
     website: "https://caringseniorservice.com/morristown/",
     hours: "Open 24 hours",
-    shortDesc: "An in-home care service providing personal assistance, companionship, and support to help seniors live independently.",
-    longDesc: "Caring Senior Service of Morristown provides non-medical in-home care to seniors who want to remain safely in their own homes. Services include help with daily activities such as bathing, dressing, meal preparation, transportation, and companionship. Care plans are personalized to each individual's needs, allowing seniors to maintain independence while receiving reliable support. The organization focuses on improving quality of life and ensuring safety, comfort, and dignity for older adults.",
+    shortDesc: "In-home care providing personal assistance, companionship, and support to help seniors live independently.",
     tags: ["In-Home Care", "Personal Assistance", "Companionship", "Independence", "Seniors"],
     services: ["health"],
-    saves: 0
   },
-
   // ── SUBSTANCE USE ──────────────────────────────────────────
   {
     id: 50,
@@ -770,11 +655,9 @@ const RESOURCES = [
     phone: "(973) 784-8981",
     website: "https://absoluteawakenings.com/",
     hours: "Open 24 hours",
-    shortDesc: "A substance abuse treatment center offering detox, therapy, and personalized recovery programs in Morris County.",
-    longDesc: "Absolute Awakenings provides comprehensive addiction treatment services for individuals struggling with substance use disorders. Programs include medically supervised detox, outpatient treatment, dual-diagnosis care, and evidence-based therapies that address both addiction and underlying mental health conditions. The center uses a whole-person approach, focusing on physical, emotional, and psychological healing to support long-term recovery and prevent relapse.",
+    shortDesc: "A substance abuse treatment center offering detox, therapy, and personalized recovery programs.",
     tags: ["Detox", "Outpatient Treatment", "Dual Diagnosis", "Addiction Recovery", "24/7"],
     services: ["counseling"],
-    saves: 0
   },
   {
     id: 51,
@@ -785,11 +668,9 @@ const RESOURCES = [
     phone: "(973) 442-4600",
     website: "https://themilestonehouse.org/donate/",
     hours: "Open 24 hours",
-    shortDesc: "A nonprofit providing long-term residential recovery and sober living support for individuals overcoming addiction.",
-    longDesc: "Milestone House offers structured, long-term residential programs for individuals recovering from substance use disorders. Residents receive support through counseling, peer accountability, and life-skills development, helping them transition from addiction to independent, stable living in a supportive environment.",
+    shortDesc: "A nonprofit providing long-term residential recovery and sober living support.",
     tags: ["Residential Recovery", "Sober Living", "Peer Support", "Life Skills", "Long-Term"],
     services: ["counseling", "housing"],
-    saves: 0
   },
   {
     id: 52,
@@ -800,11 +681,9 @@ const RESOURCES = [
     phone: "(973) 604-3388",
     website: "https://www.newpathway.com/",
     hours: "Open 24 hours",
-    shortDesc: "A counseling center offering treatment and support services for individuals dealing with substance use and mental health challenges.",
-    longDesc: "New Pathway Counseling provides therapy and support for individuals struggling with substance use and co-occurring mental health conditions. Services include individual counseling, group therapy, and recovery support designed to help clients build coping skills, improve mental health, and maintain long-term sobriety.",
+    shortDesc: "A counseling center offering treatment for substance use and mental health challenges.",
     tags: ["Counseling", "Group Therapy", "Substance Use", "Co-occurring Disorders", "Recovery"],
     services: ["counseling"],
-    saves: 0
   },
   {
     id: 53,
@@ -815,11 +694,9 @@ const RESOURCES = [
     phone: "(973) 928-0175",
     website: "https://www.betterliferecovery.com/",
     hours: "Open 24 hours",
-    shortDesc: "A treatment provider offering personalized addiction recovery programs and support services.",
-    longDesc: "Better Life Recovery provides individualized treatment programs for substance use disorders, including therapy, counseling, and recovery planning. The organization focuses on helping individuals develop coping strategies, rebuild their lives, and achieve lasting recovery through structured and supportive care.",
+    shortDesc: "A treatment provider offering personalized addiction recovery programs.",
     tags: ["Addiction Recovery", "Personalized Treatment", "Counseling", "Recovery Planning"],
     services: ["counseling"],
-    saves: 0
   },
   {
     id: 54,
@@ -830,11 +707,9 @@ const RESOURCES = [
     phone: "(973) 538-0431",
     website: "https://www.marketstreet.org/",
     hours: "Open 24 hours",
-    shortDesc: "A nonprofit offering addiction recovery programs, shelter, and support services for individuals experiencing homelessness and substance use challenges.",
-    longDesc: "Market Street Mission provides long-term recovery programs for individuals struggling with addiction, combined with shelter, meals, and life-skills training. Their programs focus on personal transformation, stability, and reintegration into society by addressing both substance use and underlying life challenges.",
+    shortDesc: "Addiction recovery programs, shelter, and support for individuals experiencing homelessness.",
     tags: ["Addiction Recovery", "Shelter", "Life Skills", "Meals", "24/7"],
     services: ["counseling", "housing", "food"],
-    saves: 0
   },
   {
     id: 55,
@@ -844,12 +719,10 @@ const RESOURCES = [
     address: "25 W Main St Suite A, Rockaway, NJ 07866",
     phone: "(973) 625-1998",
     website: "https://www.preventioniskey.org/",
-    hours: "Mon–Fri: 9:00 AM – 4:30 PM",
-    shortDesc: "A nonprofit focused on substance use prevention, education, and recovery support programs for youth and families.",
-    longDesc: "Prevention is Key works to reduce substance use through education, early intervention, and community-based programs. Services include youth prevention initiatives, recovery support, family education, and wellness programs. The organization focuses on building resilience and promoting healthy choices to prevent substance use before it begins.",
+    hours: "Mon–Fri: 9–4:30",
+    shortDesc: "A nonprofit focused on substance use prevention, education, and recovery support for youth and families.",
     tags: ["Prevention", "Youth Education", "Family Programs", "Recovery Support", "Wellness"],
     services: ["counseling", "youth"],
-    saves: 0
   },
   {
     id: 56,
@@ -859,12 +732,10 @@ const RESOURCES = [
     address: "273 E Main St, Denville, NJ 07834",
     phone: "(973) 927-6641",
     website: "https://www.mcaftercare.org/",
-    hours: "Mon–Fri: 5:30 AM – 12:30 PM; Sat: 7:00 AM – 9:00 AM",
-    shortDesc: "A treatment center providing medication-assisted therapy and ongoing support for individuals recovering from opioid addiction.",
-    longDesc: "Morris County Aftercare Center offers medication-assisted treatment (MAT), including methadone services, along with counseling and recovery support for individuals overcoming opioid addiction. The center focuses on long-term recovery by helping clients manage withdrawal symptoms, stabilize their lives, and rebuild healthy routines through structured care and support.",
+    hours: "Mon–Fri: 5:30 AM – 12:30 PM; Sat: 7–9 AM",
+    shortDesc: "Medication-assisted therapy and support for individuals recovering from opioid addiction.",
     tags: ["Medication-Assisted Treatment", "Methadone", "Opioid Recovery", "MAT", "Counseling"],
     services: ["counseling"],
-    saves: 0
   },
   {
     id: 57,
@@ -875,65 +746,10 @@ const RESOURCES = [
     phone: "(551) 365-4548",
     website: "https://newchapterrecoverynj.com/",
     hours: "Open 24 hours",
-    shortDesc: "An outpatient recovery center providing personalized treatment programs for substance use and addiction.",
-    longDesc: "New Chapter Recovery offers outpatient treatment programs for a wide range of substance use disorders, including alcohol, opioids, and prescription drugs. Services include individualized therapy, group counseling, and evidence-based treatment plans designed to support long-term recovery while allowing clients to continue daily responsibilities.",
+    shortDesc: "An outpatient recovery center with personalized treatment for substance use.",
     tags: ["Outpatient Treatment", "Alcohol Recovery", "Opioid Recovery", "Group Counseling"],
     services: ["counseling"],
-    saves: 0
-  }
-
+  },
 ];
 
-// ── CATEGORY DEFINITIONS ───────────────────────────────────
-const CATEGORIES = [
-  { id: "all",               label: "All Categories",      color: "#7A6F65" },
-  { id: "food",              label: "Food & Nutrition",    color: "#C04B20" },
-  { id: "housing",           label: "Housing & Shelter",   color: "#4A6741" },
-  { id: "domestic-violence", label: "Domestic Violence",   color: "#8B3A3A" },
-  { id: "mental-health",     label: "Mental Health",       color: "#3A5C8B" },
-  { id: "substance-use",     label: "Substance Use",       color: "#6B4F8B" },
-  { id: "health",            label: "Health Care",         color: "#2E7D6B" },
-  { id: "legal",             label: "Legal Services",      color: "#8B6914" },
-  { id: "disability",        label: "Disability Services", color: "#4A7A8B" },
-  { id: "youth",             label: "Youth & Children",    color: "#7A5C2E" },
-  { id: "senior",            label: "Senior Services",     color: "#5C6B3A" },
-  { id: "education",         label: "Education & ESL",     color: "#6B3A5C" },
-];
-
-// ── ALL UNIQUE TOWNS ───────────────────────────────────────
-const TOWNS = [
-  "All Towns",
-  "Boonton",
-  "Budd Lake",
-  "Cedar Knolls",
-  "Chester",
-  "Denville",
-  "Dover",
-  "Florham Park",
-  "Morris County",
-  "Morris Plains",
-  "Morristown",
-  "Netcong",
-  "Parsippany",
-  "Pine Brook",
-  "Randolph",
-  "Rockaway",
-  "Whippany",
-  "East Hanover",
-];
-
-// ── SERVICE TYPES ──────────────────────────────────────────
-const SERVICE_TYPES = [
-  { id: "all",                 label: "All Services" },
-  { id: "food",                label: "Food / Meals" },
-  { id: "housing",             label: "Housing / Shelter" },
-  { id: "emergency",           label: "Emergency Services" },
-  { id: "counseling",          label: "Counseling / Therapy" },
-  { id: "legal",               label: "Legal Aid" },
-  { id: "health",              label: "Health Care" },
-  { id: "employment",          label: "Employment" },
-  { id: "education",           label: "Education / ESL" },
-  { id: "disability",          label: "Disability Support" },
-  { id: "youth",               label: "Youth Programs" },
-  { id: "benefits-navigation", label: "Benefits Navigation" },
-];
+} // end guard

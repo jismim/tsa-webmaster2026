@@ -1,23 +1,110 @@
-document.getElementById('submitForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const required = this.querySelectorAll('[required]');
-      let valid = true;
-      required.forEach(function(field) {
-        if (!field.value.trim()) {
-          valid = false;
-          field.style.borderColor = '#c0392b';
-          field.addEventListener('input', function() { field.style.borderColor = ''; }, { once: true });
-        }
-      });
-      if (!valid) {
-        const first = this.querySelector('[required][style*="border-color"]');
-        if (first) first.focus();
-        return;
-      }
-      document.getElementById('successBanner').classList.add('visible');
-      document.querySelector('.form-card').style.display = 'none';
-      document.getElementById('successBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+const API_BASE = "https://flvpf8iuu3.execute-api.us-east-1.amazonaws.com";
+
+document.getElementById("submitForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const required = this.querySelectorAll("[required]");
+  let valid = true;
+
+  required.forEach((field) => {
+    if (!field.value.trim()) {
+      valid = false;
+      field.style.borderColor = "#c0392b";
+      field.addEventListener(
+        "input",
+        () => {
+          field.style.borderColor = "";
+        },
+        { once: true }
+      );
+    }
+  });
+
+  if (!valid) {
+    const first = this.querySelector('[required][style*="border-color"]');
+    if (first) first.focus();
+    return;
+  }
+
+  const services = Array.from(
+    document.querySelectorAll('input[name="services"]:checked')
+  ).map((el) => el.value);
+
+  const donationNeeds = document.getElementById("donationNeeds")?.value.trim() || "";
+  const volunteerRoles = document.getElementById("volunteerRoles")?.value.trim() || "";
+
+  let rootFolders = Array.from(
+  document.querySelectorAll('input[name="rootFolders"]:checked')
+).map((el) => el.value);
+
+if (!rootFolders.length) {
+  rootFolders = ["resources"]; // default fallback
+}
+  const payload = {
+    rootFolders,
+    data: {
+      title: document.getElementById("orgName").value.trim(),
+      category: document.getElementById("orgType").value.trim(),
+      town: "",
+      address: document.getElementById("orgAddress").value.trim(),
+      phone: document.getElementById("orgPhone").value.trim(),
+      email: document.getElementById("orgEmail").value.trim(),
+      website: document.getElementById("orgWebsite").value.trim(),
+      hours: document.getElementById("orgHours").value.trim(),
+      shortDesc: document.getElementById("orgDescription").value.trim(),
+      longDesc: document.getElementById("orgDescription").value.trim(),
+      tags: [],
+      services,
+      saves: 0,
+      donationNeeds,
+      volunteerRoles
+    },
+    submittedBy: {
+      name: document.getElementById("submitterName")?.value.trim() || "",
+      email: document.getElementById("submitterEmail")?.value.trim() || "",
+      relation: document.getElementById("submitterRelation")?.value || "",
+      notes: document.getElementById("additionalNotes")?.value.trim() || ""
+    }
+  };
+
+  const submitButton = this.querySelector('button[type="submit"]');
+  const originalText = submitButton.innerHTML;
+  submitButton.disabled = true;
+  submitButton.innerHTML = "Submitting...";
+
+  try {
+    const res = await fetch(`${API_BASE}/submissions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      throw new Error(result.message || "Submission failed");
+    }
+
+    const banner = document.getElementById("successBanner");
+    banner.classList.add("visible");
+
+    const bannerTitle = banner.querySelector("strong");
+    if (bannerTitle) {
+      bannerTitle.textContent = `Submission received. Thank you! ID: 100${result.id}`;
+    }
+
+    document.querySelector(".form-card").style.display = "none";
+    banner.scrollIntoView({ behavior: "smooth", block: "center" });
+  } catch (err) {
+    alert(`Error: ${err.message}`);
+  } finally {
+    submitButton.disabled = false;
+    submitButton.innerHTML = originalText;
+  }
+});
+
 (function () {
   'use strict';
 
@@ -114,3 +201,24 @@ document.getElementById('submitForm').addEventListener('submit', function(e) {
   }
 
 })();
+// anohter resource button 
+// document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("submitAnotherBtn");
+
+  if (btn) {
+    btn.addEventListener("click", () => {
+      // reset form
+      document.getElementById("submitForm").reset();
+
+      // hide success banner
+      document.getElementById("successBanner").classList.remove("visible");
+
+      // show form again
+      document.querySelector(".form-card").style.display = "block";
+
+      // scroll to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+});
