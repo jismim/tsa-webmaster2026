@@ -1,5 +1,3 @@
-
-
 (function () {
   'use strict';
 
@@ -46,12 +44,13 @@
       scrollTo: '.main-content',
     },
     {
-      page: '/admin/login.html',
-      target: 'body',
+      /* Admin login — always renders centered, no spotlight needed */
+      page: 'admin/login.html',
+      target: null,
       title: 'Administrator Access',
-      desc: 'Site admins can log in here to manage directory listings and keep the database up to date.',
+      desc: 'Site admins log in here to manage directory listings and keep the database current. This page is for authorized personnel only.',
       position: 'center',
-      scrollTo: 'body',
+      scrollTo: null,
     },
     {
       page: 'index.html',
@@ -66,60 +65,89 @@
 
   /* ── State ─────────────────────────────────────────────── */
   let currentStep = -1;
-  let isActive = false;
+  let isActive    = false;
 
-  // DOM refs
   let overlay, ring, card, endCard, trigger;
   let curtains = [];
 
-  const PAD = 10; // spotlight padding
+  const PAD = 10;
 
-  /* ── LocalStorage Keys ──────────────────────────────────── */
-  const STORAGE_KEYS = {
-    tourSeen: 'cm_tour_seen',
-    tourStep: 'cm_tour_step',
-  };
+  const STORAGE_KEY = 'cm_tour_step';
 
-  /* ── Init ──────────────────────────────────────────────– */
+  /* ════════════════════════════════════════════════════════
+     PAGE MATCHING
+     Handles all of:
+       /index.html  →  index.html
+       /            →  index.html
+       /admin/login.html
+       admin/login.html
+       /admin login.html  (space in filename — your original)
+  ═══════════════════════════════════════════════════════════ */
+  function normalizePath(raw) {
+    return String(raw || '')
+      .replace(/\\/g, '/')           // backslash → forward
+      .replace(/^\/+/, '')           // strip leading slashes
+      .replace(/\/+$/, '')           // strip trailing slashes
+      .toLowerCase()
+      .trim()
+      || 'index.html';
+  }
+
+  function currentNormalizedPath() {
+    // Use pathname; fall back to index.html for bare "/"
+    let p = window.location.pathname;
+    if (p === '/' || p === '') return 'index.html';
+    return normalizePath(p);
+  }
+
+  function stepMatchesPage(step) {
+    const stepPage = normalizePath(step.page);
+    const here     = currentNormalizedPath();
+
+    // Direct match
+    if (here === stepPage) return true;
+    // Current path ends with the step page (handles sub-folder deployments)
+    if (here.endsWith('/' + stepPage)) return true;
+    // Step page ends with current path (e.g. step="admin/login.html", here="login.html")
+    if (stepPage.endsWith('/' + here)) return true;
+
+    return false;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     INIT
+  ═══════════════════════════════════════════════════════════ */
   function init() {
     buildDOM();
     bindEvents();
 
-    // Check if tour is in progress from page navigation
-    const savedStep = localStorage.getItem(STORAGE_KEYS.tourStep);
-    if (savedStep !== null) {
-      const step = parseInt(savedStep, 10);
-      if (step < STEPS.length) {
-        isActive = true;
-        currentStep = step;
-        // Don't auto-render yet, wait for page load
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved !== null) {
+      const idx = parseInt(saved, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < STEPS.length) {
+        isActive    = true;
+        currentStep = idx;
+        // renderStep is called on window load below
       }
-    } else if (!sessionStorage.getItem(STORAGE_KEYS.tourSeen)) {
-      // First ever visit — DON'T auto-start
-      // Let the welcome modal appear first
-      // User will start tour from "Take a Tour" button or welcome modal CTA
-      sessionStorage.setItem(STORAGE_KEYS.tourSeen, '1');
     }
   }
 
-  /* ── Build DOM ─────────────────────────────────────────── */
+  /* ════════════════════════════════════════════════════════
+     BUILD DOM
+  ═══════════════════════════════════════════════════════════ */
   function buildDOM() {
-    // Overlay container
     overlay = el('div', { id: 'cm-tour-overlay' });
     document.body.appendChild(overlay);
 
-    // Four curtains
     ['top', 'bottom', 'left', 'right'].forEach(function (side) {
       const c = el('div', { class: 'cm-curtain', 'data-side': side });
       document.body.appendChild(c);
       curtains.push(c);
     });
 
-    // Spotlight ring
     ring = el('div', { id: 'cm-tour-ring', role: 'presentation' });
     document.body.appendChild(ring);
 
-    // Tour card
     card = el('div', {
       id: 'cm-tour-card',
       role: 'dialog',
@@ -131,7 +159,6 @@
     card.innerHTML = buildCardHTML();
     document.body.appendChild(card);
 
-    // End card
     endCard = el('div', { id: 'cm-tour-end', role: 'dialog', 'aria-modal': 'true', tabindex: '-1' });
     endCard.innerHTML = `
       <div class="cm-end-card">
@@ -142,20 +169,20 @@
           Ready to find help, give back, or explore?
         </p>
         <div class="cm-end-actions">
-          <a class="cm-end-btn cm-end-btn-primary" href="directory.html">Browse Directory →</a>
+          <a class="cm-end-btn cm-end-btn-primary" href="/directory.html">Browse Directory →</a>
           <button class="cm-end-btn cm-end-btn-ghost" id="cm-end-close">Back to Home</button>
         </div>
       </div>`;
     document.body.appendChild(endCard);
 
-    // Floating trigger button
+    /* Floating help / tour trigger */
     trigger = el('button', { id: 'cm-tour-trigger', 'aria-label': 'Start site tour' });
     trigger.innerHTML = '<span class="cm-tour-trigger-icon">🧭</span> Take a Tour';
     document.body.appendChild(trigger);
   }
 
   function buildCardHTML() {
-    const dots = STEPS.map(function (_, i) {
+    const dots = STEPS.map(function () {
       return `<span class="cm-tour-dot" aria-hidden="true"></span>`;
     }).join('');
 
@@ -166,7 +193,7 @@
       </div>
       <div class="cm-tour-body">
         <h3 class="cm-tour-title" id="cm-tour-title">—</h3>
-        <p class="cm-tour-desc" id="cm-tour-desc">—</p>
+        <p class="cm-tour-desc"  id="cm-tour-desc">—</p>
       </div>
       <div class="cm-tour-dots" role="tablist" aria-label="Tour steps">${dots}</div>
       <div class="cm-tour-footer">
@@ -188,26 +215,33 @@
       </div>`;
   }
 
-  /* ── Events ────────────────────────────────────────────── */
+  /* ════════════════════════════════════════════════════════
+     EVENTS
+  ═══════════════════════════════════════════════════════════ */
   function bindEvents() {
     trigger.addEventListener('click', startTour);
 
     document.addEventListener('click', function (e) {
-      if (!isActive) return;
       const t = e.target;
-      if (t.id === 'cm-tour-close-btn' || t.id === 'cm-tour-skip') closeTour();
-      if (t.id === 'cm-tour-next') nextStep();
-      if (t.id === 'cm-tour-prev') prevStep();
-      if (t.id === 'cm-end-close') closeEnd();
+      if (t.id === 'cm-tour-close-btn' || t.id === 'cm-tour-skip') { closeTour(); return; }
+      if (t.id === 'cm-tour-next')  { nextStep(); return; }
+      if (t.id === 'cm-tour-prev')  { prevStep(); return; }
+      if (t.id === 'cm-end-close')  { closeEnd(); return; }
+
+      /* Click on dimming curtain → close tour */
+      if (isActive && t.classList && t.classList.contains('cm-curtain')) {
+        closeTour();
+      }
     });
 
+    /* Keyboard: always captured at capture phase so nothing blocks Esc */
     document.addEventListener('keydown', handleKeydown, true);
-    // Resize: reposition
+
     window.addEventListener('resize', debounce(function () {
       if (isActive && currentStep >= 0) renderStep(currentStep, true);
     }, 120));
 
-    // Page load: if tour is in progress, render the step
+    /* On page load: if a step was saved, try to render it */
     window.addEventListener('load', function () {
       if (currentStep >= 0 && currentStep < STEPS.length) {
         goToStep(currentStep);
@@ -216,16 +250,12 @@
   }
 
   function handleKeydown(e) {
-    const key = e.key;
+    const key    = e.key;
     const isSpace = key === ' ' || key === 'Spacebar' || e.code === 'Space';
-    const isEndOpen = endCard && endCard.classList.contains('visible');
+    const endOpen = endCard && endCard.classList.contains('visible');
 
-    if (isEndOpen) {
-      if (key === 'Escape') {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        closeEnd();
-      }
+    if (endOpen) {
+      if (key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); closeEnd(); }
       return;
     }
 
@@ -237,8 +267,7 @@
       closeTour();
       return;
     }
-
-    if (key === 'ArrowRight' || isSpace || key === 'Enter') {
+    if (key === 'ArrowRight' || (isSpace && e.target.id !== 'cm-tour-prev') || key === 'Enter') {
       if (e.target.id !== 'cm-tour-prev') {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -246,7 +275,6 @@
       }
       return;
     }
-
     if (key === 'ArrowLeft') {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -254,16 +282,18 @@
     }
   }
 
-  /* ── Tour Lifecycle ────────────────────────────────────– */
+  /* ════════════════════════════════════════════════════════
+     TOUR LIFECYCLE
+  ═══════════════════════════════════════════════════════════ */
   function startTour() {
-    isActive = true;
+    isActive    = true;
     currentStep = 0;
     goToStep(0);
   }
 
   function closeTour() {
     isActive = false;
-    localStorage.removeItem(STORAGE_KEYS.tourStep);
+    localStorage.removeItem(STORAGE_KEY);
     overlay.classList.remove('active');
     card.classList.remove('visible');
     ring.classList.remove('visible');
@@ -273,38 +303,30 @@
   }
 
   function nextStep() {
-    if (currentStep >= STEPS.length - 1) {
-      showEnd();
-    } else {
-      goToStep(currentStep + 1);
-    }
+    if (currentStep >= STEPS.length - 1) { showEnd(); }
+    else { goToStep(currentStep + 1); }
   }
 
   function prevStep() {
-    if (currentStep > 0) {
-      goToStep(currentStep - 1);
-    }
+    if (currentStep > 0) goToStep(currentStep - 1);
   }
 
   function goToStep(index) {
     if (index < 0 || index >= STEPS.length) return;
 
     currentStep = index;
-    const step = STEPS[index];
+    const step  = STEPS[index];
 
-    // Save progress
-    localStorage.setItem(STORAGE_KEYS.tourStep, String(index));
+    localStorage.setItem(STORAGE_KEY, String(index));
 
-    // Check if we need to navigate to a different page
-    const currentPage = getCurrentPagePath();
-    const targetPage = normalizePagePath(step.page);
-    if (!isCurrentPage(targetPage, currentPage)) {
-      // Navigate to the new page — tour will resume on load
-      window.location.href = step.page;
+    /* ── Page navigation check ──────────────────────────── */
+    if (!stepMatchesPage(step)) {
+      /* Navigate to the correct page; tour resumes on load */
+      window.location.href = '/' + normalizePath(step.page);
       return;
     }
 
-    // We're already on the right page — render it
+    /* ── Already on the right page — render ─────────────── */
     card.classList.remove('visible');
     ring.classList.remove('visible');
 
@@ -313,37 +335,20 @@
     });
   }
 
-  /* ── Get Current Page ──────────────────────────────────– */
-  function getCurrentPagePath() {
-    return normalizePagePath(window.location.pathname);
-  }
-
-  function isCurrentPage(targetPage, currentPage) {
-    return currentPage === targetPage || currentPage.endsWith('/' + targetPage);
-  }
-
-  function normalizePagePath(path) {
-    const cleaned = String(path || 'index.html')
-      .replace(/^\/+/, '')
-      .replace(/\/+$/, '');
-
-    return cleaned || 'index.html';
-  }
-
-  /* ── Scroll to Step ────────────────────────────────────– */
+  /* ════════════════════════════════════════════════════════
+     SCROLL
+  ═══════════════════════════════════════════════════════════ */
   function scrollToStep(step, cb) {
-    const scrollTarget = step.scrollTo ? document.querySelector(step.scrollTo) : null;
-    if (!scrollTarget) { setTimeout(cb, 60); return; }
+    if (!step.scrollTo) { setTimeout(cb, 60); return; }
+    const target = document.querySelector(step.scrollTo);
+    if (!target)  { setTimeout(cb, 60); return; }
 
-    const rect = scrollTarget.getBoundingClientRect();
-    const alreadyVisible = rect.top >= -100 && rect.bottom <= window.innerHeight + 100;
+    const rect    = target.getBoundingClientRect();
+    const visible = rect.top >= -100 && rect.bottom <= window.innerHeight + 100;
+    if (visible) { setTimeout(cb, 60); return; }
 
-    if (alreadyVisible) {
-      setTimeout(cb, 60);
-    } else {
-      const targetY = window.scrollY + rect.top - (step.position === 'bottom' ? 120 : 80);
-      smoothScrollTo(targetY, 480, cb);
-    }
+    const targetY = window.scrollY + rect.top - (step.position === 'bottom' ? 120 : 80);
+    smoothScrollTo(targetY, 480, cb);
   }
 
   function smoothScrollTo(targetY, duration, cb) {
@@ -351,46 +356,43 @@
     const diff   = targetY - startY;
     const start  = performance.now();
 
-    function step(now) {
-      const t = Math.min((now - start) / duration, 1);
+    function tick(now) {
+      const t    = Math.min((now - start) / duration, 1);
       const ease = 1 - Math.pow(1 - t, 3);
       window.scrollTo(0, startY + diff * ease);
-      if (t < 1) {
-        requestAnimationFrame(step);
-      } else {
-        setTimeout(cb, 60);
-      }
+      if (t < 1) { requestAnimationFrame(tick); }
+      else        { setTimeout(cb, 60); }
     }
-    requestAnimationFrame(step);
+    requestAnimationFrame(tick);
   }
 
-  /* ── Render step ───────────────────────────────────────– */
+  /* ════════════════════════════════════════════════════════
+     RENDER STEP
+  ═══════════════════════════════════════════════════════════ */
   function renderStep(index, instant) {
     const step  = STEPS[index];
     const total = STEPS.length;
 
-    // Update card text
+    /* Text */
     document.getElementById('cm-tour-step-label').textContent = `Step ${index + 1} of ${total}`;
     document.getElementById('cm-tour-title').textContent = step.title;
     document.getElementById('cm-tour-desc').textContent  = step.desc;
 
-    // Button states
+    /* Buttons */
     const prevBtn = document.getElementById('cm-tour-prev');
     const nextBtn = document.getElementById('cm-tour-next');
     prevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
-    nextBtn.textContent = index === total - 1 ? 'Finish ✓' : 'Next →';
+    nextBtn.textContent      = index === total - 1 ? 'Finish ✓' : 'Next →';
 
-    // Dots
-    const dots = card.querySelectorAll('.cm-tour-dot');
-    dots.forEach(function (d, i) {
+    /* Dots */
+    card.querySelectorAll('.cm-tour-dot').forEach(function (d, i) {
       d.classList.toggle('active', i === index);
-      d.classList.toggle('done', i < index);
+      d.classList.toggle('done',   i < index);
     });
 
-    // Spotlight
-    const targetEl = step.position === 'center'
-      ? null
-      : document.querySelector(step.target);
+    /* Spotlight */
+    const isCentered = step.position === 'center' || !step.target;
+    const targetEl   = isCentered ? null : document.querySelector(step.target);
 
     if (targetEl) {
       positionSpotlight(targetEl, step.position, instant);
@@ -400,7 +402,7 @@
       positionCardCenter();
     }
 
-    // Show card
+    /* Show */
     setTimeout(function () {
       overlay.classList.add('active');
       card.classList.add('visible');
@@ -408,7 +410,9 @@
     }, instant ? 0 : 120);
   }
 
-  /* ── Spotlight positioning ──────────────────────────────– */
+  /* ════════════════════════════════════════════════════════
+     SPOTLIGHT
+  ═══════════════════════════════════════════════════════════ */
   function positionSpotlight(targetEl, position, instant) {
     const rect = targetEl.getBoundingClientRect();
     const vw   = window.innerWidth;
@@ -419,114 +423,71 @@
     const sWidth  = rect.width  + PAD * 2;
     const sHeight = rect.height + PAD * 2;
 
-    // Ring
     Object.assign(ring.style, {
-      top:    sTop  + 'px',
-      left:   sLeft + 'px',
-      width:  sWidth  + 'px',
-      height: sHeight + 'px',
+      top: sTop + 'px', left: sLeft + 'px',
+      width: sWidth + 'px', height: sHeight + 'px',
     });
     ring.classList.add('visible');
 
-    // Curtains
     const [cTop, cBottom, cLeft, cRight] = curtains;
-    Object.assign(cTop.style,    { top: '0', left: '0', width: vw + 'px', height: Math.max(0, sTop) + 'px' });
-    Object.assign(cBottom.style, { top: (sTop + sHeight) + 'px', left: '0', width: vw + 'px', height: Math.max(0, vh - sTop - sHeight) + 'px' });
-    Object.assign(cLeft.style,   { top: sTop + 'px', left: '0', width: Math.max(0, sLeft) + 'px', height: sHeight + 'px' });
-    Object.assign(cRight.style,  { top: sTop + 'px', left: (sLeft + sWidth) + 'px', width: Math.max(0, vw - sLeft - sWidth) + 'px', height: sHeight + 'px' });
+    Object.assign(cTop.style,    { top: '0',                   left: '0', width: vw + 'px',                        height: Math.max(0, sTop) + 'px' });
+    Object.assign(cBottom.style, { top: (sTop+sHeight) + 'px', left: '0', width: vw + 'px',                        height: Math.max(0, vh - sTop - sHeight) + 'px' });
+    Object.assign(cLeft.style,   { top: sTop + 'px',           left: '0', width: Math.max(0, sLeft) + 'px',        height: sHeight + 'px' });
+    Object.assign(cRight.style,  { top: sTop + 'px',           left: (sLeft+sWidth) + 'px', width: Math.max(0, vw - sLeft - sWidth) + 'px', height: sHeight + 'px' });
 
     positionCard(sTop, sLeft, sWidth, sHeight, position, vw, vh);
   }
 
-  function positionCard(sTop, sLeft, sWidth, sHeight, preferredPos, vw, vh) {
-    const CARD_W = 360;
-    const CARD_H = 280;
-    const GAP    = 20;
-    const VP_PAD = 20; // viewport padding
-
-    let top, left;
-    let positioned = false;
-
-    // Try positions in order of preference
-    const tryPositions = [
-      { pos: 'bottom', calcFn: () => ({ t: sTop + sHeight + GAP, l: sLeft + sWidth / 2 - CARD_W / 2 }) },
-      { pos: 'top', calcFn: () => ({ t: sTop - CARD_H - GAP, l: sLeft + sWidth / 2 - CARD_W / 2 }) },
-      { pos: 'right', calcFn: () => ({ t: sTop + sHeight / 2 - CARD_H / 2, l: sLeft + sWidth + GAP }) },
-      { pos: 'left', calcFn: () => ({ t: sTop + sHeight / 2 - CARD_H / 2, l: sLeft - CARD_W - GAP }) },
+  function positionCard(sTop, sLeft, sWidth, sHeight, preferred, vw, vh) {
+    const W   = 360, H = 280, GAP = 20, VP = 20;
+    const tries = [
+      { pos: 'bottom', t: sTop + sHeight + GAP,   l: sLeft + sWidth/2 - W/2 },
+      { pos: 'top',    t: sTop - H - GAP,          l: sLeft + sWidth/2 - W/2 },
+      { pos: 'right',  t: sTop + sHeight/2 - H/2,  l: sLeft + sWidth + GAP   },
+      { pos: 'left',   t: sTop + sHeight/2 - H/2,  l: sLeft - W - GAP        },
     ];
 
-    // First try the preferred position
-    const preferred = tryPositions.find(x => x.pos === preferredPos);
-    if (preferred) {
-      const pos = preferred.calcFn();
-      if (fitsInViewport(pos.t, pos.l, CARD_W, CARD_H, vw, vh, VP_PAD)) {
-        top = pos.t;
-        left = pos.l;
-        positioned = true;
-      }
+    let top, left;
+    const pref = tries.find(x => x.pos === preferred);
+    if (pref && fits(pref.t, pref.l, W, H, vw, vh, VP)) { top = pref.t; left = pref.l; }
+    else {
+      const found = tries.find(x => fits(x.t, x.l, W, H, vw, vh, VP));
+      if (found) { top = found.t; left = found.l; }
+      else { top = Math.max(VP, vh/2 - H/2); left = Math.max(VP, vw/2 - W/2); }
     }
 
-    // If preferred doesn't fit, try all others in order
-    if (!positioned) {
-      for (let tryPos of tryPositions) {
-        const pos = tryPos.calcFn();
-        if (fitsInViewport(pos.t, pos.l, CARD_W, CARD_H, vw, vh, VP_PAD)) {
-          top = pos.t;
-          left = pos.l;
-          positioned = true;
-          break;
-        }
-      }
-    }
-
-    // Last resort: center with safety margins
-    if (!positioned) {
-      top = Math.max(VP_PAD, vh / 2 - CARD_H / 2);
-      left = Math.max(VP_PAD, vw / 2 - CARD_W / 2);
-    }
-
-    // Final safety clamp
-    left = Math.max(VP_PAD, Math.min(left, vw - CARD_W - VP_PAD));
-    top  = Math.max(VP_PAD, Math.min(top, vh - CARD_H - VP_PAD));
-
+    left = clamp(left, VP, vw - W - VP);
+    top  = clamp(top,  VP, vh - H - VP);
     Object.assign(card.style, { top: top + 'px', left: left + 'px' });
   }
 
-  function fitsInViewport(top, left, width, height, vw, vh, padding) {
-    return (
-      top >= padding &&
-      top + height <= vh - padding &&
-      left >= padding &&
-      left + width <= vw - padding
-    );
+  function fits(top, left, w, h, vw, vh, pad) {
+    return top >= pad && top + h <= vh - pad && left >= pad && left + w <= vw - pad;
   }
 
   function positionCardCenter() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const CARD_W = 360;
-    const CARD_H = 280;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const W = 360, H = 280;
     Object.assign(card.style, {
-      top:  Math.max(20, (vh - CARD_H) / 2) + 'px',
-      left: Math.max(20, (vw - CARD_W) / 2) + 'px',
+      top:  Math.max(20, (vh - H) / 2) + 'px',
+      left: Math.max(20, (vw - W) / 2) + 'px',
     });
   }
 
   function hideCurtains() {
-    curtains.forEach(function (c) {
-      Object.assign(c.style, { top: '0', left: '0', width: '0', height: '0' });
-    });
+    curtains.forEach(c => Object.assign(c.style, { top:'0', left:'0', width:'0', height:'0' }));
   }
 
-  /* ── End Card ──────────────────────────────────────────– */
+  /* ════════════════════════════════════════════════════════
+     END CARD
+  ═══════════════════════════════════════════════════════════ */
   function showEnd() {
     isActive = false;
-    localStorage.removeItem(STORAGE_KEYS.tourStep);
+    localStorage.removeItem(STORAGE_KEY);
     overlay.classList.remove('active');
     card.classList.remove('visible');
     ring.classList.remove('visible');
     hideCurtains();
-
     endCard.classList.add('visible');
     endCard.focus();
     smoothScrollTo(0, 600, function () {});
@@ -534,24 +495,26 @@
 
   function closeEnd() {
     endCard.classList.remove('visible');
+    window.location.href = '/index.html';
   }
 
-  /* ── Helpers ───────────────────────────────────────────– */
+  /* ════════════════════════════════════════════════════════
+     HELPERS
+  ═══════════════════════════════════════════════════════════ */
   function el(tag, attrs) {
     const node = document.createElement(tag);
-    Object.entries(attrs || {}).forEach(function ([k, v]) { node.setAttribute(k, v); });
+    Object.entries(attrs || {}).forEach(([k, v]) => node.setAttribute(k, v));
     return node;
   }
 
+  function clamp(val, min, max) { return Math.max(min, Math.min(val, max)); }
+
   function debounce(fn, ms) {
     let t;
-    return function () {
-      clearTimeout(t);
-      t = setTimeout(fn, ms);
-    };
+    return function () { clearTimeout(t); t = setTimeout(fn, ms); };
   }
 
-  /* ── Init ──────────────────────────────────────────────– */
+  /* ── Boot ─────────────────────────────────────────────── */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
