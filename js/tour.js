@@ -54,7 +54,7 @@
     },
     {
       page: 'index.html',
-      target: '.hero',
+      target: null,
       title: 'You\'re All Set!',
       desc: 'That\'s a full tour of CareMap Morris. Start by searching for a resource, browsing the directory, or exploring the map.',
       position: 'center',
@@ -71,31 +71,23 @@
   let curtains = [];
 
   const PAD = 10;
-
   const STORAGE_KEY = 'cm_tour_step';
 
   /* ════════════════════════════════════════════════════════
      PAGE MATCHING
-     Handles all of:
-       /index.html  →  index.html
-       /            →  index.html
-       /admin/login.html
-       admin/login.html
-       /admin login.html  (space in filename — your original)
   ═══════════════════════════════════════════════════════════ */
   function normalizePath(raw) {
     return String(raw || '')
-      .replace(/\\/g, '/')           // backslash → forward
-      .replace(/^\/+/, '')           // strip leading slashes
-      .replace(/\/+$/, '')           // strip trailing slashes
+      .replace(/\\/g, '/')
+      .replace(/^\/+/, '')
+      .replace(/\/+$/, '')
       .toLowerCase()
       .trim()
       || 'index.html';
   }
 
   function currentNormalizedPath() {
-    // Use pathname; fall back to index.html for bare "/"
-    let p = window.location.pathname;
+    const p = window.location.pathname;
     if (p === '/' || p === '') return 'index.html';
     return normalizePath(p);
   }
@@ -103,15 +95,20 @@
   function stepMatchesPage(step) {
     const stepPage = normalizePath(step.page);
     const here     = currentNormalizedPath();
-
-    // Direct match
     if (here === stepPage) return true;
-    // Current path ends with the step page (handles sub-folder deployments)
     if (here.endsWith('/' + stepPage)) return true;
-    // Step page ends with current path (e.g. step="admin/login.html", here="login.html")
     if (stepPage.endsWith('/' + here)) return true;
-
     return false;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     NAVIGATE TO STEP PAGE
+     Always uses absolute root-relative URLs so we never
+     accidentally resolve relative to /admin/ or any sub-folder.
+  ═══════════════════════════════════════════════════════════ */
+  function navigateToStep(step) {
+    const target = normalizePath(step.page);   // e.g. "index.html" or "admin/login.html"
+    window.location.href = '/' + target;       // always from root → /index.html, /admin/login.html
   }
 
   /* ════════════════════════════════════════════════════════
@@ -127,7 +124,6 @@
       if (!isNaN(idx) && idx >= 0 && idx < STEPS.length) {
         isActive    = true;
         currentStep = idx;
-        // renderStep is called on window load below
       }
     }
   }
@@ -175,7 +171,6 @@
       </div>`;
     document.body.appendChild(endCard);
 
-    /* Floating help / tour trigger */
     trigger = el('button', { id: 'cm-tour-trigger', 'aria-label': 'Start site tour' });
     trigger.innerHTML = '<span class="cm-tour-trigger-icon">🧭</span> Take a Tour';
     document.body.appendChild(trigger);
@@ -228,20 +223,17 @@
       if (t.id === 'cm-tour-prev')  { prevStep(); return; }
       if (t.id === 'cm-end-close')  { closeEnd(); return; }
 
-      /* Click on dimming curtain → close tour */
       if (isActive && t.classList && t.classList.contains('cm-curtain')) {
         closeTour();
       }
     });
 
-    /* Keyboard: always captured at capture phase so nothing blocks Esc */
     document.addEventListener('keydown', handleKeydown, true);
 
     window.addEventListener('resize', debounce(function () {
       if (isActive && currentStep >= 0) renderStep(currentStep, true);
     }, 120));
 
-    /* On page load: if a step was saved, try to render it */
     window.addEventListener('load', function () {
       if (currentStep >= 0 && currentStep < STEPS.length) {
         goToStep(currentStep);
@@ -250,7 +242,7 @@
   }
 
   function handleKeydown(e) {
-    const key    = e.key;
+    const key     = e.key;
     const isSpace = key === ' ' || key === 'Spacebar' || e.code === 'Space';
     const endOpen = endCard && endCard.classList.contains('visible');
 
@@ -281,6 +273,11 @@
       prevStep();
     }
   }
+
+  /* ════════════════════════════════════════════════════════
+     PUBLIC API
+  ═══════════════════════════════════════════════════════════ */
+  window.CareMapTour = { start: startTour };
 
   /* ════════════════════════════════════════════════════════
      TOUR LIFECYCLE
@@ -319,14 +316,11 @@
 
     localStorage.setItem(STORAGE_KEY, String(index));
 
-    /* ── Page navigation check ──────────────────────────── */
     if (!stepMatchesPage(step)) {
-      /* Navigate to the correct page; tour resumes on load */
-      window.location.href = '/' + normalizePath(step.page);
+      navigateToStep(step);   // ← always root-relative, never relative
       return;
     }
 
-    /* ── Already on the right page — render ─────────────── */
     card.classList.remove('visible');
     ring.classList.remove('visible');
 
@@ -373,24 +367,20 @@
     const step  = STEPS[index];
     const total = STEPS.length;
 
-    /* Text */
     document.getElementById('cm-tour-step-label').textContent = `Step ${index + 1} of ${total}`;
     document.getElementById('cm-tour-title').textContent = step.title;
     document.getElementById('cm-tour-desc').textContent  = step.desc;
 
-    /* Buttons */
     const prevBtn = document.getElementById('cm-tour-prev');
     const nextBtn = document.getElementById('cm-tour-next');
     prevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
     nextBtn.textContent      = index === total - 1 ? 'Finish ✓' : 'Next →';
 
-    /* Dots */
     card.querySelectorAll('.cm-tour-dot').forEach(function (d, i) {
       d.classList.toggle('active', i === index);
       d.classList.toggle('done',   i < index);
     });
 
-    /* Spotlight */
     const isCentered = step.position === 'center' || !step.target;
     const targetEl   = isCentered ? null : document.querySelector(step.target);
 
@@ -402,7 +392,6 @@
       positionCardCenter();
     }
 
-    /* Show */
     setTimeout(function () {
       overlay.classList.add('active');
       card.classList.add('visible');
@@ -430,16 +419,16 @@
     ring.classList.add('visible');
 
     const [cTop, cBottom, cLeft, cRight] = curtains;
-    Object.assign(cTop.style,    { top: '0',                   left: '0', width: vw + 'px',                        height: Math.max(0, sTop) + 'px' });
-    Object.assign(cBottom.style, { top: (sTop+sHeight) + 'px', left: '0', width: vw + 'px',                        height: Math.max(0, vh - sTop - sHeight) + 'px' });
-    Object.assign(cLeft.style,   { top: sTop + 'px',           left: '0', width: Math.max(0, sLeft) + 'px',        height: sHeight + 'px' });
-    Object.assign(cRight.style,  { top: sTop + 'px',           left: (sLeft+sWidth) + 'px', width: Math.max(0, vw - sLeft - sWidth) + 'px', height: sHeight + 'px' });
+    Object.assign(cTop.style,    { top: '0',                    left: '0', width: vw + 'px',                         height: Math.max(0, sTop) + 'px' });
+    Object.assign(cBottom.style, { top: (sTop+sHeight) + 'px',  left: '0', width: vw + 'px',                         height: Math.max(0, vh - sTop - sHeight) + 'px' });
+    Object.assign(cLeft.style,   { top: sTop + 'px',            left: '0', width: Math.max(0, sLeft) + 'px',         height: sHeight + 'px' });
+    Object.assign(cRight.style,  { top: sTop + 'px',            left: (sLeft+sWidth) + 'px', width: Math.max(0, vw - sLeft - sWidth) + 'px', height: sHeight + 'px' });
 
     positionCard(sTop, sLeft, sWidth, sHeight, position, vw, vh);
   }
 
   function positionCard(sTop, sLeft, sWidth, sHeight, preferred, vw, vh) {
-    const W   = 360, H = 280, GAP = 20, VP = 20;
+    const W = 360, H = 280, GAP = 20, VP = 20;
     const tries = [
       { pos: 'bottom', t: sTop + sHeight + GAP,   l: sLeft + sWidth/2 - W/2 },
       { pos: 'top',    t: sTop - H - GAP,          l: sLeft + sWidth/2 - W/2 },
@@ -495,7 +484,7 @@
 
   function closeEnd() {
     endCard.classList.remove('visible');
-    window.location.href = '/index.html';
+    window.location.href = '/index.html';   // always root — never /admin/index.html
   }
 
   /* ════════════════════════════════════════════════════════
