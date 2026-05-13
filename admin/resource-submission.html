@@ -28,6 +28,7 @@
       <nav class="sidebar-group">
         <a class="sidebar-link" href="/admin/dashboard.html" data-nav-path="/admin/dashboard.html">Dashboard</a>
         <a class="sidebar-link" href="/admin/resource-submission.html" data-nav-path="/admin/resource-submission.html">Resource Submissions</a>
+        <a class="sidebar-link" href="/admin/volunteer-submission.html" data-nav-path="/admin/volunteer-submission.html">Volunteer Submissions</a>
         <a class="sidebar-link" href="/admin/questions.html" data-nav-path="/admin/questions.html">Community Questions</a>
       </nav>
       <button class="btn btn-dark logout-inline" type="button" data-admin-logout>Logout</button>
@@ -55,7 +56,11 @@
               </select>
             </div>
           </div>
-          <a class="btn btn-secondary" href="/admin/dashboard.html">Back to dashboard</a>
+          <div style="display:flex; gap:.5rem; align-items:center;">
+            <button class="btn btn-secondary" type="button" data-show-approved>Show Approved</button>
+            <button class="btn btn-secondary" type="button" data-show-rejected>Show Rejected</button>
+            <a class="btn btn-secondary" href="/admin/dashboard.html">Back to dashboard</a>
+          </div>
         </div>
 
         <div id="resourceError" class="error-message" role="alert" aria-live="polite"></div>
@@ -90,6 +95,7 @@
 
   <script src="/js/admin-auth.js"></script>
   <script src="/js/admin-data.js"></script>
+  <script src="/js/admin-approve.js"></script>
   <script src="/js/admin-resource-submission.js"></script>
 </body>
 </html>

@@ -406,9 +406,10 @@
 
     /* ── Total count label ── */
     var totalEl = document.getElementById('totalCount');
-    if (totalEl && typeof RESOURCES !== 'undefined') {
-      totalEl.textContent = RESOURCES.length;
-    }
+    var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
+    resourcesReady.then(function (resources) {
+      if (totalEl) totalEl.textContent = resources.length;
+    });
 
     /* ── Bookmark badge on load ── */
     if (typeof CareMapBookmarks !== 'undefined') {
