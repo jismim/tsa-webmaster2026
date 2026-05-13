@@ -1,4 +1,4 @@
-const API_BASE = "https://flvpf8iuu3.execute-api.us-east-1.amazonaws.com";
+const API_BASE = "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod";
 const TOTAL_STEPS = 6;
 let currentStep = 1;
 
