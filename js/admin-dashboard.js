@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   auth.markActiveNav();
 
   try {
-    const { resourceSubmissions, questions } = await dataUtils.loadAdminData();
+    const { resourceSubmissions, volunteerSubmissions, questions } = await dataUtils.loadAdminData();
     document.getElementById('totalResources').textContent = resourceSubmissions.length;
     document.getElementById('totalQuestions').textContent = questions.length;
     document.getElementById('totalPending').textContent = dataUtils.countByStatus(resourceSubmissions, 'Pending') + dataUtils.countByStatus(questions, 'New');
@@ -16,14 +16,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       .sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))
       .slice(0, 3);
 
+    const recentVolunteerSubmissions = [...volunteerSubmissions]
+      .sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))
+      .slice(0, 3);
+
     const recentQuestions = [...questions]
       .sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))
       .slice(0, 3);
 
     const recentSubmissionsContainer = document.getElementById('recentSubmissions');
+    const recentSubmissionsCopyContainer = document.getElementById('recentSubmissionsCopy');
     const recentQuestionsContainer = document.getElementById('recentQuestions');
 
-    recentSubmissionsContainer.innerHTML = recentSubmissions.map((item) => `
+    const recentSubmissionsHtml = recentSubmissions.map((item) => `
       <article class="mini-entry">
         <div class="entry-top">
           <div>
@@ -35,6 +40,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p class="muted">${dataUtils.escapeHtml(item.description)}</p>
       </article>
     `).join('') || '<div class="empty-state">No resource submissions yet.</div>';
+
+    recentSubmissionsContainer.innerHTML = recentSubmissionsHtml;
+
+    recentSubmissionsCopyContainer.innerHTML = recentVolunteerSubmissions.map((item) => `
+      <article class="mini-entry">
+        <div class="entry-top">
+          <div>
+            <p class="entry-title">${dataUtils.escapeHtml(item.organizationName)}</p>
+            <p class="entry-meta">${dataUtils.escapeHtml(dataUtils.prettifyCategory(item.resourceType))} &middot; ${dataUtils.formatDate(item.submissionDate)}</p>
+          </div>
+          ${dataUtils.renderStatusBadge(item.status)}
+        </div>
+        <p class="muted">${dataUtils.escapeHtml(item.description)}</p>
+      </article>
+    `).join('') || '<div class="empty-state">No volunteer submissions yet.</div>';
 
     recentQuestionsContainer.innerHTML = recentQuestions.map((item) => `
       <article class="mini-entry">
@@ -50,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     `).join('') || '<div class="empty-state">No questions submitted yet.</div>';
   } catch (error) {
     console.error(error);
-    document.getElementById('dashboardError').textContent = 'There was a problem loading the admin data files. Check that /data/resource-submissions.json and /data/questions.json exist.';
+    document.getElementById('dashboardError').textContent = 'There was a problem loading the admin data. Check the submissions and questions API URLs.';
     document.getElementById('dashboardError').classList.add('visible');
   }
 });

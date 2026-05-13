@@ -267,10 +267,11 @@
       });
     }
  
-    renderBookmarks();
- 
-    // Update badge counts in nav
-    CareMapBookmarks.applyToPage();
+    const resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
+    resourcesReady.then(function () {
+      renderBookmarks();
+      CareMapBookmarks.applyToPage();
+    });
  
     // Clear all button
     if (clearBtn) {

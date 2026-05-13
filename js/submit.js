@@ -1,4 +1,4 @@
-const API_BASE = "https://flvpf8iuu3.execute-api.us-east-1.amazonaws.com";
+const API_BASE = "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod";
 
 document.getElementById("submitForm").addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -176,7 +176,7 @@ if (!rootFolders.length) {
   const askSuccess = document.getElementById('askSuccess');
 
   if (askForm && askSuccess) {
-    askForm.addEventListener('submit', (e) => {
+    askForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const emailInput = askForm.querySelector('#askEmail');
@@ -188,15 +188,42 @@ if (!rootFolders.length) {
         return;
       }
 
-      // Simulate submission (replace with real backend/formspree/emailjs)
       const btn = askForm.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
       btn.disabled = true;
-      btn.textContent = 'Sending…';
+      btn.textContent = 'Sending...';
 
-      setTimeout(() => {
+      const payload = {
+        rootFolders: ["questions"],
+        data: {
+          name: "",
+          email: emailInput.value.trim(),
+          question: questionInput.value.trim()
+        }
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/submissions`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          throw new Error(result.message || "Question submission failed");
+        }
+
         askForm.style.display = 'none';
         askSuccess.hidden = false;
-      }, 800);
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
     });
   }
 
