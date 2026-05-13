@@ -109,12 +109,41 @@ document.addEventListener('DOMContentLoaded', function () {
   // -------------------
   function kindBadgesHtml(kind) {
     if (kind === 'donate & volunteer') {
+      if (activeTab === 'donate')    return `<span class="kind-badge badge-donate">Donate</span>`;
+      if (activeTab === 'volunteer') return `<span class="kind-badge badge-volunteer">Volunteer</span>`;
       return `<span class="kind-badge badge-donate">Donate</span><span class="kind-badge badge-volunteer">Volunteer</span>`;
     }
     if (kind === 'volunteer') {
       return `<span class="kind-badge badge-volunteer">Volunteer</span>`;
     }
     return `<span class="kind-badge badge-donate">Donate</span>`;
+  }
+
+  function formatServiceTag(service) {
+    const labels = {
+      animals: 'Animals',
+      childcare: 'Childcare',
+      clothing: 'Clothing',
+      counseling: 'Counseling',
+      education: 'Education',
+      environment: 'Environment',
+      food: 'Food',
+      housing: 'Housing',
+      hygiene: 'Hygiene',
+      legal: 'Legal',
+      medical: 'Medical'
+    };
+
+    return labels[service] || service
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  function servicePillsHtml(services) {
+    return (services || [])
+      .map(service => `<span class="card-pill">${formatServiceTag(service)}</span>`)
+      .join('');
   }
 
   // -------------------
@@ -125,8 +154,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const location = filterLocation.value.toLowerCase();
 
     const filtered = DATA.filter(item => {
-      if (activeTab === 'donate'    && !item.kind.includes('donate'))    return false;
-      if (activeTab === 'volunteer' && !item.kind.includes('volunteer')) return false;
+      if (activeTab === 'donate'    && item.kind === 'volunteer') return false;
+if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
       if (age      && !item.age.includes(age))                           return false;
       if (location && item.location.toLowerCase() !== location)          return false;
       if (activeServices.length && !activeServices.every(s => item.services.includes(s))) return false;
@@ -148,7 +177,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
     cardsList.innerHTML = pageItems.map(item => {
-      const pills = item.services.map(s => `<span class="card-pill">${s}</span>`).join('');
       const townDisplay = item.location
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -158,29 +186,49 @@ document.addEventListener('DOMContentLoaded', function () {
       const heartChar  = isSaved ? '♥' : '♡';
       const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
-      return `
-        <article class="dv-card" tabindex="0" role="button" aria-label="View details for ${item.title}" data-id="${item.id}">
-          <div>
-            <div class="dv-card-topbar">
-              <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
-              <button
-                class="card-bookmark dv-bookmark${isSaved ? ' saved' : ''}"
-                data-id="${item.id}"
-                aria-label="${heartLabel}"
-                title="${heartLabel}"
-              >${heartChar}</button>
-            </div>
-            <h3>${item.title}</h3>
-            ${item.address ? `<p class="card-address">${item.address}</p>` : `<p class="card-address">${townDisplay}</p>`}
-            ${item.phone   ? `<p class="card-phone">${item.phone}</p>`     : ''}
-            <p class="card-desc">${item.desc}</p>
-            <div class="card-pills">${pills}</div>
-          </div>
-          <div class="dv-card-actions">
-            <button class="btn btn-secondary view-details-btn" data-id="${item.id}">View details</button>
-          </div>
-        </article>
-      `;
+ return `
+  <article class="dv-card" tabindex="0" role="button" aria-label="View details for ${item.title}" data-id="${item.id}">
+    <div class="dv-card-topbar">
+      <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
+      <button
+        class="card-bookmark dv-bookmark${isSaved ? ' saved' : ''}"
+        data-id="${item.id}"
+        aria-label="${heartLabel}"
+        title="${heartLabel}"
+      >${heartChar}</button>
+    </div>
+
+    <div class="dv-card-content">
+      <h3>${item.title}</h3>
+${item.address ? `
+  <p class="card-address">
+    <svg class="card-location-icon" width="10" height="13" viewBox="0 0 10 13" aria-hidden="true" focusable="false">
+      <path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" fill="currentColor"></path>
+    </svg>
+    <span>${item.address}</span>
+  </p>
+` : `
+  <p class="card-address">
+    <svg class="card-location-icon" width="10" height="13" viewBox="0 0 10 13" aria-hidden="true" focusable="false">
+      <path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" fill="currentColor"></path>
+    </svg>
+    <span>${townDisplay}</span>
+  </p>
+`}
+      ${item.phone   ? `<p class="card-phone">${item.phone}</p>`     : ''}
+
+      <div class="dv-card-bottom-row">
+        <p class="card-desc">${item.desc}</p>
+        <div class="dv-card-actions">
+          <button class="btn btn-secondary view-details-btn" data-id="${item.id}">View details</button>
+        </div>
+      </div>
+    </div>
+  </article>
+`;
+
+
+
     }).join('');
 
     resultsCount.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
@@ -298,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function openDetail(item, triggerEl) {
     lastFocused = triggerEl || document.activeElement;
 
-    const pills = item.services.map(s => `<span class="card-pill">${s}</span>`).join('');
+    const pills = servicePillsHtml(item.services);
 
     const websiteHtml = item.link
       ? `<a href="${item.link}" target="_blank" rel="noopener">${item.link.replace(/^https?:\/\//, '')}</a>`
@@ -316,93 +364,69 @@ document.addEventListener('DOMContentLoaded', function () {
     const heartChar  = isSaved ? '♥' : '♡';
     const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
-    detailCard.innerHTML = `
-      <div class="detail-head">
-        <div class="detail-head-left">
-          <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
-          <h2 class="detail-title" id="detailTitle">${item.title}</h2>
+ detailCard.innerHTML = `
+  <div class="detail-head">
+    <div class="detail-head-left">
+      <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
+      <h2 class="detail-title" id="detailTitle">${item.title}</h2>
+    </div>
+    <div class="detail-head-right">
+      <button
+        class="detail-bookmark card-bookmark${isSaved ? ' saved' : ''}"
+        data-id="${item.id}"
+        aria-label="${heartLabel}"
+        title="${heartLabel}"
+      >${heartChar}</button>
+      <button class="detail-close" id="detailCloseX" aria-label="Close details">&#x2715;</button>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <div class="detail-section">
+      <p class="detail-section-label">Summary</p>
+      <p class="detail-long-desc">${item.desc}</p>
+    </div>
+
+    <div class="detail-section">
+      <p class="detail-section-label">Tags</p>
+      <div class="detail-tags">${pills || "<span style='color:var(--warm-gray)'>No tags listed</span>"}</div>
+    </div>
+
+    <div class="detail-section">
+      <p class="detail-section-label">Contact &amp; Location</p>
+      <div class="detail-info-grid">
+        <div class="detail-info-item">
+          <p class="detail-info-label">Town</p>
+          <p class="detail-info-value">${item.location.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</p>
         </div>
-        <div class="detail-head-right">
-          <button
-            class="detail-bookmark card-bookmark${isSaved ? ' saved' : ''}"
-            data-id="${item.id}"
-            aria-label="${heartLabel}"
-            title="${heartLabel}"
-          >${heartChar}</button>
-          <button class="detail-close" id="detailCloseX" aria-label="Close details">&#x2715;</button>
+
+        <div class="detail-info-item">
+          <p class="detail-info-label">Phone</p>
+          <p class="detail-info-value">${phoneHtml}</p>
+        </div>
+
+        <div class="detail-info-item">
+          <p class="detail-info-label">Address</p>
+          <p class="detail-info-value">${item.address || "<span style='color:var(--warm-gray)'>Not listed</span>"}</p>
+        </div>
+
+        <div class="detail-info-item">
+          <p class="detail-info-label">Website</p>
+          <p class="detail-info-value">${websiteHtml}</p>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="detail-body">
+  <div class="detail-actions">
+    ${item.link    ? `<a class="btn btn-primary"   href="${item.link}" target="_blank" rel="noopener">Visit Website</a>` : ''}
+    ${item.phone   ? `<a class="btn btn-secondary" href="tel:${item.phone}">Call</a>` : ''}
+    ${mapsUrl      ? `<a class="btn btn-secondary" href="${mapsUrl}" target="_blank" rel="noopener">Open in Maps</a>` : ''}
+  </div>
+`;
 
-        <div class="detail-section">
-          <p class="detail-section-label">About</p>
-          <p class="detail-long-desc">${item.desc}</p>
-        </div>
-
-        <div class="detail-section">
-          <p class="detail-section-label">Services</p>
-          <div class="detail-tags">${pills || "<span style='color:var(--warm-gray)'>No services listed</span>"}</div>
-        </div>
-
-        <div class="detail-section">
-          <p class="detail-section-label">Who it serves</p>
-          <div class="detail-tags">
-            ${item.age.map(a => `<span class="card-pill">${a}</span>`).join('')}
-          </div>
-        </div>
-
-        <div class="detail-section">
-          <p class="detail-section-label">Contact &amp; Location</p>
-          <div class="detail-info-grid">
-
-            <div class="detail-info-item">
-              <p class="detail-info-label">Location</p>
-              <p class="detail-info-value">${item.location.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</p>
-            </div>
-
-            <div class="detail-info-item">
-              <p class="detail-info-label">Phone</p>
-              <p class="detail-info-value">${phoneHtml}</p>
-            </div>
-
-            <div class="detail-info-item" style="grid-column:1/-1;">
-              <p class="detail-info-label">Address</p>
-              <p class="detail-info-value">${item.address || "<span style='color:var(--warm-gray)'>Not listed</span>"}</p>
-            </div>
-
-            <div class="detail-info-item" style="grid-column:1/-1;">
-              <p class="detail-info-label">Website</p>
-              <p class="detail-info-value">${websiteHtml}</p>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <div class="detail-actions">
-        ${item.link    ? `<a class="btn btn-primary"   href="${item.link}" target="_blank" rel="noopener">Visit Website</a>` : ''}
-        ${item.phone   ? `<a class="btn btn-secondary" href="tel:${item.phone}">Call</a>` : ''}
-        ${mapsUrl      ? `<a class="btn btn-secondary" href="${mapsUrl}" target="_blank" rel="noopener">Open in Maps</a>` : ''}
-        ${item.address ? `<button class="btn btn-ghost" id="copyAddressBtn">Copy Address</button>` : ''}
-        <button class="btn btn-ghost" id="detailCloseBtn">Close</button>
-      </div>
-    `;
 
     detailCard.querySelector('#detailCloseX').addEventListener('click',   closeDetail);
-    detailCard.querySelector('#detailCloseBtn').addEventListener('click', closeDetail);
-
-    if (item.address) {
-      detailCard.querySelector('#copyAddressBtn').addEventListener('click', () => {
-        const btn = detailCard.querySelector('#copyAddressBtn');
-        navigator.clipboard.writeText(item.address).then(() => {
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy Address'; }, 1800);
-        });
-      });
-    }
-
     /* ── Modal bookmark heart ── */
     const modalHeart = detailCard.querySelector('.detail-bookmark');
     if (modalHeart && typeof CareMapBookmarks !== 'undefined') {
