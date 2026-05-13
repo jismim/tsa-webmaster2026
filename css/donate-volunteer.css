@@ -766,13 +766,8 @@
   background: var(--paper);
   border: 1px solid var(--border);
   border-radius: 999px;
-  width: 3.15rem;
-  height: 3.15rem;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.05rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.85rem;
   color: var(--warm-gray);
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
@@ -1001,14 +996,9 @@
 /* Modal heart pill */
 .detail-bookmark {
   background: var(--paper);
-  border: 1.5px solid var(--rust);
+  border: 1.5px solid var(--border);
   border-radius: 999px;
-  width: 3.15rem;
-  height: 3.15rem;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  padding: .4rem .85rem;
   font-size: 1.05rem;
   line-height: 1;
   color: var(--rust) !important;
@@ -1089,12 +1079,6 @@
 
   .detail-title {
     font-size: 1.55rem;
-  }
-
-  .detail-bookmark,
-  .detail-close {
-    width: 2.55rem;
-    height: 2.55rem;
   }
 
   .detail-body,
