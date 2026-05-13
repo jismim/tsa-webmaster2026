@@ -14,6 +14,71 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let submissions = [];
 
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.classList.remove('success');
+    errorBox.classList.add('visible');
+  }
+
+  function clearError() {
+    errorBox.textContent = '';
+    errorBox.classList.remove('visible', 'success');
+  }
+
+  function showSuccess(message) {
+    errorBox.textContent = message;
+    errorBox.classList.add('visible', 'success');
+  }
+
+  async function handleStatusChange(event) {
+    const select = event.target;
+    const previousStatus = select.dataset.currentStatus || '';
+    const nextStatus = select.value;
+    const submissionId = select.dataset.submissionId;
+    const organizationName = select.dataset.organizationName || 'This resource';
+
+    if (previousStatus !== 'Pending' || (nextStatus !== 'Approved' && nextStatus !== 'Rejected')) {
+      select.dataset.currentStatus = nextStatus;
+      return;
+    }
+
+    if (nextStatus === 'Approved' && typeof window.approveCaremapSubmission !== 'function') {
+      select.value = previousStatus;
+      showError('Approval is unavailable. Refresh the page and try again.');
+      return;
+    }
+
+    if (nextStatus === 'Rejected' && typeof window.rejectCaremapSubmission !== 'function') {
+      select.value = previousStatus;
+      showError('Rejection is unavailable. Refresh the page and try again.');
+      return;
+    }
+
+    select.disabled = true;
+    clearError();
+
+    try {
+      if (nextStatus === 'Approved') {
+        await window.approveCaremapSubmission(isVolunteerPage ? 'volunteer' : 'resources', submissionId);
+      } else {
+        await window.rejectCaremapSubmission(isVolunteerPage ? 'volunteer' : 'resources', submissionId);
+      }
+
+      submissions = submissions.filter((submission) => String(submission.id) !== String(submissionId));
+      applyFilters();
+      const successMessage = nextStatus === 'Approved'
+        ? `${organizationName} moved to approved status and is available on the website.`
+        : `${organizationName} moved to rejected status.`;
+      showSuccess(successMessage);
+    } catch (error) {
+      console.error(error);
+      select.value = previousStatus;
+      select.dataset.currentStatus = previousStatus;
+      select.disabled = false;
+      showError(error.message || 'Unable to approve this submission.');
+    }
+  }
+
   function render(items) {
     if (!items.length) {
       const empty = '<tr><td colspan="6"><div class="empty-state">No submissions match the current filter.</div></td></tr>';
@@ -37,7 +102,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td>
             <div class="stack">
               ${dataUtils.renderStatusBadge(item.status)}
-              <select aria-label="Change submission status for ${dataUtils.escapeHtml(item.organizationName)}">
+              <select
+                data-submission-id="${dataUtils.escapeHtml(item.id)}"
+                data-current-status="${dataUtils.escapeHtml(item.status)}"
+                data-organization-name="${dataUtils.escapeHtml(item.organizationName)}"
+                aria-label="Change submission status for ${dataUtils.escapeHtml(item.organizationName)}"
+              >
                 <option ${item.status === 'Pending' ? 'selected' : ''}>Pending</option>
                 <option ${item.status === 'Approved' ? 'selected' : ''}>Approved</option>
                 <option ${item.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
@@ -47,6 +117,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         </tr>
       `;
     }).join('');
+
+    tbody.querySelectorAll('select[data-submission-id]').forEach((select) => {
+      select.addEventListener('change', handleStatusChange);
+    });
 
     cards.innerHTML = items.map((item) => {
       const services = (item.servicesProvided || []).map(dataUtils.prettifyService).map((service) => `<span class="pill">${dataUtils.escapeHtml(service)}</span>`).join(' ');
