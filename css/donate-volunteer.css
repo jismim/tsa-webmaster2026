@@ -1,8 +1,6 @@
 /* ============================================================
-   DONATE & VOLUNTEER — Page-specific styles
-   All tokens from style.css: --cream, --paper, --ink, --bark,
-   --rust, --rust-lt, --sage, --sage-lt, --sand, --warm-gray,
-   --border, --radius, --ff-display, --ff-body, --ff-mono
+   CAREMAP MORRIS — Donate & Volunteer Page Styles
+   Extends style.css design tokens
 ============================================================ */
 .reveal-hero {
   opacity: 0;
@@ -247,7 +245,7 @@
   }
 }
 
-/* LAYOUT */
+/* ── Layout ── */
 .dv-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -302,7 +300,7 @@
   background: rgba(247,242,234,.85);
   box-shadow: 0 0 0 4px rgba(192,75,32,.15);
 }
-/* FILTER SIDEBAR */
+/* ── Filter Sidebar ── */
 .filter-sidebar-title {
   font-family: var(--ff-display);
   font-size: 1.05rem;
@@ -349,7 +347,7 @@
   box-shadow: 0 0 0 3px rgba(192,75,32,.12);
 }
 
-/* SERVICE CHIPS */
+/* ── Service Chips ── */
 .chip-group {
   display: flex;
   flex-wrap: wrap;
@@ -399,7 +397,7 @@
   color: var(--rust);
 }
 
-/* RESULTS HEADER */
+/* ── Results Header ── */
 .results-header {
   display: flex;
   align-items: center;
@@ -429,7 +427,7 @@
   padding: .2rem .7rem;
 }
 
-/* OPPORTUNITY CARDS */
+/* ── Opportunity Cards ── */
 .cards-list {
   display: flex;
   flex-direction: column;
@@ -623,7 +621,7 @@
 }
 
 
-/* NO RESULTS */
+/* ── No Results ── */
 .no-results {
   text-align: center;
   padding: 3.5rem 1.5rem;
@@ -651,9 +649,9 @@
 }
 
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    DETAIL MODAL
-============================================================ */
+════════════════════════════════════════════════════════════ */
 
 .detail-backdrop {
   position: fixed;
@@ -878,9 +876,9 @@
   font-size: 0.85rem;
 }
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    PAGINATION
-============================================================ */
+════════════════════════════════════════════════════════════ */
 #dvPagination {
   display: flex;
   flex-direction: column;
@@ -949,17 +947,17 @@
   color: var(--warm-gray);
 }
 
-/* ============================================================
-   ANIMATION
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   ANIMATIONS
+════════════════════════════════════════════════════════════ */
 @keyframes popIn {
   from { opacity: 0; transform: translateY(22px) scale(.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ============================================================
-   GIVE BACK — Bookmark Hearts
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   BOOKMARK HEARTS
+════════════════════════════════════════════════════════════ */
 
 /* Top bar inside each dv-card: badges on left, heart on right */
 .dv-card-topbar {
@@ -1062,9 +1060,9 @@
   animation: bookmark-pop .4s cubic-bezier(.34, 1.56, .64, 1);
 }
 
-/* ============================================================
-   RESPONSIVE — modal info grid
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
   .detail-info-grid {
     grid-template-columns: 1fr;
@@ -1136,10 +1134,20 @@
 }
 
 .card-phone {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
   font-size: .9rem;
   color: rgba(90, 79, 69, .72);
   line-height: 1.6;
   margin: 0;
+}
+
+.card-phone-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: .85;
 }
 
 .card-desc {

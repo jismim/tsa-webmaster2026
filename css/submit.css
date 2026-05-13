@@ -1,6 +1,10 @@
+/* ============================================================
+   CAREMAP MORRIS — Submit Page Styles
+   Extends style.css design tokens
+============================================================ */
+
 /* ── Suppress ::after line on hero section-label ── */
 .page-hero .section-label::after { display: none; }
-/* AFTER */
 .page-hero .section-label {
  color: var(--rust);
  margin-bottom: 12px;
@@ -702,11 +706,9 @@ fieldset { border: none; padding: 0; margin: 0; }
  .sidebar { flex-direction: column; }
  .faq-grid { grid-template-columns: 1fr; }
 }
-/* ============================================================
-  CareMap Morris — Multi-Step Form Additions
-  Add this to submit.css (or include as a separate file)
-  All existing styles are preserved; these layer on top.
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   MULTI-STEP FORM
+════════════════════════════════════════════════════════════ */
 
 
 /* ── Step Progress Header ── */

@@ -1,3 +1,7 @@
+/* ============================================================
+   CareMap Morris — Admin Authentication
+============================================================ */
+
 const DEMO_ADMIN = {
   username: 'admin@caremapmorris.org',
   password: 'CareMapAdmin2026!'

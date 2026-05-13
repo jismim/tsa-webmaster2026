@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/admin.css" />
+  <!-- Tour overlay — must be on every page so the floating button always renders -->
+  <link rel="stylesheet" href="/css/tour.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -19,7 +21,7 @@
         <span class="brand-mark" aria-hidden="true"></span>
         <span class="brand-text">CareMap Morris</span>
       </a>
-      <a class="btn btn-secondary" href="/submit.html">Back to public site</a>
+      <a class="btn btn-secondary" href="/index.html">Back to public site</a>
     </div>
   </header>
 
@@ -27,7 +29,10 @@
     <section class="login-card" aria-labelledby="adminLoginHeading">
       <p class="page-eyebrow">Admin access</p>
       <h1 id="adminLoginHeading" class="page-title">Admin Login</h1>
-      <p class="page-subtitle">Sign in to review resource submissions and community questions from the CareMap Morris forms.</p>
+      <p class="page-subtitle">
+        Sign in to review resource submissions and community questions
+        from the CareMap Morris forms.
+      </p>
 
       <div class="auth-warning">Authorized personnel only</div>
 
@@ -40,22 +45,40 @@
       <form id="adminLoginForm" class="form-grid" novalidate>
         <div class="form-field">
           <label for="adminUsername">Username or email</label>
-          <input id="adminUsername" name="adminUsername" type="text" autocomplete="username" placeholder="admin@caremapmorris.org" required />
+          <input
+            id="adminUsername"
+            name="adminUsername"
+            type="text"
+            autocomplete="username"
+            placeholder="admin@caremapmorris.org"
+            required
+          />
         </div>
         <div class="form-field">
           <label for="adminPassword">Password</label>
-          <input id="adminPassword" name="adminPassword" type="password" autocomplete="current-password" placeholder="Enter password" required />
+          <input
+            id="adminPassword"
+            name="adminPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Enter password"
+            required
+          />
         </div>
         <button class="btn btn-primary" type="submit">Login</button>
       </form>
 
       <div id="loginError" class="error-message" role="alert" aria-live="polite"></div>
 
-      <p class="footer-note">This demo login uses session-based front-end protection for judging. For a production launch, swap this for a real auth provider.</p>
+      <p class="footer-note">
+        This demo login uses session-based front-end protection for judging.
+        For a production launch, swap this for a real auth provider.
+      </p>
     </section>
   </main>
 
   <script src="/js/admin-auth.js"></script>
   <script src="/js/admin-login.js"></script>
+  <script src="/js/tour.js"></script>
 </body>
 </html>

@@ -1,3 +1,7 @@
+/* ============================================================
+   CareMap Morris — Admin Login Page
+============================================================ */
+
 document.addEventListener('DOMContentLoaded', () => {
   const { DEMO_ADMIN, setAdminSession, isAdminLoggedIn } = window.CareMapAdminAuth;
 

@@ -291,9 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentPage    = 1;
   const PAGE_SIZE    = 8;
 
-  // -------------------
-  // Nav badge helper
-  // -------------------
+  /* ── Nav badge helper ── */
   function updateDvBadge() {
     if (typeof CareMapBookmarks === 'undefined') return;
     const count = CareMapBookmarks.count();
@@ -363,9 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .join('');
   }
 
-  // -------------------
-  // Main render function
-  // -------------------
+  /* ── Main render function ── */
   function render() {
     const age      = filterAge.value;
     const location = filterLocation.value.toLowerCase();
@@ -491,9 +487,7 @@ ${item.address ? `
     });
   }
 
-  // -------------------
-  // Pagination renderer
-  // -------------------
+  /* ── Pagination renderer ── */
   function renderPagination(total, totalPages) {
     let pager = document.getElementById('dvPagination');
     if (!pager) {
@@ -549,17 +543,13 @@ ${item.address ? `
     });
   }
 
-  // -------------------
-  // Scroll to card list
-  // -------------------
+  /* ── Scroll to card list ── */
   function scrollToList() {
     const top = cardsList.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({ top, behavior: 'smooth' });
   }
 
-  // -------------------
-  // Open detail modal
-  // -------------------
+  /* ── Open detail modal ── */
   function openDetail(item, triggerEl) {
     lastFocused = triggerEl || document.activeElement;
 
@@ -682,9 +672,7 @@ ${item.address ? `
     });
   }
 
-  // -------------------
-  // Close detail modal
-  // -------------------
+  /* ── Close detail modal ── */
   function closeDetail() {
     backdrop.hidden  = true;
     modalWrap.hidden = true;
@@ -698,9 +686,7 @@ ${item.address ? `
     if (e.key === 'Escape' && !modalWrap.hidden) closeDetail();
   });
 
-  // -------------------
-  // Tab buttons
-  // -------------------
+  /* ── Tab buttons ── */
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
@@ -720,9 +706,7 @@ ${item.address ? `
     });
   });
 
-  // -------------------
-  // Service chips
-  // -------------------
+  /* ── Service chips ── */
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
       chip.classList.toggle('selected');
@@ -735,15 +719,11 @@ ${item.address ? `
     });
   });
 
-  // -------------------
-  // Age & Location filters
-  // -------------------
+  /* ── Age & Location filters ── */
   filterAge.addEventListener('change',      () => { currentPage = 1; render(); });
   filterLocation.addEventListener('change', () => { currentPage = 1; render(); });
 
-  // -------------------
-  // Reset button
-  // -------------------
+  /* ── Reset button ── */
   resetBtn.addEventListener('click', () => {
     activeTab      = 'all';
     activeServices = [];

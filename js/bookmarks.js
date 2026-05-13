@@ -1,7 +1,6 @@
 /* ============================================================
    CAREMAP MORRIS — Bookmarks Module
    Persists saved resource IDs to localStorage.
-   Usage: import or include BEFORE script.js
 ============================================================ */
 
 const CareMapBookmarks = (function () {
@@ -51,7 +50,6 @@ const CareMapBookmarks = (function () {
   }
 
   // ── Apply saved state to all bookmark buttons on page ──
-  // Call this on DOMContentLoaded to restore heart state
   function applyToPage() {
     document.querySelectorAll('.card-bookmark[data-id]').forEach(function (btn) {
       const id = Number(btn.dataset.id);
