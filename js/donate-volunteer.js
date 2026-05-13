@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', function () {
   if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
 
   /* ── DATA ── */
+  const VOLUNTEER_APPROVED_ENDPOINTS = [
+    "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/approved/formatted?root=volunteer",
+    "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/approved?root=volunteer"
+  ];
+
   const DATA = [
     {id:1,  kind:"donate & volunteer", title:"St. Peter's Food Pantry",                    desc:"Food pantry providing groceries to individuals and families in need.",                                                                                                  age:["adult","family"],               location:"clifton",       services:["food","hygiene"],                   link:"https://www.saintpetershaven.org/",                             phone:"(973) 546-3406", address:"380 Clifton Ave, Clifton, NJ 07011"},
     {id:2,  kind:"donate & volunteer", title:"Morris County Nutrition Project",              desc:"Provides meal services and nutrition support for seniors in Morris County.",                                                                                            age:["senior"],                       location:"county-wide",   services:["food"],                             link:"",                                                             phone:"",               address:"Morris County, NJ"},
@@ -72,6 +77,200 @@ document.addEventListener('DOMContentLoaded', function () {
     {id:38, kind:"donate",             title:"NJ Chronic Fatigue Syndrome Association Inc.", desc:"Nonprofit supporting awareness, education, and advocacy for individuals living with chronic fatigue syndrome.",                                                         age:["adult","family","senior"],      location:"florham-park",  services:["medical"],                          link:"https://www.njcfsa.org/",                                       phone:"",               address:"Florham Park, NJ 07932"},
   ];
 
+  function slugify(value) {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function unwrapApprovedItems(payload) {
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload?.items)) {
+      return payload.items.map(item => item.data || item);
+    }
+    return [];
+  }
+
+  function firstText(...values) {
+    return values.find(value => String(value || '').trim()) || '';
+  }
+
+  function inferKind(item) {
+    if (item.kind) return String(item.kind).toLowerCase();
+
+    const donationNeeds = firstText(item.donationNeeds, item.donation_needs);
+    const volunteerRoles = firstText(item.volunteerRoles, item.volunteerOpportunities, item.volunteer_opportunities);
+
+    if (donationNeeds && volunteerRoles) return 'donate & volunteer';
+    if (donationNeeds) return 'donate';
+    return 'volunteer';
+  }
+
+  function mergeKinds(existingKind, approvedKind) {
+    const kinds = new Set();
+
+    [existingKind, approvedKind].forEach(kind => {
+      const normalized = String(kind || '').toLowerCase();
+      if (normalized.includes('donate')) kinds.add('donate');
+      if (normalized.includes('volunteer')) kinds.add('volunteer');
+    });
+
+    if (kinds.has('donate') && kinds.has('volunteer')) return 'donate & volunteer';
+    if (kinds.has('donate')) return 'donate';
+    return 'volunteer';
+  }
+
+  function inferAges(item) {
+    if (Array.isArray(item.age) && item.age.length) return item.age.map(slugify).filter(Boolean);
+
+    const text = [
+      item.category,
+      item.resourceType,
+      item.desc,
+      item.shortDesc,
+      item.longDesc,
+      item.description,
+      item.volunteerRoles,
+      item.volunteerOpportunities
+    ].join(' ').toLowerCase();
+
+    const ages = new Set(['adult']);
+    if (text.includes('family')) ages.add('family');
+    if (text.includes('teen') || text.includes('youth')) ages.add('teen');
+    if (text.includes('kid') || text.includes('child')) ages.add('kids');
+    if (text.includes('senior')) ages.add('senior');
+    return Array.from(ages);
+  }
+
+  function inferLocation(item) {
+    if (item.location) return slugify(item.location);
+    if (item.town) return slugify(item.town);
+
+    const knownLocations = [
+      'boonton', 'butler', 'chester', 'clifton', 'dover', 'florham-park',
+      'kinnelon', 'madison', 'morris-plains', 'morristown', 'mt-arlington',
+      'newark', 'parsippany', 'randolph', 'riverdale', 'rockaway', 'roxbury',
+      'whippany'
+    ];
+    const normalizedAddress = slugify(item.address);
+    return knownLocations.find(location => normalizedAddress.includes(location)) || 'county-wide';
+  }
+
+  function mapService(value) {
+    const serviceMap = {
+      'food-pantry': 'food',
+      shelter: 'housing',
+      'domestic-violence': 'counseling',
+      'mental-health': 'counseling',
+      'legal-aid': 'legal',
+      'youth-services': 'childcare',
+      'senior-services': 'social',
+      'disability-services': 'social',
+      'job-training': 'education',
+      healthcare: 'medical',
+      social: 'social',
+      education: 'education',
+      substance: 'counseling',
+      violence: 'counseling',
+      legal: 'legal',
+      childcare: 'childcare',
+      hygiene: 'hygiene',
+      housing: 'housing',
+      food: 'food'
+    };
+    const slug = slugify(value);
+    return serviceMap[slug] || slug;
+  }
+
+  function inferServices(item) {
+    const services = [
+      ...(Array.isArray(item.services) ? item.services : []),
+      ...(Array.isArray(item.servicesProvided) ? item.servicesProvided : []),
+      item.category,
+      item.resourceType
+    ]
+      .map(mapService)
+      .filter(Boolean);
+
+    return Array.from(new Set(services));
+  }
+
+  function makeNumericId(item) {
+    const numericId = Number(item.id);
+    if (Number.isSafeInteger(numericId) && numericId > 0) return 1000000 + numericId;
+
+    const source = String(item.id || item.title || item.organizationName || item.name || '');
+    return 1000000 + Math.abs(source.split('').reduce((hash, char) => {
+      return ((hash << 5) - hash) + char.charCodeAt(0);
+    }, 0));
+  }
+
+  function normalizeApprovedVolunteer(item) {
+    return {
+      id: makeNumericId(item),
+      kind: inferKind(item),
+      title: firstText(item.title, item.organizationName, item.name),
+      desc: firstText(item.desc, item.volunteerRoles, item.volunteerOpportunities, item.donationNeeds, item.shortDesc, item.description, item.longDesc),
+      age: inferAges(item),
+      location: inferLocation(item),
+      services: inferServices(item),
+      link: firstText(item.website, item.link),
+      phone: firstText(item.phone),
+      address: firstText(item.address)
+    };
+  }
+
+  async function fetchApprovedVolunteerItems() {
+    for (const endpoint of VOLUNTEER_APPROVED_ENDPOINTS) {
+      try {
+        const response = await fetch(endpoint, { cache: 'no-store' });
+        if (!response.ok) continue;
+
+        const items = unwrapApprovedItems(await response.json())
+          .map(normalizeApprovedVolunteer)
+          .filter(item => item.title && item.desc);
+
+        if (items.length) return items;
+      } catch (error) {
+        console.warn(`Unable to load approved volunteer opportunities from ${endpoint}`, error);
+      }
+    }
+
+    return [];
+  }
+
+  async function loadApprovedVolunteerOpportunities() {
+    const approvedItems = await fetchApprovedVolunteerItems();
+    const existingIds = new Set(DATA.map(item => Number(item.id)));
+    const existingByTitle = new Map(DATA.map(item => [slugify(item.title), item]));
+    const newItems = [];
+
+    approvedItems.forEach(item => {
+      const existingItem = existingByTitle.get(slugify(item.title));
+
+      if (existingItem) {
+        existingItem.kind = mergeKinds(existingItem.kind, item.kind);
+        existingItem.desc = firstText(item.desc, existingItem.desc);
+        existingItem.age = Array.from(new Set([...(existingItem.age || []), ...(item.age || [])]));
+        existingItem.services = Array.from(new Set([...(existingItem.services || []), ...(item.services || [])]));
+        existingItem.link = firstText(existingItem.link, item.link);
+        existingItem.phone = firstText(existingItem.phone, item.phone);
+        existingItem.address = firstText(existingItem.address, item.address);
+        existingItem.location = existingItem.location === 'county-wide' ? item.location : existingItem.location;
+        return;
+      }
+
+      if (!existingIds.has(Number(item.id))) {
+        newItems.push(item);
+      }
+    });
+
+    DATA.unshift(...newItems);
+  }
+
   const cardsList      = document.getElementById('cardsList');
   const noResults      = document.getElementById('noResults');
   const resultsCount   = document.getElementById('resultsCount');
@@ -102,6 +301,24 @@ document.addEventListener('DOMContentLoaded', function () {
       el.textContent   = count;
       el.style.display = count > 0 ? 'inline-flex' : 'none';
     });
+  }
+
+  function syncLocationFilterOptions() {
+    const existing = new Set(Array.from(filterLocation.options).map(option => option.value));
+
+    Array.from(new Set(DATA.map(item => item.location).filter(Boolean)))
+      .sort()
+      .forEach(location => {
+        if (existing.has(location)) return;
+
+        const option = document.createElement('option');
+        option.value = location;
+        option.textContent = location
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        filterLocation.appendChild(option);
+      });
   }
 
   // -------------------
@@ -541,6 +758,15 @@ ${item.address ? `
   });
 
   /* ── Initial render + badge sync ── */
-  render();
-  updateDvBadge();
+  resultsCount.textContent = 'Loading opportunities...';
+  loadApprovedVolunteerOpportunities()
+    .catch(error => {
+      console.warn('Approved volunteer opportunities could not be loaded; using built-in Give Back data.', error);
+    })
+    .finally(() => {
+      syncLocationFilterOptions();
+      render();
+      updateDvBadge();
+    });
 });
+
