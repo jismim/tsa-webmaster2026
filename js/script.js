@@ -151,43 +151,80 @@ document.addEventListener('DOMContentLoaded', function () {
   }
  
  
-  /* ----------------------------------------------------------
-     5. ANIMATED STAT COUNTERS
-  ---------------------------------------------------------- */
-  function animateCount(el, target, duration) {
-    const start = performance.now();
- 
-    function step(now) {
-      const elapsed  = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased    = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(eased * target);
-      if (progress < 1) requestAnimationFrame(step);
-      else el.textContent = target;
-    }
- 
-    requestAnimationFrame(step);
-  }
- 
-  const counters = document.querySelectorAll('.count-num');
- 
-  if (counters.length) {
-    if ('IntersectionObserver' in window) {
-      const counterObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            const target = parseInt(entry.target.dataset.target, 10);
-            if (!isNaN(target)) animateCount(entry.target, target, 1400);
-            counterObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.4 });
- 
-      counters.forEach(function (c) { counterObserver.observe(c); });
+ /* ----------------------------------------------------------
+   5. EDITORIAL STAT CARDS
+---------------------------------------------------------- */
+function animateCmStatNumber(el, target, duration) {
+  const start = performance.now();
+
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+
+    el.textContent = Math.round(eased * target);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
     } else {
-      counters.forEach(function (c) { c.textContent = c.dataset.target || '0'; });
+      el.textContent = target;
     }
   }
+
+  requestAnimationFrame(step);
+}
+
+const cmStatCells = document.querySelectorAll('.cm-cell');
+
+if (cmStatCells.length) {
+  if ('IntersectionObserver' in window) {
+    const cmStatObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        const cell = entry.target;
+        if (cell.dataset.played === 'true') return;
+
+        const num = cell.querySelector('.cm-num');
+        const bar = cell.querySelector('.cm-bar-fill');
+
+        if (num) {
+          const target = parseInt(num.dataset.count, 10);
+          if (!isNaN(target)) {
+            animateCmStatNumber(num, target, 1400);
+          }
+        }
+
+        if (bar) {
+          const fill = parseInt(bar.dataset.fill, 10);
+          if (!isNaN(fill)) {
+            bar.style.width = fill + '%';
+          }
+        }
+
+        cell.dataset.played = 'true';
+        cmStatObserver.unobserve(cell);
+      });
+    }, { threshold: 0.35 });
+
+    cmStatCells.forEach(function (cell) {
+      cmStatObserver.observe(cell);
+    });
+  } else {
+    cmStatCells.forEach(function (cell) {
+      const num = cell.querySelector('.cm-num');
+      const bar = cell.querySelector('.cm-bar-fill');
+
+      if (num) {
+        num.textContent = num.dataset.count || '0';
+      }
+
+      if (bar) {
+        bar.style.width = (bar.dataset.fill || 0) + '%';
+      }
+    });
+  }
+}
  
  
   /* ----------------------------------------------------------

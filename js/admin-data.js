@@ -1,9 +1,21 @@
+const RESOURCE_SUBMISSIONS_API = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/pending?root=resources';
+const VOLUNTEER_SUBMISSIONS_API = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/pending?root=volunteer';
+const QUESTIONS_API = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/pending?root=questions';
+
 async function fetchJson(path) {
   const response = await fetch(path, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Failed to load ${path}`);
   }
   return response.json();
+}
+
+function unwrapS3Items(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.items)) {
+    return payload.items.map((item) => item.data || item);
+  }
+  return [];
 }
 
 function formatDate(dateString) {
@@ -63,16 +75,30 @@ function countByStatus(items, target) {
   return items.filter((item) => String(item.status).toLowerCase() === target.toLowerCase()).length;
 }
 
+async function loadResourceSubmissions() {
+  return fetchJson(RESOURCE_SUBMISSIONS_API);
+}
+
+async function loadVolunteerSubmissions() {
+  return fetchJson(VOLUNTEER_SUBMISSIONS_API);
+}
+
+async function loadQuestions() {
+  return unwrapS3Items(await fetchJson(QUESTIONS_API));
+}
+
 async function loadAdminData() {
-  const [resourceSubmissions, questions] = await Promise.all([
-    fetchJson('/data/resource-submissions.json'),
-    fetchJson('/data/questions.json')
+  const [resourceSubmissions, volunteerSubmissions, questions] = await Promise.all([
+    loadResourceSubmissions(),
+    loadVolunteerSubmissions(),
+    loadQuestions()
   ]);
-  return { resourceSubmissions, questions };
+  return { resourceSubmissions, volunteerSubmissions, questions };
 }
 
 window.CareMapAdminData = {
   fetchJson,
+  unwrapS3Items,
   formatDate,
   escapeHtml,
   prettifyCategory,
@@ -80,5 +106,8 @@ window.CareMapAdminData = {
   getStatusClass,
   renderStatusBadge,
   countByStatus,
+  loadResourceSubmissions,
+  loadVolunteerSubmissions,
+  loadQuestions,
   loadAdminData
 };

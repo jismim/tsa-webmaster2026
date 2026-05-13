@@ -58,13 +58,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    questions = await dataUtils.fetchJson('/data/questions.json');
+    questions = await dataUtils.loadQuestions();
     render(questions);
     searchInput.addEventListener('input', applyFilters);
     filterSelect.addEventListener('change', applyFilters);
   } catch (error) {
     console.error(error);
-    errorBox.textContent = 'Unable to load /data/questions.json.';
+    errorBox.textContent = 'Unable to load questions from the API.';
     errorBox.classList.add('visible');
   }
 });

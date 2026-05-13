@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   auth.wireLogoutButtons();
   auth.markActiveNav();
 
+  const isVolunteerPage = window.location.pathname.includes('volunteer-submission');
   const tbody = document.getElementById('resourceTableBody');
   const cards = document.getElementById('resourceCards');
   const searchInput = document.getElementById('resourceSearch');
@@ -101,13 +102,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    submissions = await dataUtils.fetchJson('/data/resource-submissions.json');
+    submissions = isVolunteerPage
+      ? await dataUtils.loadVolunteerSubmissions()
+      : await dataUtils.loadResourceSubmissions();
     render(submissions);
     searchInput.addEventListener('input', applyFilters);
     filterSelect.addEventListener('change', applyFilters);
   } catch (error) {
     console.error(error);
-    errorBox.textContent = 'Unable to load /data/resource-submissions.json.';
+    errorBox.textContent = isVolunteerPage
+      ? 'Unable to load volunteer submissions from the API.'
+      : 'Unable to load resource submissions from the API.';
     errorBox.classList.add('visible');
   }
 });
