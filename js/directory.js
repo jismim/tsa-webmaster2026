@@ -5,8 +5,18 @@
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  var MIN_RESOURCE_LOAD_MS = 2200;
   var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
-  resourcesReady.then(function (resources) {
+  var safeResourcesReady = resourcesReady.catch(function (error) {
+    console.error(error);
+    return [];
+  });
+  var resourceLoadDelay = new Promise(function (resolve) {
+    setTimeout(resolve, MIN_RESOURCE_LOAD_MS);
+  });
+
+  Promise.all([safeResourcesReady, resourceLoadDelay]).then(function (values) {
+    var resources = values[0];
     window.RESOURCES = Array.isArray(resources) ? resources : [];
     initDirectory();
   });
@@ -84,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ── Render card grid ── */
   function renderResources(list) {
     currentFilteredList = list;
+    grid.setAttribute("aria-busy", "false");
     grid.innerHTML = "";
 
     if (list.length === 0) {
