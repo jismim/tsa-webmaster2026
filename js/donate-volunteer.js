@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── DATA ── */
   const VOLUNTEER_APPROVED_ENDPOINTS = [
-    "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/volunteer/approved",
     "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/approved/formatted?root=volunteer",
     "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/approved?root=volunteer"
   ];
@@ -107,6 +106,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (donationNeeds && volunteerRoles) return 'donate & volunteer';
     if (donationNeeds) return 'donate';
+    return 'volunteer';
+  }
+
+  function mergeKinds(existingKind, approvedKind) {
+    const kinds = new Set();
+
+    [existingKind, approvedKind].forEach(kind => {
+      const normalized = String(kind || '').toLowerCase();
+      if (normalized.includes('donate')) kinds.add('donate');
+      if (normalized.includes('volunteer')) kinds.add('volunteer');
+    });
+
+    if (kinds.has('donate') && kinds.has('volunteer')) return 'donate & volunteer';
+    if (kinds.has('donate')) return 'donate';
     return 'volunteer';
   }
 
@@ -187,10 +200,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function makeNumericId(item) {
     const numericId = Number(item.id);
-    if (Number.isFinite(numericId) && numericId > 0) return numericId;
+    if (Number.isSafeInteger(numericId) && numericId > 0) return 1000000 + numericId;
 
     const source = String(item.id || item.title || item.organizationName || item.name || '');
-    return Math.abs(source.split('').reduce((hash, char) => {
+    return 1000000 + Math.abs(source.split('').reduce((hash, char) => {
       return ((hash << 5) - hash) + char.charCodeAt(0);
     }, 0));
   }
@@ -232,12 +245,30 @@ document.addEventListener('DOMContentLoaded', function () {
   async function loadApprovedVolunteerOpportunities() {
     const approvedItems = await fetchApprovedVolunteerItems();
     const existingIds = new Set(DATA.map(item => Number(item.id)));
-    const existingTitles = new Set(DATA.map(item => slugify(item.title)));
-    const newItems = approvedItems.filter(item => (
-      !existingIds.has(Number(item.id)) && !existingTitles.has(slugify(item.title))
-    ));
+    const existingByTitle = new Map(DATA.map(item => [slugify(item.title), item]));
+    const newItems = [];
 
-    DATA.push(...newItems);
+    approvedItems.forEach(item => {
+      const existingItem = existingByTitle.get(slugify(item.title));
+
+      if (existingItem) {
+        existingItem.kind = mergeKinds(existingItem.kind, item.kind);
+        existingItem.desc = firstText(item.desc, existingItem.desc);
+        existingItem.age = Array.from(new Set([...(existingItem.age || []), ...(item.age || [])]));
+        existingItem.services = Array.from(new Set([...(existingItem.services || []), ...(item.services || [])]));
+        existingItem.link = firstText(existingItem.link, item.link);
+        existingItem.phone = firstText(existingItem.phone, item.phone);
+        existingItem.address = firstText(existingItem.address, item.address);
+        existingItem.location = existingItem.location === 'county-wide' ? item.location : existingItem.location;
+        return;
+      }
+
+      if (!existingIds.has(Number(item.id))) {
+        newItems.push(item);
+      }
+    });
+
+    DATA.unshift(...newItems);
   }
 
   const cardsList      = document.getElementById('cardsList');
