@@ -8,8 +8,9 @@
  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="images/logo.png"/>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/tour.css" />   <!-- ← add this -->
+<link rel="icon" type="image/png" href="images/logo.png"/>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -147,12 +148,11 @@
   </div>
 </footer>
  
-  <!-- Load data and scripts -->
-  <script src="js/resources.js"></script>
-  <script src="js/bookmarks.js"></script>
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
- 
+<script src="js/resources.js"></script>
+<script src="js/bookmarks.js"></script>
+<script src="js/tour.js"></script>  
+<script>
+document.addEventListener('DOMContentLoaded', function () {
     // ── Mobile menu ──────────────────────────────────────
     const mobileMenu      = document.getElementById('mobileMenu');
     const mobileNavBtn    = document.getElementById('mobileNavBtn');
