@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const filtered = DATA.filter(item => {
       if (activeTab === 'donate'    && item.kind === 'volunteer') return false;
-if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
+      if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
       if (age      && !item.age.includes(age))                           return false;
       if (location && item.location.toLowerCase() !== location)          return false;
       if (activeServices.length && !activeServices.every(s => item.services.includes(s))) return false;
@@ -360,7 +360,7 @@ if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
       const heartChar  = isSaved ? '♥' : '♡';
       const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
- return `
+      return `
   <article class="dv-card" tabindex="0" role="button" aria-label="View details for ${item.title}" data-id="${item.id}">
     <div class="dv-card-topbar">
       <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
@@ -401,8 +401,6 @@ ${item.address ? `
   </article>
 `;
 
-
-
     }).join('');
 
     resultsCount.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
@@ -418,7 +416,14 @@ ${item.address ? `
         e.stopPropagation();
         if (typeof CareMapBookmarks === 'undefined') return;
         const id = parseInt(btn.dataset.id, 10);
-        const nowSaved = CareMapBookmarks.toggle(id);
+        
+        // Find the item and cache it before bookmarking
+        const item = DATA.find(d => d.id === id);
+        if (item) {
+          localStorage.setItem('cm_gb_item_' + id, JSON.stringify(item));
+        }
+        
+        const nowSaved = CareMapBookmarks.toggle(id, CareMapBookmarks.SECTIONS.GIVE_BACK);
         btn.textContent = nowSaved ? '♥' : '♡';
         btn.classList.toggle('saved', nowSaved);
         btn.setAttribute('aria-label', nowSaved ? 'Unsave this organization' : 'Save this organization');
@@ -514,6 +519,9 @@ ${item.address ? `
   function openDetail(item, triggerEl) {
     lastFocused = triggerEl || document.activeElement;
 
+    // Cache the item when opening modal
+    localStorage.setItem('cm_gb_item_' + item.id, JSON.stringify(item));
+
     const pills = servicePillsHtml(item.services);
 
     const websiteHtml = item.link
@@ -532,7 +540,7 @@ ${item.address ? `
     const heartChar  = isSaved ? '♥' : '♡';
     const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
- detailCard.innerHTML = `
+    detailCard.innerHTML = `
   <div class="detail-head">
     <div class="detail-head-left">
       <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
@@ -593,7 +601,6 @@ ${item.address ? `
   </div>
 `;
 
-
     detailCard.querySelector('#detailCloseX').addEventListener('click',   closeDetail);
     /* ── Modal bookmark heart ── */
     const modalHeart = detailCard.querySelector('.detail-bookmark');
@@ -601,7 +608,10 @@ ${item.address ? `
       modalHeart.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
-        const nowSaved = CareMapBookmarks.toggle(item.id);
+        const nowSaved = CareMapBookmarks.toggle(item.id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+
+        // Cache the item
+        localStorage.setItem('cm_gb_item_' + item.id, JSON.stringify(item));
 
         modalHeart.textContent = nowSaved ? '♥' : '♡';
         modalHeart.classList.toggle('saved', nowSaved);
@@ -710,4 +720,3 @@ ${item.address ? `
       updateDvBadge();
     });
 });
-
