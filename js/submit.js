@@ -1,116 +1,271 @@
-document.getElementById('submitForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const required = this.querySelectorAll('[required]');
-      let valid = true;
-      required.forEach(function(field) {
-        if (!field.value.trim()) {
-          valid = false;
-          field.style.borderColor = '#c0392b';
-          field.addEventListener('input', function() { field.style.borderColor = ''; }, { once: true });
-        }
-      });
-      if (!valid) {
-        const first = this.querySelector('[required][style*="border-color"]');
-        if (first) first.focus();
-        return;
-      }
-      document.getElementById('successBanner').classList.add('visible');
-      document.querySelector('.form-card').style.display = 'none';
-      document.getElementById('successBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-(function () {
-  'use strict';
+const API_BASE = "https://flvpf8iuu3.execute-api.us-east-1.amazonaws.com";
+const TOTAL_STEPS = 6;
+let currentStep = 1;
 
-  /* ── 1. Scroll Reveal ── */
-  const revealEls = document.querySelectorAll('.reveal');
 
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -36px 0px' }
-    );
-    revealEls.forEach((el) => io.observe(el));
-  } else {
-    revealEls.forEach((el) => el.classList.add('visible'));
-  }
+document.addEventListener('DOMContentLoaded', function () {
 
-  /* ── 2. FAQ Accordion ── */
-  const faqItems = document.querySelectorAll('.faq-item');
 
-  faqItems.forEach((item) => {
-    const btn = item.querySelector('.faq-q');
-    const answer = item.querySelector('.faq-a');
-    if (!btn || !answer) return;
+ /* ── DOM refs ── */
+ const form        = document.getElementById('submitForm');
+ const steps       = document.querySelectorAll('.form-step');
+ const progressBar = document.getElementById('stepProgressBar');
+ const stepLabel   = document.getElementById('stepLabel');
+ const stepDots    = document.querySelectorAll('.step-dot');
 
-    btn.addEventListener('click', () => {
-      const isOpen = btn.getAttribute('aria-expanded') === 'true';
 
-      // Close all other open items
-      faqItems.forEach((other) => {
-        if (other === item) return;
-        const otherBtn = other.querySelector('.faq-q');
-        const otherAns = other.querySelector('.faq-a');
-        if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
-        if (otherAns) {
-          otherAns.classList.remove('open');
-          otherAns.hidden = true;
-        }
-      });
+ /* Show step */
+ function showStep(n) {
+   steps.forEach(function (s, i) {
+     s.classList.toggle('active-step', i + 1 === n);
+   });
+   currentStep = n;
+   updateProgress();
+   document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }
 
-      // Toggle current
-      const nowOpen = !isOpen;
-      btn.setAttribute('aria-expanded', String(nowOpen));
 
-      if (nowOpen) {
-        answer.hidden = false;
-        // Tiny delay so "hidden" removal is painted before class adds height
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => answer.classList.add('open'));
-        });
-      } else {
-        answer.classList.remove('open');
-        // Wait for transition then hide for accessibility
-        answer.addEventListener('transitionend', () => {
-          if (!answer.classList.contains('open')) answer.hidden = true;
-        }, { once: true });
-      }
-    });
-  });
+ function updateProgress() {
+   const pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
+   if (progressBar) progressBar.style.width = pct + '%';
+   if (stepLabel)   stepLabel.textContent   = 'Step ' + currentStep + ' of ' + TOTAL_STEPS;
+   stepDots.forEach(function (dot, i) {
+     dot.classList.toggle('dot-active',    i + 1 === currentStep);
+     dot.classList.toggle('dot-completed', i + 1 < currentStep);
+   });
+ }
 
-  /* ── 3. Ask-a-Question Form ── */
-  const askForm = document.getElementById('askForm');
-  const askSuccess = document.getElementById('askSuccess');
 
-  if (askForm && askSuccess) {
-    askForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+ /* Perstep validation */
+ function validateStep(n) {
+   const stepEl = document.querySelector('.form-step[data-step="' + n + '"]');
+   if (!stepEl) return true;
 
-      const emailInput = askForm.querySelector('#askEmail');
-      const questionInput = askForm.querySelector('#askQuestion');
 
-      if (!emailInput.value.trim() || !questionInput.value.trim()) {
-        emailInput.reportValidity();
-        questionInput.reportValidity();
-        return;
-      }
+   const required = stepEl.querySelectorAll('[required]');
+   let valid = true;
 
-      // Simulate submission (replace with real backend/formspree/emailjs)
-      const btn = askForm.querySelector('button[type="submit"]');
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
 
-      setTimeout(() => {
-        askForm.style.display = 'none';
-        askSuccess.hidden = false;
-      }, 800);
-    });
-  }
+   required.forEach(function (field) {
+     field.style.borderColor = '';
+     if (!field.value.trim()) {
+       valid = false;
+       field.style.borderColor = '#c0392b';
+       field.addEventListener('input', function () {
+         field.style.borderColor = '';
+       }, { once: true });
+     }
+   });
 
-})();
+
+   if (!valid) {
+     const first = stepEl.querySelector('[required][style*="border-color"]');
+     if (first) first.focus();
+   }
+   return valid;
+ }
+
+
+/* Back Buttons */
+ document.querySelectorAll('.btn-next').forEach(function (btn) {
+   btn.addEventListener('click', function () {
+     if (validateStep(currentStep)) {
+       showStep(currentStep + 1);
+     }
+   });
+ });
+
+
+ document.querySelectorAll('.btn-back').forEach(function (btn) {
+   btn.addEventListener('click', function () {
+     showStep(currentStep - 1);
+   });
+ });
+
+
+ /* form submit*/
+ if (form) {
+   form.addEventListener('submit', async function (e) {
+     e.preventDefault();
+
+
+     if (!validateStep(currentStep)) return;
+
+
+     const services = Array.from(
+       document.querySelectorAll('input[name="services"]:checked')
+     ).map(function (el) { return el.value; });
+
+
+     const donationNeeds  = document.getElementById('donationNeeds')?.value.trim()  || '';
+     const volunteerRoles = document.getElementById('volunteerRoles')?.value.trim() || '';
+
+
+     let rootFolders = Array.from(
+       document.querySelectorAll('input[name="rootFolders"]:checked')
+     ).map(function (el) { return el.value; });
+     if (!rootFolders.length) rootFolders = ['resources'];
+
+
+     const payload = {
+       rootFolders,
+       data: {
+         title:     document.getElementById('orgName').value.trim(),
+         category:  document.getElementById('orgType').value.trim(),
+         town:      '',
+         address:   document.getElementById('orgAddress').value.trim(),
+         phone:     document.getElementById('orgPhone').value.trim(),
+         email:     document.getElementById('orgEmail').value.trim(),
+         website:   document.getElementById('orgWebsite').value.trim(),
+         hours:     document.getElementById('orgHours').value.trim(),
+         shortDesc: document.getElementById('orgDescription').value.trim(),
+         longDesc:  document.getElementById('orgDescription').value.trim(),
+         tags:      [],
+         services,
+         saves:     0,
+         donationNeeds,
+         volunteerRoles
+       },
+       submittedBy: {
+         name:     document.getElementById('submitterName')?.value.trim()   || '',
+         email:    document.getElementById('submitterEmail')?.value.trim()  || '',
+         relation: document.getElementById('submitterRelation')?.value      || '',
+         notes:    document.getElementById('additionalNotes')?.value.trim() || ''
+       }
+     };
+
+
+     const submitButton = form.querySelector('button[type="submit"]');
+     const originalHTML = submitButton.innerHTML;
+     submitButton.disabled = true;
+     submitButton.innerHTML = 'Submitting...';
+
+
+     try {
+       const res = await fetch(API_BASE + '/submissions', {
+         method:  'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body:    JSON.stringify(payload)
+       });
+       const result = await res.json();
+       if (!res.ok) throw new Error(result.message || 'Submission failed');
+
+
+       const banner = document.getElementById('successBanner');
+       banner.classList.add('visible');
+
+
+       const bannerTitle = banner.querySelector('strong');
+       if (bannerTitle) bannerTitle.textContent = 'Submission received. Thank you! ID: 100' + result.id;
+
+
+       document.querySelector('.form-card').style.display = 'none';
+       banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+
+     } catch (err) {
+       alert('Error: ' + err.message);
+     } finally {
+       submitButton.disabled = false;
+       submitButton.innerHTML = originalHTML;
+     }
+   });
+ }
+
+
+ /*Submit another Resource*/
+ const submitAnotherBtn = document.getElementById('submitAnotherBtn');
+ if (submitAnotherBtn) {
+   submitAnotherBtn.addEventListener('click', function () {
+     document.getElementById('submitForm').reset();
+     document.getElementById('successBanner').classList.remove('visible');
+     document.querySelector('.form-card').style.display = 'block';
+     showStep(1);
+     window.scrollTo({ top: 0, behavior: 'smooth' });
+   });
+ }
+
+
+ /*Scroll reveeal*/
+ const revealEls = document.querySelectorAll('.reveal');
+ if ('IntersectionObserver' in window) {
+   const io = new IntersectionObserver(function (entries) {
+     entries.forEach(function (entry) {
+       if (entry.isIntersecting) {
+         entry.target.classList.add('visible');
+         io.unobserve(entry.target);
+       }
+     });
+   }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+   revealEls.forEach(function (el) { io.observe(el); });
+ } else {
+   revealEls.forEach(function (el) { el.classList.add('visible'); });
+ }
+
+
+ /*FAQ Accordian*/
+ const faqItems = document.querySelectorAll('.faq-item');
+ faqItems.forEach(function (item) {
+   const btn    = item.querySelector('.faq-q');
+   const answer = item.querySelector('.faq-a');
+   if (!btn || !answer) return;
+
+
+   btn.addEventListener('click', function () {
+     const isOpen = btn.getAttribute('aria-expanded') === 'true';
+     faqItems.forEach(function (other) {
+       if (other === item) return;
+       const ob = other.querySelector('.faq-q');
+       const oa = other.querySelector('.faq-a');
+       if (ob) ob.setAttribute('aria-expanded', 'false');
+       if (oa) { oa.classList.remove('open'); oa.hidden = true; }
+     });
+     const nowOpen = !isOpen;
+     btn.setAttribute('aria-expanded', String(nowOpen));
+     if (nowOpen) {
+       answer.hidden = false;
+       requestAnimationFrame(function () {
+         requestAnimationFrame(function () { answer.classList.add('open'); });
+       });
+     } else {
+       answer.classList.remove('open');
+       answer.addEventListener('transitionend', function () {
+         if (!answer.classList.contains('open')) answer.hidden = true;
+       }, { once: true });
+     }
+   });
+ });
+
+
+
+
+ /*Ask a question form*/
+ const askForm    = document.getElementById('askForm');
+ const askSuccess = document.getElementById('askSuccess');
+ if (askForm && askSuccess) {
+   askForm.addEventListener('submit', function (e) {
+     e.preventDefault();
+     const emailInput    = askForm.querySelector('#askEmail');
+     const questionInput = askForm.querySelector('#askQuestion');
+     if (!emailInput.value.trim() || !questionInput.value.trim()) {
+       emailInput.reportValidity();
+       questionInput.reportValidity();
+       return;
+     }
+     const btn = askForm.querySelector('button[type="submit"]');
+     btn.disabled    = true;
+     btn.textContent = 'Sending…';
+     setTimeout(function () {
+       askForm.style.display = 'none';
+       askSuccess.hidden     = false;
+     }, 800);
+   });
+ }
+
+
+ /* ── Init ── */
+ showStep(1);
+
+
+});
+

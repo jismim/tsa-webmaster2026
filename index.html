@@ -17,21 +17,31 @@
 <link
   rel="stylesheet"
   href="https://unpkg.com/leaflet/dist/leaflet.css"
-/>
+/><link rel="stylesheet" href="css/bookmarks.css" />
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="images/logo.png"/>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <body>
-
-  <!-- Skip link -->
-  <a class="skip-link" href="#main">Skip to main content</a>
-
-  <!-- ==================== MOBILE MENU ==================== -->
-  <!--
-    SECTION: Mobile Menu
-    Controls: js/main.js → openMobileMenu() / closeMobileMenu()
-    Styling:  css/style.css → .mobile-menu, .mobile-menu.open
-    To add links: add <a href="..."> inside this nav
-  -->
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+  <div id="loader">
+    <<div class="load-icon">
+      <img src="images/logo.png" alt="CareMap Morris logo" class="loader-logo">
+        </div>
+    <div class="load-title">CareMap Morris</div>
+    <div class="load-sub">Finding resources near you</div>
+    <div class="load-bar-track">
+      <div class="load-bar-fill"></div>
+    </div>
+    <div class="load-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  <div id="page-wrap">
+  
+  
+    <a class = "skip-link" href = "#main">Skip to main content</a>
+    <!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
     <div class="mobile-menu-head">
       <div class="mobile-menu-brand">
         <img src="images/logo.png" alt="CareMap Morris logo" class="mobile-brand-logo">
@@ -39,24 +49,21 @@
       </div>
       <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
     </div>
-    
+    <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="directory.html">Directory</a>
-    <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-    <a href="submit.html">Submit a Resource</a>
+    <a href="donate-volunteer.html">Give Back</a>
+    <a href="submit.html">Contact Us</a>
     <a href="highlights.html">Highlights</a>
     <a href="works-cited.html">Works Cited</a>
     <a href="/admin/login.html">Admin</a>
+    <a href="bookmarks.html" class="nav-saved-link">
+  ♥ Saved
+  <span class="bookmark-count" style="display:none;">0</span>
+  </a>
   </nav>
 
-  <!-- ==================== HEADER ==================== -->
-  <!--
-    SECTION: Header / Navigation Bar
-    FIX: Nav links now use class="nav" which is explicitly styled
-         with color: rgba(247,242,234,.8) — visible on dark background.
-    To change nav link color: css/style.css → .nav a { color: ... }
-    To add nav links: add <a href="..."> inside .nav
-  -->
+<!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
@@ -65,13 +72,32 @@
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
         <a href="about.html">About</a>
-        <a href="directory.html">Directory</a>
-        <a href="donate-volunteer.html">Donate &amp; Volunteer</a>
-        <a href="submit.html">Submit a Resource</a>
-        <a href="highlights.html">Highlights</a>
+
+        <!-- Resources Dropdown — SVG arrow (cross-platform safe) -->
+        <div class="nav-dropdown">
+          <button class="dropdown-toggle" aria-expanded="false">
+            Resources
+            <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="directory.html">Directory</a>
+            <a href="donate-volunteer.html">Give Back</a>
+            <a href="highlights.html">Highlights</a>
+          </div>
+        </div>
+
+        <a href="submit.html">Contact Us</a>
         <a href="works-cited.html">Works Cited</a>
+
         <a href="/admin/login.html">Admin</a>
+        <a href="bookmarks.html" class="nav-saved-link">
+          ♥ Saved
+          <span class="bookmark-count" style="display:none;">0</span>
+        </a>  
       </nav>
 
       <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
@@ -288,8 +314,7 @@
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-food">Food Pantry</span>
-              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
-            </div>
+              <button class="card-bookmark" data-id="1" aria-label="Save this organization" title="Save for later">♡</button>            </div>
             <div class="card-body">
               <h3 class="card-title">Community Food Bank of Morris County</h3>
               <p class="card-meta">Supports food-insecure residents and families</p>
@@ -313,7 +338,7 @@
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-shelter">Women's Shelter</span>
-              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
+              <button class="card-bookmark" data-id="14" aria-label="Save this organization" title="Save for later">♡</button>
             </div>
             <div class="card-body">
               <h3 class="card-title">Domestic Violence Program of Morris County</h3>
@@ -330,7 +355,7 @@
             </div>
             <div class="card-actions">
               <a class="btn btn-secondary" href="directory.html#dv-program">View Details</a>
-              <a class="btn btn-ghost" href="directory.html?filter=volunteer">Volunteer</a>
+              <a class="btn btn-ghost" href="donate-volunteer.html">Donate / Volunteer</a>
             </div>
           </article>
 
@@ -338,8 +363,7 @@
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-housing">Housing Services</span>
-              <button class="card-bookmark" aria-label="Save this organization" title="Save for later">♡</button>
-            </div>
+              <button class="card-bookmark" data-id="17" aria-label="Save this organization" title="Save for later">♡</button>            </div>
             <div class="card-body">
               <h3 class="card-title">Morris County Homeless Solutions</h3>
               <p class="card-meta">Supports individuals and families facing homelessness</p>
@@ -355,7 +379,7 @@
             </div>
             <div class="card-actions">
               <a class="btn btn-secondary" href="directory.html#homeless-solutions">View Details</a>
-              <a class="btn btn-ghost" href="submit.html">Add Resource</a>
+              <a class="btn btn-ghost" href="donate-volunteer.html">Donate / Volunteer</a>
             </div>
           </article>
 
@@ -402,21 +426,20 @@
         <p class="section-label reveal">Find Resources Near You</p>
         <h2 class="section-title reveal">Organizations Across<br>Morris County</h2>
         <p class="section-sub reveal">Browse nonprofit locations across the county. Click any pin for details, hours, and contact info.</p>
-
-       <div class="map-wrapper reveal">
-  <!-- Leaflet Map -->
-  <div id="map" style="width: 100%; height: 500px;"></div>
-
-  <!-- Legend -->
-  <div class="map-legend reveal">
-    <div class="map-legend-item"><span class="legend-dot.food"></span> Food & Nutrition</div>
-    <div class="map-legend-item"><span class="legend-dot.shelter"></span> Shelter & Safety</div>
-    <div class="map-legend-item"><span class="legend-dot.housing"></span> Housing Services</div>
-    <div class="map-legend-item"><span class="legend-dot.youth"></span> Youth Services</div>
-    <div class="map-legend-item"><span class="legend-dot.health"></span> Health Services</div>
+<div class="map-wrapper reveal">
+  <div id="map" style="width:100%; height:500px;"></div>
+  <div class="map-bar">
+    <p class="map-bar-hint">📍 Click any pin for details. Drag &amp; scroll to explore.</p>
+    <ul class="map-bar-dots">
+      <li><span class="legend-dot food"></span> Food</li>
+      <li><span class="legend-dot shelter"></span> Shelter</li>
+      <li><span class="legend-dot support"></span> Support</li>
+      <li><span class="legend-dot health"></span> Health</li>
+      <li><span class="legend-dot youth"></span> Youth</li>
+      <li><span class="legend-dot other"></span> Other</li>
+    </ul>
   </div>
 </div>
-      </div>
     </section>
 
     <!-- GIVE BACK -->
@@ -476,57 +499,54 @@
     To add a footer link: add an <li><a href="...">Label</a></li>
     Styling: css/style.css → .site-footer, .footer-grid, .footer-bottom
   -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-
-      <div>
-        <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-        <p class="footer-mission">
-          CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
-        </p>
-      </div>
-
-      <div>
-        <p class="footer-col-title">Navigation</p>
-        <ul class="footer-links">
-          <li><a href="about.html">About</a></li>
-          <li><a href="directory.html">Directory</a></li>
-          <li><a href="donate-volunteer.html">Donate &amp; Volunteer</a></li>
-          <li><a href="submit.html">Submit a Resource</a></li>
-          <li><a href="highlights.html">Highlights</a></li>
-          <li><a href="works-cited.html">Works Cited</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <p class="footer-col-title">Contact &amp; Info</p>
-        <ul class="footer-links">
-          <!-- FIX: Update this email when you have a real address -->
-          <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
-          <li><a href="submit.html">Submit a Resource</a></li>
-          <!-- FIX: Only include admin link if the admin page exists -->
-          <!-- <li><a href="admin/">Admin Login</a></li> -->
-        </ul>
-        <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
-          Morris County, New Jersey<br>
-          Crisis line: <strong style="color:rgba(247,242,234,.5)">988</strong> &nbsp;|&nbsp; Emergency: <strong style="color:rgba(247,242,234,.5)">911</strong>
-        </p>
-      </div>
-
-    </div>
-
-    <div class="container footer-bottom">
-      <p class="footer-disclaimer">
-        <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information is gathered from public sources and may not reflect current availability or hours. Always confirm details directly with the organization before visiting.
-        <strong>This is not an emergency platform.</strong> If you are in immediate danger, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
-        Information last reviewed: March 2026 <span id="footerDate"></span>.
+ <footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+      <p class="footer-mission">
+        CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
       </p>
-      <p class="footer-date" id="footerYear"></p>
     </div>
-  </footer>
+    <div>
+      <p class="footer-col-title">Navigation</p>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="donate-volunteer.html">Give Back</a></li>
+        <li><a href="highlights.html">Highlights</a></li>
+        <li><a href="works-cited.html">Works Cited</a></li>
+        <li><a href="bookmarks.html">♥ Saved Resources</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Contact &amp; Info</p>
+      <ul class="footer-links">
+        <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+        <li><a href="submit.html">Submit a Resource</a></li>
+      </ul>
+      <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+        Morris County, New Jersey<br>
+        Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
+      </p>
+      <!-- Admin button moved here -->
+      <p class="admin-label" style="margin-top:1rem; font-size: .8rem ; color: rgba(247,242,234,.4); font-weight:500">Administrator</p>
+      <a href="/admin/login.html" class="admin-link">Admin Login</a>
+    </div>
+  </div>
 
+  <div class="container footer-bottom">
+    <p class="footer-disclaimer">
+      <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
+      <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+    </p>
+    <p class="footer-date" id="footerYear"></p>
+  </div>
+</footer>
+  </div>
   <!-- JavaScript -->
-  <script src="js/script.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/bookmarks.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
