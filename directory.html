@@ -50,7 +50,7 @@
   </style>
 </head>
 <body>
-  <!-- LOADER -->
+  <!-- ═══ LOADER ═══ -->
   <div id="loader">
     <div class="load-icon">
       <img src="images/logo.png" alt="CareMap Morris logo" class="loader-logo">
@@ -68,7 +68,7 @@
   <div id="page-wrap">
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- MOBILE MENU -->
+    <!-- ═══ MOBILE MENU ═══ -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
       <div class="mobile-menu-head">
         <div class="mobile-menu-brand">
@@ -90,7 +90,7 @@
       </a>
     </nav>
 
-    <!-- HEADER -->
+    <!-- ═══ HEADER ═══ -->
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
@@ -102,7 +102,7 @@
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
 
-          <!-- Resources Dropdown — SVG arrow (cross-platform safe) -->
+          <!-- ── Resources Dropdown ── -->
           <div class="nav-dropdown">
             <button class="dropdown-toggle" aria-expanded="false">
               Resources
@@ -133,11 +133,11 @@
 
     <main id="main">
 
-      <!-- PAGE HERO -->
+      <!-- ═══ PAGE HERO ═══ -->
       <section class="dir-hero" aria-label="Directory introduction">
         <div class="container dir-hero-inner">
 
-          <!-- LEFT SIDE -->
+          <!-- ── Left side ── -->
           <div class="dir-hero-copy reveal-hero">
             <p class="hero-eyebrow">Explore Resources</p>
             <h1>
@@ -148,14 +148,14 @@
               Browse trusted nonprofits, shelters, food resources, counseling,
               and community support services across your area.
             </p>
-            <!-- View All shortcut -->
+            <!-- ── View All shortcut ── -->
             <div style="margin-top:1.5rem; display:flex; gap:.75rem; flex-wrap:wrap;">
               <a class="btn btn-primary" href="#resourceGrid">Browse All Resources →</a>
               <a class="btn btn-sage" href="donate-volunteer.html">Give Back →</a>
             </div>
           </div>
 
-          <!-- RIGHT PANEL -->
+          <!-- ── Right panel ── -->
           <div class="dir-hero-panel reveal-hero delay-2" aria-hidden="true">
             <div class="dir-preview">
               <span class="label">Food &amp; Essentials</span>
@@ -177,11 +177,11 @@
         </div>
       </section>
 
-      <!-- RESOURCE CARDS GRID -->
+      <!-- ═══ RESOURCE CARDS GRID ═══ -->
       <section class="dir-section" aria-label="Community resources">
         <div class="container">
 
-          <!-- FILTER BAR -->
+          <!-- ── Filter bar ── -->
           <div class="dir-controls reveal" aria-label="Directory filters">
 
             <div class="dir-search-wrap">
@@ -212,10 +212,10 @@
             <p class="dir-results-count" id="resultsCount"></p>
           </div>
 
-          <!-- CARDS GRID — cards get .reveal class added by directory.js -->
+          <!-- ── Cards grid ── -->
           <div class="resource-grid" id="resourceGrid" aria-label="Resource listings"></div>
 
-          <!-- VIEW ALL / LOAD MORE note -->
+          <!-- ── View all ── -->
           <div class="dir-view-all reveal" style="text-align:center; margin-top:2.5rem;">
             <p style="font-size:.85rem; color:var(--warm-gray); margin-bottom:.75rem;">
               Showing all <strong id="totalCount"></strong> resources in Morris County.
@@ -228,13 +228,13 @@
 
     </main>
 
-    <!-- DETAIL MODAL -->
+    <!-- ═══ DETAIL MODAL ═══ -->
     <div class="detail-backdrop" id="detailBackdrop" hidden aria-hidden="true"></div>
     <div class="detail-modal-wrap" id="detailModalWrap" hidden role="dialog" aria-modal="true" aria-labelledby="detailTitle">
       <div class="detail-card" id="detailCard"></div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- ═══ FOOTER ═══ -->
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
@@ -264,7 +264,7 @@
         Morris County, New Jersey<br>
         Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
       </p>
-      <!-- Admin button moved here -->
+      <!-- ── Admin ── -->
       <p class="admin-label" style="margin-top:1rem; font-size: .8rem ; color: rgba(247,242,234,.4); font-weight:500">Administrator</p>
       <a href="/admin/login.html" class="admin-link">Admin Login</a>
     </div>
@@ -280,7 +280,7 @@
 </footer>
   </div>
 
-  <!-- SCRIPTS — order matters -->
+  <!-- ── Scripts ── -->
   <script src="js/resources.js"></script>
   <script src="js/bookmarks.js"></script>
   <script src="js/directory.js"></script>

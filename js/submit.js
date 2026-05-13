@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
  const stepDots    = document.querySelectorAll('.step-dot');
 
 
- /* Show step */
+ /* ── Show step ── */
  function showStep(n) {
    steps.forEach(function (s, i) {
      s.classList.toggle('active-step', i + 1 === n);
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /* Perstep validation */
+ /* ── Per-step validation ── */
  function validateStep(n) {
    const stepEl = document.querySelector('.form-step[data-step="' + n + '"]');
    if (!stepEl) return true;
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
-/* Back Buttons */
+ /* ── Step navigation ── */
  document.querySelectorAll('.btn-next').forEach(function (btn) {
    btn.addEventListener('click', function () {
      if (validateStep(currentStep)) {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
  });
 
 
- /* form submit*/
+ /* ── Form submit ── */
  if (form) {
    form.addEventListener('submit', async function (e) {
      e.preventDefault();
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /*Submit another Resource*/
+ /* ── Submit another ── */
  const submitAnotherBtn = document.getElementById('submitAnotherBtn');
  if (submitAnotherBtn) {
    submitAnotherBtn.addEventListener('click', function () {
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /*Scroll reveeal*/
+ /* ── Scroll reveal ── */
  const revealEls = document.querySelectorAll('.reveal');
  if ('IntersectionObserver' in window) {
    const io = new IntersectionObserver(function (entries) {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /*FAQ Accordian*/
+ /* ── FAQ accordion ── */
  const faqItems = document.querySelectorAll('.faq-item');
  faqItems.forEach(function (item) {
    const btn    = item.querySelector('.faq-q');
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
- /*Ask a question form*/
+ /* ── Question form ── */
  const askForm    = document.getElementById('askForm');
  const askSuccess = document.getElementById('askSuccess');
  if (askForm && askSuccess) {
