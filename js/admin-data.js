@@ -1,6 +1,8 @@
 const RESOURCE_SUBMISSIONS_API = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/pending?root=resources';
 const VOLUNTEER_SUBMISSIONS_API = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/pending?root=volunteer';
 const QUESTIONS_API = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/pending?root=questions';
+const APPROVED_SUBMISSIONS_API_BASE = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/approved/formatted';
+const REJECTED_SUBMISSIONS_API_BASE = 'https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/rejected/formatted';
 
 async function fetchJson(path) {
   const response = await fetch(path, { cache: 'no-store' });
@@ -87,6 +89,14 @@ async function loadQuestions() {
   return unwrapS3Items(await fetchJson(QUESTIONS_API));
 }
 
+async function loadRejectedSubmissions(root) {
+  return unwrapS3Items(await fetchJson(`${REJECTED_SUBMISSIONS_API_BASE}?root=${encodeURIComponent(root)}`));
+}
+
+async function loadApprovedSubmissions(root) {
+  return unwrapS3Items(await fetchJson(`${APPROVED_SUBMISSIONS_API_BASE}?root=${encodeURIComponent(root)}`));
+}
+
 async function loadAdminData() {
   const [resourceSubmissions, volunteerSubmissions, questions] = await Promise.all([
     loadResourceSubmissions(),
@@ -109,5 +119,7 @@ window.CareMapAdminData = {
   loadResourceSubmissions,
   loadVolunteerSubmissions,
   loadQuestions,
+  loadRejectedSubmissions,
+  loadApprovedSubmissions,
   loadAdminData
 };

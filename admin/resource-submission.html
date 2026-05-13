@@ -56,7 +56,11 @@
               </select>
             </div>
           </div>
-          <a class="btn btn-secondary" href="/admin/dashboard.html">Back to dashboard</a>
+          <div style="display:flex; gap:.5rem; align-items:center;">
+            <button class="btn btn-secondary" type="button" data-show-approved>Show Approved</button>
+            <button class="btn btn-secondary" type="button" data-show-rejected>Show Rejected</button>
+            <a class="btn btn-secondary" href="/admin/dashboard.html">Back to dashboard</a>
+          </div>
         </div>
 
         <div id="resourceError" class="error-message" role="alert" aria-live="polite"></div>
