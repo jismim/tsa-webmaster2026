@@ -1,3 +1,7 @@
+/* ============================================================
+   CareMap Morris — First-time Popup Modal
+============================================================ */
+
 document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("firstTimeModal");
   const backdrop = document.getElementById("firstTimeBackdrop");
@@ -25,20 +29,16 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem(STORAGE_KEY, "true");
   }
 
-  // Check storage
   if (localStorage.getItem(STORAGE_KEY) !== "true") {
     openModal();
   }
 
-  // Use a single click listener for the modal area to catch the buttons
   modal.addEventListener("click", (e) => {
-    // If the "Got it" button or "X" button is clicked
     if (e.target === dismissBtn || e.target === dismissX || dismissX.contains(e.target)) {
       closeModal();
     }
   });
 
-  // Close when clicking the backdrop
   backdrop.addEventListener("click", closeModal);
 
   document.addEventListener("keydown", function (e) {

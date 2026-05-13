@@ -1,6 +1,5 @@
 /* ============================================================
    CareMap Morris — Directory JavaScript
-   Requires: resources.js and bookmarks.js loaded before this file
 ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {

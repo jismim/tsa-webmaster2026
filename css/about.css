@@ -64,7 +64,7 @@
   margin: 0 0 .75rem;
 }
 
-/* Italic rust — matches site-wide em style used in other page h1s */
+/* ── Italic rust ── */
 .page-hero h1 em {
   font-style: italic;
   color: var(--rust);
@@ -78,14 +78,14 @@
   line-height: 1.65;
 }
 
-/* Two CTA buttons side by side */
+/* ── Two CTA Buttons ── */
 .hero-cta-row {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-/* Sage / green button */
+/* ── Sage Button ── */
 .btn-sage {
   background: var(--sage);
   color: #fff;
@@ -175,7 +175,7 @@
   line-height: 1.7;
 }
 
-/* ── WHY GRID ── */
+/* ── Why Grid ── */
 .why-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -262,7 +262,7 @@
   line-height: 1.4;
 }
 
-/* ── VETTING STEPS ── */
+/* ── Vetting Steps ── */
 .steps {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -325,7 +325,7 @@
 .vetting-callout a { color: var(--sage); text-decoration: underline; text-underline-offset: 2px; }
 .vetting-callout a:hover { color: var(--rust); }
 
-/* ── COUNTY SECTION — body copy shared by both columns ── */
+/* ── County Section ── */
 .county-copy p {
   color: var(--warm-gray);
   margin: 0 0 14px;
@@ -369,7 +369,7 @@
   max-width: 100%;
 }
 
-/* Subtle diagonal texture overlay */
+/* ── Diagonal texture ── */
 .strengthen-inner::after {
   content: '';
   position: absolute; inset: 0;
@@ -410,7 +410,7 @@
   z-index: 1;
 }
 
-/* Buttons inside dark strengthen strip */
+/* ── Strengthen strip buttons ── */
 .strengthen-inner .btn-sage {
   background: var(--sage);
   color: #fff;
@@ -453,7 +453,7 @@
    ANIMATIONS
 ════════════════════════════════════════════════════════════ */
 
-/* Hero reveal — plays immediately on load */
+/* ── Hero reveal ── */
 .reveal-hero {
   opacity: 0;
   transform: translateY(24px);
@@ -479,7 +479,7 @@
 .delay-1 { transition-delay: .08s !important; }
 .delay-2 { transition-delay: .16s !important; }
 .delay-3 { transition-delay: .24s !important; }
-/* ── PHOTO STRIP ── */
+/* ── Photo Strip ── */
 .photo-strip {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -532,7 +532,7 @@
   text-align: right;
 }
 
-/* ── County section: text left, photo right ── */
+/* ── County Grid ── */
 .county-grid-3 {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
