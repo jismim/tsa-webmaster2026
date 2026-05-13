@@ -6,6 +6,14 @@
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
+  resourcesReady.then(function (resources) {
+    window.RESOURCES = Array.isArray(resources) ? resources : [];
+    initDirectory();
+  });
+
+  function initDirectory() {
+
   /* ── Category label + badge class map ── */
   var CAT = {
     "food":               { label: "Food & Nutrition",    cls: "badge-food" },
@@ -534,4 +542,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
   handleDeepLink();
 
+  }
 });

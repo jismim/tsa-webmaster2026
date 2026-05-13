@@ -435,6 +435,11 @@ input:focus, select:focus, textarea:focus {
   display: none;
 }
 .error-message.visible { display: block; }
+.error-message.success {
+  color: var(--success-text);
+  background: var(--success-bg);
+  border-color: rgba(74,103,65,.3);
+}
 .footer-note {
   margin-top: 1rem;
   color: var(--warm-gray);

@@ -12,7 +12,7 @@ const s3 = new S3Client({ region: process.env.AWS_REGION });
 const BUCKET_NAME = process.env.BUCKET_NAME;
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "*";
 
-const ROOTS = ["resources", "volunteer"];
+const ROOTS = ["resources", "volunteer", "questions"];
 
 function response(statusCode, body) {
   return {
@@ -77,6 +77,43 @@ async function getNextSubmissionId() {
   return Date.now().toString();
 }
 
+async function submitQuestion(body) {
+  const data = body.data || {};
+
+  if (!data.question || !String(data.question).trim()) {
+    return response(400, {
+      message: "data.question is required"
+    });
+  }
+
+  const id = `q-${await getNextSubmissionId()}`;
+  const now = new Date().toISOString();
+  const key = buildKey("questions", "PENDING", id);
+
+  const payload = {
+    id,
+    name: data.name || "",
+    email: data.email || "",
+    question: String(data.question).trim(),
+    submissionDate: now,
+    status: "New",
+    adminResponse: data.adminResponse || ""
+  };
+
+  await s3.send(new PutObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: key,
+    Body: JSON.stringify(payload, null, 2),
+    ContentType: "application/json"
+  }));
+
+  return response(201, {
+    message: "Question stored in PENDING",
+    id,
+    writtenKeys: [key]
+  });
+}
+
 async function submitSubmission(body) {
   const rootFolders = normalizeRoots(body.rootFolders);
   const data = body.data || {};
@@ -84,7 +121,17 @@ async function submitSubmission(body) {
 
   if (!rootFolders.length) {
     return response(400, {
-      message: "rootFolders must contain resources, volunteer, or both"
+      message: "rootFolders must contain resources, volunteer, questions, or both"
+    });
+  }
+
+  if (rootFolders.length === 1 && rootFolders[0] === "questions") {
+    return submitQuestion(body);
+  }
+
+  if (rootFolders.includes("questions")) {
+    return response(400, {
+      message: "Question submissions must use only the questions root"
     });
   }
 
@@ -142,7 +189,7 @@ async function approveSubmission(body) {
 
   if (!rootFolders.length) {
     return response(400, {
-      message: "rootFolders must contain resources, volunteer, or both"
+      message: "rootFolders must contain resources, volunteer, questions, or both"
     });
   }
 
@@ -209,7 +256,7 @@ async function getApproved(rootParam) {
 
   if (!roots.length) {
     return response(400, {
-      message: "root query param must be resources, volunteer, or both"
+      message: "root query param must be resources, volunteer, questions, or both"
     });
   }
 
@@ -300,7 +347,7 @@ async function getPending(rootParam) {
 
   if (!roots.length) {
     return response(400, {
-      message: "root query param must be resources, volunteer, or both"
+      message: "root query param must be resources, volunteer, questions, or both"
     });
   }
 
