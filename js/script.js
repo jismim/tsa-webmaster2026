@@ -225,6 +225,63 @@ if (cmStatCells.length) {
     });
   }
 }
+
+/* ----------------------------------------------------------
+   5b. HOMEPAGE STATS COUNTERS
+   Matches index.html .count-num[data-target] stat markup.
+---------------------------------------------------------- */
+function animateStatNumber(el, target, duration) {
+  const start = performance.now();
+
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+
+    el.textContent = Math.round(eased * target);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      el.textContent = target;
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+const statCounters = document.querySelectorAll('.count-num[data-target]');
+
+if (statCounters.length) {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    statCounters.forEach(function (counter) {
+      counter.textContent = counter.dataset.target || '0';
+    });
+  } else {
+    const statObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        const counter = entry.target;
+        if (counter.dataset.played === 'true') return;
+
+        const target = parseInt(counter.dataset.target, 10);
+        if (!isNaN(target)) {
+          animateStatNumber(counter, target, 1200);
+        }
+
+        counter.dataset.played = 'true';
+        statObserver.unobserve(counter);
+      });
+    }, { threshold: 0.35 });
+
+    statCounters.forEach(function (counter) {
+      statObserver.observe(counter);
+    });
+  }
+}
  
  
   /* ----------------------------------------------------------
