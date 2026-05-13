@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
  
     function renderBookmarks() {
-      const savedIds = CareMapBookmarks.getAll();
+      const savedIds = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED);
       grid.innerHTML = '';
  
       if (savedIds.length === 0) {
