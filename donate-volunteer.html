@@ -125,7 +125,16 @@
     <div class="container dv-layout">
       <aside class="filter-sidebar" aria-label="Filter opportunities">
         <h2 class="filter-sidebar-title">Filter Opportunities</h2>
-
+<div class="filter-group">
+  <label class="group-label" for="filter-search">Search Resources</label>
+  <input
+    type="search"
+    id="filter-search"
+    placeholder='Try: "food pantry", "shelter", "counseling"...'
+    autocomplete="off"
+  />
+</div>
+<div class="filter-divider"></div>
         <div class="filter-group">
           <label class="group-label" for="filter-age">Age Group</label>
           <select id="filter-age">
@@ -138,7 +147,7 @@
         </div>
 
      <div class="filter-group">
-  <label class="group-label" for="filter-location">Town / Area</label>
+  <label class="group-label" for="filter-location">Town</label>
   <select id="filter-location">
     <option value="">Any location</option>
     <option value="boonton">Boonton</option>
