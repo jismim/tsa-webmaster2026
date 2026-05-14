@@ -815,7 +815,6 @@ fieldset { border: none; padding: 0; margin: 0; }
 }
 
 
-/* When there's only a Next button (first step), push it right */
 .step-nav.step-nav-start {
  justify-content: flex-end;
 }

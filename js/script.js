@@ -4,18 +4,6 @@
             mobile menu, bookmark toggle, footer dates, map
 ============================================================ */
 
-/*
-  LOADER — runs immediately on script parse, NOT inside DOMContentLoaded.
-  Script sits at bottom of <body> so DOM nodes already exist when this runs.
-
-  FIX: The white flash was caused by two things:
-    1. This loader IIFE was inside DOMContentLoaded (fires too late — browser
-       already painted the white body before the event fires).
-    2. A duplicate loader block in the inline <script> in index.html was
-       running a second time, resetting page-wrap to opacity:0 again after
-       the first loader already finished — causing a second white flash.
-  Both are now fixed: one loader, running here before any event listener.
-*/
 (function () {
   const loader = document.getElementById('loader');
   const page   = document.getElementById('page-wrap');
@@ -35,25 +23,33 @@
       loader.classList.add('hide');
       if (page) page.style.opacity = '1';
       document.body.classList.remove('loading');
-      setTimeout(function () { loader.style.display = 'none'; }, 600);
+      setTimeout(function () {
+        loader.style.display = 'none';
+        window.__cmLoaderDone = true;
+      }, 600);
     }, 2400);
   }
 })();
 
+/* Pages without a loader (no #loader element) still need __cmLoaderDone set
+   so the tour can fire. Set it immediately since there's nothing to wait for. */
+if (!document.getElementById('loader')) {
+  window.__cmLoaderDone = true;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ----------------------------------------------------------
-     1. WALKTHROUGH MODAL → now a collapsible help panel
-        - Auto-starts the tour on first visit
-        - Modal content lives inside a bottom-right help button
-        - Tour starts automatically; modal becomes help reference
+     1. WELCOME MODAL
+     - NEVER auto-shows on page load
+     - Only opens when the help button is clicked
+     - Dismiss closes it and saves to sessionStorage
   ---------------------------------------------------------- */
   const backdrop   = document.getElementById('modalBackdrop');
   const modalWrap  = document.getElementById('modalWrap');
   const dismissX   = document.getElementById('dismissX');
   const dismissBtn = document.getElementById('dismissBtn');
 
-  // These are now used by the help panel expand/collapse, not auto-show
   function openModal() {
     if (!backdrop || !modalWrap) return;
     backdrop.hidden  = false;
@@ -71,45 +67,45 @@ document.addEventListener('DOMContentLoaded', function () {
     sessionStorage.setItem('cm_welcomed', '1');
   }
 
+  /* Modal is NEVER auto-shown — only opened via help button */
   if (dismissX)   dismissX.addEventListener('click', closeModal);
   if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
   if (backdrop)   backdrop.addEventListener('click', closeModal);
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-  closeModal();
-  if (typeof closeMobileMenu === 'function') closeMobileMenu();
-    }
-  });
-
-  // Auto-start the tour on first visit (replaces the old modal auto-show)
-const TOUR_KEY = 'cm_tour_seen';
-
-if (!sessionStorage.getItem(TOUR_KEY)) {
-  setTimeout(function () {
-    if (window.CareMapTour && typeof window.CareMapTour.start === 'function') {
-      window.CareMapTour.start();
-      sessionStorage.setItem(TOUR_KEY, '1');
-    }
-  }, 900);
-}
-
-  // Wire the "Browse Directory" button in the modal to also close it
-  const browseBtn = modalWrap ? modalWrap.querySelector('a[href="directory.html"]') : null;
-  if (browseBtn) {
-    browseBtn.addEventListener('click', closeModal);
-  }
-
-  // Expose openModal so the help button in tour.js can call it
+  /* Expose openModal globally so tour.js help button can call it */
   window.CareMapHelp = { open: openModal };
 
- 
   /* ----------------------------------------------------------
-     2. SEARCH — redirect to directory with query param
+     2. TOUR — runs on first visit after loader finishes
+        The tour is the only thing that auto-starts.
+        The modal (splash) is only accessible via help button.
+  ---------------------------------------------------------- */
+  const TOUR_KEY = 'cm_tour_seen';
+
+  function tryStartTour() {
+    if (sessionStorage.getItem(TOUR_KEY)) return;
+    if (!window.__cmLoaderDone) return;
+    if (!window.CareMapTour || typeof window.CareMapTour.start !== 'function') return;
+    window.CareMapTour.start();
+    sessionStorage.setItem(TOUR_KEY, '1');
+  }
+
+  tryStartTour();
+
+  const tourInterval = setInterval(function () {
+    if (sessionStorage.getItem(TOUR_KEY)) { clearInterval(tourInterval); return; }
+    if (window.__cmLoaderDone) { tryStartTour(); clearInterval(tourInterval); }
+  }, 200);
+
+  const browseBtn = modalWrap ? modalWrap.querySelector('a[href="directory.html"]') : null;
+  if (browseBtn) browseBtn.addEventListener('click', closeModal);
+
+  /* ----------------------------------------------------------
+     3. SEARCH
   ---------------------------------------------------------- */
   const searchInput = document.getElementById('heroSearch');
   const searchBtn   = document.getElementById('heroSearchBtn');
- 
+
   function doSearch() {
     if (!searchInput) return;
     const q = searchInput.value.trim();
@@ -119,44 +115,53 @@ if (!sessionStorage.getItem(TOUR_KEY)) {
       searchInput.focus();
     }
   }
- 
+
   if (searchBtn)   searchBtn.addEventListener('click', doSearch);
   if (searchInput) {
     searchInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') doSearch();
     });
   }
- 
- 
+
   /* ----------------------------------------------------------
-     3. DROPDOWN NAVIGATION
+     4. DESKTOP DROPDOWN
   ---------------------------------------------------------- */
   const toggle = document.querySelector('.dropdown-toggle');
   const menu   = document.querySelector('.dropdown-menu');
- 
+
   if (toggle && menu) {
-    toggle.addEventListener('click', function () {
-      const isOpen = menu.style.display === 'flex';
-      menu.style.display = isOpen ? 'none' : 'flex';
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const isOpen = menu.classList.contains('open');
+      menu.classList.toggle('open', !isOpen);
+      menu.style.display = isOpen ? '' : 'flex';
       toggle.setAttribute('aria-expanded', String(!isOpen));
     });
- 
+
     document.addEventListener('click', function (e) {
       if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-        menu.style.display = 'none';
+        menu.classList.remove('open');
+        menu.style.display = '';
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        menu.classList.remove('open');
+        menu.style.display = '';
         toggle.setAttribute('aria-expanded', 'false');
       }
     });
   }
- 
- 
+
   /* ----------------------------------------------------------
-     4. MOBILE MENU
+     5. MOBILE MENU
   ---------------------------------------------------------- */
   const mobileMenu      = document.getElementById('mobileMenu');
   const mobileNavBtn    = document.getElementById('mobileNavBtn');
   const mobileMenuClose = document.getElementById('mobileMenuClose');
- 
+
   function openMobileMenu() {
     if (!mobileMenu) return;
     mobileMenu.classList.add('open');
@@ -164,7 +169,7 @@ if (!sessionStorage.getItem(TOUR_KEY)) {
     if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   }
- 
+
   function closeMobileMenu() {
     if (!mobileMenu) return;
     mobileMenu.classList.remove('open');
@@ -172,157 +177,128 @@ if (!sessionStorage.getItem(TOUR_KEY)) {
     if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
- 
+
   if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
   if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
- 
+
   if (mobileMenu) {
-  mobileMenu.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function () {
-      setTimeout(closeMobileMenu, 50);
+    mobileMenu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setTimeout(closeMobileMenu, 50);
+      });
     });
-  });
-}
- 
- 
- /* ----------------------------------------------------------
-   5. EDITORIAL STAT CARDS
----------------------------------------------------------- */
-function animateCmStatNumber(el, target, duration) {
-  const start = performance.now();
-
-  function step(now) {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-
-    el.textContent = Math.round(eased * target);
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else {
-      el.textContent = target;
-    }
   }
 
-  requestAnimationFrame(step);
-}
+  /* ── Mobile submenu (Resources accordion) ── */
+  const mobileSubToggle = document.querySelector('.mobile-menu-dropdown-toggle');
+  if (mobileSubToggle) {
+    mobileSubToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      this.parentElement.classList.toggle('open');
+    });
+  }
 
-const cmStatCells = document.querySelectorAll('.cm-cell');
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeMobileMenu();
+      closeModal();
+    }
+  });
 
-if (cmStatCells.length) {
-  if ('IntersectionObserver' in window) {
-    const cmStatObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
+  /* ----------------------------------------------------------
+     6. EDITORIAL STAT CARDS
+  ---------------------------------------------------------- */
+  function animateCmStatNumber(el, target, duration) {
+    const start = performance.now();
+    function step(now) {
+      const elapsed  = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
 
-        const cell = entry.target;
-        if (cell.dataset.played === 'true') return;
-
+  const cmStatCells = document.querySelectorAll('.cm-cell');
+  if (cmStatCells.length) {
+    if ('IntersectionObserver' in window) {
+      const cmStatObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          const cell = entry.target;
+          if (cell.dataset.played === 'true') return;
+          const num = cell.querySelector('.cm-num');
+          const bar = cell.querySelector('.cm-bar-fill');
+          if (num) {
+            const target = parseInt(num.dataset.count, 10);
+            if (!isNaN(target)) animateCmStatNumber(num, target, 1400);
+          }
+          if (bar) {
+            const fill = parseInt(bar.dataset.fill, 10);
+            if (!isNaN(fill)) bar.style.width = fill + '%';
+          }
+          cell.dataset.played = 'true';
+          cmStatObserver.unobserve(cell);
+        });
+      }, { threshold: 0.35 });
+      cmStatCells.forEach(function (cell) { cmStatObserver.observe(cell); });
+    } else {
+      cmStatCells.forEach(function (cell) {
         const num = cell.querySelector('.cm-num');
         const bar = cell.querySelector('.cm-bar-fill');
-
-        if (num) {
-          const target = parseInt(num.dataset.count, 10);
-          if (!isNaN(target)) {
-            animateCmStatNumber(num, target, 1400);
-          }
-        }
-
-        if (bar) {
-          const fill = parseInt(bar.dataset.fill, 10);
-          if (!isNaN(fill)) {
-            bar.style.width = fill + '%';
-          }
-        }
-
-        cell.dataset.played = 'true';
-        cmStatObserver.unobserve(cell);
+        if (num) num.textContent = num.dataset.count || '0';
+        if (bar) bar.style.width = (bar.dataset.fill || 0) + '%';
       });
-    }, { threshold: 0.35 });
-
-    cmStatCells.forEach(function (cell) {
-      cmStatObserver.observe(cell);
-    });
-  } else {
-    cmStatCells.forEach(function (cell) {
-      const num = cell.querySelector('.cm-num');
-      const bar = cell.querySelector('.cm-bar-fill');
-
-      if (num) {
-        num.textContent = num.dataset.count || '0';
-      }
-
-      if (bar) {
-        bar.style.width = (bar.dataset.fill || 0) + '%';
-      }
-    });
-  }
-}
-
-/* ----------------------------------------------------------
-   5b. HOMEPAGE STATS COUNTERS
----------------------------------------------------------- */
-function animateStatNumber(el, target, duration) {
-  const start = performance.now();
-
-  function step(now) {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-
-    el.textContent = Math.round(eased * target);
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else {
-      el.textContent = target;
     }
   }
 
-  requestAnimationFrame(step);
-}
-
-const statCounters = document.querySelectorAll('.count-num[data-target]');
-
-if (statCounters.length) {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
-    statCounters.forEach(function (counter) {
-      counter.textContent = counter.dataset.target || '0';
-    });
-  } else {
-    const statObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-
-        const counter = entry.target;
-        if (counter.dataset.played === 'true') return;
-
-        const target = parseInt(counter.dataset.target, 10);
-        if (!isNaN(target)) {
-          animateStatNumber(counter, target, 1200);
-        }
-
-        counter.dataset.played = 'true';
-        statObserver.unobserve(counter);
-      });
-    }, { threshold: 0.35 });
-
-    statCounters.forEach(function (counter) {
-      statObserver.observe(counter);
-    });
-  }
-}
- 
- 
   /* ----------------------------------------------------------
-     6. SCROLL REVEAL
+     7. HOMEPAGE STATS COUNTERS
+  ---------------------------------------------------------- */
+  function animateStatNumber(el, target, duration) {
+    const start = performance.now();
+    function step(now) {
+      const elapsed  = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  const statCounters = document.querySelectorAll('.count-num[data-target]');
+  if (statCounters.length) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      statCounters.forEach(function (counter) {
+        counter.textContent = counter.dataset.target || '0';
+      });
+    } else {
+      const statObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          const counter = entry.target;
+          if (counter.dataset.played === 'true') return;
+          const target = parseInt(counter.dataset.target, 10);
+          if (!isNaN(target)) animateStatNumber(counter, target, 1200);
+          counter.dataset.played = 'true';
+          statObserver.unobserve(counter);
+        });
+      }, { threshold: 0.35 });
+      statCounters.forEach(function (counter) { statObserver.observe(counter); });
+    }
+  }
+
+  /* ----------------------------------------------------------
+     8. SCROLL REVEAL
   ---------------------------------------------------------- */
   const revealSelectors = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
   const reveals = document.querySelectorAll(revealSelectors);
- 
+
   if (reveals.length && 'IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -337,23 +313,21 @@ if (statCounters.length) {
         revealObserver.unobserve(el);
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
- 
     reveals.forEach(function (r) { revealObserver.observe(r); });
   } else {
     reveals.forEach(function (r) { r.classList.add('visible'); });
   }
- 
- 
+
   /* ----------------------------------------------------------
-     7. LEAFLET MAP
+     9. LEAFLET MAP
   ---------------------------------------------------------- */
   if (document.getElementById('map')) {
     const map = L.map('map').setView([40.8925, -74.4788], 11.25);
- 
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
- 
+
     const organizations = [
       { id: 1,  name: "Interfaith Food Pantry",             coords: [40.831599473789744, -74.4967387711644], category: "food" },
       { id: 2,  name: "Boonton Food Pantry",                coords: [40.9019471, -74.4068955],              category: "food" },
@@ -410,7 +384,7 @@ if (statCounters.length) {
       { id: 56, name: "Morris County Aftercare",            coords: [40.883856359774995, -74.47998177125463], category: "other" },
       { id: 57, name: "New Chapter Recovery of NJ",         coords: [40.86789924704041, -74.41438284241306], category: "other" },
     ];
- 
+
     const iconMap = {
       food:    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
       shelter: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
@@ -419,7 +393,7 @@ if (statCounters.length) {
       youth:   'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
       other:   'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
     };
- 
+
     organizations.forEach(function (org) {
       const icon = L.icon({
         iconUrl:    iconMap[org.category] || iconMap.other,
@@ -428,7 +402,7 @@ if (statCounters.length) {
         popupAnchor:[1, -34],
         shadowUrl:  'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
       });
- 
+
       const popupHtml = `
         <div style="font-family:'DM Sans',sans-serif; min-width:160px;">
           <strong style="font-size:.95rem; display:block; margin-bottom:.4rem;">${org.name}</strong>
@@ -439,35 +413,32 @@ if (statCounters.length) {
             View Details →
           </a>
         </div>`;
- 
+
       L.marker(org.coords, { icon })
         .addTo(map)
         .bindPopup(popupHtml);
     });
   }
- 
- 
+
   /* ----------------------------------------------------------
-     8. BOOKMARKS — homepage featured cards
+     10. BOOKMARKS
   ---------------------------------------------------------- */
   if (typeof CareMapBookmarks !== 'undefined') {
     CareMapBookmarks.bindButtons();
     CareMapBookmarks.applyToPage();
- 
     document.querySelectorAll('.bookmark-count').forEach(function (el) {
       const c = CareMapBookmarks.count();
       el.textContent = c;
       el.style.display = c > 0 ? 'inline-flex' : 'none';
     });
   }
- 
- 
+
   /* ----------------------------------------------------------
-     9. FOOTER — auto-populate year
+     11. FOOTER YEAR
   ---------------------------------------------------------- */
   const footerYearEl = document.getElementById('footerYear');
   if (footerYearEl) {
     footerYearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
   }
- 
+
 });
