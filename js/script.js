@@ -3,30 +3,44 @@
    Handles: modal/walkthrough, search, counters, scroll reveal,
             mobile menu, bookmark toggle, footer dates, map
 ============================================================ */
- 
-document.addEventListener('DOMContentLoaded', function () {
+
+/*
+  LOADER — runs immediately on script parse, NOT inside DOMContentLoaded.
+  Script sits at bottom of <body> so DOM nodes already exist when this runs.
+
+  FIX: The white flash was caused by two things:
+    1. This loader IIFE was inside DOMContentLoaded (fires too late — browser
+       already painted the white body before the event fires).
+    2. A duplicate loader block in the inline <script> in index.html was
+       running a second time, resetting page-wrap to opacity:0 again after
+       the first loader already finished — causing a second white flash.
+  Both are now fixed: one loader, running here before any event listener.
+*/
 (function () {
   const loader = document.getElementById('loader');
-  const page = document.getElementById('page-wrap');
+  const page   = document.getElementById('page-wrap');
   if (!loader) return;
 
   const hasVisited = sessionStorage.getItem('cm_visited');
 
   if (hasVisited) {
     loader.style.display = 'none';
+    if (page) page.style.opacity = '1';
   } else {
     sessionStorage.setItem('cm_visited', 'true');
     document.body.classList.add('loading');
     if (page) page.style.opacity = '0';
 
-    setTimeout(() => {
+    setTimeout(function () {
       loader.classList.add('hide');
       if (page) page.style.opacity = '1';
       document.body.classList.remove('loading');
-      setTimeout(() => loader.style.display = 'none', 600);
+      setTimeout(function () { loader.style.display = 'none'; }, 600);
     }, 2400);
   }
 })();
+
+document.addEventListener('DOMContentLoaded', function () {
 
   /* ----------------------------------------------------------
      1. WALKTHROUGH MODAL → now a collapsible help panel
