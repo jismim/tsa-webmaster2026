@@ -320,7 +320,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .1em;
-  color: var(--rust);          /* was var(--warm-gray) */
+  color: var(--rust);         
   margin-bottom: .55rem;
 }
 

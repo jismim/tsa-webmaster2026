@@ -4,13 +4,7 @@
    Extends style.css design tokens
 ============================================================ */
  
-/* ── NAV DROPDOWN ARROW FIX ──────────────────────────────────
-   Replace the SVG path with a pure CSS triangle.
-   This ensures pixel-perfect rendering on Mac, Windows, Linux.
-   The SVG in the HTML still works — this just makes the
-   dropdown-toggle arrow reliable cross-platform.
-   No HTML changes needed; the SVG already rotates via CSS.
-   --------------------------------------------------------- */
+
 .dropdown-arrow {
   display: inline-block;
   width: 10px;
