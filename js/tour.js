@@ -17,7 +17,7 @@
       title: 'Search for Resources',
       desc: 'Type anything here — "food pantry," "shelter," "counseling" — and we\'ll take you straight to matching results in the Directory.',
       position: 'bottom',
-      scrollTo: '.hero-search',
+      scrollTo: '.hero',
       forceScroll: true,
     },
     {
