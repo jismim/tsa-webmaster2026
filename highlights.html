@@ -7,16 +7,22 @@
     <meta name="description" content="Weekly spotlights on Morris County nonprofits making a difference — food, housing, domestic violence support, and more." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- ── Styles ── -->
+
+    <!-- Site-wide styles -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Highlights page styles -->
     <link rel="stylesheet" href="css/highlights.css">
+
     <link rel="icon" type="image/png" href="images/logo.png"/>
     <script src="js/script.js" defer></script>
 </head>
+
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
-    <!-- ═══ MOBILE MENU ═══ -->
+
+<!-- MOBILE MENU -->
 <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
     <div class="mobile-menu-head">
       <div class="mobile-menu-brand">
@@ -25,6 +31,7 @@
       </div>
       <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">✕</button>
     </div>
+
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="directory.html">Directory</a>
@@ -34,141 +41,691 @@
     <a href="works-cited.html">Works Cited</a>
     <a href="/admin/login.html">Admin</a>
     <a href="bookmarks.html" class="nav-saved-link">
-  ♥ Saved
-  <span class="bookmark-count" style="display:none;">0</span>
-  </a>
-  </nav>
+      ♥ Saved
+      <span class="bookmark-count" style="display:none;">0</span>
+    </a>
+</nav>
 
-<!-- ═══ HEADER ═══ -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
-        <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
-        <span class="brand-text">CareMap Morris</span>
-      </a>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
+      <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
+      <span class="brand-text">CareMap Morris</span>
+    </a>
 
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
 
-        <!-- ── Resources Dropdown ── -->
-        <div class="nav-dropdown">
-          <button class="dropdown-toggle" aria-expanded="false">
-            Resources
-            <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="dropdown-menu">
-            <a href="directory.html">Directory</a>
-            <a href="donate-volunteer.html">Give Back</a>
-            <a href="highlights.html">Highlights</a>
-          </div>
+      <div class="nav-dropdown">
+        <button class="dropdown-toggle" aria-expanded="false">
+          Resources
+          <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <div class="dropdown-menu">
+          <a href="directory.html">Directory</a>
+          <a href="donate-volunteer.html">Give Back</a>
+          <a href="highlights.html">Highlights</a>
         </div>
+      </div>
 
-        <a href="submit.html">Contact Us</a>
-        <a href="works-cited.html">Works Cited</a>
+      <a href="submit.html">Contact Us</a>
+      <a href="works-cited.html">Works Cited</a>
+      <a href="/admin/login.html">Admin</a>
 
-        <a href="/admin/login.html">Admin</a>
-        <a href="bookmarks.html" class="nav-saved-link">
-          ♥ Saved
-          <span class="bookmark-count" style="display:none;">0</span>
-        </a>  
-      </nav>
+      <a href="bookmarks.html" class="nav-saved-link">
+        ♥ Saved
+        <span class="bookmark-count" style="display:none;">0</span>
+      </a>
+    </nav>
+
     <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">
       ☰ Menu
     </button>
   </div>
 </header>
-<!-- ═══ PAGE HERO ═══ -->
+
+<!-- PAGE HERO -->
 <section class="page-hero" aria-label="Community Highlights">
-    <div class="container page-hero-inner">
+  <div class="container page-hero-inner">
 
-        <!-- ── Hero copy ── -->
-        <div class="reveal-hero">
-            <p class="hero-eyebrow">Community Highlights</p>
-            <h1>Organizations Making a<br><em>Real Difference</em></h1>
-            <p class="subtitle">
-                Each week we spotlight a Morris County nonprofit — showcasing what they do,
-                who they serve, and how you can help. Click any card below to explore all organizations.
-            </p>
-        </div>
-
-        <!-- ── Featured card ── -->
-        <div class="featured-card reveal-hero delay-2" aria-label="Featured organization this week">
-            <p class="featured-card-eyebrow">Featured This Week — March 30</p>
-            <h2>Mount Olive Food Pantry</h2>
-            <p class="fc-focus">Community Hunger Relief · Mount Olive</p>
-            <div class="fc-divider"></div>
-            <p class="fc-label">What They Provide</p>
-            <ul>
-                <li>Groceries</li>
-                <li>Nutrition support</li>
-                <li>Food distribution</li>
-            </ul>
-            <div class="fc-divider"></div>
-            <p class="fc-label">How to Give Back</p>
-            <ul>
-                <li>Donate food or funds</li>
-            </ul>
-        </div>
+    <div class="reveal-hero">
+      <p class="hero-eyebrow">Community Highlights</p>
+      <h1>Organizations Making a<br><em>Real Difference</em></h1>
+      <p class="subtitle">
+        Each week we spotlight a Morris County nonprofit — showcasing what they do,
+        who they serve, and how you can help. Click any card below to explore all organizations.
+      </p>
     </div>
+
+    <div class="featured-card reveal-hero delay-2" aria-label="Featured organization this week">
+      <p class="featured-card-eyebrow">Featured This Week — March 30</p>
+      <h2>Mount Olive Food Pantry</h2>
+      <p class="fc-focus">Food Assistance · Budd Lake</p>
+
+      <div class="fc-divider"></div>
+
+      <p class="fc-label">What They Provide</p>
+      <ul>
+        <li>Free supplemental groceries</li>
+        <li>Household essentials</li>
+        <li>Regular food distributions</li>
+      </ul>
+
+      <div class="fc-divider"></div>
+
+      <p class="fc-label">How to Give Back</p>
+      <ul>
+        <li>Donate food or funds</li>
+        <li>Volunteer with pantry support</li>
+      </ul>
+    </div>
+
+  </div>
 </section>
 
-<!-- ═══ MAIN ═══ -->
-<main id="main">
-    <section class="highlights-section">
-        <div class="container">
-            <div class="section-header">
-            <div class="reveal">
-              <p class="section-label-row">All Organizations</p>
-              <h2 class="section-heading">Browse Every Weekly Highlight</h2>
-            </div>
-                <span class="section-hint">Click any card to expand</span>
-            </div>
-            <div class="highlights-grid" id="highlightsGrid"></div>
-        </div>
-    </section>
-</main>
+<!-- ═══════════════════════════════════════════════
+     MONTHLY CAROUSELS
+═══════════════════════════════════════════════ -->
+<section class="monthly-highlights-section">
+  <div class="container">
 
-<!-- ═══ MODAL ═══ -->
-<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalOrgName">
-    <div class="modal">
-        <div class="modal-head">
-            <div class="modal-head-left">
-                <span class="modal-week-label"  id="modalWeek"></span>
-                <div  class="modal-org-name"    id="modalOrgName"></div>
-                <div  class="modal-location-text" id="modalLocation"></div>
-                <span class="modal-focus-badge" id="modalFocus"></span>
+    <!-- ── MAY ── -->
+    <div class="month-block month-block--tan reveal">
+      <div class="month-header">
+        <span class="month-eyebrow">Monthly Roundup</span>
+        <h2 class="month-title">May Highlights</h2>
+      </div>
+
+      <div class="carousel" id="carouselMay">
+        <div class="carousel-track" id="trackMay">
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/may-1.jpg" alt="St. Peter's Food Pantry grocery support" loading="lazy">
+              <div class="slide-img-caption">Week of May 5</div>
             </div>
-            <button class="modal-close" id="modalClose" aria-label="Close">Close ✕</button>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Food Assistance · Parsippany</span>
+              <h3 class="slide-org">St. Peter's Food Pantry</h3>
+              <p class="slide-focus-badge">Food Pantry</p>
+              <p class="slide-body">
+                St. Peter's Food Pantry provides supplemental groceries and essential food items to local residents through scheduled weekday service by appointment.
+              </p>
+              <ul class="slide-list">
+                <li>Supplemental groceries</li>
+                <li>Monthly food support</li>
+                <li>Appointment-based assistance</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.foodhelpline.org/resources/st-peter-s-food-pantry" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/may-2.jpg" alt="Randolph Food Pantry support" loading="lazy">
+              <div class="slide-img-caption">Week of May 12</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Food Assistance · Randolph</span>
+              <h3 class="slide-org">Randolph Food Pantry</h3>
+              <p class="slide-focus-badge">Food Pantry</p>
+              <p class="slide-body">
+                Randolph Food Pantry provides supplemental groceries and essential support to township residents experiencing temporary or ongoing food insecurity.
+              </p>
+              <ul class="slide-list">
+                <li>Supplemental groceries</li>
+                <li>Essential supplies</li>
+                <li>Scheduled appointment support</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.randolphnj.org/175/Randolph-Food-Pantry" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
         </div>
 
-        <div class="modal-body">
-            <p class="modal-section-label">What They Provide</p>
-            <ul class="modal-list" id="modalProvides"></ul>
-            <p class="modal-section-label">How to Give Back</p>
-            <ul class="modal-list" id="modalGiveback"></ul>
-            <p class="modal-why" id="modalWhy"></p>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-prev" aria-label="Previous slide">&#8592;</button>
+          <div class="carousel-dots" id="dotsMay"></div>
+          <button class="carousel-btn carousel-next" aria-label="Next slide">&#8594;</button>
         </div>
-
-        <div class="modal-actions">
-            <a class="btn btn-primary" id="modalDonateBtn" href="donate-volunteer.html">Donate &amp; Volunteer</a>
-            <a class="btn btn-primary" href="directory.html">View in Resource Directory →</a>
-            <a class="btn btn-secondary" id="modalVisitBtn" href="#" target="_blank" rel="noopener noreferrer">Visit Website ↗</a>
-        </div>
+      </div>
     </div>
-</div>
+
+    <!-- ── APRIL ── -->
+    <div class="month-block month-block--brown reveal delay-1">
+      <div class="month-header">
+        <span class="month-eyebrow">Monthly Roundup</span>
+        <h2 class="month-title">April Highlights</h2>
+      </div>
+
+      <div class="carousel" id="carouselApril">
+        <div class="carousel-track" id="trackApril">
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/april-1.jpg" alt="Growing Stage children's theater" loading="lazy">
+              <div class="slide-img-caption">Week of April 7</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Youth &amp; Children · Netcong</span>
+              <h3 class="slide-org">Growing Stage</h3>
+              <p class="slide-focus-badge">Children's Theater</p>
+              <p class="slide-body">
+                Growing Stage is a professional children’s theater offering live performances, acting classes, workshops, and summer theater camps for kids and teens.
+              </p>
+              <ul class="slide-list">
+                <li>Live performances for children and families</li>
+                <li>Acting classes and workshops</li>
+                <li>Summer theater camps</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://growingstage.com/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/april-2.jpg" alt="Morris County Library ESL resources" loading="lazy">
+              <div class="slide-img-caption">Week of April 14</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Education &amp; ESL · Whippany</span>
+              <h3 class="slide-org">Morris County Library</h3>
+              <p class="slide-focus-badge">ESL Resources</p>
+              <p class="slide-body">
+                Morris County Library supports English language learners through ESL learning materials, study spaces, language tools, and local class information.
+              </p>
+              <ul class="slide-list">
+                <li>ESL class information</li>
+                <li>Language learning tools</li>
+                <li>Study rooms and learning materials</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.mclib.info/Research/Local-Resources/ESL-Classes" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/april-3.jpg" alt="Homeless Solutions housing support" loading="lazy">
+              <div class="slide-img-caption">Week of April 21</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Homeless Shelter · Cedar Knolls</span>
+              <h3 class="slide-org">Homeless Solutions Inc.</h3>
+              <p class="slide-focus-badge">Housing Support</p>
+              <p class="slide-body">
+                Homeless Solutions Inc. supports people who are homeless or at risk of homelessness through emergency shelter, transitional housing, affordable housing, and case management.
+              </p>
+              <ul class="slide-list">
+                <li>Emergency overnight shelter</li>
+                <li>Transitional housing programs</li>
+                <li>Case management and life-skills support</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://homelesssolutions.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/april-4.jpg" alt="ProBono Partnership nonprofit legal support" loading="lazy">
+              <div class="slide-img-caption">Week of April 28</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Legal Services · Parsippany</span>
+              <h3 class="slide-org">ProBono Partnership</h3>
+              <p class="slide-focus-badge">Nonprofit Legal Support</p>
+              <p class="slide-body">
+                ProBono Partnership connects eligible nonprofit organizations with volunteer attorneys who provide free legal help so community organizations can operate effectively.
+              </p>
+              <ul class="slide-list">
+                <li>Free legal services for nonprofits</li>
+                <li>Help with contracts and governance</li>
+                <li>Support for nonprofit compliance</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://probonopartner.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-prev" aria-label="Previous slide">&#8592;</button>
+          <div class="carousel-dots" id="dotsApril"></div>
+          <button class="carousel-btn carousel-next" aria-label="Next slide">&#8594;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MARCH ── -->
+    <div class="month-block month-block--tan reveal delay-2">
+      <div class="month-header">
+        <span class="month-eyebrow">Monthly Roundup</span>
+        <h2 class="month-title">March Highlights</h2>
+      </div>
+
+      <div class="carousel" id="carouselMarch">
+        <div class="carousel-track" id="trackMarch">
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/march-1.jpg" alt="Literacy Volunteers tutoring program" loading="lazy">
+              <div class="slide-img-caption">Week of March 3</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Education &amp; ESL · Morristown</span>
+              <h3 class="slide-org">Literacy Volunteers of Morris County</h3>
+              <p class="slide-focus-badge">Education &amp; ESL</p>
+              <p class="slide-body">
+                Literacy Volunteers connects adult learners with free tutoring to build English, reading, writing, GED, and citizenship skills.
+              </p>
+              <ul class="slide-list">
+                <li>Free ESL tutoring</li>
+                <li>GED preparation</li>
+                <li>Citizenship support</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.lvmorris.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/march-2.jpg" alt="Family Promise housing support" loading="lazy">
+              <div class="slide-img-caption">Week of March 10</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Homeless Shelter · Morristown</span>
+              <h3 class="slide-org">Family Promise of Morris County</h3>
+              <p class="slide-focus-badge">Housing Support</p>
+              <p class="slide-body">
+                Family Promise works to prevent and end homelessness by offering safe shelter, housing assistance, outreach, and case management.
+              </p>
+              <ul class="slide-list">
+                <li>Emergency shelter</li>
+                <li>Transitional housing</li>
+                <li>Outreach support</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.familypromisemorris.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/march-3.jpg" alt="CASA volunteer advocacy" loading="lazy">
+              <div class="slide-img-caption">Week of March 17</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Child Advocacy · Cedar Knolls</span>
+              <h3 class="slide-org">CASA of Morris &amp; Sussex Counties</h3>
+              <p class="slide-focus-badge">Child Advocacy</p>
+              <p class="slide-body">
+                CASA recruits and trains volunteers to support children in foster care and advocate for their safety, stability, and best interests.
+              </p>
+              <ul class="slide-list">
+                <li>Volunteer advocacy</li>
+                <li>Support for children in foster care</li>
+                <li>Family court recommendations</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.casamsc.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/march-4.jpg" alt="ArcMorris community program" loading="lazy">
+              <div class="slide-img-caption">Week of March 24</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Disability Services · Morris Plains</span>
+              <h3 class="slide-org">ArcMorris</h3>
+              <p class="slide-focus-badge">Disability Services</p>
+              <p class="slide-body">
+                ArcMorris helps individuals with intellectual and developmental disabilities build independence, life skills, employment skills, and community participation.
+              </p>
+              <ul class="slide-list">
+                <li>Residential programs</li>
+                <li>Employment training</li>
+                <li>Family support services</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://arcmorris.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/march-5.jpg" alt="Mount Olive Food Pantry grocery support" loading="lazy">
+              <div class="slide-img-caption">Week of March 31</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Food Assistance · Budd Lake</span>
+              <h3 class="slide-org">Mount Olive Food Pantry</h3>
+              <p class="slide-focus-badge">Community Food Pantry</p>
+              <p class="slide-body">
+                Mount Olive Food Pantry works to reduce hunger in the Budd Lake and Mount Olive area by offering free supplemental groceries and household essentials to individuals and families.
+              </p>
+              <ul class="slide-list">
+                <li>Free supplemental groceries</li>
+                <li>Household essentials</li>
+                <li>Regular weekday and weekend distributions</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://mountolivepantry.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-prev" aria-label="Previous slide">&#8592;</button>
+          <div class="carousel-dots" id="dotsMarch"></div>
+          <button class="carousel-btn carousel-next" aria-label="Next slide">&#8594;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FEBRUARY ── -->
+    <div class="month-block month-block--brown reveal delay-3">
+      <div class="month-header">
+        <span class="month-eyebrow">Monthly Roundup</span>
+        <h2 class="month-title">February Highlights</h2>
+      </div>
+
+      <div class="carousel" id="carouselFebruary">
+        <div class="carousel-track" id="trackFebruary">
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/february-1.jpg" alt="nourish NJ food support" loading="lazy">
+              <div class="slide-img-caption">Week of February 2</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Hunger Relief · Morristown &amp; Dover</span>
+              <h3 class="slide-org">Nourish.NJ</h3>
+              <p class="slide-focus-badge">Hunger Relief</p>
+              <p class="slide-body">
+                Nourish.NJ provides daily meals, fresh produce, food assistance, and support services for neighbors facing food insecurity.
+              </p>
+              <ul class="slide-list">
+                <li>Daily healthy meals</li>
+                <li>Farmers markets</li>
+                <li>SNAP/WIC assistance</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.nourishnj.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/february-2.jpg" alt="DAWN Center independent living support" loading="lazy">
+              <div class="slide-img-caption">Week of February 9</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Disability Services · Denville</span>
+              <h3 class="slide-org">DAWN Center for Independent Living</h3>
+              <p class="slide-focus-badge">Disability Services</p>
+              <p class="slide-body">
+                DAWN Center for Independent Living helps people with disabilities live independently through advocacy, life skills training, peer support, and employment services.
+              </p>
+              <ul class="slide-list">
+                <li>Advocacy and referrals</li>
+                <li>Peer support groups</li>
+                <li>Independent living skills</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://dawncil.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/february-3.jpg" alt="Morris Family Justice Center support" loading="lazy">
+              <div class="slide-img-caption">Week of February 16</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Domestic Violence Support · Morristown</span>
+              <h3 class="slide-org">Morris Family Justice Center</h3>
+              <p class="slide-focus-badge">Domestic Violence Support</p>
+              <p class="slide-body">
+                Morris Family Justice Center gives survivors access to coordinated support, legal help, counseling, safety planning, and protection services under one roof.
+              </p>
+              <ul class="slide-list">
+                <li>Walk-in coordinated support</li>
+                <li>Civil legal assistance</li>
+                <li>Safety planning</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://morrisfjc.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/february-4.jpg" alt="Faith Kitchen meal support" loading="lazy">
+              <div class="slide-img-caption">Week of February 23</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Soup Kitchen · Dover</span>
+              <h3 class="slide-org">Faith Kitchen</h3>
+              <p class="slide-focus-badge">Soup Kitchen</p>
+              <p class="slide-body">
+                Faith Kitchen is a community-supported soup kitchen in Dover serving free, nutritious meals six days a week in a welcoming space.
+              </p>
+              <ul class="slide-list">
+                <li>Free nutritious meals</li>
+                <li>Fresh produce</li>
+                <li>Service referrals</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.faithkitchendover.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-prev" aria-label="Previous slide">&#8592;</button>
+          <div class="carousel-dots" id="dotsFebruary"></div>
+          <button class="carousel-btn carousel-next" aria-label="Next slide">&#8594;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── JANUARY ── -->
+    <div class="month-block month-block--tan reveal delay-4">
+      <div class="month-header">
+        <span class="month-eyebrow">Monthly Roundup</span>
+        <h2 class="month-title">January Highlights</h2>
+      </div>
+
+      <div class="carousel" id="carouselJanuary">
+        <div class="carousel-track" id="trackJanuary">
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/january-1.jpg" alt="Interfaith Food Pantry support" loading="lazy">
+              <div class="slide-img-caption">Week of January 5</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Food Assistance · Morris Plains</span>
+              <h3 class="slide-org">Interfaith Food Pantry</h3>
+              <p class="slide-focus-badge">Food Assistance</p>
+              <p class="slide-body">
+                Interfaith Food Pantry provides emergency and supplemental groceries, fresh produce, nutrition support, and food access programs across Morris County.
+              </p>
+              <ul class="slide-list">
+                <li>Emergency groceries</li>
+                <li>Fresh produce</li>
+                <li>Nutrition support</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.mcifp.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/january-2.jpg" alt="JBWS support services" loading="lazy">
+              <div class="slide-img-caption">Week of January 12</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Domestic Violence Support · Morristown</span>
+              <h3 class="slide-org">Jersey Battered Women's Service</h3>
+              <p class="slide-focus-badge">Domestic Violence Support</p>
+              <p class="slide-body">
+                JBWS provides confidential services including a 24-hour crisis hotline, emergency shelter, court advocacy, counseling, and safety planning.
+              </p>
+              <ul class="slide-list">
+                <li>24/7 crisis hotline</li>
+                <li>Emergency shelter</li>
+                <li>Legal advocacy</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://jbws.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide">
+            <div class="slide-image">
+              <img src="images/january-3.jpg" alt="Market Street Mission shelter support" loading="lazy">
+              <div class="slide-img-caption">Week of January 19</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Homeless Services · Morristown</span>
+              <h3 class="slide-org">Market Street Mission</h3>
+              <p class="slide-focus-badge">Homeless Services</p>
+              <p class="slide-body">
+                Market Street Mission offers emergency housing, free meals, personal care services, recovery programs, and supportive services for people facing homelessness.
+              </p>
+              <ul class="slide-list">
+                <li>Overnight shelter</li>
+                <li>Free daily meals</li>
+                <li>Recovery programs</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://www.marketstreet.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide carousel-slide--reverse">
+            <div class="slide-image">
+              <img src="images/january-4.jpg" alt="Cornerstone Family Programs youth services" loading="lazy">
+              <div class="slide-img-caption">Week of January 26</div>
+            </div>
+
+            <div class="slide-content">
+              <span class="slide-eyebrow">Youth &amp; Family Services · Morristown</span>
+              <h3 class="slide-org">Cornerstone Family Programs</h3>
+              <p class="slide-focus-badge">Youth &amp; Family Services</p>
+              <p class="slide-body">
+                Cornerstone Family Programs supports children and teens through preschool, school-age care, teen enrichment, summer camps, and family-focused programs.
+              </p>
+              <ul class="slide-list">
+                <li>Preschool programs</li>
+                <li>Teen enrichment</li>
+                <li>Mentorship support</li>
+              </ul>
+              <div class="slide-actions">
+                <a href="directory.html" class="btn btn-primary btn-sm">View in Directory →</a>
+                <a href="https://cornerstonefamilyprograms.org/" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Visit Website ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-prev" aria-label="Previous slide">&#8592;</button>
+          <div class="carousel-dots" id="dotsJanuary"></div>
+          <button class="carousel-btn carousel-next" aria-label="Next slide">&#8594;</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MAIN -->
+<main id="main"></main>
 
 <!-- ═══ FOOTER ═══ -->
 <footer class="site-footer">
   <div class="container footer-grid">
+
     <div>
       <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
       <p class="footer-mission">
         CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
       </p>
     </div>
+
     <div>
       <p class="footer-col-title">Navigation</p>
       <ul class="footer-links">
@@ -180,20 +737,23 @@
         <li><a href="bookmarks.html">♥ Saved Resources</a></li>
       </ul>
     </div>
+
     <div>
       <p class="footer-col-title">Contact &amp; Info</p>
       <ul class="footer-links">
         <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
         <li><a href="submit.html">Submit a Resource</a></li>
       </ul>
+
       <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
         Morris County, New Jersey<br>
         Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
       </p>
-      <!-- ── Admin ── -->
-      <p class="admin-label" style="margin-top:1rem; font-size: .8rem ; color: rgba(247,242,234,.4); font-weight:500">Administrator</p>
+
+      <p class="admin-label" style="margin-top:1rem; font-size:.8rem; color:rgba(247,242,234,.4); font-weight:500">Administrator</p>
       <a href="/admin/login.html" class="admin-link">Admin Login</a>
     </div>
+
   </div>
 
   <div class="container footer-bottom">

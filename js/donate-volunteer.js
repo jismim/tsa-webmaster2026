@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  const MIN_GIVE_BACK_LOAD_MS = 2200;
+
   /* ── 1. Hero load-in (fires on page load, not scroll) ── */
   setTimeout(function () {
     document.querySelectorAll('.reveal-hero').forEach(function (el) {
@@ -249,8 +251,9 @@ document.addEventListener('DOMContentLoaded', function () {
   let activeTab      = 'all';
   let activeServices = [];
   let lastFocused    = null;
-  let currentPage    = 1;
-  const PAGE_SIZE    = 8;
+let currentPage    = 1;
+let viewAll        = false;
+const PAGE_SIZE    = 8;
 
   /* ── Nav badge helper ── */
   function updateDvBadge() {
@@ -324,12 +327,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Main render function ── */
   function render() {
+    cardsList.setAttribute('aria-busy', 'false');
+
     const age      = filterAge.value;
     const location = filterLocation.value.toLowerCase();
 
     const filtered = DATA.filter(item => {
       if (activeTab === 'donate'    && item.kind === 'volunteer') return false;
-if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
+      if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
       if (age      && !item.age.includes(age))                           return false;
       if (location && item.location.toLowerCase() !== location)          return false;
       if (activeServices.length && !activeServices.every(s => item.services.includes(s))) return false;
@@ -344,12 +349,10 @@ if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
         return aIsBoth - bIsBoth;
       });
     }
+const totalPages = viewAll ? 1 : Math.ceil(filtered.length / PAGE_SIZE);
+if (currentPage > totalPages) currentPage = 1;
 
-    const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-    if (currentPage > totalPages) currentPage = 1;
-
-    const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-
+const pageItems = viewAll ? filtered : filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
     cardsList.innerHTML = pageItems.map(item => {
       const townDisplay = item.location
         .split('-')
@@ -360,7 +363,7 @@ if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
       const heartChar  = isSaved ? '♥' : '♡';
       const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
- return `
+      return `
   <article class="dv-card" tabindex="0" role="button" aria-label="View details for ${item.title}" data-id="${item.id}">
     <div class="dv-card-topbar">
       <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
@@ -389,8 +392,13 @@ ${item.address ? `
     <span>${townDisplay}</span>
   </p>
 `}
-      ${item.phone   ? `<p class="card-phone">${item.phone}</p>`     : ''}
-
+${item.phone ? `
+  <p class="card-phone">
+    <svg class="card-phone-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" fill="currentColor"/>
+    </svg>
+    ${item.phone}
+  </p>` : ''}
       <div class="dv-card-bottom-row">
         <p class="card-desc">${item.desc}</p>
         <div class="dv-card-actions">
@@ -401,16 +409,13 @@ ${item.address ? `
   </article>
 `;
 
-
-
     }).join('');
 
     resultsCount.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
     noResults.hidden = filtered.length > 0;
     cardsList.hidden = filtered.length === 0;
 
-    renderPagination(filtered.length, totalPages);
-
+renderPagination(filtered.length, totalPages, filtered.length);
     /* ── Bind bookmark hearts on cards ── */
     cardsList.querySelectorAll('.dv-bookmark[data-id]').forEach(btn => {
       btn.addEventListener('click', e => {
@@ -418,7 +423,14 @@ ${item.address ? `
         e.stopPropagation();
         if (typeof CareMapBookmarks === 'undefined') return;
         const id = parseInt(btn.dataset.id, 10);
-        const nowSaved = CareMapBookmarks.toggle(id);
+        
+        // Find the item and cache it before bookmarking
+        const item = DATA.find(d => d.id === id);
+        if (item) {
+          localStorage.setItem('cm_gb_item_' + id, JSON.stringify(item));
+        }
+        
+        const nowSaved = CareMapBookmarks.toggle(id, CareMapBookmarks.SECTIONS.GIVE_BACK);
         btn.textContent = nowSaved ? '♥' : '♡';
         btn.classList.toggle('saved', nowSaved);
         btn.setAttribute('aria-label', nowSaved ? 'Unsave this organization' : 'Save this organization');
@@ -449,60 +461,64 @@ ${item.address ? `
   }
 
   /* ── Pagination renderer ── */
-  function renderPagination(total, totalPages) {
-    let pager = document.getElementById('dvPagination');
-    if (!pager) {
-      pager = document.createElement('nav');
-      pager.id = 'dvPagination';
-      pager.setAttribute('aria-label', 'Results pages');
-      cardsList.parentNode.insertBefore(pager, cardsList.nextSibling);
-    }
-
-    if (totalPages <= 1) {
-      pager.innerHTML = '';
-      return;
-    }
-
-    const start = (currentPage - 1) * PAGE_SIZE + 1;
-    const end   = Math.min(currentPage * PAGE_SIZE, total);
-
-    let html = `<p class="pagination-info">Showing ${start}–${end} of ${total}</p>`;
-    html += `<div class="pagination-btns">`;
-
-    html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="First page" id="pgFirst">&#8676;</button>`;
-    html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="Previous page" id="pgPrev">&#8592;</button>`;
-
-    for (let i = 1; i <= totalPages; i++) {
-      html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}" aria-label="Page ${i}" aria-current="${i === currentPage ? 'page' : 'false'}">${i}</button>`;
-    }
-
-    html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Next page" id="pgNext">&#8594;</button>`;
-    html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Last page" id="pgLast">&#8677;</button>`;
-    html += `</div>`;
-
-    pager.innerHTML = html;
-
-    pager.querySelector('#pgFirst').addEventListener('click', () => {
-      if (currentPage > 1) { currentPage = 1; render(); scrollToList(); }
-    });
-    pager.querySelector('#pgPrev').addEventListener('click', () => {
-      if (currentPage > 1) { currentPage--; render(); scrollToList(); }
-    });
-    pager.querySelector('#pgNext').addEventListener('click', () => {
-      if (currentPage < totalPages) { currentPage++; render(); scrollToList(); }
-    });
-    pager.querySelector('#pgLast').addEventListener('click', () => {
-      if (currentPage < totalPages) { currentPage = totalPages; render(); scrollToList(); }
-    });
-
-    pager.querySelectorAll('.page-btn[data-page]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentPage = Number(btn.dataset.page);
-        render();
-        scrollToList();
-      });
-    });
+ function renderPagination(total, totalPages) {
+  let pager = document.getElementById('dvPagination');
+  if (!pager) {
+    pager = document.createElement('nav');
+    pager.id = 'dvPagination';
+    pager.setAttribute('aria-label', 'Results pages');
+    cardsList.parentNode.insertBefore(pager, cardsList.nextSibling);
   }
+
+  const viewAllBtn = `
+    <button class="page-btn view-all-btn" id="pgViewAll">
+      ${viewAll ? '↩ Show Less' : 'View All'}
+    </button>`;
+
+  if (viewAll || totalPages <= 1) {
+    pager.innerHTML = `
+      <p class="pagination-info">Showing all ${total} result${total !== 1 ? 's' : ''}</p>
+      <div class="pagination-btns">${viewAllBtn}</div>`;
+    pager.querySelector('#pgViewAll').addEventListener('click', () => {
+      viewAll = !viewAll;
+      currentPage = 1;
+      render();
+      scrollToList();
+    });
+    return;
+  }
+
+  const start = (currentPage - 1) * PAGE_SIZE + 1;
+  const end   = Math.min(currentPage * PAGE_SIZE, total);
+
+  let html = `<p class="pagination-info">Showing ${start}–${end} of ${total}</p>`;
+  html += `<div class="pagination-btns">`;
+  html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="First page" id="pgFirst">&#8676;</button>`;
+  html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="Previous page" id="pgPrev">&#8592;</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}" aria-label="Page ${i}" aria-current="${i === currentPage ? 'page' : 'false'}">${i}</button>`;
+  }
+  html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Next page" id="pgNext">&#8594;</button>`;
+  html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Last page" id="pgLast">&#8677;</button>`;
+  html += viewAllBtn;
+  html += `</div>`;
+
+  pager.innerHTML = html;
+
+  pager.querySelector('#pgFirst').addEventListener('click', () => { if (currentPage > 1) { currentPage = 1; render(); scrollToList(); } });
+  pager.querySelector('#pgPrev').addEventListener('click',  () => { if (currentPage > 1) { currentPage--; render(); scrollToList(); } });
+  pager.querySelector('#pgNext').addEventListener('click',  () => { if (currentPage < totalPages) { currentPage++; render(); scrollToList(); } });
+  pager.querySelector('#pgLast').addEventListener('click',  () => { if (currentPage < totalPages) { currentPage = totalPages; render(); scrollToList(); } });
+  pager.querySelectorAll('.page-btn[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => { currentPage = Number(btn.dataset.page); render(); scrollToList(); });
+  });
+  pager.querySelector('#pgViewAll').addEventListener('click', () => {
+    viewAll = !viewAll;
+    currentPage = 1;
+    render();
+    scrollToList();
+  });
+}
 
   /* ── Scroll to card list ── */
   function scrollToList() {
@@ -513,6 +529,9 @@ ${item.address ? `
   /* ── Open detail modal ── */
   function openDetail(item, triggerEl) {
     lastFocused = triggerEl || document.activeElement;
+
+    // Cache the item when opening modal
+    localStorage.setItem('cm_gb_item_' + item.id, JSON.stringify(item));
 
     const pills = servicePillsHtml(item.services);
 
@@ -532,7 +551,7 @@ ${item.address ? `
     const heartChar  = isSaved ? '♥' : '♡';
     const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
- detailCard.innerHTML = `
+    detailCard.innerHTML = `
   <div class="detail-head">
     <div class="detail-head-left">
       <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
@@ -593,7 +612,6 @@ ${item.address ? `
   </div>
 `;
 
-
     detailCard.querySelector('#detailCloseX').addEventListener('click',   closeDetail);
     /* ── Modal bookmark heart ── */
     const modalHeart = detailCard.querySelector('.detail-bookmark');
@@ -601,7 +619,10 @@ ${item.address ? `
       modalHeart.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
-        const nowSaved = CareMapBookmarks.toggle(item.id);
+        const nowSaved = CareMapBookmarks.toggle(item.id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+
+        // Cache the item
+        localStorage.setItem('cm_gb_item_' + item.id, JSON.stringify(item));
 
         modalHeart.textContent = nowSaved ? '♥' : '♡';
         modalHeart.classList.toggle('saved', nowSaved);
@@ -685,10 +706,11 @@ ${item.address ? `
   filterLocation.addEventListener('change', () => { currentPage = 1; render(); });
 
   /* ── Reset button ── */
-  resetBtn.addEventListener('click', () => {
+ resetBtn.addEventListener('click', () => {
     activeTab      = 'all';
     activeServices = [];
     currentPage    = 1;
+    viewAll        = false;
     filterAge.value      = '';
     filterLocation.value = '';
     chips.forEach(c => c.classList.remove('selected'));
@@ -698,16 +720,296 @@ ${item.address ? `
     render();
   });
 
+  /* ══════════════════════════════════════════════════════
+     VOLUNTEER MATCHMAKER QUIZ
+  ══════════════════════════════════════════════════════ */
+
+  const QUIZ_STEPS = [
+    {
+      id: 'intent',
+      question: 'What would you like to do?',
+      cols: 3,
+      options: [
+        { label: 'Volunteer My Time',      desc: 'Hands-on help at local orgs',      value: 'volunteer' },
+        { label: 'Donate',                 desc: 'Money, supplies, or goods',         value: 'donate'    },
+        { label: 'Both',                   desc: "I'm open to either",                value: 'all'       },
+      ]
+    },
+    {
+      id: 'cause',
+      question: 'What cause matters most to you?',
+      options: [
+        { label: 'Hunger & Basic Needs',    desc: 'Food pantries, meal programs',     value: 'food'           },
+        { label: 'Families & Children',     desc: 'Childcare, family support, youth', value: 'family-support' },
+        { label: 'Animals',                 desc: 'Animal shelters & welfare',         value: 'animals'        },
+        { label: 'Mental Health & Crisis',  desc: 'Counseling & crisis services',      value: 'crisis'         },
+        { label: 'Education & Arts',        desc: 'Libraries, museums, literacy',      value: 'education'      },
+        { label: 'Housing & Shelter',       desc: 'Homelessness & housing needs',      value: 'housing'        },
+      ]
+    },
+    {
+      id: 'age',
+      question: 'Which age group are you?',
+      options: [
+        { label: 'Under 13',       desc: 'Kid-friendly programs',          value: 'kids'   },
+        { label: 'Teen (13–17)',   desc: 'Youth volunteer opportunities',  value: 'teen'   },
+        { label: 'Adult (18–54)', desc: 'Full adult volunteer roles',      value: 'adult'  },
+        { label: 'Senior (55+)',   desc: 'Senior-friendly opportunities',  value: 'senior' },
+        { label: 'Family Group',   desc: 'Volunteering together',          value: 'family' },
+      ]
+    },
+    {
+      id: 'location',
+      question: 'Where are you located?',
+      isDropdown: true
+    }
+  ];
+
+  const CAUSE_SERVICE_MAP = {
+    'food':           ['food', 'hygiene'],
+    'family-support': ['childcare', 'food'],
+    'animals':        ['animals'],
+    'crisis':         ['counseling', 'housing'],
+    'education':      ['education'],
+    'housing':        ['housing'],
+  };
+
+  const CAUSE_LABELS = {
+    'food':           'Hunger & Basic Needs',
+    'family-support': 'Families & Children',
+    'animals':        'Animals',
+    'crisis':         'Mental Health & Crisis',
+    'education':      'Education & Arts',
+    'housing':        'Housing & Shelter',
+  };
+
+  const AGE_LABELS = { kids: 'Under 13', teen: 'Teens (13–17)', adult: 'Adults (18–54)', senior: 'Seniors (55+)', family: 'Family Group' };
+
+  const quizBackdrop  = document.getElementById('quizBackdrop');
+  const quizModalWrap = document.getElementById('quizModalWrap');
+  const quizModal     = document.getElementById('quizModal');
+  const quizLaunchBtn = document.getElementById('quizLaunchBtn');
+
+  let quizStep    = 0;
+  let quizAnswers = {};
+
+  function openQuiz() {
+    quizStep    = 0;
+    quizAnswers = {};
+    quizBackdrop.hidden  = false;
+    quizModalWrap.hidden = false;
+    document.body.style.overflow = 'hidden';
+    renderQuizStep();
+    requestAnimationFrame(() => {
+      const first = quizModal.querySelector('.quiz-option, .quiz-location-select');
+      if (first) first.focus();
+    });
+  }
+
+  function closeQuiz() {
+    quizBackdrop.hidden  = true;
+    quizModalWrap.hidden = true;
+    document.body.style.overflow = '';
+    if (quizLaunchBtn) quizLaunchBtn.focus();
+  }
+
+  function renderQuizStep() {
+    const step  = QUIZ_STEPS[quizStep];
+    const total = QUIZ_STEPS.length;
+    const pct   = Math.round((quizStep / total) * 100);
+
+    let bodyHtml = '';
+
+    if (step.isDropdown) {
+      const locationOpts = Array.from(filterLocation.options)
+        .map(o => `<option value="${o.value}"${quizAnswers.location === o.value ? ' selected' : ''}>${o.textContent}</option>`)
+        .join('');
+      bodyHtml = `
+        <p class="quiz-step-counter">Step ${quizStep + 1} of ${total}</p>
+        <p class="quiz-step-question">${step.question}</p>
+        <select class="quiz-location-select" id="quizLocationSelect">${locationOpts}</select>
+      `;
+    } else {
+      const colClass = step.cols === 3 ? 'quiz-options cols-3' : 'quiz-options';
+      const opts = step.options.map(opt => `
+        <button
+          class="quiz-option${quizAnswers[step.id] === opt.value ? ' selected' : ''}"
+          data-value="${opt.value}"
+          aria-pressed="${quizAnswers[step.id] === opt.value ? 'true' : 'false'}"
+        >
+          <span class="quiz-option-label">${opt.label}</span>
+          ${opt.desc ? `<span class="quiz-option-desc">${opt.desc}</span>` : ''}
+        </button>
+      `).join('');
+      bodyHtml = `
+        <p class="quiz-step-counter">Step ${quizStep + 1} of ${total}</p>
+        <p class="quiz-step-question">${step.question}</p>
+        <div class="${colClass}" role="group" aria-label="${step.question}">${opts}</div>
+      `;
+    }
+
+    const isLast    = quizStep === total - 1;
+    const canBack   = quizStep > 0;
+    const hasAnswer = step.isDropdown || !!quizAnswers[step.id];
+
+    quizModal.innerHTML = `
+      <div class="quiz-header">
+        <div class="quiz-title-area">
+          <p class="quiz-eyebrow">Volunteer Matchmaker</p>
+          <h2 class="quiz-heading" id="quizHeading">Find Your Match</h2>
+        </div>
+        <button class="quiz-close" id="quizCloseBtn" aria-label="Close quiz">&#x2715;</button>
+      </div>
+      <div class="quiz-progress" aria-hidden="true">
+        <div class="quiz-progress-bar" style="width:${pct}%"></div>
+      </div>
+      <div class="quiz-body">${bodyHtml}</div>
+      <div class="quiz-footer">
+        ${canBack ? `<button class="quiz-btn-back" id="quizBackBtn">&#8592; Back</button>` : `<span></span>`}
+        <button class="quiz-btn-next" id="quizNextBtn"${!hasAnswer ? ' disabled' : ''}>
+          ${isLast ? 'See My Matches' : 'Next'}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    `;
+
+    quizModal.querySelector('#quizCloseBtn').addEventListener('click', closeQuiz);
+
+    if (canBack) {
+      quizModal.querySelector('#quizBackBtn').addEventListener('click', () => { quizStep--; renderQuizStep(); });
+    }
+
+    if (!step.isDropdown) {
+      quizModal.querySelectorAll('.quiz-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          quizAnswers[step.id] = btn.dataset.value;
+          quizModal.querySelectorAll('.quiz-option').forEach(b => {
+            b.classList.toggle('selected', b.dataset.value === btn.dataset.value);
+            b.setAttribute('aria-pressed', b.dataset.value === btn.dataset.value ? 'true' : 'false');
+          });
+          quizModal.querySelector('#quizNextBtn').disabled = false;
+        });
+      });
+    }
+
+    quizModal.querySelector('#quizNextBtn').addEventListener('click', () => {
+      if (step.isDropdown) {
+        quizAnswers.location = quizModal.querySelector('#quizLocationSelect').value;
+      }
+      if (quizStep < total - 1) {
+        quizStep++;
+        renderQuizStep();
+      } else {
+        applyQuizResults();
+      }
+    });
+  }
+
+  function applyQuizResults() {
+    closeQuiz();
+
+    activeTab      = quizAnswers.intent || 'all';
+    activeServices = CAUSE_SERVICE_MAP[quizAnswers.cause] || [];
+    filterAge.value      = quizAnswers.age      || '';
+    filterLocation.value = quizAnswers.location || '';
+
+    tabBtns.forEach(b => {
+      const on = b.dataset.tab === activeTab;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+
+    chips.forEach(c => c.classList.toggle('selected', activeServices.includes(c.dataset.value)));
+
+    const resultsHeading = document.getElementById('results-heading');
+    if (resultsHeading) {
+      if (activeTab === 'donate')         resultsHeading.textContent = 'Donate Opportunities';
+      else if (activeTab === 'volunteer') resultsHeading.textContent = 'Volunteer Opportunities';
+      else                                resultsHeading.textContent = 'All Opportunities';
+    }
+
+    currentPage = 1;
+    render();
+    showQuizResultsBanner();
+
+    setTimeout(() => {
+      const target = document.getElementById('results-heading');
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }, 100);
+  }
+
+  function buildResultsSummary() {
+    const parts = [];
+    if (quizAnswers.intent && quizAnswers.intent !== 'all') {
+      parts.push(quizAnswers.intent === 'volunteer' ? 'Volunteer' : 'Donate');
+    }
+    if (quizAnswers.cause) parts.push(CAUSE_LABELS[quizAnswers.cause] || quizAnswers.cause);
+    if (quizAnswers.age)   parts.push(AGE_LABELS[quizAnswers.age] || quizAnswers.age);
+    if (quizAnswers.location) {
+      parts.push(quizAnswers.location.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '));
+    }
+    return parts.join(' · ');
+  }
+
+  function showQuizResultsBanner() {
+    const existing = document.getElementById('quizResultsBanner');
+    if (existing) existing.remove();
+
+    const summary = buildResultsSummary();
+    const banner  = document.createElement('div');
+    banner.id        = 'quizResultsBanner';
+    banner.className = 'quiz-results-banner';
+    banner.innerHTML = `
+      <div class="quiz-results-banner-text">
+        <strong>Showing your matched opportunities</strong>
+        <span>${summary || 'All opportunities'}</span>
+      </div>
+      <button class="quiz-results-clear" id="quizClearBtn">Clear match</button>
+    `;
+
+    const resultsHeader = document.querySelector('.results-header');
+    if (resultsHeader) resultsHeader.after(banner);
+
+    banner.querySelector('#quizClearBtn').addEventListener('click', () => {
+      banner.remove();
+      resetBtn.click();
+    });
+  }
+
+  if (quizLaunchBtn) quizLaunchBtn.addEventListener('click', openQuiz);
+
+  quizBackdrop.addEventListener('click', closeQuiz);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !quizModalWrap.hidden) closeQuiz();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    const banner = document.getElementById('quizResultsBanner');
+    if (banner) banner.remove();
+  });
+
   /* ── Initial render + badge sync ── */
   resultsCount.textContent = 'Loading opportunities...';
-  loadApprovedVolunteerOpportunities()
+  const giveBackLoadDelay = new Promise(resolve => {
+    setTimeout(resolve, MIN_GIVE_BACK_LOAD_MS);
+  });
+
+  Promise.all([
+    loadApprovedVolunteerOpportunities()
     .catch(error => {
-      console.warn('Approved volunteer opportunities could not be loaded.', error);
-    })
+      console.warn('Approved volunteer opportunities could not be loaded; using built-in Give Back data.', error);
+    }),
+    giveBackLoadDelay
+  ])
     .finally(() => {
       syncLocationFilterOptions();
       render();
       updateDvBadge();
     });
 });
-
