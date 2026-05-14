@@ -1,4 +1,4 @@
-const { useState, useEffect } = React;
+const { useState } = React;
 const motion = (window.Motion && window.Motion.motion) || (window.framerMotion && window.framerMotion.motion) || (window.FramerMotion && window.FramerMotion.motion);
 
 function Hero() {
@@ -16,6 +16,7 @@ function Hero() {
 
   return (
     <React.Fragment>
+      {/* ── Orbit rings (rotate only — fine for Framer Motion) ── */}
       <div className="hero-orbits">
         <motion.span
           className="orbit orbit-one"
@@ -50,35 +51,18 @@ function Hero() {
         </motion.span>
       </div>
 
-      {/* Floating decorative balls */}
-      {[
-        { top: '8%',  left: '12%', size: 10, color: 'rgba(192,75,32,.55)',   dur: 4.2, delay: 0   },
-        { top: '18%', left: '38%', size:  7, color: 'rgba(44,143,163,.50)',  dur: 5.8, delay: 1.1 },
-        { top: '6%',  left: '58%', size: 13, color: 'rgba(74,103,65,.45)',   dur: 6.5, delay: 0.4 },
-        { top: '22%', left: '82%', size:  8, color: 'rgba(192,75,32,.40)',   dur: 4.8, delay: 2.0 },
-        { top: '12%', left: '92%', size: 11, color: 'rgba(44,143,163,.35)',  dur: 7.2, delay: 0.8 },
-        { top: '30%', left: '5%',  size:  6, color: 'rgba(74,103,65,.40)',   dur: 5.1, delay: 1.5 },
-        { top: '3%',  left: '75%', size:  9, color: 'rgba(192,75,32,.30)',   dur: 6.0, delay: 0.2 },
-      ].map((b, i) => (
-        <motion.span
-          key={i}
-          style={{
-            position: 'absolute',
-            top: b.top, left: b.left,
-            width: b.size, height: b.size,
-            borderRadius: '50%',
-            background: b.color,
-            boxShadow: `0 0 ${b.size * 2}px ${b.color}`,
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-          animate={{ y: [-8, 8, -8] }}
-          transition={{ repeat: Infinity, duration: b.dur, delay: b.delay, ease: 'easeInOut' }}
-        />
-      ))}
+      {/* ── Floating decorative balls — pure CSS, no JS ── */}
+      <span className="hero-ball" style={{top:'10%', left:'4%',  width:'14px', height:'14px', background:'rgba(192,75,32,.50)',  animationName:'hball', animationDuration:'5s',  animationDelay:'0s'}}></span>
+      <span className="hero-ball" style={{top:'28%', left:'9%',  width:'7px',  height:'7px',  background:'rgba(184,154,106,.40)', animationName:'hball', animationDuration:'7.2s', animationDelay:'1.3s'}}></span>
+      <span className="hero-ball" style={{top:'5%',  left:'34%', width:'9px',  height:'9px',  background:'rgba(74,103,65,.45)',   animationName:'hball', animationDuration:'6.1s', animationDelay:'0.6s'}}></span>
+      <span className="hero-ball" style={{top:'14%', left:'50%', width:'5px',  height:'5px',  background:'rgba(192,75,32,.30)',   animationName:'hball', animationDuration:'4.5s', animationDelay:'2.2s'}}></span>
+      <span className="hero-ball" style={{top:'7%',  left:'70%', width:'11px', height:'11px', background:'rgba(184,154,106,.45)', animationName:'hball', animationDuration:'5.8s', animationDelay:'0.9s'}}></span>
+      <span className="hero-ball" style={{top:'20%', left:'88%', width:'16px', height:'16px', background:'rgba(74,103,65,.38)',   animationName:'hball', animationDuration:'6.8s', animationDelay:'0.2s'}}></span>
+      <span className="hero-ball" style={{top:'35%', left:'94%', width:'6px',  height:'6px',  background:'rgba(192,75,32,.35)',   animationName:'hball', animationDuration:'4.9s', animationDelay:'1.8s'}}></span>
+      <span className="hero-ball" style={{top:'55%', left:'2%',  width:'8px',  height:'8px',  background:'rgba(184,154,106,.35)', animationName:'hball', animationDuration:'6.4s', animationDelay:'0.4s'}}></span>
 
       <div className="container hero-inner">
-        <motion.div 
+        <motion.div
           className="hero-copy"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -117,13 +101,8 @@ function Hero() {
 
         {/* ── Right panel ── */}
         <div className="hero-panel" aria-hidden="true">
-          <motion.div
-            className="hp-card"
-            initial={{ y: 0 }}
-            animate={{ y: [-8, 8, -8] }}
-            transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-          >
-            <p className="hp-card-kicker food">Food & Nutrition</p>
+          <div className="hp-card">
+            <p className="hp-card-kicker food">Food &amp; Nutrition</p>
             <p className="hp-card-name">Morris Community Food Pantry</p>
             <p className="hp-card-desc">Weekly food distributions for Morris County residents in need. No appointment required.</p>
             <div className="hp-card-tags">
@@ -131,15 +110,10 @@ function Hero() {
               <span className="hp-tag sage">Walk-in</span>
               <span className="hp-tag sand">Volunteers Needed</span>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="hp-card"
-            initial={{ y: 0 }}
-            animate={{ y: [6, -6, 6] }}
-            transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut", delay: 1 }}
-          >
-            <p className="hp-card-kicker safety">Safety & Shelter</p>
+          <div className="hp-card">
+            <p className="hp-card-kicker safety">Safety &amp; Shelter</p>
             <p className="hp-card-name">Domestic Violence Crisis Center</p>
             <p className="hp-card-desc">Confidential shelter, counseling, and safety planning for survivors of domestic violence.</p>
             <div className="hp-card-tags">
@@ -147,22 +121,17 @@ function Hero() {
               <span className="hp-tag sage">Counseling</span>
               <span className="hp-tag sand">Confidential</span>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="hp-card"
-            initial={{ y: 0 }}
-            animate={{ y: [-5, 5, -5] }}
-            transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 2 }}
-          >
-            <p className="hp-card-kicker home">Housing & Stability</p>
+          <div className="hp-card">
+            <p className="hp-card-kicker home">Housing &amp; Stability</p>
             <p className="hp-card-name">Morris Homeless Services</p>
             <p className="hp-card-desc">Emergency shelter, housing navigation, and case management for those facing homelessness.</p>
             <div className="hp-card-tags">
               <span className="hp-tag sage">Emergency Housing</span>
               <span className="hp-tag sand">Case Management</span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </React.Fragment>
