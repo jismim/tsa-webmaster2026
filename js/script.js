@@ -32,11 +32,18 @@
     if (page) page.style.opacity = '0';
 
     setTimeout(function () {
-      loader.classList.add('hide');
-      if (page) page.style.opacity = '1';
-      document.body.classList.remove('loading');
-      setTimeout(function () { loader.style.display = 'none'; }, 600);
-    }, 2400);
+  loader.classList.add('hide');
+  if (page) page.style.opacity = '1';
+  document.body.classList.remove('loading');
+
+  setTimeout(function () {
+    loader.style.display = 'none';
+
+    // 🔑 NEW: signal that intro animation is fully done
+    window.__cmLoaderDone = true;
+  }, 600);
+
+}, 2400);
   }
 })();
 
@@ -85,14 +92,30 @@ document.addEventListener('DOMContentLoaded', function () {
   // Auto-start the tour on first visit (replaces the old modal auto-show)
 const TOUR_KEY = 'cm_tour_seen';
 
-if (!sessionStorage.getItem(TOUR_KEY)) {
-  setTimeout(function () {
-    if (window.CareMapTour && typeof window.CareMapTour.start === 'function') {
-      window.CareMapTour.start();
-      sessionStorage.setItem(TOUR_KEY, '1');
-    }
-  }, 900);
+function tryStartTour() {
+  if (sessionStorage.getItem(TOUR_KEY)) return;
+  if (!window.__cmLoaderDone) return;
+  if (!window.CareMapTour || typeof window.CareMapTour.start !== 'function') return;
+
+  window.CareMapTour.start();
+  sessionStorage.setItem(TOUR_KEY, '1');
 }
+
+// try immediately (in case loader already finished)
+tryStartTour();
+
+// also keep checking until loader is done
+const tourInterval = setInterval(function () {
+  if (sessionStorage.getItem(TOUR_KEY)) {
+    clearInterval(tourInterval);
+    return;
+  }
+
+  if (window.__cmLoaderDone) {
+    tryStartTour();
+    clearInterval(tourInterval);
+  }
+}, 200);
 
   // Wire the "Browse Directory" button in the modal to also close it
   const browseBtn = modalWrap ? modalWrap.querySelector('a[href="directory.html"]') : null;
