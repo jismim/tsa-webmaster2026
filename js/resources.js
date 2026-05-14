@@ -8,8 +8,6 @@
 (function () {
   "use strict";
 
-  // Replace this with the real API URL when it is ready.
-  // The API response should be the same array shape as data/directory.json.
   var DIRECTORY_API_URL = "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/resources/approved";
 
   if (!window.RESOURCES) {

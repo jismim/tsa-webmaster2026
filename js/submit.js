@@ -1,4 +1,4 @@
-const API_BASE = "https://flvpf8iuu3.execute-api.us-east-1.amazonaws.com";
+const API_BASE = "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod";
 const TOTAL_STEPS = 6;
 let currentStep = 1;
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
  const stepDots    = document.querySelectorAll('.step-dot');
 
 
- /* Show step */
+ /* ── Show step ── */
  function showStep(n) {
    steps.forEach(function (s, i) {
      s.classList.toggle('active-step', i + 1 === n);
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /* Perstep validation */
+ /* ── Per-step validation ── */
  function validateStep(n) {
    const stepEl = document.querySelector('.form-step[data-step="' + n + '"]');
    if (!stepEl) return true;
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
-/* Back Buttons */
+ /* ── Step navigation ── */
  document.querySelectorAll('.btn-next').forEach(function (btn) {
    btn.addEventListener('click', function () {
      if (validateStep(currentStep)) {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
  });
 
 
- /* form submit*/
+ /* ── Form submit ── */
  if (form) {
    form.addEventListener('submit', async function (e) {
      e.preventDefault();
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /*Submit another Resource*/
+ /* ── Submit another ── */
  const submitAnotherBtn = document.getElementById('submitAnotherBtn');
  if (submitAnotherBtn) {
    submitAnotherBtn.addEventListener('click', function () {
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /*Scroll reveeal*/
+ /* ── Scroll reveal ── */
  const revealEls = document.querySelectorAll('.reveal');
  if ('IntersectionObserver' in window) {
    const io = new IntersectionObserver(function (entries) {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
  }
 
 
- /*FAQ Accordian*/
+ /* ── FAQ accordion ── */
  const faqItems = document.querySelectorAll('.faq-item');
  faqItems.forEach(function (item) {
    const btn    = item.querySelector('.faq-q');
@@ -239,26 +239,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
- /*Ask a question form*/
+ /* ── Question form ── */
  const askForm    = document.getElementById('askForm');
  const askSuccess = document.getElementById('askSuccess');
  if (askForm && askSuccess) {
-   askForm.addEventListener('submit', function (e) {
+   askForm.addEventListener('submit', async function (e) {
      e.preventDefault();
      const emailInput    = askForm.querySelector('#askEmail');
      const questionInput = askForm.querySelector('#askQuestion');
-     if (!emailInput.value.trim() || !questionInput.value.trim()) {
-       emailInput.reportValidity();
-       questionInput.reportValidity();
+     if (!askForm.reportValidity()) {
        return;
      }
      const btn = askForm.querySelector('button[type="submit"]');
+     const originalText = btn.textContent;
      btn.disabled    = true;
-     btn.textContent = 'Sending…';
-     setTimeout(function () {
-       askForm.style.display = 'none';
-       askSuccess.hidden     = false;
-     }, 800);
+     btn.textContent = 'Sending...';
+     askSuccess.hidden = true;
+     try {
+       const res = await fetch(API_BASE + '/submissions', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+           rootFolders: ['questions'],
+           data: {
+             email: emailInput.value.trim(),
+             question: questionInput.value.trim()
+           }
+         })
+       });
+
+       const result = await res.json();
+       if (!res.ok) throw new Error(result.message || 'Question submission failed');
+
+       askForm.reset();
+       askSuccess.hidden = false;
+     } catch (err) {
+       alert('Error: ' + err.message);
+     } finally {
+       btn.disabled = false;
+       btn.textContent = originalText;
+     }
    });
  }
 

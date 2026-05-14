@@ -1,13 +1,22 @@
 /* ============================================================
    CareMap Morris — Directory JavaScript
-   Requires: resources.js and bookmarks.js loaded before this file
 ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  var MIN_RESOURCE_LOAD_MS = 2200;
   var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
-  resourcesReady.then(function (resources) {
+  var safeResourcesReady = resourcesReady.catch(function (error) {
+    console.error(error);
+    return [];
+  });
+  var resourceLoadDelay = new Promise(function (resolve) {
+    setTimeout(resolve, MIN_RESOURCE_LOAD_MS);
+  });
+
+  Promise.all([safeResourcesReady, resourceLoadDelay]).then(function (values) {
+    var resources = values[0];
     window.RESOURCES = Array.isArray(resources) ? resources : [];
     initDirectory();
   });
@@ -37,6 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
   var modalWrap      = document.getElementById("detailModalWrap");
   var detailCard     = document.getElementById("detailCard");
   var searchInput    = document.getElementById("searchInput");
+  var addressInput   = document.getElementById("addressInput");
+  var addressList    = document.getElementById("addressSuggestions");
+  var radiusFilter   = document.getElementById("radiusFilter");
+  var demoAddressBtn = document.getElementById("demoAddressBtn");
+  var locationStatus = document.getElementById("locationStatus");
   var categoryFilter = document.getElementById("categoryFilter");
   var townFilter     = document.getElementById("townFilter");
   var clearBtn       = document.getElementById("clearFilters");
@@ -45,6 +59,438 @@ document.addEventListener('DOMContentLoaded', function () {
   var lastFocused         = null;
   var showAll             = false;
   var currentFilteredList = [];
+  var activeLocation      = null;
+  var remoteAddressSuggestions = [];
+  var currentAddressOptions = [];
+  var addressSearchTimer = null;
+  var addressSearchSeq = 0;
+  var highlightedAddressIndex = -1;
+
+  var DEMO_ADDRESS = "County College of Morris, 214 Center Grove Rd, Randolph, NJ";
+
+  var ADDRESS_SUGGESTIONS = [
+    { label: DEMO_ADDRESS, lat: 40.8571, lng: -74.5814 },
+    { label: "Morristown Green, 10 N Park Place, Morristown, NJ", lat: 40.7977, lng: -74.4815 },
+    { label: "Morris County Library, 30 E Hanover Ave, Whippany, NJ", lat: 40.8065, lng: -74.4530 },
+    { label: "Dover Train Station, Dover, NJ", lat: 40.8834, lng: -74.5591 },
+    { label: "Boonton Town Hall, Boonton, NJ", lat: 40.9026, lng: -74.4071 },
+    { label: "Parsippany-Troy Hills, NJ", lat: 40.8653, lng: -74.4174 },
+    { label: "Morristown, NJ", lat: 40.7970, lng: -74.4815 },
+    { label: "Dover, NJ", lat: 40.8839, lng: -74.5621 },
+    { label: "Randolph, NJ", lat: 40.8484, lng: -74.5815 },
+    { label: "Rockaway, NJ", lat: 40.9012, lng: -74.5143 },
+    { label: "Madison, NJ", lat: 40.7598, lng: -74.4171 },
+    { label: "Chatham, NJ", lat: 40.7409, lng: -74.3838 },
+    { label: "Mount Olive, NJ", lat: 40.8518, lng: -74.7341 },
+    { label: "Morris Plains, NJ", lat: 40.8218, lng: -74.4809 },
+    { label: "Whippany, NJ", lat: 40.8245, lng: -74.4171 }
+  ];
+
+  var RESOURCE_COORDINATES = [
+    { id: 1,  coords: [40.831599473789744, -74.4967387711644] },
+    { id: 2,  coords: [40.9019471, -74.4068955] },
+    { id: 3,  coords: [40.906545, -74.409786] },
+    { id: 4,  coords: [40.7937, -74.6974] },
+    { id: 5,  coords: [40.8050444, -74.4845942], match: "morristown" },
+    { id: 5,  coords: [40.8779, -74.5385], match: "dover" },
+    { id: 6,  coords: [40.8851, -74.5521] },
+    { id: 7,  coords: [40.864242169063566, -74.76509680000012] },
+    { id: 8,  coords: [40.86494978034143, -74.39408306931551] },
+    { id: 9,  coords: [40.84784658347127, -74.56295426376882] },
+    { id: 10, coords: [40.903988992120844, -74.51300020369783] },
+    { id: 12, coords: [40.79723006613729, -74.48403157374204] },
+    { id: 13, coords: [40.7977545523217, -74.48360376024962] },
+    { id: 14, coords: [40.797686995786044, -74.48359027797845] },
+    { id: 15, coords: [40.79856105235971, -74.4834509449061] },
+    { id: 16, coords: [40.798585446529735, -74.48346167116411] },
+    { id: 17, coords: [40.831283217856836, -74.4471109602484], match: "morristown" },
+    { id: 17, coords: [40.831880509255264, -74.52162566024835], match: "rockaway" },
+    { id: 18, coords: [40.82623300728235, -74.47964360257681] },
+    { id: 19, coords: [40.91279808390638, -74.52999068722995] },
+    { id: 20, coords: [40.81130908220087, -74.45855200257735] },
+    { id: 22, coords: [40.803089610756764, -74.48083271792117] },
+    { id: 23, coords: [40.89117504495456, -74.47447243141015] },
+    { id: 24, coords: [40.832075785570865, -74.52214704274178] },
+    { id: 25, coords: [40.90071317709448, -74.70426357373807] },
+    { id: 26, coords: [40.91160110393633, -74.49426738908117] },
+    { id: 27, coords: [40.89171681182489, -74.47431140257427] },
+    { id: 28, coords: [40.83067041207043, -74.49741557374077] },
+    { id: 29, coords: [40.90559424640193, -74.50382761791732] },
+    { id: 30, coords: [40.79332643399677, -74.4759002602498] },
+    { id: 31, coords: [40.79399217493562, -74.47882624490622] },
+    { id: 32, coords: [40.80646109508215, -74.45300504729107] },
+    { id: 33, coords: [40.80062942517182, -74.4820338602496] },
+    { id: 34, coords: [40.87585664412647, -74.38110460442618] },
+    { id: 35, coords: [40.874729184442884, -74.42607387373907] },
+    { id: 36, coords: [40.8615472676916, -74.381067658396] },
+    { id: 37, coords: [40.928350332400875, -74.48457642955759] },
+    { id: 38, coords: [40.79662297465631, -74.48355830010377] },
+    { id: 39, coords: [40.877853455214, -74.44696502707635] },
+    { id: 40, coords: [40.86794792719892, -74.41444721534225] },
+    { id: 41, coords: [40.86172910714738, -74.38142671904005] },
+    { id: 42, coords: [40.86238346057868, -74.49607819328992] },
+    { id: 44, coords: [40.86737726118494, -74.42343992883555] },
+    { id: 45, coords: [40.78770830141692, -74.43203738650666] },
+    { id: 47, coords: [40.824383036609134, -74.49355781349333] },
+    { id: 48, coords: [40.84835147338429, -74.40243757116444] },
+    { id: 49, coords: [40.78772924776525, -74.46809968650668] },
+    { id: 50, coords: [40.86242426680515, -74.49609012883555] },
+    { id: 51, coords: [40.886449566445165, -74.55858335767111] },
+    { id: 52, coords: [40.86599408106594, -74.351141] },
+    { id: 53, coords: [40.79075328786209, -74.38283997116446] },
+    { id: 55, coords: [40.90067877772641, -74.5132934] },
+    { id: 56, coords: [40.883856359774995, -74.47998177125463] },
+    { id: 57, coords: [40.86789924704041, -74.41438284241306] }
+  ];
+
+  function normalizeText(value) {
+    return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function getResourceCoords(resource) {
+    if (!resource) return null;
+
+    if (Array.isArray(resource.coords) && resource.coords.length === 2) {
+      return resource.coords;
+    }
+
+    if (typeof resource.lat === "number" && typeof resource.lng === "number") {
+      return [resource.lat, resource.lng];
+    }
+
+    if (typeof resource.latitude === "number" && typeof resource.longitude === "number") {
+      return [resource.latitude, resource.longitude];
+    }
+
+    var resourceText = normalizeText(
+      (resource.title || "") + " " + (resource.town || "") + " " + (resource.address || "")
+    );
+
+    var matched = RESOURCE_COORDINATES.find(function (item) {
+      if (item.id !== resource.id) return false;
+      return !item.match || resourceText.includes(normalizeText(item.match));
+    });
+
+    if (!matched) {
+      matched = RESOURCE_COORDINATES.find(function (item) {
+        return item.id === resource.id;
+      });
+    }
+
+    return matched ? matched.coords : null;
+  }
+
+  function milesBetween(a, b) {
+    var earthRadiusMiles = 3958.8;
+    var lat1 = a[0] * Math.PI / 180;
+    var lat2 = b[0] * Math.PI / 180;
+    var dLat = (b[0] - a[0]) * Math.PI / 180;
+    var dLng = (b[1] - a[1]) * Math.PI / 180;
+    var sinLat = Math.sin(dLat / 2);
+    var sinLng = Math.sin(dLng / 2);
+    var h = sinLat * sinLat + Math.cos(lat1) * Math.cos(lat2) * sinLng * sinLng;
+    return 2 * earthRadiusMiles * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+  }
+
+  function findAddressMatch(value) {
+    var needle = normalizeText(value);
+    if (!needle) return null;
+    var suggestions = getAddressSuggestions();
+
+    return suggestions.find(function (item) {
+      return normalizeText(item.label) === needle;
+    }) || suggestions.find(function (item) {
+      var label = normalizeText(item.label);
+      return label.includes(needle) || needle.includes(label.replace(" nj", ""));
+    });
+  }
+
+  function getAddressSuggestions() {
+    var seen = {};
+    var suggestions = ADDRESS_SUGGESTIONS.map(function (item) {
+      return {
+        label: item.label,
+        lat: item.lat,
+        lng: item.lng,
+        source: item.source || "Popular"
+      };
+    });
+
+    ADDRESS_SUGGESTIONS.forEach(function (item) {
+      seen[normalizeText(item.label)] = true;
+    });
+
+    RESOURCES.forEach(function (resource) {
+      if (!resource.address || resource.address.toLowerCase().includes("online")) return;
+
+      var coords = getResourceCoords(resource);
+      if (!coords) return;
+
+      var label = resource.address;
+      if (resource.title) {
+        label += " - " + resource.title;
+      }
+
+      var key = normalizeText(label);
+      if (seen[key]) return;
+
+      seen[key] = true;
+      suggestions.push({
+        label: label,
+        lat: coords[0],
+        lng: coords[1],
+        source: "Resource address"
+      });
+    });
+
+    remoteAddressSuggestions.forEach(function (item) {
+      var key = normalizeText(item.label);
+      if (seen[key]) return;
+
+      seen[key] = true;
+      suggestions.push(item);
+    });
+
+    return suggestions;
+  }
+
+  function getFilteredAddressSuggestions(query) {
+    var needle = normalizeText(query);
+    var suggestions = getAddressSuggestions();
+
+    if (!needle) return suggestions.slice(0, 8);
+
+    return suggestions.filter(function (item) {
+      return normalizeText(item.label).includes(needle);
+    }).slice(0, 8);
+  }
+
+  function renderAddressSuggestions(options, statusText) {
+    if (!addressList || !addressInput) return;
+
+    currentAddressOptions = options || [];
+    highlightedAddressIndex = -1;
+    addressList.innerHTML = "";
+
+    if (!currentAddressOptions.length && !statusText) {
+      hideAddressSuggestions();
+      return;
+    }
+
+    currentAddressOptions.forEach(function (item, idx) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "dir-address-suggestion";
+      btn.setAttribute("role", "option");
+      btn.setAttribute("data-index", String(idx));
+      btn.innerHTML =
+        '<span class="dir-address-main">' + escapeHtml(item.label) + "</span>" +
+        '<span class="dir-address-meta">' + escapeHtml(item.source || "Morris County address") + "</span>";
+
+      btn.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+      });
+
+      btn.addEventListener("click", function () {
+        selectAddressSuggestion(idx);
+      });
+
+      addressList.appendChild(btn);
+    });
+
+    if (statusText) {
+      var status = document.createElement("div");
+      status.className = "dir-address-suggestion is-muted";
+      status.textContent = statusText;
+      addressList.appendChild(status);
+    }
+
+    addressList.hidden = false;
+    addressInput.setAttribute("aria-expanded", "true");
+  }
+
+  function hideAddressSuggestions() {
+    if (!addressList || !addressInput) return;
+    addressList.hidden = true;
+    addressList.innerHTML = "";
+    addressInput.setAttribute("aria-expanded", "false");
+    highlightedAddressIndex = -1;
+  }
+
+  function updateHighlightedAddress() {
+    if (!addressList) return;
+
+    addressList.querySelectorAll(".dir-address-suggestion[role='option']").forEach(function (el) {
+      var idx = Number(el.getAttribute("data-index"));
+      el.classList.toggle("is-active", idx === highlightedAddressIndex);
+    });
+  }
+
+  function selectAddressSuggestion(index) {
+    var item = currentAddressOptions[index];
+    if (!item || !addressInput) return;
+
+    addressInput.value = item.label;
+    hideAddressSuggestions();
+    applyAddressLocation();
+  }
+
+  function fetchMorrisCountyAddresses(query) {
+    var trimmed = query.trim();
+    if (trimmed.length < 3) return Promise.resolve([]);
+
+    var searchQuery = trimmed;
+    if (!/\b(nj|new jersey)\b/i.test(searchQuery)) {
+      searchQuery += ", Morris County, New Jersey";
+    }
+
+    var params = new URLSearchParams({
+      format: "jsonv2",
+      q: searchQuery,
+      addressdetails: "1",
+      countrycodes: "us",
+      limit: "8",
+      viewbox: "-74.95,41.08,-74.25,40.65",
+      bounded: "1"
+    });
+
+    return fetch("https://nominatim.openstreetmap.org/search?" + params.toString(), {
+      headers: { "Accept": "application/json" }
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error("Address search failed");
+        return response.json();
+      })
+      .then(function (items) {
+        return items.map(function (item) {
+          return {
+            label: item.display_name,
+            lat: Number(item.lat),
+            lng: Number(item.lon),
+            source: "Morris County lookup"
+          };
+        }).filter(function (item) {
+          return !isNaN(item.lat) && !isNaN(item.lng);
+        });
+      });
+  }
+
+  function hasAddressSeparators(value) {
+    return value.indexOf(",") !== -1;
+  }
+
+  function looksLikeSpecificAddress(value) {
+    return /\d/.test(value) && /\b(st|street|ave|avenue|rd|road|dr|drive|blvd|boulevard|ln|lane|ct|court|pl|place|pkwy|parkway|hwy|highway|route|rt)\b/i.test(value);
+  }
+
+  function getAddressFormatHint(value) {
+    if (!value || hasAddressSeparators(value)) return "";
+    if (looksLikeSpecificAddress(value)) {
+      return "No commas found. Searching anyway, but try: street, town, NJ.";
+    }
+    return "";
+  }
+
+  function updateAddressAutocomplete() {
+    if (!addressInput) return;
+
+    var query = addressInput.value.trim();
+    var localOptions = getFilteredAddressSuggestions(query);
+    clearTimeout(addressSearchTimer);
+    addressSearchSeq += 1;
+
+    if (!query) {
+      renderAddressSuggestions(localOptions);
+      return;
+    }
+
+    renderAddressSuggestions(
+      localOptions,
+      query.length >= 3 ? (getAddressFormatHint(query) || "Searching Morris County addresses...") : ""
+    );
+
+    addressSearchTimer = setTimeout(function () {
+      var searchId = ++addressSearchSeq;
+
+      fetchMorrisCountyAddresses(query)
+        .then(function (results) {
+          if (searchId !== addressSearchSeq) return;
+
+          remoteAddressSuggestions = results;
+          renderAddressSuggestions(getFilteredAddressSuggestions(query));
+        })
+        .catch(function () {
+          if (searchId !== addressSearchSeq) return;
+          renderAddressSuggestions(localOptions.length ? localOptions : [], "Could not load live address matches.");
+        });
+    }, 320);
+  }
+
+  function formatDistance(miles) {
+    if (miles < 1) return "Under 1 mile away";
+    return miles.toFixed(1) + " miles away";
+  }
+
+  function setLocationStatus(message, isError) {
+    if (!locationStatus) return;
+    locationStatus.textContent = message || "";
+    locationStatus.classList.toggle("is-error", Boolean(isError));
+  }
+
+  function applyAddressLocation() {
+    if (!addressInput) return Promise.resolve(false);
+
+    var rawAddress = addressInput.value.trim();
+    if (!rawAddress) {
+      activeLocation = null;
+      setLocationStatus("");
+      applyFilters();
+      return Promise.resolve(true);
+    }
+
+    var match = findAddressMatch(rawAddress);
+    var matchReady = match
+      ? Promise.resolve(match)
+      : fetchMorrisCountyAddresses(rawAddress).then(function (results) {
+          remoteAddressSuggestions = results;
+          return results[0] || null;
+        }).catch(function () {
+          return null;
+        });
+
+    return matchReady.then(function (resolvedMatch) {
+      if (!resolvedMatch) {
+        activeLocation = null;
+        setLocationStatus(
+          hasAddressSeparators(rawAddress)
+            ? "Pick a suggested address or try a more specific Morris County address."
+            : "Address not found. Try adding commas like: street, town, NJ, or choose a suggestion.",
+          true
+        );
+        applyFilters();
+        return false;
+      }
+
+      activeLocation = {
+        label: resolvedMatch.label,
+        coords: [resolvedMatch.lat, resolvedMatch.lng]
+      };
+      addressInput.value = resolvedMatch.label;
+      setLocationStatus("Showing closest resources near " + resolvedMatch.label + ".");
+      hideAddressSuggestions();
+      applyFilters();
+      return true;
+    });
+  }
 
   /* ── Populate dropdown filters ── */
   function populateFilters() {
@@ -72,6 +518,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  function populateAddressSuggestions() {
+    if (!addressList) return;
+    hideAddressSuggestions();
+  }
+
   /* ── Update nav bookmark badge ── */
   function updateBadge() {
     if (typeof CareMapBookmarks === "undefined") return;
@@ -85,6 +536,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ── Render card grid ── */
   function renderResources(list) {
     currentFilteredList = list;
+    grid.setAttribute("aria-busy", "false");
     grid.innerHTML = "";
 
     if (list.length === 0) {
@@ -138,6 +590,9 @@ document.addEventListener('DOMContentLoaded', function () {
             "</svg>" +
             (r.town || "Morris County") +
           "</p>" +
+          (typeof r._distanceMiles === "number"
+            ? '<p class="res-card-distance">' + formatDistance(r._distanceMiles) + "</p>"
+            : "") +
           '<p class="res-card-desc">' + r.shortDesc + "</p>" +
           '<div class="res-card-tags">' + tagsHtml + "</div>" +
         "</div>" +
@@ -234,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (typeof CareMapBookmarks === "undefined") return;
 
-    var nowSaved = CareMapBookmarks.toggle(resourceId);
+    var nowSaved = CareMapBookmarks.toggle(resourceId, CareMapBookmarks.SECTIONS.SAVED);
 
     /* Update button */
     btn.textContent = nowSaved ? "♥" : "♡";
@@ -256,6 +711,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var query   = (searchInput.value || "").toLowerCase().trim();
     var catVal  = categoryFilter.value;
     var townVal = townFilter.value;
+    var radiusMiles = radiusFilter ? Number(radiusFilter.value || 5) : 5;
 
     var filtered = RESOURCES.filter(function (r) {
       var matchesCategory = (catVal === "all") || (r.category === catVal);
@@ -272,15 +728,35 @@ document.addEventListener('DOMContentLoaded', function () {
         matchesSearch = blob.toLowerCase().includes(query);
       }
 
+      r._distanceMiles = null;
+
+      if (activeLocation) {
+        var coords = getResourceCoords(r);
+        if (!coords) return false;
+
+        r._distanceMiles = milesBetween(activeLocation.coords, coords);
+        if (r._distanceMiles > radiusMiles) return false;
+      }
+
       return matchesCategory && matchesTown && matchesSearch;
     });
 
+    if (activeLocation) {
+      filtered.sort(function (a, b) {
+        return (a._distanceMiles || 0) - (b._distanceMiles || 0);
+      });
+    }
+
     showAll = false;
 
+    var resultPrefix = activeLocation
+      ? "Within " + radiusMiles + " miles: "
+      : "";
+
     resultsCount.textContent =
-      filtered.length <= 20
+      resultPrefix + (filtered.length <= 20
         ? "Showing " + filtered.length + " of " + RESOURCES.length + " resources"
-        : "Showing 20 of " + filtered.length + " resources";
+        : "Showing 20 of " + filtered.length + " resources");
 
     renderResources(filtered);
   }
@@ -418,7 +894,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         e.stopPropagation();
 
-        var nowSaved = CareMapBookmarks.toggle(r.id);
+        var nowSaved = CareMapBookmarks.toggle(r.id, CareMapBookmarks.SECTIONS.SAVED);
 
         /* Update modal heart */
         modalHeart.textContent = nowSaved ? "♥" : "♡";
@@ -471,15 +947,81 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ── Clear filters ── */
   clearBtn.addEventListener("click", function () {
     searchInput.value    = "";
+    if (addressInput) addressInput.value = "";
+    if (radiusFilter) radiusFilter.value = "5";
     categoryFilter.value = "all";
     townFilter.value     = "all";
+    activeLocation       = null;
     showAll              = false;
+    setLocationStatus("");
     applyFilters();
   });
 
   searchInput.addEventListener("input",     applyFilters);
   categoryFilter.addEventListener("change", applyFilters);
   townFilter.addEventListener("change",     applyFilters);
+
+  if (addressInput) {
+    addressInput.addEventListener("focus", function () {
+      renderAddressSuggestions(getFilteredAddressSuggestions(addressInput.value));
+    });
+
+    addressInput.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") {
+        if (!currentAddressOptions.length) return;
+        e.preventDefault();
+        highlightedAddressIndex = Math.min(highlightedAddressIndex + 1, currentAddressOptions.length - 1);
+        updateHighlightedAddress();
+      } else if (e.key === "ArrowUp") {
+        if (!currentAddressOptions.length) return;
+        e.preventDefault();
+        highlightedAddressIndex = Math.max(highlightedAddressIndex - 1, 0);
+        updateHighlightedAddress();
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (highlightedAddressIndex >= 0) {
+          selectAddressSuggestion(highlightedAddressIndex);
+        } else {
+          applyAddressLocation();
+        }
+      } else if (e.key === "Escape") {
+        hideAddressSuggestions();
+      }
+    });
+
+    addressInput.addEventListener("change", applyAddressLocation);
+    addressInput.addEventListener("input", function () {
+      if (!addressInput.value.trim()) {
+        activeLocation = null;
+        setLocationStatus("");
+        applyFilters();
+      }
+      updateAddressAutocomplete();
+    });
+  }
+
+  document.addEventListener("mousedown", function (e) {
+    if (!addressInput || !addressList) return;
+    if (addressInput.contains(e.target) || addressList.contains(e.target)) return;
+    hideAddressSuggestions();
+  });
+
+  if (radiusFilter) {
+    radiusFilter.addEventListener("change", function () {
+      if (activeLocation) {
+        applyFilters();
+      }
+    });
+  }
+
+  if (demoAddressBtn) {
+    demoAddressBtn.addEventListener("click", function () {
+      if (addressInput) addressInput.value = DEMO_ADDRESS;
+      applyAddressLocation();
+      var gridTop = grid.getBoundingClientRect().top + window.pageYOffset - 90;
+      window.scrollTo({ top: gridTop, behavior: "smooth" });
+    });
+  }
 
   /* ── Deep link: ?id=X from map pins, ?q= from hero search ── */
   function handleDeepLink() {
@@ -533,6 +1075,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Init ── */
   populateFilters();
+  populateAddressSuggestions();
   applyFilters();
 
   if (typeof CareMapBookmarks !== "undefined") {

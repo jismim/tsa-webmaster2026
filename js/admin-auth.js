@@ -1,3 +1,7 @@
+/* ============================================================
+   CareMap Morris — Admin Authentication
+============================================================ */
+
 const DEMO_ADMIN = {
   username: 'admin@caremapmorris.org',
   password: 'CareMapAdmin2026!'
@@ -54,6 +58,38 @@ function markActiveNav() {
   });
 }
 
+function wireAdminMenu() {
+  const menuToggle = document.querySelector('[data-admin-menu-toggle]');
+  const sidebar = document.getElementById('adminSidebar');
+  const sidebarBackdrop = document.querySelector('[data-admin-menu-backdrop]');
+
+  function closeAdminMenu() {
+    if (!menuToggle || !sidebar || !sidebarBackdrop) return;
+    sidebar.classList.remove('sidebar-open');
+    sidebarBackdrop.hidden = true;
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Open admin navigation');
+  }
+
+  if (!menuToggle || !sidebar || !sidebarBackdrop) return;
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('sidebar-open');
+    sidebarBackdrop.hidden = !isOpen;
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Close admin navigation' : 'Open admin navigation');
+  });
+
+  sidebarBackdrop.addEventListener('click', closeAdminMenu);
+  sidebar.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeAdminMenu);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAdminMenu();
+  });
+}
+
 window.CareMapAdminAuth = {
   DEMO_ADMIN,
   setAdminSession,
@@ -62,5 +98,6 @@ window.CareMapAdminAuth = {
   requireAdminAuth,
   logoutAdmin,
   wireLogoutButtons,
-  markActiveNav
+  markActiveNav,
+  wireAdminMenu
 };
