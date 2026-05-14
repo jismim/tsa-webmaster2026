@@ -238,8 +238,6 @@ kbd {
 
 /* ══════════════════════════════════════════════════════════
    HELP BUTTON — bottom-right floating button
-   Replaces the old #cm-tour-trigger.
-   Clicking it opens the walkthrough modal (help panel).
 ══════════════════════════════════════════════════════════ */
 #cm-help-btn {
   position: fixed;
@@ -338,7 +336,7 @@ kbd {
   transform: translateY(0) scale(.97);
 }
 
-/* ── "Tour complete" end card ─────────────────────────────── */
+/* ── "Tour complete" end card */
 #cm-tour-end {
   position: fixed;
   inset: 0;
@@ -422,7 +420,7 @@ kbd {
   border-color: rgba(247, 242, 234, .45);
 }
 
-/* ── Accessibility focus ring ─────────────────────────────── */
+/* ── Accessibility focus ring  */
 #cm-tour-card button:focus-visible,
 #cm-tour-end button:focus-visible,
 #cm-help-btn:focus-visible {
@@ -430,7 +428,7 @@ kbd {
   outline-offset: 3px;
 }
 
-/* ── Reduced motion ───────────────────────────────────────── */
+/* ── Reduced motion  */
 @media (prefers-reduced-motion: reduce) {
   #cm-tour-card,
   #cm-tour-ring,
@@ -440,7 +438,7 @@ kbd {
   .cm-help-label { transition: none !important; }
 }
 
-/* ── Mobile adjustments ───────────────────────────────────── */
+/* ── Mobile adjustments  */
 @media (max-width: 480px) {
   #cm-tour-card { width: calc(100vw - 32px); }
   .cm-end-card  { padding: 28px 22px; }
