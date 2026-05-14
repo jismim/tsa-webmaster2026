@@ -61,21 +61,7 @@ const CareMapBookmarks = (function () {
     return saved.size;
   }
 
-  /* ── Badge refresh ────────────────────────────────────── */
-  /*
-   * DROP-IN SNIPPET FOR OTHER PAGES:
-   * ─────────────────────────────────────────────────────────
-   * Add this anywhere after bookmarks.js loads to keep all
-   * .bookmark-count badges in sync:
-   *
-   *   if (typeof CareMapBookmarks !== 'undefined') {
-   *     CareMapBookmarks.updateAllBadges();
-   *   }
-   *
-   * The badge elements must have class="bookmark-count".
-   * The number shown is the combined total from both sections.
-   * ─────────────────────────────────────────────────────────
-   */
+  /*  Badge refresh  */
   function updateAllBadges() {
     const total = count(); // combined total
     document.querySelectorAll('.bookmark-count').forEach(function (el) {
@@ -85,12 +71,6 @@ const CareMapBookmarks = (function () {
   }
 
   /* ── Apply saved state to buttons on the page ─────────── */
-  /*
-   * Buttons must have:
-   *   data-id="<resourceId>"
-   *   data-section="cm_bookmarks_saved"  OR  "cm_bookmarks_giveback"
-   * If data-section is omitted, defaults to SAVED.
-   */
   function applyToPage() {
     document.querySelectorAll('.card-bookmark[data-id]').forEach(function (btn) {
       const id      = Number(btn.dataset.id);
@@ -126,7 +106,7 @@ const CareMapBookmarks = (function () {
     });
   }
 
-  /* ── Expose ───────────────────────────────────────────── */
+  /*  Expose  */
   return {
     SECTIONS,
     isSaved,
