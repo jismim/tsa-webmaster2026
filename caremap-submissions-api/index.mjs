@@ -42,7 +42,7 @@ function normalizeRoots(input) {
 function buildKey(root, status, id) {
   return `${root}/${status}/${id}.json`;
 }
-// commented for hardcoded login for tsa
+// Disabled: using hardcoded admin login for TSA
 // function isAdminAuthorized(event) {
 //   const headers = event.headers || {};
 //   const provided =

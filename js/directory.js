@@ -1,13 +1,22 @@
 /* ============================================================
    CareMap Morris — Directory JavaScript
-   Requires: resources.js and bookmarks.js loaded before this file
 ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  var MIN_RESOURCE_LOAD_MS = 2200;
   var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
-  resourcesReady.then(function (resources) {
+  var safeResourcesReady = resourcesReady.catch(function (error) {
+    console.error(error);
+    return [];
+  });
+  var resourceLoadDelay = new Promise(function (resolve) {
+    setTimeout(resolve, MIN_RESOURCE_LOAD_MS);
+  });
+
+  Promise.all([safeResourcesReady, resourceLoadDelay]).then(function (values) {
+    var resources = values[0];
     window.RESOURCES = Array.isArray(resources) ? resources : [];
     initDirectory();
   });
@@ -85,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ── Render card grid ── */
   function renderResources(list) {
     currentFilteredList = list;
+    grid.setAttribute("aria-busy", "false");
     grid.innerHTML = "";
 
     if (list.length === 0) {
@@ -234,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (typeof CareMapBookmarks === "undefined") return;
 
-    var nowSaved = CareMapBookmarks.toggle(resourceId);
+    var nowSaved = CareMapBookmarks.toggle(resourceId, CareMapBookmarks.SECTIONS.SAVED);
 
     /* Update button */
     btn.textContent = nowSaved ? "♥" : "♡";
@@ -418,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         e.stopPropagation();
 
-        var nowSaved = CareMapBookmarks.toggle(r.id);
+        var nowSaved = CareMapBookmarks.toggle(r.id, CareMapBookmarks.SECTIONS.SAVED);
 
         /* Update modal heart */
         modalHeart.textContent = nowSaved ? "♥" : "♡";

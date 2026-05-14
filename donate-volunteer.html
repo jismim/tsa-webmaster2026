@@ -9,16 +9,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/tour.css" />
   <link rel="stylesheet" href="css/donate-volunteer.css" />
   <link rel="icon" type="image/png" href="images/logo.png"/>
   <script src="js/bookmarks.js" defer></script>
   <script src="js/donate-volunteer.js" defer></script>
   <script src="js/script.js" defer></script>
+  <script src="js/tour.js" defer></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- MOBILE MENU -->
+    <!-- ═══ MOBILE MENU ═══ -->
     <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
       <div class="mobile-menu-head">
         <div class="mobile-menu-brand">
@@ -41,7 +43,7 @@
       </a>
     </nav>
 
-    <!-- HEADER -->
+    <!-- ═══ HEADER ═══ -->
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
@@ -125,7 +127,16 @@
     <div class="container dv-layout">
       <aside class="filter-sidebar" aria-label="Filter opportunities">
         <h2 class="filter-sidebar-title">Filter Opportunities</h2>
-
+<div class="filter-group">
+  <label class="group-label" for="filter-search">Search Resources</label>
+  <input
+    type="search"
+    id="filter-search"
+    placeholder='Try: "food pantry", "shelter", "counseling"...'
+    autocomplete="off"
+  />
+</div>
+<div class="filter-divider"></div>
         <div class="filter-group">
           <label class="group-label" for="filter-age">Age Group</label>
           <select id="filter-age">
@@ -138,7 +149,7 @@
         </div>
 
      <div class="filter-group">
-  <label class="group-label" for="filter-location">Town / Area</label>
+  <label class="group-label" for="filter-location">Town</label>
   <select id="filter-location">
     <option value="">Any location</option>
     <option value="boonton">Boonton</option>
@@ -189,7 +200,25 @@
           <h2 id="results-heading">All Opportunities</h2>
           <span class="results-count" id="resultsCount" aria-live="polite"></span>
         </div>
-        <div class="cards-list" id="cardsList" aria-labelledby="results-heading"></div>
+        <div class="cards-list" id="cardsList" aria-labelledby="results-heading" aria-busy="true">
+          <div class="dv-resource-loader" role="status" aria-live="polite">
+            <div class="dv-loader-head">
+              <div class="dv-loader-mark" aria-hidden="true">
+                <span class="dv-loader-ring"></span>
+                <span class="dv-loader-dot"></span>
+              </div>
+              <div>
+                <p class="dv-loader-title">Loading opportunities <span class="dv-loader-dots"><span>.</span><span>.</span><span>.</span></span></p>
+                <p class="dv-loader-copy">Checking the latest approved volunteer and donation listings from AWS.</p>
+              </div>
+            </div>
+            <div class="dv-loader-skeletons" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
         <div class="no-results" id="noResults" hidden>
           <strong>No results found</strong>
           Try adjusting your filters or <a href="submit.html">submit a new resource</a>.

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CareMap Morris | Admin Dashboard</title>
+  <link rel="icon" type="image/png" href="/images/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -14,8 +15,13 @@
   <a class="skip-link" href="#main">Skip to main content</a>
   <header class="site-header">
     <div class="container header-inner">
+  <button class="admin-menu-toggle" type="button" aria-label="Open admin navigation" aria-controls="adminSidebar" aria-expanded="false" data-admin-menu-toggle>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </button>
   <a class="brand" href="/index.html" aria-label="CareMap Morris Home">
-    <span class="brand-mark" aria-hidden="true"></span>
+    <img src="/images/logo.png" alt="CareMap Morris logo" class="brand-logo">
     <span class="brand-text">CareMap Morris</span>
   </a>
 
@@ -24,11 +30,11 @@
     <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
   </div>
 </div>
-</div>
   </header>
 
   <div class="admin-shell">
-    <aside class="sidebar" aria-label="Admin navigation">
+    <div class="admin-sidebar-backdrop" hidden data-admin-menu-backdrop></div>
+    <aside class="sidebar" id="adminSidebar" aria-label="Admin navigation">
       <p class="sidebar-title">Admin</p>
       <nav class="sidebar-group">
         <a class="sidebar-link" href="/admin/dashboard.html" data-nav-path="/admin/dashboard.html">Dashboard</a>
@@ -36,8 +42,8 @@
         <a class="sidebar-link" href="/admin/volunteer-submission.html" data-nav-path="/admin/volunteer-submission.html">Volunteer Submissions</a>
         <a class="sidebar-link" href="/admin/questions.html" data-nav-path="/admin/questions.html">Community Questions</a>
       </nav>
-      <!-- demo message -->
-      <!-- <div class="sidebar-note">
+      <!-- Disabled: sidebar demo note for TSA judges
+      <div class="sidebar-note">
         <strong>Demo moderation workflow</strong>
         <p style="margin:.55rem 0 0;">Status controls on the admin pages are visual for the competition build. Once your backend is connected, those controls can update the JSON automatically.</p>
       </div> -->
@@ -46,34 +52,31 @@
 
     <main id="main" class="main-panel">
       <div class="container">
-        <div class="topbar-mobile">
-          <a class="btn btn-muted" href="/admin/resource-submission.html">Go to Resource Submissions</a>
-        </div>
-
         <p class="page-eyebrow">Overview</p>
         <h1 class="page-title">Welcome, Admin</h1>
         <p class="page-subtitle">This dashboard gives you a high-level view of new activity from the public resource submission and community question forms.</p>
 
         <div class="top-actions">
           <a class="btn btn-green" href="/admin/resource-submission.html">Review resource submissions</a>
-          <a class="btn btn-primary" href="/admin/questions.html">Review community questions</a>
+          <a class="btn btn-primary" href="/admin/volunteer-submission.html">Review volunteer submissions</a>
+          <a class="btn btn-cream" href="/admin/questions.html">Review community questions</a>
         </div>
 
         <div class="stats-grid">
           <section class="card stat-card">
-            <div class="stat-label">Total resource submissions</div>
+            <div class="stat-label">Pending resource submissions</div>
             <div class="stat-value" id="totalResources">—</div>
             <div class="stat-note">All entries received from the “Submit a Resource” form.</div>
           </section>
           <section class="card stat-card">
-            <div class="stat-label">Total questions received</div>
-            <div class="stat-value" id="totalQuestions">—</div>
-            <div class="stat-note">Questions submitted by site visitors through the public question form.</div>
+            <div class="stat-label">Pending volunteer submissions</div>
+            <div class="stat-value" id="totalVolunteers">—</div>
+            <div class="stat-note">All entries received from the volunteer submission queue.</div>
           </section>
           <section class="card stat-card">
-            <div class="stat-label">Pending / new items</div>
-            <div class="stat-value" id="totalPending">—</div>
-            <div class="stat-note">Combined count of pending resource reviews and new questions.</div>
+            <div class="stat-label">Pending questions received</div>
+            <div class="stat-value" id="totalQuestions">—</div>
+            <div class="stat-note">Questions submitted by site visitors through the public question form.</div>
           </section>
         </div>
 

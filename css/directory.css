@@ -3,12 +3,9 @@
    Matches homepage warm editorial aesthetic
 ============================================================ */
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    PAGE HERO
-============================================================ */
-/* ============================================================
-   DIR HERO — Enhanced (like docs-hero but brown & cute)
-============================================================ */
+════════════════════════════════════════════════════════════ */
 
 .dir-hero {
   background: var(--ink);
@@ -40,7 +37,7 @@
   align-items: center;
 }
 
-/* LEFT TEXT */
+/* ── Left Text ── */
 .dir-hero-copy h1 {
   font-family: var(--ff-display);
   font-size: clamp(2rem, 3.5vw, 3.2rem);
@@ -63,7 +60,7 @@
   margin-bottom: 1.75rem;
 }
 
-/* RIGHT PANEL */
+/* ── Right Panel ── */
 .dir-hero-panel {
   display: grid;
   gap: 1rem;
@@ -106,7 +103,7 @@
   line-height: 1.5;
 }
 
-/* RESPONSIVE */
+/* ── Responsive ── */
 @media (max-width: 900px) {
   .dir-hero-inner {
     grid-template-columns: 1fr;
@@ -114,18 +111,18 @@
 }
 
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    DIRECTORY SECTION
-============================================================ */
+════════════════════════════════════════════════════════════ */
 .dir-section {
   padding: 2.5rem 0 5rem;
   background: var(--cream);
 }
 
 
-/* ============================================================
-   FILTER BAR (ASSUMES YOU ALREADY HAVE IT IN HTML)
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   FILTER BAR
+════════════════════════════════════════════════════════════ */
 .dir-controls {
   background: var(--paper);
   border: 1px solid var(--border);
@@ -200,19 +197,168 @@
 }
 
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    RESOURCE GRID
-============================================================ */
+════════════════════════════════════════════════════════════ */
 .resource-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 1.25rem;
 }
 
+.dir-resource-loader {
+  grid-column: 1 / -1;
+  min-height: 230px;
+  padding: 1.2rem;
+  border: 1px solid rgba(58, 40, 28, .12);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .68), rgba(247, 242, 234, .28)),
+    var(--paper);
+  box-shadow: 0 14px 38px rgba(26, 20, 16, .06);
+  overflow: hidden;
+}
 
-/* ============================================================
+.dir-loader-head {
+  display: flex;
+  align-items: center;
+  gap: .95rem;
+  margin-bottom: 1rem;
+}
+
+.dir-loader-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(192, 75, 32, .08);
+  display: grid;
+  place-items: center;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.dir-loader-ring {
+  position: absolute;
+  inset: 8px;
+  border-radius: inherit;
+  border: 2px solid rgba(192, 75, 32, .18);
+  border-top-color: var(--rust);
+  animation: dir-loader-spin .9s linear infinite;
+}
+
+.dir-loader-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--rust);
+  box-shadow: 0 0 0 6px rgba(192, 75, 32, .12);
+}
+
+.dir-loader-title {
+  margin: 0;
+  font-family: var(--ff-display);
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--bark);
+}
+
+.dir-loader-copy {
+  margin: .25rem 0 0;
+  font-size: .9rem;
+  line-height: 1.45;
+  color: var(--warm-gray);
+}
+
+.dir-loader-dots span {
+  animation: dir-loader-dot-fade 1.1s infinite ease-in-out;
+}
+
+.dir-loader-dots span:nth-child(2) {
+  animation-delay: .16s;
+}
+
+.dir-loader-dots span:nth-child(3) {
+  animation-delay: .32s;
+}
+
+.dir-loader-skeletons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dir-loader-skeletons span {
+  min-height: 132px;
+  border: 1px solid rgba(58, 40, 28, .1);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, .58) 48%, transparent 100%),
+    linear-gradient(var(--ink) 0 28px, transparent 28px),
+    linear-gradient(rgba(58, 40, 28, .1) 0 12px, transparent 12px),
+    linear-gradient(rgba(58, 40, 28, .08) 0 10px, transparent 10px),
+    linear-gradient(rgba(58, 40, 28, .08) 0 10px, transparent 10px),
+    var(--cream);
+  background-size:
+    65% 100%,
+    100% 100%,
+    44% 100%,
+    78% 100%,
+    58% 100%,
+    100% 100%;
+  background-position:
+    -120% 0,
+    0 0,
+    1rem 48px,
+    1rem 74px,
+    1rem 96px,
+    0 0;
+  background-repeat: no-repeat;
+  animation: dir-loader-shimmer 1.45s infinite ease-in-out;
+}
+
+.dir-loader-skeletons span:nth-child(2) {
+  animation-delay: .12s;
+}
+
+.dir-loader-skeletons span:nth-child(3) {
+  animation-delay: .24s;
+}
+
+@keyframes dir-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes dir-loader-dot-fade {
+  0%, 80%, 100% { opacity: .25; }
+  40% { opacity: 1; }
+}
+
+@keyframes dir-loader-shimmer {
+  to { background-position: 220% 0, 0 0, 1rem 48px, 1rem 74px, 1rem 96px, 0 0; }
+}
+
+@media (max-width: 760px) {
+  .dir-loader-skeletons {
+    grid-template-columns: 1fr;
+  }
+
+  .dir-loader-skeletons span:nth-child(n+2) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dir-loader-ring,
+  .dir-loader-dots span,
+  .dir-loader-skeletons span {
+    animation: none;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════
    RESOURCE CARD
-============================================================ */
+════════════════════════════════════════════════════════════ */
 .res-card {
   background: var(--paper);
   border: 1px solid var(--border);
@@ -225,11 +371,9 @@
   box-shadow: 0 12px 30px rgba(26, 20, 16, 0.05);
 }
 
-/* ============================================================
-   CAREMAP MORRIS — directory-additions.css
-   ADD these rules to the BOTTOM of css/directory.css
-   (or paste into a new file and link it after directory.css)
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   DIRECTORY ADDITIONS
+════════════════════════════════════════════════════════════ */
 
 /* ── CARD REVEAL ANIMATION ───────────────────────────────────
    Cards start invisible and slide up when they enter viewport.
@@ -452,9 +596,9 @@
 }
 
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    CATEGORY BADGE
-============================================================ */
+════════════════════════════════════════════════════════════ */
 .res-badge {
   display: inline-flex;
   align-items: center;
@@ -484,9 +628,9 @@
 .badge-senior           { background: rgba(95, 138, 58, 0.5); color: rgba(255,255,255, 0.5); }
 .badge-education        { background: rgba(138, 58, 168, 0.5); color: rgba(255,255,255,0.5); }
 .badge-social-services  { background: rgba(168, 90, 58, 0.5); color: rgba(255,255,255,0.5); }
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    CARD CONTENT
-============================================================ */
+════════════════════════════════════════════════════════════ */
 .res-card-title {
   font-family: var(--ff-display);
   font-size: 1.15rem;
@@ -542,9 +686,9 @@
 }
 
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    CARD FOOTER
-============================================================ */
+════════════════════════════════════════════════════════════ */
 .res-card-footer {
   padding: 1rem 1.3rem;
   border-top: 1px solid var(--border);
@@ -582,9 +726,9 @@
 }
 
 
-/* ============================================================
-   DETAIL MODAL (POPUP)
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   DETAIL MODAL
+════════════════════════════════════════════════════════════ */
 .detail-backdrop {
   position: fixed;
   inset: 0;
@@ -755,18 +899,18 @@
 }
 
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    ANIMATIONS
-============================================================ */
+════════════════════════════════════════════════════════════ */
 @keyframes popIn {
   from { opacity: 0; transform: translateY(22px) scale(.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 
-/* ============================================================
+/* ════════════════════════════════════════════════════════════
    RESPONSIVE
-============================================================ */
+════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
   .detail-info-grid {
     grid-template-columns: 1fr;
@@ -784,9 +928,9 @@
     justify-content: center;
   }
 }
-/* ============================================================
-   DIRECTORY — Make it match homepage aesthetic
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   DIRECTORY — Aesthetic Overrides
+════════════════════════════════════════════════════════════ */
 
 .dir-hero-title {
   font-family: var(--ff-display);
@@ -805,9 +949,9 @@
 
 
 
-/* ============================================================
-   FILTER BAR / CONTROLS — make it pretty
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   FILTER BAR / CONTROLS
+════════════════════════════════════════════════════════════ */
 
 .dir-controls {
   background: var(--paper);
@@ -919,9 +1063,9 @@
   box-shadow: 0 8px 18px rgba(192,75,32,.25);
 }
 
-/* ============================================================
-   RESULTS COUNT ("Showing 50/50 resources")
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   RESULTS COUNT
+════════════════════════════════════════════════════════════ */
 
 .dir-results-count {
   margin-top: .25rem;
@@ -949,9 +1093,9 @@
   opacity: .7;
 }
 
-/* ============================================================
-   RESOURCE CARDS — make them match homepage style
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   RESOURCE CARDS
+════════════════════════════════════════════════════════════ */
 
 .resource-card {
   border-radius: 10px;
@@ -977,9 +1121,9 @@
   color: #5A4F45;
 }
 
-/* ============================================================
-   POPUP MODAL — make it feel less ugly and more premium
-============================================================ */
+/* ════════════════════════════════════════════════════════════
+   POPUP MODAL
+════════════════════════════════════════════════════════════ */
 
 .modal-card {
   border-radius: 12px;

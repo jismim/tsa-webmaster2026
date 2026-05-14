@@ -6,19 +6,20 @@
   <title>CareMap Morris — Find Help. Give Back.</title>
   <meta name="description" content="CareMap Morris connects Morris County residents with trusted community resources and ways to donate or volunteer." />
 
-  <!-- Fonts -->
+  <!-- ── Fonts ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <!-- Stylesheet -->
+  <!-- ── Stylesheet ── -->
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/tour.css" /> 
 
-  <!-- Leaflet.js -->
+  <!-- ── Leaflet.js ── -->
 <link
   rel="stylesheet"
   href="https://unpkg.com/leaflet/dist/leaflet.css"
 /><link rel="stylesheet" href="css/bookmarks.css" />
-<!-- Favicon -->
+<!-- ── Favicon ── -->
 <link rel="icon" type="image/png" href="images/logo.png"/>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -40,7 +41,7 @@
   
   
     <a class = "skip-link" href = "#main">Skip to main content</a>
-    <!-- MOBILE MENU -->
+    <!-- ═══ MOBILE MENU ═══ -->
 <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
     <div class="mobile-menu-head">
       <div class="mobile-menu-brand">
@@ -63,7 +64,7 @@
   </a>
   </nav>
 
-<!-- HEADER -->
+<!-- ═══ HEADER ═══ -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
@@ -75,7 +76,7 @@
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
 
-        <!-- Resources Dropdown — SVG arrow (cross-platform safe) -->
+        <!-- ── Resources Dropdown ── -->
         <div class="nav-dropdown">
           <button class="dropdown-toggle" aria-expanded="false">
             Resources
@@ -106,17 +107,7 @@
     </div>
   </header>
 
-  <!-- ==================== FIRST-TIME USER WALKTHROUGH MODAL ==================== -->
-  <!--
-    SECTION: Welcome / Walkthrough Modal
-    Controls: js/main.js → openModal() / closeModal()
-    Styling:  css/style.css → .modal-backdrop, .modal-wrap, .modal-card, etc.
-    Trigger:  Shows automatically on first visit (session-based via sessionStorage).
-              To force re-show for testing: DevTools → Application → Session Storage
-              → delete the key "cm_welcomed"
-    To edit content: update text inside .modal-blocks or .modal-lead below
-    To add a new block: copy a .modal-block div and add it inside .modal-blocks
-  -->
+  <!-- ═══ WALKTHROUGH MODAL ═══ -->
   <div class="modal-backdrop" id="modalBackdrop" hidden></div>
   <div class="modal-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
     <div class="modal-card">
@@ -171,17 +162,10 @@
     </div>
   </div>
 
-  <!-- ==================== MAIN CONTENT ==================== -->
+  <!-- ═══ MAIN ═══ -->
   <main id="main">
 
-    <!-- HERO -->
-    <!--
-      SECTION: Hero
-      Styling: css/style.css → .hero, .hero-inner, .hero-copy, .hero-panel
-      Search:  js/main.js → doSearch() — redirects to directory.html?q=...
-      To change headline: edit the <h1> below
-      To change CTA buttons: edit .hero-ctas links
-    -->
+    <!-- ═══ HERO ═══ -->
     <section class="hero" aria-label="Site introduction">
       <div class="container hero-inner">
 
@@ -215,7 +199,7 @@
           </div>
         </div>
 
-        <!-- Right panel — decorative preview cards -->
+        <!-- ── Right panel ── -->
         <div class="hero-panel" aria-hidden="true">
           <div class="hp-card">
             <p class="hp-card-kicker food">Food &amp; Nutrition</p>
@@ -279,6 +263,31 @@
         </p>
         <p class="stat-label">nonprofits and community services listed in our directory</p>
       </article>
+    <!-- ═══ STATS ═══ -->
+    <section class="stats-section" aria-label="Community need statistics">
+      <div class="container">
+        <div class="stats-grid">
+          <article class="stat-item">
+            <p class="stat-number">
+              <span class="count-num" data-target="12">0</span><span class="stat-suffix">%</span>
+            </p>
+            <p class="stat-label">of Morris County residents estimated to face food insecurity</p>
+          </article>
+
+          <article class="stat-item">
+            <p class="stat-number">
+              <span class="count-num" data-target="30">0</span><span class="stat-suffix">+</span>
+            </p>
+            <p class="stat-label">nonprofits and community services listed in our directory</p>
+          </article>
+
+          <article class="stat-item">
+            <p class="stat-number">
+              <span class="count-num" data-target="50">0</span><span class="stat-suffix">+</span>
+            </p>
+            <p class="stat-label">volunteer opportunities available across Morris County</p>
+          </article>
+        </div>
 
       <article class="stat-item">
         <p class="stat-number">
@@ -294,15 +303,7 @@
   </div>
 </section>
 
-    <!-- FEATURED RESOURCES -->
-    <!--
-      SECTION: Featured Organization Cards
-      Styling: css/style.css → .featured-section, .cards-grid, .resource-card
-      Scroll animation: cards use class="reveal" — staggered by js/main.js
-      Bookmark: js/main.js → .card-bookmark click handler
-      To add a card: copy an <article class="resource-card"> block
-      To change category badge color: update .cat-food / .cat-shelter / .cat-housing
-    -->
+    <!-- ═══ FEATURED RESOURCES ═══ -->
     <section class="section featured-section" aria-label="Featured organizations">
       <div class="container">
         <p class="section-label reveal">Featured Organizations</p>
@@ -311,7 +312,7 @@
 
         <div class="cards-grid">
 
-          <!-- Card 1 — Food -->
+          <!-- ── Card 1 — Food ── -->
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-food">Food Pantry</span>
@@ -335,7 +336,7 @@
             </div>
           </article>
 
-          <!-- Card 2 — Shelter -->
+          <!-- ── Card 2 — Shelter ── -->
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-shelter">Women's Shelter</span>
@@ -360,7 +361,7 @@
             </div>
           </article>
 
-          <!-- Card 3 — Housing -->
+          <!-- ── Card 3 — Housing ── -->
           <article class="resource-card reveal">
             <div class="card-top">
               <span class="card-category cat-housing">Housing Services</span>
@@ -392,36 +393,7 @@
       </div>
     </section>
 
-    <!-- COMMUNITY MAP -->
-    <!--
-      SECTION: Resource Map
-      HOW TO IMPLEMENT:
-        Option A — Google Maps Embed (simplest, no API key needed):
-          1. Go to maps.google.com
-          2. Search "Morris County, NJ"
-          3. Click Share → Embed a map → Copy the <iframe> src URL
-          4. Replace the src="..." in the iframe below with that URL
-          5. Remove the .map-placeholder div once your real map is in
-
-        Option B — Google Maps JavaScript API (recommended for pins):
-          1. Get a Maps JavaScript API key from console.cloud.google.com
-          2. Add <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY"></script>
-          3. Replace the iframe with a <div id="map" style="width:100%;height:100%"></div>
-          4. Initialize the map in js/main.js with new google.maps.Map(...)
-          5. Add Marker objects for each organization location
-
-        Option C — Leaflet.js (free, no API key):
-          1. Add to <head>:
-             <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-             <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-          2. Replace iframe with: <div id="map" style="width:100%;height:100%"></div>
-          3. In js/main.js:
-             const map = L.map('map').setView([40.7968, -74.4773], 12); // Morris County center
-             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-             L.marker([40.7968, -74.4773]).addTo(map).bindPopup('Organization Name');
-
-      Styling: css/style.css → .map-section, .map-wrapper, .map-legend
-    -->
+    <!-- ═══ COMMUNITY MAP ═══ -->
     <section class="map-section" aria-label="Community resource map">
       <div class="container">
         <p class="section-label reveal">Find Resources Near You</p>
@@ -443,12 +415,7 @@
 </div>
     </section>
 
-    <!-- GIVE BACK -->
-    <!--
-      SECTION: Give Back
-      Styling: css/style.css → .give-back, .give-back-inner, .gb-ways
-      To add a "way": copy a .gb-way block inside .gb-ways
-    -->
+    <!-- ═══ GIVE BACK ═══ -->
     <section class="give-back" aria-label="Ways to give back to the community">
       <div class="container give-back-inner">
 
@@ -490,16 +457,7 @@
 
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
-  <!--
-    SECTION: Footer
-    FIX: Removed broken/duplicate links. Pages not yet built are
-         marked "coming soon" via CSS (awareness.html, events.html).
-    FIX: Updated contact info placeholder.
-    Date/Year: auto-populated by js/main.js (#footerDate, #footerYear)
-    To add a footer link: add an <li><a href="...">Label</a></li>
-    Styling: css/style.css → .site-footer, .footer-grid, .footer-bottom
-  -->
+  <!-- ═══ FOOTER ═══ -->
  <footer class="site-footer">
   <div class="container footer-grid">
     <div>
@@ -529,7 +487,7 @@
         Morris County, New Jersey<br>
         Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
       </p>
-      <!-- Admin button moved here -->
+      <!-- ── Admin ── -->
       <p class="admin-label" style="margin-top:1rem; font-size: .8rem ; color: rgba(247,242,234,.4); font-weight:500">Administrator</p>
       <a href="/admin/login.html" class="admin-link">Admin Login</a>
     </div>
@@ -544,10 +502,11 @@
   </div>
 </footer>
   </div>
-  <!-- JavaScript -->
+  <!-- ── Scripts ── -->
 <script src="js/resources.js"></script>
 <script src="js/bookmarks.js"></script>
 <script src="js/script.js"></script>
+  <script src="js/tour.js"></script> 
 
 </body>
 </html>

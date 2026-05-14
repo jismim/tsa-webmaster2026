@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  const MIN_GIVE_BACK_LOAD_MS = 2200;
+
   /* ── 1. Hero load-in (fires on page load, not scroll) ── */
   setTimeout(function () {
     document.querySelectorAll('.reveal-hero').forEach(function (el) {
@@ -31,46 +33,206 @@ document.addEventListener('DOMContentLoaded', function () {
   if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
 
   /* ── DATA ── */
-  const DATA = [
-    {id:1,  kind:"donate & volunteer", title:"St. Peter's Food Pantry",                    desc:"Food pantry providing groceries to individuals and families in need.",                                                                                                  age:["adult","family"],               location:"clifton",       services:["food","hygiene"],                   link:"https://www.saintpetershaven.org/",                             phone:"(973) 546-3406", address:"380 Clifton Ave, Clifton, NJ 07011"},
-    {id:2,  kind:"donate & volunteer", title:"Morris County Nutrition Project",              desc:"Provides meal services and nutrition support for seniors in Morris County.",                                                                                            age:["senior"],                       location:"county-wide",   services:["food"],                             link:"",                                                             phone:"",               address:"Morris County, NJ"},
-    {id:3,  kind:"donate & volunteer", title:"Nourish NJ",                                   desc:"Provides meals, food assistance, and social services with volunteer opportunities.",                                                                                    age:["adult","family","senior"],       location:"dover",         services:["food","hygiene"],                   link:"https://www.nourishnj.org/",                                    phone:"(862)-397-0030", address:"347 S Salem St, Dover, NJ 07801"},
-    {id:4,  kind:"donate & volunteer", title:"Loaves & Fishes/First Presbyterian",           desc:"Community meal program run by First Presbyterian Church of Boonton.",                                                                                                  age:["adult","family"],               location:"boonton",       services:["food","hygiene"],                   link:"https://lfcfp.org/",                                            phone:"(973) 352-7668", address:"513 Birch St, Boonton, NJ 07005"},
-    {id:5,  kind:"donate & volunteer", title:"St. John's Soup Kitchen",                     desc:"Provides meals to the community with volunteer and donation opportunities.",                                                                                             age:["adult","family"],               location:"newark",        services:["food","hygiene"],                   link:"https://www.njsk.org/we-need",                                  phone:"(973) 623-0822", address:"871 McCarter Hwy, Newark, NJ 07102"},
-    {id:6,  kind:"donate & volunteer", title:"Salvation Army",                               desc:"Provides food assistance and community services with donation and volunteer opportunities.",                                                                             age:["adult","family"],               location:"dover",         services:["food","housing","clothing","hygiene"],link:"https://satruck.org/",                                          phone:"(800)-728-7825", address:"24 Bassett Hwy, Dover, NJ 07801"},
-    {id:7,  kind:"donate",             title:"Jersey Battered Women's Services",             desc:"Supports survivors of domestic violence through programs funded by donations.",                                                                                          age:["adult","family"],               location:"morristown",    services:["housing","counseling"],             link:"https://jbws.org/",                                             phone:"(973) 267-7520", address:"Morristown, NJ 07962"},
-    {id:8,  kind:"donate",             title:"Family Promise of Morris County",              desc:"Supports families experiencing homelessness through donations and services.",                                                                                            age:["adult","family"],               location:"morristown",    services:["housing","food","clothing","hygiene"],link:"https://www.familypromisemorris.org/wish-list",                phone:"(973) 998-0820", address:"Morristown, NJ 07962"},
-    {id:9,  kind:"donate",             title:"Morris County Park Commission",                desc:"Supports parks and community programs through donations.",                                                                                                              age:["adult","family"],               location:"morristown",    services:["environment"],                      link:"https://www.morrisparks.net/care-for-our-parks/donations/",    phone:"(973)-326-7600", address:"300 Mendham Rd, Morristown, NJ 07960"},
-    {id:10, kind:"donate & volunteer", title:"Child & Family Resource",                      desc:"Provides family support services with volunteer and donation opportunities.",                                                                                            age:["adult","family","teen"],         location:"mt-arlington",  services:["childcare","food"],                 link:"https://cfrmorris.org/",                                        phone:"(973) 398-1730", address:"111 Howard Blvd #104, Mt Arlington, NJ 07856"},
-    {id:11, kind:"donate & volunteer", title:"Habitat For Humanity ReStore",                 desc:"Accepts donations and offers volunteer opportunities supporting housing.",                                                                                               age:["adult","family"],               location:"randolph",      services:["housing"],                          link:"https://www.morrishabitat.org/",                                phone:"(973) 366-3358", address:"274 S Salem St, Randolph, NJ 07869"},
-    {id:12, kind:"volunteer",          title:"Edna's Haven",                                 desc:"Provides meals and community support with volunteer opportunities.",                                                                                                     age:["adult","family"],               location:"dover",         services:["food"],                             link:"https://www.tlcnj.org/ednas-haven",                             phone:"(973) 366-2821", address:"123 E Blackwell St, Dover, NJ 07801"},
-    {id:13, kind:"donate & volunteer", title:"I A.M. Hope NJ",                               desc:"Community outreach organization offering support services, volunteering, and donations.",                                                                               age:["adult","family","teen"],         location:"county-wide",   services:["food","clothing","hygiene"],        link:"https://www.iamhopenj.org/",                                    phone:"(973) 865-4852", address:"Various locations, NJ"},
-    {id:14, kind:"donate",             title:"Green Vision Inc.",                             desc:"Supports environmental and community initiatives through donations.",                                                                                                   age:["adult","family"],               location:"randolph",      services:["environment"],                      link:"https://gvinc.org/",                                            phone:"(973) 998-7955", address:"8 Emery Ave, Randolph, NJ 07869"},
-    {id:15, kind:"volunteer",          title:"Morris Minute Men EMS",                         desc:"Emergency medical services organization with volunteer opportunities.",                                                                                                 age:["adult"],                        location:"morris-plains", services:["medical"],                          link:"https://morrisminutemen.org/",                                  phone:"(973) 539-1776", address:"97 Mill Road, Morris Plains, NJ 07950"},
-    {id:16, kind:"volunteer",          title:"Literary Volunteers of Morris County",          desc:"Provides literacy tutoring and education through volunteers.",                                                                                                          age:["adult"],                        location:"morristown",    services:["education"],                        link:"https://www.lvmorris.org/",                                     phone:"(973) 984-1998", address:"16 Elm St, 1st Floor, Morristown, NJ 07960"},
-    {id:17, kind:"donate & volunteer", title:"St. Hubert's Animal Welfare Center",           desc:"Animal shelter accepting volunteers and donations.",                                                                                                                    age:["adult","teen"],                 location:"madison",       services:["animals"],                          link:"https://www.sthuberts.org/volunteer",                           phone:"(973) 377-2295", address:"575 Woodland Ave, Madison, NJ 07940"},
-    {id:18, kind:"volunteer",          title:"Morris Museum",                                 desc:"Volunteer opportunities supporting museum programs and events.",                                                                                                        age:["adult","teen"],                 location:"morristown",    services:["education"],                        link:"https://morrismuseum.org/join-our-team/volunteer-program",      phone:"(973) 971-3700", address:"6 Normandy Heights Road, Morristown, NJ 07960"},
-    {id:19, kind:"volunteer",          title:"Atlantic Health",                               desc:"Healthcare system offering structured volunteer programs.",                                                                                                             age:["adult"],                        location:"morristown",    services:["medical"],                          link:"https://www.f4mmc.org/ways-to-give/volunteer/",                 phone:"(973) 593-2400", address:"310 South Street, 4th Floor, Morristown, NJ 07960"},
-    {id:20, kind:"donate & volunteer", title:"Interfaith Food Pantry",                       desc:"Provides food assistance and accepts volunteers and donations.",                                                                                                        age:["adult","family"],               location:"morris-plains", services:["food","hygiene"],                   link:"https://www.mcifp.org/",                                        phone:"(973) 538-8049", address:"2 Executive Drive, Morris Plains, NJ 07950"},
-    {id:21, kind:"donate & volunteer", title:"Market Street Mission",                        desc:"Provides meals, shelter, and accepts volunteers and donations.",                                                                                                        age:["adult"],                        location:"morristown",    services:["food","housing","clothing","hygiene"],link:"https://www.marketstreet.org/",                                phone:"(973) 538-0431", address:"9 Market Street, Morristown, NJ 07960"},
-    {id:22, kind:"donate & volunteer", title:"Morristown Meals on Wheels",                   desc:"Delivers meals to homebound individuals with volunteer support.",                                                                                                       age:["senior","adult"],               location:"morristown",    services:["food"],                             link:"https://morristownmeals-on-wheels.org/",                        phone:"(973) 532-2706", address:"Morristown, NJ 07962"},
-    {id:23, kind:"volunteer",          title:"National Historical Park",                      desc:"Volunteer opportunities supporting park operations and education.",                                                                                                     age:["adult","teen"],                 location:"morristown",    services:["education"],                        link:"https://www.nps.gov/morr/getinvolved/volunteer.htm",            phone:"(973) 539-2016", address:"30 Washington Place, Morristown, NJ 07960"},
-    {id:24, kind:"donate",             title:"Children's Specialized Hospital Foundation",   desc:"Supports pediatric healthcare through donations.",                                                                                                                      age:["family","child"],               location:"newark",        services:["medical"],                          link:"https://www.give2csh.org/",                                     phone:"(908) 588-5181", address:"Newark, NJ 07101-4000"},
-    {id:25, kind:"donate & volunteer", title:"Community Hope Inc",                            desc:"Provides housing, mental health services, and community support programs.",                                                                                            age:["adult","family"],               location:"parsippany",    services:["housing","counseling"],             link:"https://www.communityhope-nj.org/",                             phone:"(973) 463-9600", address:"959 US-46 #402, Parsippany, NJ 07054"},
-    {id:26, kind:"donate & volunteer", title:"First Presbyterian Church of Rockaway",        desc:"Operates a food closet providing groceries to local residents.",                                                                                                       age:["adult","family"],               location:"rockaway",      services:["food","hygiene"],                   link:"https://fpcrockaway.org/",                                      phone:"(973) 627-1059", address:"35 Church St, Rockaway, NJ 07866"},
-    {id:27, kind:"donate & volunteer", title:"First Presbyterian Church of Whippany",        desc:"Food pantry offering grocery assistance to Whippany residents by appointment.",                                                                                        age:["adult","family"],               location:"whippany",      services:["food","hygiene"],                   link:"https://www.whippanychurch.com/",                               phone:"(973) 887-2197", address:"494 NJ-10, Whippany, NJ 07981"},
-    {id:28, kind:"donate",             title:"Legal Services of Northwest Jersey",            desc:"Provides free civil legal assistance to eligible low-income residents of Morris County, including help with housing, family law, and public benefits.",                age:["adult","family","senior"],       location:"morristown",    services:["legal"],                            link:"https://www.lsnwj.org/",                                        phone:"(973) 285-6911", address:"30 Schuyler Pl, Morristown, NJ 07960"},
-    {id:29, kind:"donate & volunteer", title:"Color A Smile",                                desc:"Volunteers create cheerful drawings that are sent to isolated seniors, troops, and others who could use a smile.",                                                      age:["adult","family","teen","kids"], location:"morristown",    services:["education"],                        link:"https://colorasmile.org/",                                      phone:"(973) 540-9222", address:"164 Ridgedale Ave Unit 7, Morristown, NJ 07960"},
-    {id:30, kind:"volunteer",          title:"Morristown & Morris Township Library",          desc:"Teen volunteer program supporting library programs and community services.",                                                                                            age:["teen","kids"],                  location:"morristown",    services:["education"],                        link:"https://mmtlibrary.org/teens/teen-volunteers/",                 phone:"(973) 538-6161", address:"1 Miller Rd, Morristown, NJ 07960"},
-    {id:31, kind:"volunteer",          title:"Kinnelon Volunteer Animal Shelter",             desc:"Community animal shelter offering volunteer opportunities for animal care and adoption support.",                                                                        age:["adult","teen","kids"],          location:"kinnelon",      services:["animals"],                          link:"https://www.kvasnj.org/",                                       phone:"(973) 283-4120", address:"118 Kinnelon Rd, Kinnelon, NJ 07405"},
-    {id:32, kind:"volunteer",          title:"Butler Museum",                                 desc:"Local history museum with volunteer opportunities supporting exhibits and community events.",                                                                            age:["adult","teen","kids"],          location:"butler",        services:["education"],                        link:"https://www.butlerborough.com/cn/webpage.cfm?tpid=17694",      phone:"(973) 838-7222", address:"Main St, Butler, NJ 07405"},
-    {id:33, kind:"volunteer",          title:"Whippany Railway Museum",                       desc:"Historic railway museum offering volunteer opportunities supporting preservation and education.",                                                                        age:["adult","teen","kids"],          location:"whippany",      services:["education"],                        link:"https://whippanyrailwaymuseum.net/",                            phone:"(973) 887-8177", address:"1 Railroad Plaza, Whippany, NJ 07981"},
-    {id:34, kind:"donate & volunteer", title:"Riverdale Food Pantry",                        desc:"Municipal food pantry providing groceries to Riverdale residents in need.",                                                                                             age:["adult","family","kids"],        location:"riverdale",     services:["food"],                             link:"https://www.riverdalenj.gov/pages/riverdale-food-pantry",      phone:"(973) 714-7141", address:"57 Loy Ave, Riverdale, NJ 07457"},
-    {id:35, kind:"volunteer",          title:"Roxbury Public Library",                        desc:"Public library offering volunteer opportunities supporting programs and community services.",                                                                            age:["adult","teen","kids"],          location:"roxbury",       services:["education"],                        link:"https://www.roxburylibrary.org/",                               phone:"(973) 584-2400", address:"103 Main St, Succasunna, NJ 07876"},
-    {id:36, kind:"volunteer",          title:"Chester Mendham Food Pantry",                   desc:"Food pantry serving Chester and Mendham communities with volunteer-run grocery assistance.",                                                                           age:["adult","family","kids"],        location:"chester",       services:["food"],                             link:"https://www.chestermendhamfp.com/volunteering.html",           phone:"(862) 419-3373", address:"100 North Road, Chester, NJ 07930"},
-    {id:37, kind:"donate",             title:"Florham Park Education Foundation",             desc:"Supports public education in Florham Park through fundraising and community donations.",                                                                               age:["adult","family"],               location:"florham-park",  services:["education"],                        link:"https://www.fpefnj.org/ways-to-give",                          phone:"(646) 425-5030", address:"Florham Park, NJ 07932"},
-    {id:38, kind:"donate",             title:"NJ Chronic Fatigue Syndrome Association Inc.", desc:"Nonprofit supporting awareness, education, and advocacy for individuals living with chronic fatigue syndrome.",                                                         age:["adult","family","senior"],      location:"florham-park",  services:["medical"],                          link:"https://www.njcfsa.org/",                                       phone:"",               address:"Florham Park, NJ 07932"},
+  const VOLUNTEER_APPROVED_ENDPOINTS = [
+    "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/approved/formatted?root=volunteer",
+    "https://8dz55fh325.execute-api.us-east-1.amazonaws.com/prod/approved?root=volunteer"
   ];
+
+  const DATA = [];
+
+  function slugify(value) {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function unwrapApprovedItems(payload) {
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload?.items)) {
+      return payload.items.map(item => item.data || item);
+    }
+    return [];
+  }
+
+  function firstText(...values) {
+    return values.find(value => String(value || '').trim()) || '';
+  }
+
+  function inferKind(item) {
+    if (item.kind) return String(item.kind).toLowerCase();
+
+    const donationNeeds = firstText(item.donationNeeds, item.donation_needs);
+    const volunteerRoles = firstText(item.volunteerRoles, item.volunteerOpportunities, item.volunteer_opportunities);
+
+    if (donationNeeds && volunteerRoles) return 'donate & volunteer';
+    if (donationNeeds) return 'donate';
+    return 'volunteer';
+  }
+
+  function mergeKinds(existingKind, approvedKind) {
+    const kinds = new Set();
+
+    [existingKind, approvedKind].forEach(kind => {
+      const normalized = String(kind || '').toLowerCase();
+      if (normalized.includes('donate')) kinds.add('donate');
+      if (normalized.includes('volunteer')) kinds.add('volunteer');
+    });
+
+    if (kinds.has('donate') && kinds.has('volunteer')) return 'donate & volunteer';
+    if (kinds.has('donate')) return 'donate';
+    return 'volunteer';
+  }
+
+  function inferAges(item) {
+    if (Array.isArray(item.age) && item.age.length) return item.age.map(slugify).filter(Boolean);
+
+    const text = [
+      item.category,
+      item.resourceType,
+      item.desc,
+      item.shortDesc,
+      item.longDesc,
+      item.description,
+      item.volunteerRoles,
+      item.volunteerOpportunities
+    ].join(' ').toLowerCase();
+
+    const ages = new Set(['adult']);
+    if (text.includes('family')) ages.add('family');
+    if (text.includes('teen') || text.includes('youth')) ages.add('teen');
+    if (text.includes('kid') || text.includes('child')) ages.add('kids');
+    if (text.includes('senior')) ages.add('senior');
+    return Array.from(ages);
+  }
+
+  function inferLocation(item) {
+    if (item.location) return slugify(item.location);
+    if (item.town) return slugify(item.town);
+
+    const knownLocations = [
+      'boonton', 'butler', 'chester', 'clifton', 'dover', 'florham-park',
+      'kinnelon', 'madison', 'morris-plains', 'morristown', 'mt-arlington',
+      'newark', 'parsippany', 'randolph', 'riverdale', 'rockaway', 'roxbury',
+      'whippany'
+    ];
+    const normalizedAddress = slugify(item.address);
+    return knownLocations.find(location => normalizedAddress.includes(location)) || 'county-wide';
+  }
+
+  function mapService(value) {
+    const serviceMap = {
+      'food-pantry': 'food',
+      shelter: 'housing',
+      'domestic-violence': 'counseling',
+      'mental-health': 'counseling',
+      'legal-aid': 'legal',
+      'youth-services': 'childcare',
+      'senior-services': 'social',
+      'disability-services': 'social',
+      'job-training': 'education',
+      healthcare: 'medical',
+      social: 'social',
+      education: 'education',
+      substance: 'counseling',
+      violence: 'counseling',
+      legal: 'legal',
+      childcare: 'childcare',
+      hygiene: 'hygiene',
+      housing: 'housing',
+      food: 'food'
+    };
+    const slug = slugify(value);
+    return serviceMap[slug] || slug;
+  }
+
+  function inferServices(item) {
+    const services = [
+      ...(Array.isArray(item.services) ? item.services : []),
+      ...(Array.isArray(item.servicesProvided) ? item.servicesProvided : []),
+      item.category,
+      item.resourceType
+    ]
+      .map(mapService)
+      .filter(Boolean);
+
+    return Array.from(new Set(services));
+  }
+
+  function makeNumericId(item) {
+    const numericId = Number(item.id);
+    if (Number.isSafeInteger(numericId) && numericId > 0) return 1000000 + numericId;
+
+    const source = String(item.id || item.title || item.organizationName || item.name || '');
+    return 1000000 + Math.abs(source.split('').reduce((hash, char) => {
+      return ((hash << 5) - hash) + char.charCodeAt(0);
+    }, 0));
+  }
+
+  function normalizeApprovedVolunteer(item) {
+    return {
+      id: makeNumericId(item),
+      kind: inferKind(item),
+      title: firstText(item.title, item.organizationName, item.name),
+      desc: firstText(item.desc, item.volunteerRoles, item.volunteerOpportunities, item.donationNeeds, item.shortDesc, item.description, item.longDesc),
+      age: inferAges(item),
+      location: inferLocation(item),
+      services: inferServices(item),
+      link: firstText(item.website, item.link),
+      phone: firstText(item.phone),
+      address: firstText(item.address)
+    };
+  }
+
+  async function fetchApprovedVolunteerItems() {
+    for (const endpoint of VOLUNTEER_APPROVED_ENDPOINTS) {
+      try {
+        const response = await fetch(endpoint, { cache: 'no-store' });
+        if (!response.ok) continue;
+
+        const items = unwrapApprovedItems(await response.json())
+          .map(normalizeApprovedVolunteer)
+          .filter(item => item.title && item.desc);
+
+        if (items.length) return items;
+      } catch (error) {
+        console.warn(`Unable to load approved volunteer opportunities from ${endpoint}`, error);
+      }
+    }
+
+    return [];
+  }
+
+  async function loadApprovedVolunteerOpportunities() {
+    const approvedItems = await fetchApprovedVolunteerItems();
+    const existingIds = new Set(DATA.map(item => Number(item.id)));
+    const existingByTitle = new Map(DATA.map(item => [slugify(item.title), item]));
+    const newItems = [];
+
+    approvedItems.forEach(item => {
+      const existingItem = existingByTitle.get(slugify(item.title));
+
+      if (existingItem) {
+        existingItem.kind = mergeKinds(existingItem.kind, item.kind);
+        existingItem.desc = firstText(item.desc, existingItem.desc);
+        existingItem.age = Array.from(new Set([...(existingItem.age || []), ...(item.age || [])]));
+        existingItem.services = Array.from(new Set([...(existingItem.services || []), ...(item.services || [])]));
+        existingItem.link = firstText(existingItem.link, item.link);
+        existingItem.phone = firstText(existingItem.phone, item.phone);
+        existingItem.address = firstText(existingItem.address, item.address);
+        existingItem.location = existingItem.location === 'county-wide' ? item.location : existingItem.location;
+        return;
+      }
+
+      if (!existingIds.has(Number(item.id))) {
+        newItems.push(item);
+      }
+    });
+
+    DATA.unshift(...newItems);
+  }
 
   const cardsList      = document.getElementById('cardsList');
   const noResults      = document.getElementById('noResults');
@@ -92,9 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentPage    = 1;
   const PAGE_SIZE    = 8;
 
-  // -------------------
-  // Nav badge helper
-  // -------------------
+  /* ── Nav badge helper ── */
   function updateDvBadge() {
     if (typeof CareMapBookmarks === 'undefined') return;
     const count = CareMapBookmarks.count();
@@ -104,11 +264,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  function syncLocationFilterOptions() {
+    const existing = new Set(Array.from(filterLocation.options).map(option => option.value));
+
+    Array.from(new Set(DATA.map(item => item.location).filter(Boolean)))
+      .sort()
+      .forEach(location => {
+        if (existing.has(location)) return;
+
+        const option = document.createElement('option');
+        option.value = location;
+        option.textContent = location
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        filterLocation.appendChild(option);
+      });
+  }
+
   // -------------------
   // Kind badge HTML
   // -------------------
   function kindBadgesHtml(kind) {
     if (kind === 'donate & volunteer') {
+      if (activeTab === 'donate')    return `<span class="kind-badge badge-donate">Donate</span>`;
+      if (activeTab === 'volunteer') return `<span class="kind-badge badge-volunteer">Volunteer</span>`;
       return `<span class="kind-badge badge-donate">Donate</span><span class="kind-badge badge-volunteer">Volunteer</span>`;
     }
     if (kind === 'volunteer') {
@@ -117,16 +297,43 @@ document.addEventListener('DOMContentLoaded', function () {
     return `<span class="kind-badge badge-donate">Donate</span>`;
   }
 
-  // -------------------
-  // Main render function
-  // -------------------
+  function formatServiceTag(service) {
+    const labels = {
+      animals: 'Animals',
+      childcare: 'Childcare',
+      clothing: 'Clothing',
+      counseling: 'Counseling',
+      education: 'Education',
+      environment: 'Environment',
+      food: 'Food',
+      housing: 'Housing',
+      hygiene: 'Hygiene',
+      legal: 'Legal',
+      medical: 'Medical'
+    };
+
+    return labels[service] || service
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  function servicePillsHtml(services) {
+    return (services || [])
+      .map(service => `<span class="card-pill">${formatServiceTag(service)}</span>`)
+      .join('');
+  }
+
+  /* ── Main render function ── */
   function render() {
+    cardsList.setAttribute('aria-busy', 'false');
+
     const age      = filterAge.value;
     const location = filterLocation.value.toLowerCase();
 
     const filtered = DATA.filter(item => {
-      if (activeTab === 'donate'    && !item.kind.includes('donate'))    return false;
-      if (activeTab === 'volunteer' && !item.kind.includes('volunteer')) return false;
+      if (activeTab === 'donate'    && item.kind === 'volunteer') return false;
+      if (activeTab === 'volunteer' && item.kind === 'donate')    return false;
       if (age      && !item.age.includes(age))                           return false;
       if (location && item.location.toLowerCase() !== location)          return false;
       if (activeServices.length && !activeServices.every(s => item.services.includes(s))) return false;
@@ -148,7 +355,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
     cardsList.innerHTML = pageItems.map(item => {
-      const pills = item.services.map(s => `<span class="card-pill">${s}</span>`).join('');
       const townDisplay = item.location
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -159,28 +365,46 @@ document.addEventListener('DOMContentLoaded', function () {
       const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
       return `
-        <article class="dv-card" tabindex="0" role="button" aria-label="View details for ${item.title}" data-id="${item.id}">
-          <div>
-            <div class="dv-card-topbar">
-              <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
-              <button
-                class="card-bookmark dv-bookmark${isSaved ? ' saved' : ''}"
-                data-id="${item.id}"
-                aria-label="${heartLabel}"
-                title="${heartLabel}"
-              >${heartChar}</button>
-            </div>
-            <h3>${item.title}</h3>
-            ${item.address ? `<p class="card-address">${item.address}</p>` : `<p class="card-address">${townDisplay}</p>`}
-            ${item.phone   ? `<p class="card-phone">${item.phone}</p>`     : ''}
-            <p class="card-desc">${item.desc}</p>
-            <div class="card-pills">${pills}</div>
-          </div>
-          <div class="dv-card-actions">
-            <button class="btn btn-secondary view-details-btn" data-id="${item.id}">View details</button>
-          </div>
-        </article>
-      `;
+  <article class="dv-card" tabindex="0" role="button" aria-label="View details for ${item.title}" data-id="${item.id}">
+    <div class="dv-card-topbar">
+      <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
+      <button
+        class="card-bookmark dv-bookmark${isSaved ? ' saved' : ''}"
+        data-id="${item.id}"
+        aria-label="${heartLabel}"
+        title="${heartLabel}"
+      >${heartChar}</button>
+    </div>
+
+    <div class="dv-card-content">
+      <h3>${item.title}</h3>
+${item.address ? `
+  <p class="card-address">
+    <svg class="card-location-icon" width="10" height="13" viewBox="0 0 10 13" aria-hidden="true" focusable="false">
+      <path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" fill="currentColor"></path>
+    </svg>
+    <span>${item.address}</span>
+  </p>
+` : `
+  <p class="card-address">
+    <svg class="card-location-icon" width="10" height="13" viewBox="0 0 10 13" aria-hidden="true" focusable="false">
+      <path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" fill="currentColor"></path>
+    </svg>
+    <span>${townDisplay}</span>
+  </p>
+`}
+      ${item.phone   ? `<p class="card-phone">${item.phone}</p>`     : ''}
+
+      <div class="dv-card-bottom-row">
+        <p class="card-desc">${item.desc}</p>
+        <div class="dv-card-actions">
+          <button class="btn btn-secondary view-details-btn" data-id="${item.id}">View details</button>
+        </div>
+      </div>
+    </div>
+  </article>
+`;
+
     }).join('');
 
     resultsCount.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`;
@@ -196,7 +420,14 @@ document.addEventListener('DOMContentLoaded', function () {
         e.stopPropagation();
         if (typeof CareMapBookmarks === 'undefined') return;
         const id = parseInt(btn.dataset.id, 10);
-        const nowSaved = CareMapBookmarks.toggle(id);
+        
+        // Find the item and cache it before bookmarking
+        const item = DATA.find(d => d.id === id);
+        if (item) {
+          localStorage.setItem('cm_gb_item_' + id, JSON.stringify(item));
+        }
+        
+        const nowSaved = CareMapBookmarks.toggle(id, CareMapBookmarks.SECTIONS.GIVE_BACK);
         btn.textContent = nowSaved ? '♥' : '♡';
         btn.classList.toggle('saved', nowSaved);
         btn.setAttribute('aria-label', nowSaved ? 'Unsave this organization' : 'Save this organization');
@@ -226,9 +457,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // -------------------
-  // Pagination renderer
-  // -------------------
+  /* ── Pagination renderer ── */
   function renderPagination(total, totalPages) {
     let pager = document.getElementById('dvPagination');
     if (!pager) {
@@ -284,21 +513,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // -------------------
-  // Scroll to card list
-  // -------------------
+  /* ── Scroll to card list ── */
   function scrollToList() {
     const top = cardsList.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({ top, behavior: 'smooth' });
   }
 
-  // -------------------
-  // Open detail modal
-  // -------------------
+  /* ── Open detail modal ── */
   function openDetail(item, triggerEl) {
     lastFocused = triggerEl || document.activeElement;
 
-    const pills = item.services.map(s => `<span class="card-pill">${s}</span>`).join('');
+    // Cache the item when opening modal
+    localStorage.setItem('cm_gb_item_' + item.id, JSON.stringify(item));
+
+    const pills = servicePillsHtml(item.services);
 
     const websiteHtml = item.link
       ? `<a href="${item.link}" target="_blank" rel="noopener">${item.link.replace(/^https?:\/\//, '')}</a>`
@@ -317,99 +545,77 @@ document.addEventListener('DOMContentLoaded', function () {
     const heartLabel = isSaved ? 'Unsave this organization' : 'Save this organization';
 
     detailCard.innerHTML = `
-      <div class="detail-head">
-        <div class="detail-head-left">
-          <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
-          <h2 class="detail-title" id="detailTitle">${item.title}</h2>
+  <div class="detail-head">
+    <div class="detail-head-left">
+      <div class="kind-badges">${kindBadgesHtml(item.kind)}</div>
+      <h2 class="detail-title" id="detailTitle">${item.title}</h2>
+    </div>
+    <div class="detail-head-right">
+      <button
+        class="detail-bookmark card-bookmark${isSaved ? ' saved' : ''}"
+        data-id="${item.id}"
+        aria-label="${heartLabel}"
+        title="${heartLabel}"
+      >${heartChar}</button>
+      <button class="detail-close" id="detailCloseX" aria-label="Close details">&#x2715;</button>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <div class="detail-section">
+      <p class="detail-section-label">Summary</p>
+      <p class="detail-long-desc">${item.desc}</p>
+    </div>
+
+    <div class="detail-section">
+      <p class="detail-section-label">Tags</p>
+      <div class="detail-tags">${pills || "<span style='color:var(--warm-gray)'>No tags listed</span>"}</div>
+    </div>
+
+    <div class="detail-section">
+      <p class="detail-section-label">Contact &amp; Location</p>
+      <div class="detail-info-grid">
+        <div class="detail-info-item">
+          <p class="detail-info-label">Town</p>
+          <p class="detail-info-value">${item.location.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</p>
         </div>
-        <div class="detail-head-right">
-          <button
-            class="detail-bookmark card-bookmark${isSaved ? ' saved' : ''}"
-            data-id="${item.id}"
-            aria-label="${heartLabel}"
-            title="${heartLabel}"
-          >${heartChar}</button>
-          <button class="detail-close" id="detailCloseX" aria-label="Close details">&#x2715;</button>
+
+        <div class="detail-info-item">
+          <p class="detail-info-label">Phone</p>
+          <p class="detail-info-value">${phoneHtml}</p>
+        </div>
+
+        <div class="detail-info-item">
+          <p class="detail-info-label">Address</p>
+          <p class="detail-info-value">${item.address || "<span style='color:var(--warm-gray)'>Not listed</span>"}</p>
+        </div>
+
+        <div class="detail-info-item">
+          <p class="detail-info-label">Website</p>
+          <p class="detail-info-value">${websiteHtml}</p>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="detail-body">
-
-        <div class="detail-section">
-          <p class="detail-section-label">About</p>
-          <p class="detail-long-desc">${item.desc}</p>
-        </div>
-
-        <div class="detail-section">
-          <p class="detail-section-label">Services</p>
-          <div class="detail-tags">${pills || "<span style='color:var(--warm-gray)'>No services listed</span>"}</div>
-        </div>
-
-        <div class="detail-section">
-          <p class="detail-section-label">Who it serves</p>
-          <div class="detail-tags">
-            ${item.age.map(a => `<span class="card-pill">${a}</span>`).join('')}
-          </div>
-        </div>
-
-        <div class="detail-section">
-          <p class="detail-section-label">Contact &amp; Location</p>
-          <div class="detail-info-grid">
-
-            <div class="detail-info-item">
-              <p class="detail-info-label">Location</p>
-              <p class="detail-info-value">${item.location.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</p>
-            </div>
-
-            <div class="detail-info-item">
-              <p class="detail-info-label">Phone</p>
-              <p class="detail-info-value">${phoneHtml}</p>
-            </div>
-
-            <div class="detail-info-item" style="grid-column:1/-1;">
-              <p class="detail-info-label">Address</p>
-              <p class="detail-info-value">${item.address || "<span style='color:var(--warm-gray)'>Not listed</span>"}</p>
-            </div>
-
-            <div class="detail-info-item" style="grid-column:1/-1;">
-              <p class="detail-info-label">Website</p>
-              <p class="detail-info-value">${websiteHtml}</p>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <div class="detail-actions">
-        ${item.link    ? `<a class="btn btn-primary"   href="${item.link}" target="_blank" rel="noopener">Visit Website</a>` : ''}
-        ${item.phone   ? `<a class="btn btn-secondary" href="tel:${item.phone}">Call</a>` : ''}
-        ${mapsUrl      ? `<a class="btn btn-secondary" href="${mapsUrl}" target="_blank" rel="noopener">Open in Maps</a>` : ''}
-        ${item.address ? `<button class="btn btn-ghost" id="copyAddressBtn">Copy Address</button>` : ''}
-        <button class="btn btn-ghost" id="detailCloseBtn">Close</button>
-      </div>
-    `;
+  <div class="detail-actions">
+    ${item.link    ? `<a class="btn btn-primary"   href="${item.link}" target="_blank" rel="noopener">Visit Website</a>` : ''}
+    ${item.phone   ? `<a class="btn btn-secondary" href="tel:${item.phone}">Call</a>` : ''}
+    ${mapsUrl      ? `<a class="btn btn-secondary" href="${mapsUrl}" target="_blank" rel="noopener">Open in Maps</a>` : ''}
+  </div>
+`;
 
     detailCard.querySelector('#detailCloseX').addEventListener('click',   closeDetail);
-    detailCard.querySelector('#detailCloseBtn').addEventListener('click', closeDetail);
-
-    if (item.address) {
-      detailCard.querySelector('#copyAddressBtn').addEventListener('click', () => {
-        const btn = detailCard.querySelector('#copyAddressBtn');
-        navigator.clipboard.writeText(item.address).then(() => {
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy Address'; }, 1800);
-        });
-      });
-    }
-
     /* ── Modal bookmark heart ── */
     const modalHeart = detailCard.querySelector('.detail-bookmark');
     if (modalHeart && typeof CareMapBookmarks !== 'undefined') {
       modalHeart.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
-        const nowSaved = CareMapBookmarks.toggle(item.id);
+        const nowSaved = CareMapBookmarks.toggle(item.id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+
+        // Cache the item
+        localStorage.setItem('cm_gb_item_' + item.id, JSON.stringify(item));
 
         modalHeart.textContent = nowSaved ? '♥' : '♡';
         modalHeart.classList.toggle('saved', nowSaved);
@@ -441,9 +647,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // -------------------
-  // Close detail modal
-  // -------------------
+  /* ── Close detail modal ── */
   function closeDetail() {
     backdrop.hidden  = true;
     modalWrap.hidden = true;
@@ -457,9 +661,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape' && !modalWrap.hidden) closeDetail();
   });
 
-  // -------------------
-  // Tab buttons
-  // -------------------
+  /* ── Tab buttons ── */
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
@@ -479,9 +681,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // -------------------
-  // Service chips
-  // -------------------
+  /* ── Service chips ── */
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
       chip.classList.toggle('selected');
@@ -494,15 +694,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // -------------------
-  // Age & Location filters
-  // -------------------
+  /* ── Age & Location filters ── */
   filterAge.addEventListener('change',      () => { currentPage = 1; render(); });
   filterLocation.addEventListener('change', () => { currentPage = 1; render(); });
 
-  // -------------------
-  // Reset button
-  // -------------------
+  /* ── Reset button ── */
   resetBtn.addEventListener('click', () => {
     activeTab      = 'all';
     activeServices = [];
@@ -517,6 +713,21 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ── Initial render + badge sync ── */
-  render();
-  updateDvBadge();
+  resultsCount.textContent = 'Loading opportunities...';
+  const giveBackLoadDelay = new Promise(resolve => {
+    setTimeout(resolve, MIN_GIVE_BACK_LOAD_MS);
+  });
+
+  Promise.all([
+    loadApprovedVolunteerOpportunities()
+    .catch(error => {
+      console.warn('Approved volunteer opportunities could not be loaded; using built-in Give Back data.', error);
+    }),
+    giveBackLoadDelay
+  ])
+    .finally(() => {
+      syncLocationFilterOptions();
+      render();
+      updateDvBadge();
+    });
 });

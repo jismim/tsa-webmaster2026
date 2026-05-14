@@ -5,7 +5,6 @@
 ============================================================ */
  
 document.addEventListener('DOMContentLoaded', function () {
-// loader js
 (function () {
   const loader = document.getElementById('loader');
   const page = document.getElementById('page-wrap');
@@ -324,7 +323,7 @@ if (statCounters.length) {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
  
-    // Organizations — each entry now has an `id` matching the RESOURCES data
+    // IDs match RESOURCES entries for popup links
     const organizations = [
       { id: 1,  name: "Interfaith Food Pantry",             coords: [40.831599473789744, -74.4967387711644], category: "food" },
       { id: 2,  name: "Boonton Food Pantry",                coords: [40.9019471, -74.4068955],              category: "food" },

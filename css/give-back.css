@@ -1,11 +1,9 @@
-    /* ============================================================
-       DONATE & VOLUNTEER — Page-specific styles
-       All tokens from style.css: --cream, --paper, --ink, --bark,
-       --rust, --rust-lt, --sage, --sage-lt, --sand, --warm-gray,
-       --border, --radius, --ff-display, --ff-body, --ff-mono
-    ============================================================ */
+/* ============================================================
+   CAREMAP MORRIS — Give Back Page Styles
+   Extends style.css design tokens
+============================================================ */
 
-    /* PAGE HERO */
+/* ── Page Hero ── */
     .page-hero {
       background: var(--ink);
       position: relative;
@@ -56,7 +54,7 @@
       margin-bottom: 1.75rem;
     }
 
-    /* TAB BAR */
+/* ── Tab Bar ── */
     .tab-bar {
       display: flex;
       gap: 8px;
@@ -90,7 +88,7 @@
       border-color: rgba(247,242,234,.35);
     }
 
-    /* LAYOUT */
+/* ── Layout ── */
 .dv-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -139,7 +137,7 @@
   .dv-card { grid-template-columns: 1fr; }
 }
 
-    /* FILTER SIDEBAR */
+/* ── Filter Sidebar ── */
    .filter-sidebar {
   position: sticky;
   top: 70px;
@@ -191,7 +189,7 @@
       box-shadow: 0 0 0 3px rgba(192,75,32,.12);
     }
 
-    /* SERVICE CHIPS */
+/* ── Service Chips ── */
     .chip-group {
       display: flex;
       flex-wrap: wrap;
@@ -237,7 +235,7 @@
       color: var(--rust);
     }
 
-    /* RESULTS HEADER */
+/* ── Results Header ── */
     .results-header {
       display: flex;
       align-items: center;
@@ -265,7 +263,7 @@
       padding: .2rem .7rem;
     }
 
-    /* OPPORTUNITY CARDS */
+/* ── Opportunity Cards ── */
     .cards-list {
       display: flex;
       flex-direction: column;
@@ -289,7 +287,7 @@
       .dv-card { grid-template-columns: 1fr; }
     }
 
-    /* KIND BADGE */
+/* ── Kind Badge ── */
     .kind-badge {
       display: inline-flex;
       align-items: center;
@@ -333,7 +331,7 @@
       margin: 0 0 .85rem;
     }
 
-    /* Service pills on card */
+/* ── Service Pills on Card ── */
     .card-pills {
       display: flex;
       gap: .35rem;
@@ -366,7 +364,7 @@
       }
     }
 
-    /* NO RESULTS */
+/* ── No Results ── */
     .no-results {
       text-align: center;
       padding: 3.5rem 1.5rem;
@@ -384,7 +382,7 @@
     }
     .no-results a { color: var(--rust); text-decoration: underline; }
 
-    /* Divider label between sidebar filter sections */
+/* ── Filter Divider ── */
     .filter-divider {
       height: 1px;
       background: var(--border);
