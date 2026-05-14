@@ -84,3 +84,76 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 })();
+document.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+ 
+  /* ── Mobile menu toggle ── */
+  const mobileMenu      = document.getElementById('mobileMenu');
+  const mobileNavBtn    = document.getElementById('mobileNavBtn');
+  const mobileMenuClose = document.getElementById('mobileMenuClose');
+ 
+  function openMobileMenu() {
+    mobileMenu.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    mobileNavBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+ 
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    mobileNavBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+ 
+  if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
+  if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+  if (mobileMenu)      mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu));
+ 
+  /* ── Mobile dropdown toggle ── */
+  const dropdownToggle = document.querySelector('.mobile-menu-dropdown-toggle');
+  if (dropdownToggle) {
+    dropdownToggle.addEventListener('click', function() {
+      this.parentElement.classList.toggle('open');
+    });
+  }
+ 
+  /* ── Desktop dropdown toggle ── */
+  const desktopToggle = document.querySelector('.dropdown-toggle');
+  const desktopMenu   = document.querySelector('.dropdown-menu');
+  if (desktopToggle && desktopMenu) {
+    desktopToggle.addEventListener('click', function() {
+      const isOpen = desktopMenu.style.display === 'flex';
+      desktopMenu.style.display = isOpen ? 'none' : 'flex';
+      desktopToggle.setAttribute('aria-expanded', !isOpen);
+    });
+ 
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        desktopMenu.style.display = 'none';
+        desktopToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  /* ── Update bookmark badge ── */
+  function updateBookmarkBadges() {
+    if (typeof CareMapBookmarks === 'undefined') return;
+    const count = CareMapBookmarks.count();
+    document.querySelectorAll('.bookmark-count').forEach(function(el) {
+      el.textContent   = count;
+      el.style.display = count > 0 ? 'inline-flex' : 'none';
+    });
+  }
+ 
+  // Initial badge update
+  updateBookmarkBadges();
+ 
+  // Listen for storage changes (syncs across tabs)
+  window.addEventListener('storage', function(e) {
+    if (e.key && e.key.startsWith('cm_bookmarks_')) {
+      updateBookmarkBadges();
+    }
+  });
+});
