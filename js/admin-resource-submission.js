@@ -35,6 +35,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     errorBox.classList.add('visible', 'success');
   }
 
+  function resetStatusFilter() {
+    if (filterSelect) filterSelect.value = 'All';
+  }
+
   async function handleStatusChange(event) {
     const select = event.target;
     const previousStatus = select.dataset.currentStatus || '';
@@ -99,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       submissions = submissions.filter((item) => item.status !== 'Rejected');
       rejectedItemsVisible = false;
       showRejectedBtn.textContent = 'Show Rejected';
-      filterSelect.value = 'All';
+      resetStatusFilter();
       applyFilters();
       clearError();
       return;
@@ -123,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       submissions = [...submissions, ...newRejectedItems];
       rejectedItemsVisible = true;
       showRejectedBtn.textContent = 'Hide Rejected';
-      filterSelect.value = 'All';
+      resetStatusFilter();
       applyFilters();
       showSuccess(`Loaded ${newRejectedItems.length} rejected ${isVolunteerPage ? 'volunteer' : 'resource'} submission${newRejectedItems.length === 1 ? '' : 's'}.`);
     } catch (error) {
@@ -142,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       submissions = submissions.filter((item) => item.status !== 'Approved');
       approvedItemsVisible = false;
       showApprovedBtn.textContent = 'Show Approved';
-      filterSelect.value = 'All';
+      resetStatusFilter();
       applyFilters();
       clearError();
       return;
@@ -166,7 +170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       submissions = [...submissions, ...newApprovedItems];
       approvedItemsVisible = true;
       showApprovedBtn.textContent = 'Hide Approved';
-      filterSelect.value = 'All';
+      resetStatusFilter();
       applyFilters();
       showSuccess(`Loaded ${newApprovedItems.length} approved ${isVolunteerPage ? 'volunteer' : 'resource'} submission${newApprovedItems.length === 1 ? '' : 's'}.`);
     } catch (error) {
@@ -256,7 +260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function applyFilters() {
     const searchTerm = searchInput.value.trim().toLowerCase();
-    const status = filterSelect.value;
+    const status = filterSelect ? filterSelect.value : 'All';
     const filtered = submissions.filter((item) => {
       const haystack = [
         item.organizationName,
@@ -280,7 +284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       : await dataUtils.loadResourceSubmissions();
     render(submissions);
     searchInput.addEventListener('input', applyFilters);
-    filterSelect.addEventListener('change', applyFilters);
+    if (filterSelect) filterSelect.addEventListener('change', applyFilters);
     if (showApprovedBtn) showApprovedBtn.addEventListener('click', handleShowApproved);
     if (showRejectedBtn) showRejectedBtn.addEventListener('click', handleShowRejected);
   } catch (error) {

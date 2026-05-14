@@ -18,6 +18,7 @@
       desc: 'Type anything here — "food pantry," "shelter," "counseling" — and we\'ll take you straight to matching results in the Directory.',
       position: 'bottom',
       scrollTo: '.hero',
+      forceScroll: true,
     },
     {
       page: 'index.html',
@@ -327,12 +328,20 @@
     const target = document.querySelector(step.scrollTo);
     if (!target)  { setTimeout(cb, 60); return; }
 
-    const rect    = target.getBoundingClientRect();
-    const visible = rect.top >= -100 && rect.bottom <= window.innerHeight + 100;
-    if (visible) { setTimeout(cb, 60); return; }
+    const rect = target.getBoundingClientRect();
+    const vh   = window.innerHeight;
 
-    const targetY = window.scrollY + rect.top - (step.position === 'bottom' ? 120 : 80);
-    smoothScrollTo(targetY, 480, cb);
+    // "Comfortably visible" means the element is fully in view with
+    // at least 80px of breathing room above it — not just technically on-screen.
+    const comfortablyVisible = rect.top >= 80 && rect.bottom <= vh - 40;
+
+    // forceScroll: true on a step always scrolls, even if element is on-screen.
+    // Useful for elements that are in the viewport but not well-positioned.
+    if (!step.forceScroll && comfortablyVisible) { setTimeout(cb, 60); return; }
+
+    const offset  = step.position === 'bottom' ? 160 : 120;
+    const targetY = window.scrollY + rect.top - offset;
+    smoothScrollTo(Math.max(0, targetY), 480, cb);
   }
 
   function smoothScrollTo(targetY, duration, cb) {
