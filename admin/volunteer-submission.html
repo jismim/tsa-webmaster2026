@@ -24,7 +24,10 @@
         <img src="/images/logo.png" alt="CareMap Morris logo" class="brand-logo">
         <span class="brand-text">CareMap Morris</span>
       </a>
-      <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
+      <div class="header-actions">
+        <a class="btn btn-secondary" href="/index.html">Back to Public Site</a>
+        <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
+      </div>
     </div>
   </header>
 
@@ -43,24 +46,15 @@
 
     <main id="main" class="main-panel">
       <div class="container">
-        <p class="page-eyebrow">Moderation queue</p>
+        <p class="page-eyebrow">Volunteer Review</p>
         <h1 class="page-title">Volunteer Submissions</h1>
-        <p class="page-subtitle">Every entry below is loaded from the public “Submit a Volunteer” form.</p>
+        <p class="page-subtitle">Review volunteer opportunities submitted through the public form. Check each organization’s details, contact information, services, and submitter notes before deciding whether it should be approved or rejected.</p>
 
         <div class="toolbar">
           <div class="toolbar-group">
             <div class="search-wrap">
               <label class="sr-only" for="resourceSearch">Search submissions</label>
               <input id="resourceSearch" type="search" placeholder="Search by organization, submitter, category, service, or address" />
-            </div>
-            <div>
-              <label class="sr-only" for="resourceStatusFilter">Filter by status</label>
-              <select id="resourceStatusFilter">
-                <option>All</option>
-                <option>Pending</option>
-                <option>Approved</option>
-                <option>Rejected</option>
-              </select>
             </div>
           </div>
           <div style="display:flex; gap:.5rem; align-items:center;">
