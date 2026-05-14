@@ -87,7 +87,7 @@
     <section class="docs-hero" aria-label="References page introduction">
       <div class="container docs-hero-inner">
         <div class="docs-hero-copy">
-          <p class="hero-eyebrow">Project Documentation | Team #2237-2</p>
+          <p class="hero-eyebrow">Project Documentation | Team #3754-1</p>
           <h1>References &amp;<br><em>Worklog</em></h1>
           <p>
             This page gathers the supporting material behind CareMap Morris: 
@@ -286,139 +286,160 @@ These documents show the research base, the development trail, and the final che
 <!-- ── Scripts ── -->
 <script src="js/works-cited.js"></script>
   <script src="js/bookmarks.js" defer></script>
-
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-    /* ── LOADER ── */
-    (function () {
-      var loader = document.getElementById('loader');
-      var pageWrap = document.getElementById('page-wrap');
-      if (!loader) return;
+  /* ── Welcome Modal ── */
+  var modalBackdrop = document.getElementById('modalBackdrop');
+  var modalWrap     = document.getElementById('modalWrap');
+  var dismissX      = document.getElementById('dismissX');
+  var dismissBtn    = document.getElementById('dismissBtn');
 
-      var hasVisited = sessionStorage.getItem('cm_visited');
+  function closeModal() {
+    if (!modalBackdrop || !modalWrap) return;
+    modalBackdrop.hidden = true;
+    modalWrap.hidden     = true;
+    document.body.style.overflow = '';
+    sessionStorage.setItem('cm_welcomed', '1');
+  }
 
-      if (hasVisited) {
-        loader.style.display = 'none';
-      } else {
-        sessionStorage.setItem('cm_visited', 'true');
-        document.body.classList.add('loading');
-        if (pageWrap) pageWrap.style.opacity = '0';
+  if (!sessionStorage.getItem('cm_welcomed') && modalBackdrop && modalWrap) {
+    modalBackdrop.hidden = false;
+    modalWrap.hidden     = false;
+    document.body.style.overflow = 'hidden';
+  }
 
-        setTimeout(function () {
-          loader.classList.add('hide');
-          if (pageWrap) pageWrap.style.opacity = '1';
-          document.body.classList.remove('loading');
-          setTimeout(function () { loader.style.display = 'none'; }, 600);
-        }, 2400);
+  if (dismissX)      dismissX.addEventListener('click', closeModal);
+  if (dismissBtn)    dismissBtn.addEventListener('click', closeModal);
+  if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
+
+  /* ── Desktop Dropdown ── */
+  var toggle = document.querySelector('.dropdown-toggle');
+  var menu   = document.querySelector('.dropdown-menu');
+
+  if (toggle && menu) {
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = menu.classList.contains('open');
+      menu.classList.toggle('open', !isOpen);
+      menu.style.display = isOpen ? '' : 'flex';
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+    document.addEventListener('click', function (e) {
+      if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('open');
+        menu.style.display = '';
+        toggle.setAttribute('aria-expanded', 'false');
       }
-    })();
-
-    /* ── Mobile menu ── */
-    var mobileMenu      = document.getElementById('mobileMenu');
-    var mobileNavBtn    = document.getElementById('mobileNavBtn');
-    var mobileMenuClose = document.getElementById('mobileMenuClose');
-
-    function openMobileMenu() {
-      if (!mobileMenu) return;
-      mobileMenu.classList.add('open');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMobileMenu() {
-      if (!mobileMenu) return;
-      mobileMenu.classList.remove('open');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
-    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
-    if (mobileMenu) {
-      mobileMenu.querySelectorAll('a').forEach(function (l) {
-        l.addEventListener('click', closeMobileMenu);
-      });
-    }
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeMobileMenu();
     });
+  }
 
-    /* ── Dropdown ── */
-    var toggle = document.querySelector('.dropdown-toggle');
-    var menu   = document.querySelector('.dropdown-menu');
-    if (toggle && menu) {
-      toggle.addEventListener('click', function () {
-        var isOpen = menu.style.display === 'flex';
-        menu.style.display = isOpen ? 'none' : 'flex';
-        toggle.setAttribute('aria-expanded', String(!isOpen));
-      });
-      document.addEventListener('click', function (e) {
-        if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-          menu.style.display = 'none';
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
+  /* ── Mobile Menu ── */
+  var mobileMenu      = document.getElementById('mobileMenu');
+  var mobileNavBtn    = document.getElementById('mobileNavBtn');
+  var mobileMenuClose = document.getElementById('mobileMenuClose');
 
-    /* ── Footer year ── */
-    var yearEl = document.getElementById('footerYear');
-    if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+  function openMobileMenu() {
+    if (!mobileMenu) return;
+    mobileMenu.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    if (!mobileMenu) return;
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
 
-    /* ── HERO LOAD-IN ─────────────────────────────────────────
-       Fire on DOMContentLoaded (not scroll) so hero animates
-       the moment the page is ready.
-    --------------------------------------------------------- */
-    setTimeout(function () {
-      document.querySelectorAll('.reveal-hero').forEach(function (el) {
-        el.classList.add('visible');
-      });
-    }, 80);
-
-    /* ── SCROLL REVEAL (filter bar, cards, footer cta) ───── */
-    var revealEls = document.querySelectorAll('.reveal');
-
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var el     = entry.target;
-          var parent = el.parentElement;
-
-          var siblings = parent
-            ? Array.from(parent.querySelectorAll('.reveal:not(.visible)'))
-            : [];
-          var idx   = siblings.indexOf(el);
-          var delay = Math.min(idx * 70, 360);
-
-          setTimeout(function () { el.classList.add('visible'); }, delay);
-          io.unobserve(el);
-        });
-      }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
-
-      revealEls.forEach(function (el) { io.observe(el); });
-    } else {
-      revealEls.forEach(function (el) { el.classList.add('visible'); });
-    }
-
-    /* ── Total count label ── */
-    var totalEl = document.getElementById('totalCount');
-    var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
-    resourcesReady.then(function (resources) {
-      if (totalEl) totalEl.textContent = resources.length;
+  if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
+  if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+  if (mobileMenu) {
+    mobileMenu.querySelectorAll('a').forEach(function (l) {
+      l.addEventListener('click', function () { setTimeout(closeMobileMenu, 50); });
     });
+  }
 
-    /* ── Bookmark badge on load ── */
-    if (typeof CareMapBookmarks !== 'undefined') {
-      document.querySelectorAll('.bookmark-count').forEach(function (el) {
-        var c = CareMapBookmarks.count();
-        el.textContent = c;
-        el.style.display = c > 0 ? 'inline-flex' : 'none';
-      });
+  /* ── Mobile Submenu (Resources dropdown inside mobile menu) ── */
+  var mobileSubToggle = document.querySelector('.mobile-menu-dropdown-toggle');
+  if (mobileSubToggle) {
+    mobileSubToggle.addEventListener('click', function () {
+      this.parentElement.classList.toggle('open');
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeMobileMenu();
+      closeModal();
     }
-
   });
-  </script>
+
+  /* ── Footer Year ── */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+
+  /* ── Hero Load-in ── */
+  setTimeout(function () {
+    document.querySelectorAll('.reveal-hero').forEach(function (el) {
+      el.classList.add('visible');
+    });
+  }, 80);
+
+  /* ── Scroll Reveal ── */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el      = entry.target;
+        var parent  = el.parentElement;
+        var siblings = parent
+          ? Array.from(parent.querySelectorAll('.reveal:not(.visible)'))
+          : [];
+        var delay = Math.min(siblings.indexOf(el) * 70, 360);
+        setTimeout(function () { el.classList.add('visible'); }, delay);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
+
+  /* ── Bookmark Badge ── */
+  if (typeof CareMapBookmarks !== 'undefined') {
+    document.querySelectorAll('.bookmark-count').forEach(function (el) {
+      var c = CareMapBookmarks.count();
+      el.textContent = c;
+      el.style.display = c > 0 ? 'inline-flex' : 'none';
+    });
+  }
+
+});
+</script>  <!-- ═══ WELCOME MODAL ═══ -->
+<div class="modal-backdrop" id="modalBackdrop" hidden></div>
+<div class="modal-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 id="modalTitle">Welcome to CareMap Morris</h2>
+      <button class="modal-dismiss" id="dismissX" aria-label="Close welcome message">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-lead">
+        This site helps Morris County residents <strong>find support</strong> and helps neighbors <strong>give back</strong> to their community.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="dismissBtn">Got it — let's go</button>
+        <a class="btn btn-ghost" href="directory.html">Browse Directory</a>
+      </div>
+      <p class="modal-urgent">
+        If you need immediate help, call <strong>911</strong>. For mental health crisis support, call or text <strong>988</strong>.
+      </p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
