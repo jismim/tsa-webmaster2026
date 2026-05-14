@@ -824,49 +824,106 @@ FIX: Restored full modal styles that were stripped
 .hp-tag.sand { background: rgba(184,154,106,.2);  color: #D4B98C; }
 
 /* ============================================================
-   STATS
-   FIX: Counters — no CSS fix needed here, the JS was broken.
-        See main.js fix for the counter logic.
+   STATS — IMAGE BACKGROUND WITH TINT OVERLAY
 ============================================================ */
 .stats-section {
-  background: var(--paper);
-  border-bottom: 1px solid var(--border);
   padding-block: clamp(2.5rem, 4vw, 3.5rem);
 }
 
-.stats-grid {
+.stats-image-section {
+  position: relative;
+  min-height: 420px;
+  background-image: url("../images/backstats-image.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-top: 3px solid var(--rust);
+  border-bottom: 3px solid var(--rust);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.stats-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(26, 20, 16, 0.70),
+    rgba(26, 20, 16, 0.70)
+  );
+  z-index: 1;
+}
+
+.stats-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-block: 4rem;
+}
+
+.stats-image-section .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0; text-align: center;
+  text-align: center;
+  gap: 0;
 }
 
-.stat-item {
+.stats-image-section .stat-item {
   padding: 1.5rem 1rem;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid rgba(247, 242, 234, 0.35);
 }
-.stat-item:last-child { border-right: none; }
+.stats-image-section .stat-item:last-child { border-right: none; }
 
-.stat-number {
+.stats-image-section .stat-number {
   font-family: var(--ff-display);
-  font-size: clamp(2.6rem, 5vw, 4rem);
-  font-weight: 900; color: var(--rust);
-  line-height: 1; margin-bottom: .35rem;
-  display: flex; align-items: flex-end;
-  justify-content: center; gap: .1em;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  color: var(--rust-lt);
+  line-height: 1;
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.1em;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.35);
 }
-.stat-suffix { font-size: 55%; color: var(--sand); margin-bottom: .15em; }
 
-.stat-label {
-  font-size: .875rem; color: var(--warm-gray);
-  max-width: 200px; margin-inline: auto; line-height: 1.4;
+.stats-image-section .stat-suffix {
+  font-size: 45%;
+  color: var(--sand);
+  margin-bottom: 0.18em;
 }
 
-.stats-note {
-  margin-top: 1.25rem; text-align: center;
-  font-size: .78rem; color: var(--warm-gray);
+.stats-image-section .stat-label {
+  font-size: 1rem;
+  color: var(--cream);
+  max-width: 250px;
+  margin-inline: auto;
+  line-height: 1.55;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
-.stats-note a { color: var(--rust); text-decoration: underline; }
 
+.stats-image-section .stats-note {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--cream);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+.stats-image-section .stats-note a {
+  color: var(--rust-lt);
+  text-decoration: underline;
+}
+
+@media (max-width: 820px) {
+  .stats-image-section { min-height: auto; }
+  .stats-image-section .stats-grid { grid-template-columns: 1fr; }
+  .stats-image-section .stat-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(247, 242, 234, 0.25);
+  }
+  .stats-image-section .stat-item:last-child { border-bottom: none; }
+}
 /* ============================================================
    SECTION COMMON
 ============================================================ */
