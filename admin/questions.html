@@ -24,7 +24,10 @@
         <img src="/images/logo.png" alt="CareMap Morris logo" class="brand-logo">
         <span class="brand-text">CareMap Morris</span>
       </a>
-      <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
+      <div class="header-actions">
+        <a class="btn btn-secondary" href="/index.html">Back to Public Site</a>
+        <button class="btn btn-secondary" type="button" data-admin-logout>Logout</button>
+      </div>
     </div>
   </header>
 
@@ -45,22 +48,13 @@
       <div class="container">
         <p class="page-eyebrow">Community inbox</p>
         <h1 class="page-title">Community Questions</h1>
-        <p class="page-subtitle">This page shows user-submitted questions with name, email, question text, date, and moderation status.</p>
+        <p class="page-subtitle">Review questions submitted through the public form. Check each message, contact information, and status so the team can follow up or mark questions as answered.</p>
 
         <div class="toolbar">
           <div class="toolbar-group">
             <div class="search-wrap">
               <label class="sr-only" for="questionSearch">Search questions</label>
               <input id="questionSearch" type="search" placeholder="Search by name, email, or question text" />
-            </div>
-            <div>
-              <label class="sr-only" for="questionStatusFilter">Filter questions by status</label>
-              <select id="questionStatusFilter">
-                <option>All</option>
-                <option>New</option>
-                <option>In Progress</option>
-                <option>Answered</option>
-              </select>
             </div>
           </div>
           <a class="btn btn-secondary" href="/admin/dashboard.html">Back to dashboard</a>
