@@ -141,26 +141,35 @@ const tourInterval = setInterval(function () {
  
   /* ----------------------------------------------------------
      3. DROPDOWN NAVIGATION
-  ---------------------------------------------------------- */
-  const toggle = document.querySelector('.dropdown-toggle');
-  const menu   = document.querySelector('.dropdown-menu');
- 
-  if (toggle && menu) {
-    toggle.addEventListener('click', function () {
-      const isOpen = menu.style.display === 'flex';
-      menu.style.display = isOpen ? 'none' : 'flex';
-      toggle.setAttribute('aria-expanded', String(!isOpen));
-    });
- 
-    document.addEventListener('click', function (e) {
-      if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-        menu.style.display = 'none';
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
- 
- 
+---------------------------------------------------------- */
+const toggle = document.querySelector('.dropdown-toggle');
+const menu   = document.querySelector('.dropdown-menu');
+
+if (toggle && menu) {
+  toggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open', !isOpen);
+    menu.style.display = isOpen ? '' : 'flex';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.remove('open');
+      menu.style.display = '';
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      menu.classList.remove('open');
+      menu.style.display = '';
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
   /* ----------------------------------------------------------
      4. MOBILE MENU
   ---------------------------------------------------------- */
