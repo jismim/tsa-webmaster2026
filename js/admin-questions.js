@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function applyFilters() {
     const searchTerm = searchInput.value.trim().toLowerCase();
-    const status = filterSelect.value;
+    const status = filterSelect ? filterSelect.value : 'All';
     const filtered = questions.filter((item) => {
       const haystack = [item.name, item.email, item.question].join(' ').toLowerCase();
       const matchesSearch = !searchTerm || haystack.includes(searchTerm);
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     questions = await dataUtils.loadQuestions();
     render(questions);
     searchInput.addEventListener('input', applyFilters);
-    filterSelect.addEventListener('change', applyFilters);
+    if (filterSelect) filterSelect.addEventListener('change', applyFilters);
   } catch (error) {
     console.error(error);
     errorBox.textContent = 'Unable to load questions from the API.';
