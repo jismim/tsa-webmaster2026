@@ -77,20 +77,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-      closeModal();
-      closeMobileMenu();
+  closeModal();
+  if (typeof closeMobileMenu === 'function') closeMobileMenu();
     }
   });
 
   // Auto-start the tour on first visit (replaces the old modal auto-show)
-  if (!sessionStorage.getItem('cm_welcomed') && !localStorage.getItem('cm_tour_step')) {
-    // Small delay so the page settles first
-    setTimeout(function () {
-      if (window.CareMapTour && typeof window.CareMapTour.start === 'function') {
-        window.CareMapTour.start();
-      }
-    }, 900);
-  }
+const TOUR_KEY = 'cm_tour_seen';
+
+if (!sessionStorage.getItem(TOUR_KEY)) {
+  setTimeout(function () {
+    if (window.CareMapTour && typeof window.CareMapTour.start === 'function') {
+      window.CareMapTour.start();
+      sessionStorage.setItem(TOUR_KEY, '1');
+    }
+  }, 900);
+}
 
   // Wire the "Browse Directory" button in the modal to also close it
   const browseBtn = modalWrap ? modalWrap.querySelector('a[href="directory.html"]') : null;
@@ -175,10 +177,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
  
   if (mobileMenu) {
-    mobileMenu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', closeMobileMenu);
+  mobileMenu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      setTimeout(closeMobileMenu, 50);
     });
-  }
+  });
+}
  
  
  /* ----------------------------------------------------------
