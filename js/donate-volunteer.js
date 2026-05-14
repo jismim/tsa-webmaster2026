@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
       id: makeNumericId(item),
       kind: inferKind(item),
       title: firstText(item.title, item.organizationName, item.name),
-      desc: firstText(item.desc, item.volunteerRoles, item.volunteerOpportunities, item.donationNeeds, item.shortDesc, item.description, item.longDesc),
+      desc: firstText(item.desc, item.description, item.shortDesc, item.longDesc, item.volunteerRoles, item.volunteerOpportunities, item.donationNeeds),
       age: inferAges(item),
       location: inferLocation(item),
       services: inferServices(item),
