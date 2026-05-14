@@ -167,14 +167,14 @@ if (bannerTitle) {
 }
 
 banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-     } catch (err) {
-       alert('Error: ' + err.message);
-     } finally {
-       submitButton.disabled = false;
-       submitButton.innerHTML = originalHTML;
-     }
-   });
- }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalHTML;
+    }
+  });
+}
 
 
  /* ── Submit another ── */
