@@ -629,17 +629,16 @@
 
   <script src="js/resources.js"></script>
   <script src="js/bookmarks.js"></script>
+  <script src = "js/script.js"></script>
   <script src="js/tour.js"></script>
 <script>
-/* ── Page-level init (nav + modal handled by script.js) ── */
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ── Welcome Modal ── */
+  /* ── Modal ── */
   var modalBackdrop = document.getElementById('modalBackdrop');
   var modalWrap     = document.getElementById('modalWrap');
   var dismissX      = document.getElementById('dismissX');
   var dismissBtn    = document.getElementById('dismissBtn');
-
   function closeModal() {
     if (!modalBackdrop || !modalWrap) return;
     modalBackdrop.hidden = true;
@@ -647,46 +646,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
     sessionStorage.setItem('cm_welcomed', '1');
   }
-
   if (dismissX)      dismissX.addEventListener('click', closeModal);
   if (dismissBtn)    dismissBtn.addEventListener('click', closeModal);
   if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
 
-  /* ── Hero Load-in ── */
-  setTimeout(function () {
-    document.querySelectorAll('.reveal-hero').forEach(function (el) {
-      el.classList.add('visible');
-    });
-  }, 80);
-
-  /* ── Scroll Reveal ── */
-  var revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        var siblings = el.parentElement
-          ? Array.from(el.parentElement.querySelectorAll('.reveal:not(.visible)'))
-          : [];
-        var delay = Math.min(siblings.indexOf(el) * 70, 360);
-        setTimeout(function () { el.classList.add('visible'); }, delay);
-        io.unobserve(el);
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
-    revealEls.forEach(function (el) { io.observe(el); });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add('visible'); });
-  }
-
-  /* ── Total count label (directory only) ── */
-  var totalEl = document.getElementById('totalCount');
-  if (totalEl) {
-    var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
-    resourcesReady.then(function (resources) {
-      totalEl.textContent = resources.length;
-    });
-  }
+  /* ── Footer Year ── */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
 
   /* ── Bookmark Badge ── */
   if (typeof CareMapBookmarks !== 'undefined') {
@@ -697,9 +663,199 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ── Footer Year ── */
-  var yearEl = document.getElementById('footerYear');
-  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+  /* ────────────────────────────────────────────────────────
+     CATEGORY → CSS class
+  ──────────────────────────────────────────────────────── */
+  var catClass = {
+    'food':              'cat-food',
+    'housing':           'cat-shelter',
+    'domestic-violence': 'cat-shelter',
+    'youth':             'cat-food',
+    'health':            'cat-housing',
+    'legal':             'cat-housing',
+    'mental-health':     'cat-shelter',
+    'substance-use':     'cat-food',
+    'disability':        'cat-housing',
+    'education':         'cat-housing',
+    'senior':            'cat-housing',
+  };
+
+  /* ────────────────────────────────────────────────────────
+     BUILD SAVED RESOURCE CARD
+  ──────────────────────────────────────────────────────── */
+  function buildSavedCard(resource) {
+    var cls   = catClass[resource.category] || 'cat-food';
+    var label = (resource.category || '').replace('-', ' ').replace(/\b\w/g, function(l){ return l.toUpperCase(); });
+    var tags  = (resource.tags || []).slice(0, 4).map(function(t) {
+      return '<span class="pill">' + t + '</span>';
+    }).join('');
+
+    var article = document.createElement('article');
+    article.className = 'resource-card';
+    article.id        = 'saved-card-' + resource.id;
+    article.innerHTML = '<div class="card-top">' +
+      '<span class="card-category ' + cls + '">' + label + '</span>' +
+      '<button class="card-bookmark saved" data-id="' + resource.id + '" aria-label="Unsave this organization">♥</button>' +
+      '</div>' +
+      '<div class="card-body">' +
+      '<h3 class="card-title">' + resource.title + '</h3>' +
+      '<p class="card-meta">' + (resource.town || 'Morris County') + '</p>' +
+      '<p class="card-text">' + (resource.shortDesc || '') + '</p>' +
+      '<div class="pill-row">' + tags + '</div>' +
+      '</div>' +
+      '<div class="card-actions">' +
+      '<a class="btn btn-secondary" href="directory.html?id=' + resource.id + '">View in Directory</a>' +
+      (resource.website ? '<a class="btn btn-ghost" href="' + resource.website + '" target="_blank" rel="noopener">Website ↗</a>' : '') +
+      '</div>';
+
+    article.querySelector('.card-bookmark').addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      CareMapBookmarks.remove(resource.id, CareMapBookmarks.SECTIONS.SAVED);
+      article.style.transition = 'opacity .3s, transform .3s';
+      article.style.opacity    = '0';
+      article.style.transform  = 'scale(.95)';
+      setTimeout(function() { article.remove(); renderSaved(); }, 320);
+    });
+
+    return article;
+  }
+
+  /* ────────────────────────────────────────────────────────
+     BUILD GIVE BACK CARD
+  ──────────────────────────────────────────────────────── */
+  function buildGiveBackCard(item) {
+    var kindLabel = item.kind === 'donate & volunteer'
+      ? '<span class="kind-badge badge-donate">Donate</span><span class="kind-badge badge-volunteer">Volunteer</span>'
+      : item.kind === 'volunteer'
+        ? '<span class="kind-badge badge-volunteer">Volunteer</span>'
+        : '<span class="kind-badge badge-donate">Donate</span>';
+
+    var townDisplay = (item.location || 'County-wide').split('-').map(function(w) {
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    }).join(' ');
+
+    var article = document.createElement('article');
+    article.className = 'resource-card';
+    article.id        = 'gb-card-' + item.id;
+    article.innerHTML = '<div class="card-top">' +
+      '<div class="kind-badges">' + kindLabel + '</div>' +
+      '<button class="card-bookmark saved" data-id="' + item.id + '" aria-label="Unsave this opportunity">♥</button>' +
+      '</div>' +
+      '<div class="card-body">' +
+      '<h3 class="card-title">' + item.title + '</h3>' +
+      '<p class="card-meta">' + townDisplay + '</p>' +
+      '<p class="card-text">' + (item.desc || '') + '</p>' +
+      '</div>' +
+      '<div class="card-actions">' +
+      '<a class="btn btn-secondary" href="donate-volunteer.html">View on Give Back</a>' +
+      (item.link ? '<a class="btn btn-ghost" href="' + item.link + '" target="_blank" rel="noopener">Website ↗</a>' : '') +
+      '</div>';
+
+    article.querySelector('.card-bookmark').addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      CareMapBookmarks.remove(item.id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+      localStorage.removeItem('cm_gb_item_' + item.id);
+      article.style.transition = 'opacity .3s, transform .3s';
+      article.style.opacity    = '0';
+      article.style.transform  = 'scale(.95)';
+      setTimeout(function() { article.remove(); renderGiveBack(); }, 320);
+    });
+
+    return article;
+  }
+
+  /* ────────────────────────────────────────────────────────
+     RENDER SAVED RESOURCES
+  ──────────────────────────────────────────────────────── */
+  function renderSaved() {
+    var grid    = document.getElementById('savedGrid');
+    var empty   = document.getElementById('savedEmpty');
+    var actions = document.getElementById('savedActions');
+    var ids     = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED);
+    grid.innerHTML = '';
+
+    if (ids.length === 0) {
+      empty.style.display = 'block';
+      actions.classList.add('hidden');
+      grid.classList.add('hidden');
+      return;
+    }
+
+    empty.style.display = 'none';
+    actions.classList.remove('hidden');
+    grid.classList.remove('hidden');
+
+    var resources = window.RESOURCES || [];
+    ids.forEach(function(id) {
+      var r = resources.find(function(res) { return res.id === id; });
+      if (r) grid.appendChild(buildSavedCard(r));
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────
+     RENDER GIVE BACK
+  ──────────────────────────────────────────────────────── */
+  function renderGiveBack() {
+    var grid    = document.getElementById('giveBackGrid');
+    var empty   = document.getElementById('giveBackEmpty');
+    var actions = document.getElementById('giveBackActions');
+    var ids     = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.GIVE_BACK);
+    grid.innerHTML = '';
+
+    if (ids.length === 0) {
+      empty.style.display = 'block';
+      actions.classList.add('hidden');
+      grid.classList.add('hidden');
+      return;
+    }
+
+    empty.style.display = 'none';
+    actions.classList.remove('hidden');
+    grid.classList.remove('hidden');
+
+    ids.forEach(function(id) {
+      var item = null;
+      try { item = JSON.parse(localStorage.getItem('cm_gb_item_' + id)); } catch(e) {}
+      if (!item) item = { id: id, title: 'Opportunity #' + id, kind: 'donate & volunteer', location: '', desc: '', link: '' };
+      grid.appendChild(buildGiveBackCard(item));
+    });
+  }
+
+  /* ── Clear buttons ── */
+  var clearSavedBtn = document.getElementById('clearSaved');
+  if (clearSavedBtn) {
+    clearSavedBtn.addEventListener('click', function() {
+      if (!confirm('Remove all saved resources?')) return;
+      CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED).forEach(function(id) {
+        CareMapBookmarks.remove(id, CareMapBookmarks.SECTIONS.SAVED);
+      });
+      renderSaved();
+    });
+  }
+
+  var clearGiveBackBtn = document.getElementById('clearGiveBack');
+  if (clearGiveBackBtn) {
+    clearGiveBackBtn.addEventListener('click', function() {
+      if (!confirm('Remove all saved give back opportunities?')) return;
+      CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.GIVE_BACK).forEach(function(id) {
+        localStorage.removeItem('cm_gb_item_' + id);
+        CareMapBookmarks.remove(id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+      });
+      renderGiveBack();
+    });
+  }
+
+  /* ── Initial render ── */
+  var ready = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
+  ready.then(function() {
+    renderSaved();
+    renderGiveBack();
+    if (typeof CareMapBookmarks !== 'undefined' && CareMapBookmarks.updateAllBadges) {
+      CareMapBookmarks.updateAllBadges();
+    }
+  });
 
 });
 </script>
