@@ -158,11 +158,15 @@ document.addEventListener('DOMContentLoaded', function () {
        const bannerTitle = banner.querySelector('strong');
        if (bannerTitle) bannerTitle.textContent = 'Submission received. Thank you! ID: 100' + result.id;
 
+const banner = document.getElementById('successBanner');
+banner.classList.add('visible');
 
-       document.querySelector('.form-card').style.display = 'none';
-       banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+const bannerTitle = banner.querySelector('strong');
+if (bannerTitle) {
+  bannerTitle.textContent = 'Submission received. Thank you! ID: 100' + result.id;
+}
 
-
+banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
      } catch (err) {
        alert('Error: ' + err.message);
      } finally {
