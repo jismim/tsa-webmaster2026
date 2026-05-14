@@ -5,6 +5,14 @@
   const STEPS = [
     {
       page: 'index.html',
+      target: null,
+      title: 'Welcome to CareMap Morris',
+      desc: 'This quick tour walks you through everything — finding help, giving back, saving resources, and more. Takes about a minute.',
+      position: 'center',
+      scrollTo: null,
+    },
+    {
+      page: 'index.html',
       target: '#heroSearch, .hero-search',
       title: 'Search for Resources',
       desc: 'Type anything here — "food pantry," "shelter," "counseling" — and we\'ll take you straight to matching results in the Directory.',
@@ -44,7 +52,6 @@
       scrollTo: '.main-content',
     },
     {
-      /* Admin login — always renders centered, no spotlight needed */
       page: 'admin/login.html',
       target: null,
       title: 'Administrator Access',
@@ -67,7 +74,7 @@
   let currentStep = -1;
   let isActive    = false;
 
-  let overlay, ring, card, trigger;
+  let overlay, ring, card, helpBtn;
   let curtains = [];
 
   const PAD         = 10;
@@ -124,6 +131,8 @@
 
   /* ════════════════════════════════════════════════════════
      BUILD DOM
+     The old #cm-tour-trigger is replaced by #cm-help-btn,
+     which opens the walkthrough modal (now the help panel).
   ═══════════════════════════════════════════════════════════ */
   function buildDOM() {
     overlay = el('div', { id: 'cm-tour-overlay' });
@@ -149,9 +158,13 @@
     card.innerHTML = buildCardHTML();
     document.body.appendChild(card);
 
-    trigger = el('button', { id: 'cm-tour-trigger', 'aria-label': 'Start site tour' });
-    trigger.innerHTML = '<span class="cm-tour-trigger-icon">🧭</span> Take a Tour';
-    document.body.appendChild(trigger);
+    /* ── Help button (replaces old tour trigger) ── */
+    helpBtn = el('button', {
+      id:          'cm-help-btn',
+      'aria-label': 'Open help panel',
+    });
+    helpBtn.innerHTML = '<span class="cm-help-icon">?</span><span class="cm-help-label">Help</span>';
+    document.body.appendChild(helpBtn);
   }
 
   function buildCardHTML() {
@@ -192,7 +205,12 @@
      EVENTS
   ═══════════════════════════════════════════════════════════ */
   function bindEvents() {
-    trigger.addEventListener('click', startTour);
+    /* Help button: opens the walkthrough modal (help panel) */
+    helpBtn.addEventListener('click', function () {
+      if (window.CareMapHelp && typeof window.CareMapHelp.open === 'function') {
+        window.CareMapHelp.open();
+      }
+    });
 
     document.addEventListener('click', function (e) {
       const t = e.target;
@@ -200,13 +218,11 @@
       if (t.id === 'cm-tour-next') { nextStep(); return; }
       if (t.id === 'cm-tour-prev') { prevStep(); return; }
 
-      /* Click on a dim curtain → escape */
       if (isActive && t.classList && t.classList.contains('cm-curtain')) {
         closeTour();
       }
     });
 
-    /* Capture phase — nothing on page can swallow Esc */
     document.addEventListener('keydown', handleKeydown, true);
 
     window.addEventListener('resize', debounce(function () {
@@ -271,7 +287,6 @@
   }
 
   function nextStep() {
-    /* On the last step, Finish simply closes the tour in place */
     if (currentStep >= STEPS.length - 1) {
       closeTour();
     } else {

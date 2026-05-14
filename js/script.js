@@ -27,14 +27,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 2400);
   }
 })();
+
   /* ----------------------------------------------------------
-     1. FIRST-TIME USER WALKTHROUGH MODAL
+     1. WALKTHROUGH MODAL → now a collapsible help panel
+        - Auto-starts the tour on first visit
+        - Modal content lives inside a bottom-right help button
+        - Tour starts automatically; modal becomes help reference
   ---------------------------------------------------------- */
   const backdrop   = document.getElementById('modalBackdrop');
   const modalWrap  = document.getElementById('modalWrap');
   const dismissX   = document.getElementById('dismissX');
   const dismissBtn = document.getElementById('dismissBtn');
- 
+
+  // These are now used by the help panel expand/collapse, not auto-show
   function openModal() {
     if (!backdrop || !modalWrap) return;
     backdrop.hidden  = false;
@@ -43,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const firstFocusable = modalWrap.querySelector('button, a[href]');
     if (firstFocusable) firstFocusable.focus();
   }
- 
+
   function closeModal() {
     if (!backdrop || !modalWrap) return;
     backdrop.hidden  = true;
@@ -51,22 +56,37 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
     sessionStorage.setItem('cm_welcomed', '1');
   }
- 
-  if (!sessionStorage.getItem('cm_welcomed')) {
-    setTimeout(openModal, 650);
-  }
- 
+
   if (dismissX)   dismissX.addEventListener('click', closeModal);
   if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
   if (backdrop)   backdrop.addEventListener('click', closeModal);
- 
+
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       closeModal();
       closeMobileMenu();
     }
   });
- 
+
+  // Auto-start the tour on first visit (replaces the old modal auto-show)
+  if (!sessionStorage.getItem('cm_welcomed') && !localStorage.getItem('cm_tour_step')) {
+    // Small delay so the page settles first
+    setTimeout(function () {
+      if (window.CareMapTour && typeof window.CareMapTour.start === 'function') {
+        window.CareMapTour.start();
+      }
+    }, 900);
+  }
+
+  // Wire the "Browse Directory" button in the modal to also close it
+  const browseBtn = modalWrap ? modalWrap.querySelector('a[href="directory.html"]') : null;
+  if (browseBtn) {
+    browseBtn.addEventListener('click', closeModal);
+  }
+
+  // Expose openModal so the help button in tour.js can call it
+  window.CareMapHelp = { open: openModal };
+
  
   /* ----------------------------------------------------------
      2. SEARCH — redirect to directory with query param
@@ -94,8 +114,6 @@ document.addEventListener('DOMContentLoaded', function () {
  
   /* ----------------------------------------------------------
      3. DROPDOWN NAVIGATION
-     FIX: Pure CSS triangle arrow — cross-platform compatible
-          on Mac, Windows, and Linux without Unicode issues.
   ---------------------------------------------------------- */
   const toggle = document.querySelector('.dropdown-toggle');
   const menu   = document.querySelector('.dropdown-menu');
@@ -107,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
       toggle.setAttribute('aria-expanded', String(!isOpen));
     });
  
-    // Close dropdown when clicking outside
     document.addEventListener('click', function (e) {
       if (!toggle.contains(e.target) && !menu.contains(e.target)) {
         menu.style.display = 'none';
@@ -227,7 +244,6 @@ if (cmStatCells.length) {
 
 /* ----------------------------------------------------------
    5b. HOMEPAGE STATS COUNTERS
-   Matches index.html .count-num[data-target] stat markup.
 ---------------------------------------------------------- */
 function animateStatNumber(el, target, duration) {
   const start = performance.now();
@@ -312,9 +328,6 @@ if (statCounters.length) {
  
   /* ----------------------------------------------------------
      7. LEAFLET MAP
-     FIX: Popup now includes a "View Details" link that goes
-          to directory.html?id=<resource_id>
-          Each organization has an `id` that matches RESOURCES.
   ---------------------------------------------------------- */
   if (document.getElementById('map')) {
     const map = L.map('map').setView([40.8925, -74.4788], 11.25);
@@ -323,7 +336,6 @@ if (statCounters.length) {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
  
-    // IDs match RESOURCES entries for popup links
     const organizations = [
       { id: 1,  name: "Interfaith Food Pantry",             coords: [40.831599473789744, -74.4967387711644], category: "food" },
       { id: 2,  name: "Boonton Food Pantry",                coords: [40.9019471, -74.4068955],              category: "food" },
@@ -399,10 +411,9 @@ if (statCounters.length) {
         shadowUrl:  'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
       });
  
-      // Popup includes link to directory card
       const popupHtml = `
         <div style="font-family:'DM Sans',sans-serif; min-width:160px;">
-          <strong style="font-size:.95rem; display:block; margin-bottom:.4rem; ">${org.name}</strong>
+          <strong style="font-size:.95rem; display:block; margin-bottom:.4rem;">${org.name}</strong>
           <a href="directory.html?id=${org.id}"
              style="display:inline-block; background:#C04B20; color:#fff;
                     padding:.3rem .7rem; border-radius:3px; font-size:.78rem;
@@ -420,20 +431,11 @@ if (statCounters.length) {
  
   /* ----------------------------------------------------------
      8. BOOKMARKS — homepage featured cards
-     Requires bookmarks.js to be loaded first.
-     Adds data-id to each card bookmark button, restores state.
-     
-     The featured cards on index.html have these IDs:
-       Community Food Bank → maps to id 1 (Interfaith Food Pantry)
-       Domestic Violence Program → maps to id 14 (JBWS)
-       Morris County Homeless Solutions → maps to id 17 (Homeless Solutions)
-     Update data-id values to match your actual resource IDs.
   ---------------------------------------------------------- */
   if (typeof CareMapBookmarks !== 'undefined') {
     CareMapBookmarks.bindButtons();
     CareMapBookmarks.applyToPage();
  
-    // Update nav badge count
     document.querySelectorAll('.bookmark-count').forEach(function (el) {
       const c = CareMapBookmarks.count();
       el.textContent = c;
@@ -451,4 +453,3 @@ if (statCounters.length) {
   }
  
 });
- 
