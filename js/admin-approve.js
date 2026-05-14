@@ -54,13 +54,15 @@ function getCaremapRootFolder(type) {
   const rootFoldersByType = {
     resource: "resources",
     resources: "resources",
-    volunteer: "volunteer"
+    volunteer: "volunteer",
+    question: "questions",
+    questions: "questions"
   };
 
   const rootFolders = rootFoldersByType[String(type || "").toLowerCase()];
 
   if (!rootFolders) {
-    throw new Error("type must be resource or volunteer");
+    throw new Error("type must be resource, volunteer, or question");
   }
 
   return rootFolders;
