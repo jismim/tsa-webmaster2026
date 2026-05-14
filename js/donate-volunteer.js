@@ -239,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const resultsCount   = document.getElementById('resultsCount');
   const filterAge      = document.getElementById('filter-age');
   const filterLocation = document.getElementById('filter-location');
+  const searchInput    = document.getElementById('filter-search'); // ── Search input
   const chips          = document.querySelectorAll('.chip');
   const tabBtns        = document.querySelectorAll('.tab-btn');
   const resetBtn       = document.getElementById('resetFilters');
@@ -250,10 +251,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let activeTab      = 'all';
   let activeServices = [];
+  let searchQuery    = '';   // ── Search state
   let lastFocused    = null;
-let currentPage    = 1;
-let viewAll        = false;
-const PAGE_SIZE    = 8;
+  let currentPage    = 1;
+  let viewAll        = false;
+  const PAGE_SIZE    = 8;
 
   /* ── Nav badge helper ── */
   function updateDvBadge() {
@@ -338,6 +340,16 @@ const PAGE_SIZE    = 8;
       if (age      && !item.age.includes(age))                           return false;
       if (location && item.location.toLowerCase() !== location)          return false;
       if (activeServices.length && !activeServices.every(s => item.services.includes(s))) return false;
+
+      // ── Search filter ──
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const inTitle   = item.title.toLowerCase().includes(q);
+        const inDesc    = item.desc.toLowerCase().includes(q);
+        const inAddress = (item.address || '').toLowerCase().includes(q);
+        if (!inTitle && !inDesc && !inAddress) return false;
+      }
+
       return true;
     });
 
@@ -349,10 +361,12 @@ const PAGE_SIZE    = 8;
         return aIsBoth - bIsBoth;
       });
     }
-const totalPages = viewAll ? 1 : Math.ceil(filtered.length / PAGE_SIZE);
-if (currentPage > totalPages) currentPage = 1;
 
-const pageItems = viewAll ? filtered : filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+    const totalPages = viewAll ? 1 : Math.ceil(filtered.length / PAGE_SIZE);
+    if (currentPage > totalPages) currentPage = 1;
+
+    const pageItems = viewAll ? filtered : filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
     cardsList.innerHTML = pageItems.map(item => {
       const townDisplay = item.location
         .split('-')
@@ -415,7 +429,8 @@ ${item.phone ? `
     noResults.hidden = filtered.length > 0;
     cardsList.hidden = filtered.length === 0;
 
-renderPagination(filtered.length, totalPages, filtered.length);
+    renderPagination(filtered.length, totalPages, filtered.length);
+
     /* ── Bind bookmark hearts on cards ── */
     cardsList.querySelectorAll('.dv-bookmark[data-id]').forEach(btn => {
       btn.addEventListener('click', e => {
@@ -423,13 +438,13 @@ renderPagination(filtered.length, totalPages, filtered.length);
         e.stopPropagation();
         if (typeof CareMapBookmarks === 'undefined') return;
         const id = parseInt(btn.dataset.id, 10);
-        
+
         // Find the item and cache it before bookmarking
         const item = DATA.find(d => d.id === id);
         if (item) {
           localStorage.setItem('cm_gb_item_' + id, JSON.stringify(item));
         }
-        
+
         const nowSaved = CareMapBookmarks.toggle(id, CareMapBookmarks.SECTIONS.GIVE_BACK);
         btn.textContent = nowSaved ? '♥' : '♡';
         btn.classList.toggle('saved', nowSaved);
@@ -461,64 +476,64 @@ renderPagination(filtered.length, totalPages, filtered.length);
   }
 
   /* ── Pagination renderer ── */
- function renderPagination(total, totalPages) {
-  let pager = document.getElementById('dvPagination');
-  if (!pager) {
-    pager = document.createElement('nav');
-    pager.id = 'dvPagination';
-    pager.setAttribute('aria-label', 'Results pages');
-    cardsList.parentNode.insertBefore(pager, cardsList.nextSibling);
-  }
+  function renderPagination(total, totalPages) {
+    let pager = document.getElementById('dvPagination');
+    if (!pager) {
+      pager = document.createElement('nav');
+      pager.id = 'dvPagination';
+      pager.setAttribute('aria-label', 'Results pages');
+      cardsList.parentNode.insertBefore(pager, cardsList.nextSibling);
+    }
 
-  const viewAllBtn = `
-    <button class="page-btn view-all-btn" id="pgViewAll">
-      ${viewAll ? '↩ Show Less' : 'View All'}
-    </button>`;
+    const viewAllBtn = `
+      <button class="page-btn view-all-btn" id="pgViewAll">
+        ${viewAll ? '↩ Show Less' : 'View All'}
+      </button>`;
 
-  if (viewAll || totalPages <= 1) {
-    pager.innerHTML = `
-      <p class="pagination-info">Showing all ${total} result${total !== 1 ? 's' : ''}</p>
-      <div class="pagination-btns">${viewAllBtn}</div>`;
+    if (viewAll || totalPages <= 1) {
+      pager.innerHTML = `
+        <p class="pagination-info">Showing all ${total} result${total !== 1 ? 's' : ''}</p>
+        <div class="pagination-btns">${viewAllBtn}</div>`;
+      pager.querySelector('#pgViewAll').addEventListener('click', () => {
+        viewAll = !viewAll;
+        currentPage = 1;
+        render();
+        scrollToList();
+      });
+      return;
+    }
+
+    const start = (currentPage - 1) * PAGE_SIZE + 1;
+    const end   = Math.min(currentPage * PAGE_SIZE, total);
+
+    let html = `<p class="pagination-info">Showing ${start}–${end} of ${total}</p>`;
+    html += `<div class="pagination-btns">`;
+    html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="First page" id="pgFirst">&#8676;</button>`;
+    html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="Previous page" id="pgPrev">&#8592;</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}" aria-label="Page ${i}" aria-current="${i === currentPage ? 'page' : 'false'}">${i}</button>`;
+    }
+    html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Next page" id="pgNext">&#8594;</button>`;
+    html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Last page" id="pgLast">&#8677;</button>`;
+    html += viewAllBtn;
+    html += `</div>`;
+
+    pager.innerHTML = html;
+
+    pager.querySelector('#pgFirst').addEventListener('click', () => { if (currentPage > 1) { currentPage = 1; render(); scrollToList(); } });
+    pager.querySelector('#pgPrev').addEventListener('click',  () => { if (currentPage > 1) { currentPage--; render(); scrollToList(); } });
+    pager.querySelector('#pgNext').addEventListener('click',  () => { if (currentPage < totalPages) { currentPage++; render(); scrollToList(); } });
+    pager.querySelector('#pgLast').addEventListener('click',  () => { if (currentPage < totalPages) { currentPage = totalPages; render(); scrollToList(); } });
+    pager.querySelectorAll('.page-btn[data-page]').forEach(btn => {
+      btn.addEventListener('click', () => { currentPage = Number(btn.dataset.page); render(); scrollToList(); });
+    });
     pager.querySelector('#pgViewAll').addEventListener('click', () => {
       viewAll = !viewAll;
       currentPage = 1;
       render();
       scrollToList();
     });
-    return;
   }
-
-  const start = (currentPage - 1) * PAGE_SIZE + 1;
-  const end   = Math.min(currentPage * PAGE_SIZE, total);
-
-  let html = `<p class="pagination-info">Showing ${start}–${end} of ${total}</p>`;
-  html += `<div class="pagination-btns">`;
-  html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="First page" id="pgFirst">&#8676;</button>`;
-  html += `<button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} aria-label="Previous page" id="pgPrev">&#8592;</button>`;
-  for (let i = 1; i <= totalPages; i++) {
-    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}" aria-label="Page ${i}" aria-current="${i === currentPage ? 'page' : 'false'}">${i}</button>`;
-  }
-  html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Next page" id="pgNext">&#8594;</button>`;
-  html += `<button class="page-btn page-arrow" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Last page" id="pgLast">&#8677;</button>`;
-  html += viewAllBtn;
-  html += `</div>`;
-
-  pager.innerHTML = html;
-
-  pager.querySelector('#pgFirst').addEventListener('click', () => { if (currentPage > 1) { currentPage = 1; render(); scrollToList(); } });
-  pager.querySelector('#pgPrev').addEventListener('click',  () => { if (currentPage > 1) { currentPage--; render(); scrollToList(); } });
-  pager.querySelector('#pgNext').addEventListener('click',  () => { if (currentPage < totalPages) { currentPage++; render(); scrollToList(); } });
-  pager.querySelector('#pgLast').addEventListener('click',  () => { if (currentPage < totalPages) { currentPage = totalPages; render(); scrollToList(); } });
-  pager.querySelectorAll('.page-btn[data-page]').forEach(btn => {
-    btn.addEventListener('click', () => { currentPage = Number(btn.dataset.page); render(); scrollToList(); });
-  });
-  pager.querySelector('#pgViewAll').addEventListener('click', () => {
-    viewAll = !viewAll;
-    currentPage = 1;
-    render();
-    scrollToList();
-  });
-}
 
   /* ── Scroll to card list ── */
   function scrollToList() {
@@ -612,7 +627,8 @@ renderPagination(filtered.length, totalPages, filtered.length);
   </div>
 `;
 
-    detailCard.querySelector('#detailCloseX').addEventListener('click',   closeDetail);
+    detailCard.querySelector('#detailCloseX').addEventListener('click', closeDetail);
+
     /* ── Modal bookmark heart ── */
     const modalHeart = detailCard.querySelector('.detail-bookmark');
     if (modalHeart && typeof CareMapBookmarks !== 'undefined') {
@@ -705,14 +721,25 @@ renderPagination(filtered.length, totalPages, filtered.length);
   filterAge.addEventListener('change',      () => { currentPage = 1; render(); });
   filterLocation.addEventListener('change', () => { currentPage = 1; render(); });
 
+  /* ── Search input (live, as-you-type) ── */
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      searchQuery = searchInput.value.trim();
+      currentPage = 1;
+      render();
+    });
+  }
+
   /* ── Reset button ── */
- resetBtn.addEventListener('click', () => {
+  resetBtn.addEventListener('click', () => {
     activeTab      = 'all';
     activeServices = [];
+    searchQuery    = '';       // ── Clear search state
     currentPage    = 1;
     viewAll        = false;
     filterAge.value      = '';
     filterLocation.value = '';
+    if (searchInput) searchInput.value = '';  // ── Clear search input
     chips.forEach(c => c.classList.remove('selected'));
     tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
     tabBtns[0].classList.add('active');
@@ -1002,9 +1029,9 @@ renderPagination(filtered.length, totalPages, filtered.length);
 
   Promise.all([
     loadApprovedVolunteerOpportunities()
-    .catch(error => {
-      console.warn('Approved volunteer opportunities could not be loaded; using built-in Give Back data.', error);
-    }),
+      .catch(error => {
+        console.warn('Approved volunteer opportunities could not be loaded; using built-in Give Back data.', error);
+      }),
     giveBackLoadDelay
   ])
     .finally(() => {
