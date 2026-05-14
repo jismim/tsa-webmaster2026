@@ -468,6 +468,9 @@ a[href="submit.html"].btn-ghost:hover,
 .dropdown-arrow {
   transition: transform 0.25s ease;
 }
+.dropdown-arrow path {
+  stroke-width: 2;
+}
 
 /* rotate when open */
 .dropdown-toggle[aria-expanded="true"] .dropdown-arrow {
@@ -567,6 +570,47 @@ a[href="submit.html"].btn-ghost:hover,
 
 .mobile-nav a.nav-saved-link:hover {
   color: var(--rust);
+}
+/* ════════════════════════════════════════════════════════════
+   MOBILE SUBMENU
+════════════════════════════════════════════════════════════ */
+.mobile-menu-submenu {
+  display: none;
+  flex-direction: column;
+  padding-left: 1.25rem;
+  gap: .4rem;
+  margin-top: .35rem;
+}
+.mobile-menu-dropdown.open .mobile-menu-submenu {
+  display: flex;
+}
+.mobile-menu-dropdown-toggle {
+  background: none;
+  border: none;
+  color: rgba(247,242,234,.75);
+  font-family: var(--ff-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding-block: .4rem;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mobile-menu-dropdown-toggle::after {
+  content: '›';
+  font-size: 1.4rem;
+  transition: transform .2s;
+}
+.mobile-menu-dropdown.open .mobile-menu-dropdown-toggle::after {
+  transform: rotate(90deg);
+}
+.mobile-menu-submenu a {
+  font-size: 1rem !important;
+  color: rgba(247,242,234,.6) !important;
+  padding-block: .25rem !important;
 }
 /* ════════════════════════════════════════════════════════════
    MODAL — First-time walkthrough popup
