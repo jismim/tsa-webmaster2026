@@ -1,3 +1,7 @@
+/* ============================================================
+   CAREMAP MORRIS — Tour & Help Button Styles
+   tour.css
+============================================================ */
 
 /* ── Overlay ──────────────────────────────────────────────── */
 #cm-tour-overlay {
@@ -232,36 +236,106 @@ kbd {
   letter-spacing: .04em;
 }
 
-/* ── Tour trigger button (floating, bottom-right) ─────────── */
-#cm-tour-trigger {
+/* ══════════════════════════════════════════════════════════
+   HELP BUTTON — bottom-right floating button
+   Replaces the old #cm-tour-trigger.
+   Clicking it opens the walkthrough modal (help panel).
+══════════════════════════════════════════════════════════ */
+#cm-help-btn {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 3500;
-  background: var(--rust, #C04B20);
-  color: #fff;
-  border: none;
+
+  /* Circular base — collapses to a circle, expands on hover */
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+
+  background: var(--ink, #1A1410);
+  color: var(--cream, #F7F2EA);
+  border: 1.5px solid rgba(192, 75, 32, .55);
   border-radius: 50px;
-  padding: 10px 20px 10px 14px;
+
   font-family: 'DM Sans', sans-serif;
   font-size: .82rem;
   font-weight: 500;
   letter-spacing: .03em;
   cursor: pointer;
+  white-space: nowrap;
+
+  box-shadow:
+    0 4px 18px rgba(26, 20, 16, .45),
+    0 0 0 0 rgba(192, 75, 32, 0);
+  transition:
+    width .3s cubic-bezier(.4,0,.2,1),
+    border-color .2s,
+    box-shadow .25s,
+    background .2s,
+    transform .2s;
+}
+
+/* The "?" icon stays visible always */
+.cm-help-icon {
   display: flex;
   align-items: center;
-  gap: 7px;
-  box-shadow: 0 6px 24px rgba(192, 75, 32, .4);
-  transition: all .22s;
-}
-#cm-tour-trigger:hover {
-  background: #E06840;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 32px rgba(192, 75, 32, .45);
-}
-#cm-tour-trigger .cm-tour-trigger-icon {
-  font-size: 1rem;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--rust, #C04B20);
+  color: #fff;
+  border-radius: 50%;
+  font-size: .8rem;
+  font-weight: 700;
   line-height: 1;
+  flex-shrink: 0;
+}
+
+/* "Help" label — hidden by default, slides in on hover */
+.cm-help-label {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-width .3s cubic-bezier(.4,0,.2,1),
+    opacity .2s,
+    margin .3s;
+  margin-left: 0;
+}
+
+#cm-help-btn:hover,
+#cm-help-btn:focus-visible {
+  width: 108px;
+  border-color: var(--rust, #C04B20);
+  background: var(--rust, #C04B20);
+  box-shadow:
+    0 8px 28px rgba(192, 75, 32, .38),
+    0 0 0 3px rgba(192, 75, 32, .14);
+  transform: translateY(-2px);
+  gap: 8px;
+}
+
+#cm-help-btn:hover .cm-help-icon,
+#cm-help-btn:focus-visible .cm-help-icon {
+  background: rgba(255, 255, 255, .22);
+}
+
+#cm-help-btn:hover .cm-help-label,
+#cm-help-btn:focus-visible .cm-help-label {
+  max-width: 60px;
+  opacity: 1;
+  margin-left: 0;
+}
+
+/* Also wire up the modal's "Take the Tour" button if present */
+#cm-help-btn:active {
+  transform: translateY(0) scale(.97);
 }
 
 /* ── "Tour complete" end card ─────────────────────────────── */
@@ -297,10 +371,7 @@ kbd {
   from { opacity: 0; transform: scale(.92) translateY(16px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
-.cm-end-icon {
-  font-size: 2.4rem;
-  margin-bottom: 16px;
-}
+.cm-end-icon   { font-size: 2.4rem; margin-bottom: 16px; }
 .cm-end-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.6rem;
@@ -340,10 +411,7 @@ kbd {
   color: #fff;
   border-color: var(--rust, #C04B20);
 }
-.cm-end-btn-primary:hover {
-  background: #E06840;
-  border-color: #E06840;
-}
+.cm-end-btn-primary:hover { background: #E06840; border-color: #E06840; }
 .cm-end-btn-ghost {
   background: transparent;
   color: rgba(247, 242, 234, .55);
@@ -357,7 +425,7 @@ kbd {
 /* ── Accessibility focus ring ─────────────────────────────── */
 #cm-tour-card button:focus-visible,
 #cm-tour-end button:focus-visible,
-#cm-tour-trigger:focus-visible {
+#cm-help-btn:focus-visible {
   outline: 2px solid var(--rust, #C04B20);
   outline-offset: 3px;
 }
@@ -367,12 +435,14 @@ kbd {
   #cm-tour-card,
   #cm-tour-ring,
   .cm-curtain,
-  #cm-tour-overlay { transition: none !important; }
+  #cm-tour-overlay,
+  #cm-help-btn,
+  .cm-help-label { transition: none !important; }
 }
 
 /* ── Mobile adjustments ───────────────────────────────────── */
 @media (max-width: 480px) {
   #cm-tour-card { width: calc(100vw - 32px); }
-  .cm-end-card { padding: 28px 22px; }
-  #cm-tour-trigger { bottom: 16px; right: 16px; }
+  .cm-end-card  { padding: 28px 22px; }
+  #cm-help-btn  { bottom: 16px; right: 16px; }
 }
