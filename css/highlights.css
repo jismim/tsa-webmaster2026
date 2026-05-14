@@ -673,22 +673,27 @@
     width: 100%;
   }
 }
-
-/* FIX: January carousel image sizing */
-#carouselJanuary .slide-image {
-  height: 420px;
-  min-height: 420px;
-  background: var(--ink);
+/* Keep every desktop slide the same clean height */
+.carousel-slide {
+  height: 470px;
+  min-height: 470px;
 }
 
-#carouselJanuary .slide-image img {
+/* Make image and text columns fill the slide evenly */
+.slide-image,
+.slide-content {
+  height: 470px;
+}
+
+/* Force images to fill the photo box without creating blank space */
+.slide-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
 }
 
-/* Fine-tune individual January photos */
+/* Fine-tune January image crops */
 #trackJanuary .carousel-slide:nth-child(1) .slide-image img {
   object-position: center center;
 }
@@ -698,9 +703,37 @@
 }
 
 #trackJanuary .carousel-slide:nth-child(3) .slide-image img {
-  object-position: center 58%;
+  object-position: center 60%;
 }
 
 #trackJanuary .carousel-slide:nth-child(4) .slide-image img {
   object-position: center center;
+}
+
+/* Keep hover zoom from making January look extra cropped */
+#carouselJanuary .carousel-slide:hover .slide-image img {
+  transform: none;
+}
+
+/* Mobile stays stacked and smaller */
+@media (max-width: 700px) {
+  .carousel-slide {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: 240px auto;
+  }
+
+  .slide-image {
+    height: 240px;
+    min-height: 240px;
+  }
+
+  .slide-content {
+    height: auto;
+  }
+
+  .slide-image img {
+    height: 100%;
+  }
 }
