@@ -214,7 +214,25 @@
           </div>
 
           <!-- ── Cards grid ── -->
-          <div class="resource-grid" id="resourceGrid" aria-label="Resource listings"></div>
+          <div class="resource-grid" id="resourceGrid" aria-label="Resource listings" aria-busy="true">
+            <div class="dir-resource-loader" role="status" aria-live="polite">
+              <div class="dir-loader-head">
+                <div class="dir-loader-mark" aria-hidden="true">
+                  <span class="dir-loader-ring"></span>
+                  <span class="dir-loader-dot"></span>
+                </div>
+                <div>
+                  <p class="dir-loader-title">Loading resources <span class="dir-loader-dots"><span>.</span><span>.</span><span>.</span></span></p>
+                  <p class="dir-loader-copy">Checking the latest approved listings.</p>
+                </div>
+              </div>
+              <div class="dir-loader-skeletons" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
 
           <!-- ── View all ── -->
           <div class="dir-view-all reveal" style="text-align:center; margin-top:2.5rem;">

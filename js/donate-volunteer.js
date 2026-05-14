@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  const MIN_GIVE_BACK_LOAD_MS = 2200;
+
   /* ── 1. Hero load-in (fires on page load, not scroll) ── */
   setTimeout(function () {
     document.querySelectorAll('.reveal-hero').forEach(function (el) {
@@ -324,6 +326,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Main render function ── */
   function render() {
+    cardsList.setAttribute('aria-busy', 'false');
+
     const age      = filterAge.value;
     const location = filterLocation.value.toLowerCase();
 
@@ -710,10 +714,17 @@ ${item.address ? `
 
   /* ── Initial render + badge sync ── */
   resultsCount.textContent = 'Loading opportunities...';
-  loadApprovedVolunteerOpportunities()
+  const giveBackLoadDelay = new Promise(resolve => {
+    setTimeout(resolve, MIN_GIVE_BACK_LOAD_MS);
+  });
+
+  Promise.all([
+    loadApprovedVolunteerOpportunities()
     .catch(error => {
-      console.warn('Approved volunteer opportunities could not be loaded.', error);
-    })
+      console.warn('Approved volunteer opportunities could not be loaded; using built-in Give Back data.', error);
+    }),
+    giveBackLoadDelay
+  ])
     .finally(() => {
       syncLocationFilterOptions();
       render();
