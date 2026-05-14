@@ -243,22 +243,42 @@ document.addEventListener('DOMContentLoaded', function () {
  const askForm    = document.getElementById('askForm');
  const askSuccess = document.getElementById('askSuccess');
  if (askForm && askSuccess) {
-   askForm.addEventListener('submit', function (e) {
+   askForm.addEventListener('submit', async function (e) {
      e.preventDefault();
      const emailInput    = askForm.querySelector('#askEmail');
      const questionInput = askForm.querySelector('#askQuestion');
-     if (!emailInput.value.trim() || !questionInput.value.trim()) {
-       emailInput.reportValidity();
-       questionInput.reportValidity();
+     if (!askForm.reportValidity()) {
        return;
      }
      const btn = askForm.querySelector('button[type="submit"]');
+     const originalText = btn.textContent;
      btn.disabled    = true;
-     btn.textContent = 'Sending…';
-     setTimeout(function () {
-       askForm.style.display = 'none';
-       askSuccess.hidden     = false;
-     }, 800);
+     btn.textContent = 'Sending...';
+     askSuccess.hidden = true;
+     try {
+       const res = await fetch(API_BASE + '/submissions', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+           rootFolders: ['questions'],
+           data: {
+             email: emailInput.value.trim(),
+             question: questionInput.value.trim()
+           }
+         })
+       });
+
+       const result = await res.json();
+       if (!res.ok) throw new Error(result.message || 'Question submission failed');
+
+       askForm.reset();
+       askSuccess.hidden = false;
+     } catch (err) {
+       alert('Error: ' + err.message);
+     } finally {
+       btn.disabled = false;
+       btn.textContent = originalText;
+     }
    });
  }
 
