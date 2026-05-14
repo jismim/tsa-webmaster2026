@@ -37,11 +37,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           </select>
           <button class="btn btn-secondary" type="button">Mark as Answered</button>
         </div>
-        <div class="admin-response-box">
-          <label class="meta-label" for="response-${dataUtils.escapeHtml(item.id)}">Optional admin response</label>
-          <textarea id="response-${dataUtils.escapeHtml(item.id)}" rows="3" placeholder="Type a judge/demo response here...">${dataUtils.escapeHtml(item.adminResponse || '')}</textarea>
-          ${item.adminResponse ? `<div class="admin-response">${dataUtils.escapeHtml(item.adminResponse)}</div>` : ''}
-        </div>
       </article>
     `).join('');
   }
@@ -50,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const status = filterSelect.value;
     const filtered = questions.filter((item) => {
-      const haystack = [item.name, item.email, item.question, item.adminResponse].join(' ').toLowerCase();
+      const haystack = [item.name, item.email, item.question].join(' ').toLowerCase();
       const matchesSearch = !searchTerm || haystack.includes(searchTerm);
       const matchesStatus = status === 'All' || item.status === status;
       return matchesSearch && matchesStatus;
