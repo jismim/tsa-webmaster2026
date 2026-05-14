@@ -4,18 +4,6 @@
             mobile menu, bookmark toggle, footer dates, map
 ============================================================ */
 
-/*
-  LOADER — runs immediately on script parse, NOT inside DOMContentLoaded.
-  Script sits at bottom of <body> so DOM nodes already exist when this runs.
-
-  FIX: The white flash was caused by two things:
-    1. This loader IIFE was inside DOMContentLoaded (fires too late — browser
-       already painted the white body before the event fires).
-    2. A duplicate loader block in the inline <script> in index.html was
-       running a second time, resetting page-wrap to opacity:0 again after
-       the first loader already finished — causing a second white flash.
-  Both are now fixed: one loader, running here before any event listener.
-*/
 (function () {
   const loader = document.getElementById('loader');
   const page   = document.getElementById('page-wrap');
