@@ -14,17 +14,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (hasVisited) {
     loader.style.display = 'none';
+    if (page) page.style.opacity = '1';
   } else {
     sessionStorage.setItem('cm_visited', 'true');
-    document.body.classList.add('loading');
-    if (page) page.style.opacity = '0';
-
-    setTimeout(() => {
-      loader.classList.add('hide');
-      if (page) page.style.opacity = '1';
-      document.body.classList.remove('loading');
-      setTimeout(() => loader.style.display = 'none', 600);
-    }, 2400);
+    loader.style.display = 'none';
+    if (page) page.style.opacity = '1';
+    document.body.classList.remove('loading');
   }
 })();
   /* ----------------------------------------------------------
@@ -53,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
  
   if (!sessionStorage.getItem('cm_welcomed')) {
-    setTimeout(openModal, 650);
+    openModal();
   }
  
   if (dismissX)   dismissX.addEventListener('click', closeModal);

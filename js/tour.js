@@ -87,8 +87,10 @@
   }
 
   function currentNormalizedPath() {
-    const p = window.location.pathname;
+    let p = window.location.pathname;
     if (p === '/' || p === '') return 'index.html';
+    if (p.endsWith('/')) p += 'index.html';
+    else if (!p.endsWith('.html')) p += '/index.html';
     return normalizePath(p);
   }
 
@@ -102,7 +104,16 @@
   }
 
   function navigateToStep(step) {
-    window.location.href = '/' + normalizePath(step.page);
+    let path = window.location.pathname;
+    if (!path.endsWith('/') && !path.endsWith('.html')) {
+      path += '/';
+    }
+    const isSubdir = path.includes('/admin/');
+    const prefix = isSubdir ? '../' : './';
+    const newUrl = new URL(prefix + normalizePath(step.page), window.location.origin + path);
+    
+    console.warn('Tour navigation triggered for step:', step.page, '-> target:', newUrl.href);
+    // window.location.href = newUrl.href;
   }
 
   /* ════════════════════════════════════════════════════════
@@ -118,6 +129,7 @@
       if (!isNaN(idx) && idx >= 0 && idx < STEPS.length) {
         isActive    = true;
         currentStep = idx;
+        if (trigger) trigger.style.display = 'none';
       }
     }
   }
@@ -254,6 +266,17 @@
      TOUR LIFECYCLE
   ═══════════════════════════════════════════════════════════ */
   function startTour() {
+    // Dismiss welcome modal if present
+    const welcomeWrap = document.getElementById('modalWrap');
+    const welcomeBackdrop = document.getElementById('modalBackdrop');
+    if (welcomeWrap) welcomeWrap.hidden = true;
+    if (welcomeBackdrop) welcomeBackdrop.hidden = true;
+    document.body.style.overflow = '';
+    sessionStorage.setItem('cm_welcomed', '1');
+
+    // Hide the tour trigger button while tour is active
+    if (trigger) trigger.style.display = 'none';
+
     isActive    = true;
     currentStep = 0;
     goToStep(0);
@@ -268,6 +291,7 @@
     hideCurtains();
     document.body.style.overflow = '';
     currentStep = -1;
+    if (trigger) trigger.style.display = 'flex';
   }
 
   function nextStep() {

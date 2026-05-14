@@ -1,0 +1,12 @@
+{
+  "liveServer.settings.ignoreFiles": [
+    ".vscode/**",
+    "**/*.json",
+    "**/*.md",
+    "**/node_modules/**",
+    "**/.git/**"
+  ],
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.fullReload": false,
+  "liveServer.settings.wait": 1200
+}

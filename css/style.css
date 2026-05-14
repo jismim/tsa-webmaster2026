@@ -777,17 +777,31 @@ a[href="submit.html"].btn-ghost:hover,
 }
 
 /* Hero panel — right side cards */
-.hero-panel { display: flex; flex-direction: column; gap: 1rem; }
+.hero-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 430px;
+  justify-content: center;
+}
 
 .hp-card {
-  background: rgba(247,242,234,.05);
+  position: relative;
+  z-index: 2;
+  background: rgba(247,242,234,.08);
   border: 1px solid rgba(247,242,234,.1);
   border-radius: 8px; padding: 1.25rem 1.4rem;
-  transition: background .25s, border-color .25s;
+  transition: background .25s, border-color .25s, box-shadow .25s;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
 }
 .hp-card:hover {
   background: rgba(247,242,234,.08);
   border-color: rgba(247,242,234,.2);
+  box-shadow: 0 18px 42px rgba(0,0,0,.16);
 }
 .hp-card-kicker {
   font-family: var(--ff-mono);
@@ -1496,6 +1510,123 @@ a[href="submit.html"].btn-ghost:hover,
   .footer-grid { grid-template-columns: 1fr; }
 
 }
+
+.hero-orbits {
+  position: absolute;
+  top: 65%;
+  left: 65%;
+  width: 1px;
+  height: 1px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .45;
+  overflow: visible;
+}
+
+.hero-orbits-sm {
+  top: 4%;
+  right: 4%;
+  left: auto;
+}
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  border-radius: 50%;
+  border: 1px solid rgba(44, 143, 163, .65);
+  border-style: dashed;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.orbit::before,
+.orbit::after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #2C8FA3;
+  box-shadow: 0 0 0 9px rgba(44, 143, 163, .14);
+}
+
+.orbit::after {
+  width: 11px;
+  height: 11px;
+  background: var(--sage-lt);
+  box-shadow: 0 0 0 8px rgba(106, 143, 102, .16);
+}
+
+.orbit i {
+  position: absolute;
+  inset: 12%;
+  border: 1px solid rgba(74, 103, 65, .28);
+  border-style: dashed;
+  border-radius: 50%;
+}
+
+.orbit-one {
+  width: min(620px, 58vw);
+  height: min(620px, 58vw);
+}
+
+.orbit-one::before {
+  top: 10%;
+  left: 23%;
+}
+
+.orbit-one::after {
+  right: 9%;
+  bottom: 28%;
+}
+
+.orbit-two {
+  width: min(455px, 46vw);
+  height: min(455px, 46vw);
+  border-color: rgba(74, 103, 65, .4);
+}
+
+.orbit-two::before {
+  right: 14%;
+  top: 12%;
+}
+
+.orbit-two::after {
+  left: 8%;
+  bottom: 26%;
+}
+
+.orbit-three {
+  width: min(300px, 34vw);
+  height: min(300px, 34vw);
+  border-color: rgba(44, 143, 163, .42);
+}
+
+.orbit-three::before {
+  top: 5%;
+  right: 31%;
+}
+
+.orbit-three::after {
+  left: 10%;
+  bottom: 18%;
+}
+
+.orbit-sm-one {
+  width: min(280px, 26vw);
+  height: min(280px, 26vw);
+  border-color: rgba(44, 143, 163, .5);
+}
+
+.orbit-sm-two {
+  width: min(180px, 17vw);
+  height: min(180px, 17vw);
+  border-color: rgba(74, 103, 65, .5);
+}
+
 /* ════════════════════════════════════════════════════════════
    MAP LEGEND — Mobile Fix
 ════════════════════════════════════════════════════════════ */
