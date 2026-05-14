@@ -411,18 +411,6 @@ input:focus, select:focus, textarea:focus {
   align-items: center;
   flex-wrap: wrap;
 }
-.admin-response-box {
-  margin-top: .85rem;
-  border-top: 1px solid rgba(58,40,28,.12);
-  padding-top: .85rem;
-}
-.admin-response {
-  background: rgba(255,255,255,.45);
-  border-left: 4px solid var(--sage);
-  padding: .85rem 1rem;
-  border-radius: 8px;
-  margin-top: .55rem;
-}
 .login-wrap {
   min-height: calc(100vh - 76px);
   display: grid;
