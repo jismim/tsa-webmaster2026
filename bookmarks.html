@@ -3,20 +3,454 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Saved Resources — CareMap Morris</title>
+  <title>My Bookmarks — CareMap Morris</title>
   <meta name="description" content="Your saved CareMap Morris resources, bookmarked for easy access." />
- 
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" href="css/tour.css" />   <!-- ← add this -->
-<link rel="icon" type="image/png" href="images/logo.png"/>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/bookmarks.css" />
+  <link rel="stylesheet" href="css/tour.css" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+
+  <style>
+    /* ════════════════════════════════════════════════════════
+       BOOKMARKS PAGE STYLING
+    ════════════════════════════════════════════════════════ */
+
+    .bm-main-section {
+      min-height: 60vh;
+      padding-top: 3rem;
+      padding-bottom: 4rem;
+    }
+
+    /* ── Page header ── */
+    .bm-page-head {
+      margin-bottom: 4rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-label {
+      font-family: var(--ff-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--bark);
+      margin: 0 0 0.75rem 0;
+      line-height: 1.1;
+    }
+
+    .section-sub {
+      color: var(--warm-gray);
+      font-size: 1.05rem;
+      margin: 0;
+      max-width: 65ch;
+    }
+
+    /* ── Section divider ── */
+    .bm-section {
+      margin-bottom: 5rem;
+      scroll-margin-top: 100px;
+    }
+
+    .bm-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .bm-section-header {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .bm-section-icon {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .bm-section-header-text {
+      flex: 1;
+    }
+
+    .bm-section-label {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .bm-section-title {
+      font-family: var(--ff-display);
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--bark);
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    /* ── Clear button in header ── */
+    .bm-section-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+
+    .bm-section-actions.hidden {
+      display: none;
+    }
+
+    .bm-clear-btn {
+      background: none;
+      border: none;
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      cursor: pointer;
+      padding: 0.5rem 0;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .bm-clear-btn:hover {
+      color: var(--rust);
+    }
+
+    .bm-clear-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ── Cards grid ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .cards-grid.hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    /* ── Resource card ── */
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .resource-card:hover {
+      border-color: var(--rust);
+      box-shadow: 0 8px 24px rgba(192, 75, 32, 0.12);
+      transform: translateY(-4px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem;
+      background: var(--ink);
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+
+    .card-category {
+      display: inline-block;
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    /* Category color classes */
+    .cat-food {
+      background: rgba(218, 165, 32, 0.15);
+      color: #b8860b;
+    }
+
+    .cat-shelter {
+      background: rgba(192, 75, 32, 0.15);
+      color: #c04f20;
+    }
+
+    .cat-housing {
+      background: rgba(70, 130, 180, 0.15);
+      color: #4682b4;
+    }
+
+    .card-bookmark {
+      background: none;
+      border: 2px solid transparent;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .card-bookmark:not(.saved) {
+      color: var(--warm-gray);
+    }
+
+    .card-bookmark.saved {
+      color: var(--rust);
+    }
+
+    .card-bookmark:hover {
+      border-color: var(--rust);
+      background: rgba(192, 75, 32, 0.08);
+    }
+
+    .card-body {
+      padding: 1.5rem 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card-title {
+      font-family: var(--ff-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--bark);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .card-meta {
+      font-family: var(--ff-mono);
+      font-size: 0.8rem;
+      color: var(--warm-gray);
+      margin: 0;
+      text-transform: capitalize;
+      letter-spacing: 0.04em;
+    }
+
+    .card-text {
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0;
+      flex: 1;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .pill {
+      display: inline-block;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .kind-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .kind-badge {
+      display: inline-block;
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .badge-donate {
+      background: rgba(218, 165, 32, 0.2);
+      color: #b8860b;
+    }
+
+    .badge-volunteer {
+      background: rgba(70, 130, 180, 0.2);
+      color: #4682b4;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-actions a {
+      flex: 1;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      background: var(--paper);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--rust);
+      color: white;
+      border-color: var(--rust);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--rust);
+      border: 1px solid var(--rust);
+    }
+
+    .btn-ghost:hover {
+      background: var(--rust);
+      color: white;
+    }
+
+    /* ── Empty state ── */
+    .bm-empty {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, var(--paper) 0%, rgba(247,242,234,0.5) 100%);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .bm-empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+      display: inline-block;
+    }
+
+    .bm-empty h3 {
+      font-family: var(--ff-display);
+      color: var(--bark);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .bm-empty p {
+      color: var(--warm-gray);
+      font-size: 1rem;
+      margin: 0 0 1.5rem 0;
+      max-width: 50ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .bm-page-head {
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .bm-section-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .bm-section-header {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .bm-section-title {
+        font-size: 1.5rem;
+      }
+
+      .bm-section-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .card-actions {
+        flex-direction: column;
+      }
+
+      .bm-empty {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
- 
+
   <!-- ═══ MOBILE MENU ═══ -->
- <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
     <div class="mobile-menu-head">
       <div class="mobile-menu-brand">
         <img src="images/logo.png" alt="CareMap Morris logo" class="mobile-brand-logo">
@@ -26,31 +460,33 @@
     </div>
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
-    <a href="directory.html">Directory</a>
-    <a href="donate-volunteer.html">Give Back</a>
-    <a href="submit.html">Contact Us</a>
-    <a href="highlights.html">Highlights</a>
+    <div class="mobile-menu-dropdown">
+      <button class="mobile-menu-dropdown-toggle">Resources</button>
+      <div class="mobile-menu-submenu">
+        <a href="directory.html">Directory</a>
+        <a href="donate-volunteer.html">Give Back</a>
+        <a href="submit.html">Submit a Resource</a>
+        <a href="highlights.html">Highlights</a>
+      </div>
+    </div>
     <a href="works-cited.html">Works Cited</a>
     <a href="/admin/login.html">Admin</a>
     <a href="bookmarks.html" class="nav-saved-link">
-  ♥ Saved
-  <span class="bookmark-count" style="display:none;">0</span>
-  </a>
+      ♥ Saved
+      <span class="bookmark-count" style="display:none;">0</span>
+    </a>
   </nav>
- 
+
   <!-- ═══ HEADER ═══ -->
-   <header class="site-header">
+  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="CareMap Morris — Home">
         <img src="images/logo.png" alt="CareMap Morris logo" class="brand-logo">
         <span class="brand-text">CareMap Morris</span>
       </a>
-
       <nav class="nav" aria-label="Primary navigation">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
-
-        <!-- ── Resources Dropdown ── -->
         <div class="nav-dropdown">
           <button class="dropdown-toggle" aria-expanded="false">
             Resources
@@ -61,109 +497,172 @@
           <div class="dropdown-menu">
             <a href="directory.html">Directory</a>
             <a href="donate-volunteer.html">Give Back</a>
+            <a href="submit.html">Submit a Resource</a>
             <a href="highlights.html">Highlights</a>
           </div>
         </div>
-
-        <a href="submit.html">Contact Us</a>
         <a href="works-cited.html">Works Cited</a>
-
         <a href="/admin/login.html">Admin</a>
         <a href="bookmarks.html" class="nav-saved-link">
           ♥ Saved
           <span class="bookmark-count" style="display:none;">0</span>
-        </a>  
+        </a>
       </nav>
       <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Open navigation" aria-expanded="false">☰ Menu</button>
     </div>
   </header>
- 
+
   <main id="main">
-    <section class="section" style="min-height: 60vh;">
+    <section class="bm-main-section">
       <div class="container">
-        <p class="section-label">Your Bookmarks</p>
-        <h1 class="section-title">Saved Resources</h1>
-        <p class="section-sub" id="bookmarkSubtitle">Loading your saved organizations…</p>
- 
-        <!-- ── Empty state ── -->
-        <div id="bookmarkEmpty" style="display:none; text-align:center; padding: 4rem 1rem;">
-          <p style="font-size:3rem; margin-bottom:1rem;">♡</p>
-          <h2 style="font-family:var(--ff-display); color:var(--bark); font-size:1.5rem; margin-bottom:.75rem;">No saved resources yet</h2>
-          <p style="color:var(--warm-gray); margin-bottom:1.5rem;">Browse the directory and click ♡ on any organization to save it here for easy access.</p>
-          <a class="btn btn-primary" href="directory.html">Browse Directory →</a>
+
+        <!-- ── Page Header ── -->
+        <div class="bm-page-head">
+          <p class="section-label">Your Bookmarks</p>
+          <h1 class="section-title">Bookmarks</h1>
+          <p class="section-sub">
+            Resources and opportunities you've saved across CareMap Morris for easy access.
+          </p>
         </div>
- 
-        <!-- ── Cards grid ── -->
-        <div class="cards-grid" id="bookmarkGrid"></div>
- 
-        <!-- ── Clear all ── -->
-        <div id="bookmarkClearRow" style="display:none; text-align:center; margin-top:2rem;">
-          <button class="btn btn-outline-dark" id="clearAllBookmarks">Clear All Saved Resources</button>
-        </div>
+
+        <!-- ══════════════════════════════════════════════════
+             SECTION 1 — SAVED RESOURCES (directory / find help)
+        ════════════════════════════════════════════════════ -->
+        <section class="bm-section">
+          <div class="bm-section-head">
+            <div class="bm-section-header">
+              <div class="bm-section-header-text">
+                <span class="bm-section-label">Find Help</span>
+                <h2 class="bm-section-title">Saved Resources</h2>
+              </div>
+            </div>
+            <div class="bm-section-actions hidden" id="savedActions">
+              <button class="bm-clear-btn" id="clearSaved">Clear all</button>
+            </div>
+          </div>
+
+          <div id="savedEmpty" class="bm-empty">
+            <p class="bm-empty-icon">♡</p>
+            <h3>No saved resources yet</h3>
+            <p>Browse the directory and click ♡ on any organization to save it here.</p>
+            <a class="btn btn-primary" href="directory.html">Browse Directory →</a>
+          </div>
+
+          <div class="cards-grid hidden" id="savedGrid"></div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             SECTION 2 — GIVE BACK (donate / volunteer)
+        ════════════════════════════════════════════════════ -->
+        <section class="bm-section">
+          <div class="bm-section-head">
+            <div class="bm-section-header">
+              <div class="bm-section-header-text">
+                <span class="bm-section-label">Give Back</span>
+                <h2 class="bm-section-title">Saved Opportunities</h2>
+              </div>
+            </div>
+            <div class="bm-section-actions hidden" id="giveBackActions">
+              <button class="bm-clear-btn" id="clearGiveBack">Clear all</button>
+            </div>
+          </div>
+
+          <div id="giveBackEmpty" class="bm-empty">
+            <p class="bm-empty-icon">🤍</p>
+            <h3>No give back opportunities saved</h3>
+            <p>Browse donation and volunteer opportunities and click ♡ to track them here.</p>
+            <a class="btn btn-primary" href="donate-volunteer.html">Browse Opportunities →</a>
+          </div>
+
+          <div class="cards-grid hidden" id="giveBackGrid"></div>
+        </section>
+
       </div>
     </section>
   </main>
- 
-<footer class="site-footer">
-  <div class="container footer-grid">
-    <div>
-      <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
-      <p class="footer-mission">
-        CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
-      </p>
-    </div>
-    <div>
-      <p class="footer-col-title">Navigation</p>
-      <ul class="footer-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="directory.html">Directory</a></li>
-        <li><a href="donate-volunteer.html">Give Back</a></li>
-        <li><a href="highlights.html">Highlights</a></li>
-        <li><a href="works-cited.html">Works Cited</a></li>
-        <li><a href="bookmarks.html">♥ Saved Resources</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer-col-title">Contact &amp; Info</p>
-      <ul class="footer-links">
-        <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
-        <li><a href="submit.html">Submit a Resource</a></li>
-      </ul>
-      <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
-        Morris County, New Jersey<br>
-        Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
-      </p>
-      <!-- ── Admin ── -->
-      <p class="admin-label" style="margin-top:1rem; font-size: .8rem ; color: rgba(247,242,234,.4); font-weight:500">Administrator</p>
-      <a href="/admin/login.html" class="admin-link">Admin Login</a>
-    </div>
-  </div>
 
-  <div class="container footer-bottom">
-    <p class="footer-disclaimer">
-      <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
-      <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
-    </p>
-    <p class="footer-date" id="footerYear"></p>
-  </div>
-</footer>
- 
-<script src="js/resources.js"></script>
-<script src="js/bookmarks.js"></script>
-<script src="js/tour.js"></script>  
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // ── Mobile menu ──────────────────────────────────────
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand"><span class="footer-brand-dot"></span> CareMap Morris</p>
+        <p class="footer-mission">
+          CareMap Morris is a community resource hub dedicated to improving access to services, raising awareness of local needs, and strengthening support across Morris County, New Jersey.
+        </p>
+      </div>
+      <div>
+        <p class="footer-col-title">Navigation</p>
+        <ul class="footer-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="directory.html">Directory</a></li>
+          <li><a href="donate-volunteer.html">Give Back</a></li>
+          <li><a href="submit.html">Submit a Resource</a></li>
+          <li><a href="highlights.html">Highlights</a></li>
+          <li><a href="bookmarks.html">♥ Bookmarks</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Contact &amp; Info</p>
+        <ul class="footer-links">
+          <li><a href="mailto:info@caremapmorris.org">info@caremapmorris.org</a></li>
+          <li><a href="works-cited.html">Works Cited</a></li>
+        </ul>
+        <p style="margin-top:1rem; font-size:.78rem; color:rgba(247,242,234,.3); line-height:1.5;">
+          Morris County, New Jersey<br>
+          Crisis line: <strong>988</strong> | Emergency: <strong>911</strong>
+        </p>
+        <p class="admin-label" style="margin-top:1rem; font-size:.8rem; color:rgba(247,242,234,.4); font-weight:500">Administrator</p>
+        <a href="/admin/login.html" class="admin-link">Admin Login</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p class="footer-disclaimer">
+        <strong>Disclaimer:</strong> CareMap Morris is an informational resource directory only. Information may not reflect current availability. Always confirm details directly.
+        <strong>This is not an emergency platform.</strong> Call <strong>911</strong> if needed. Crisis support: <strong>988</strong>.
+      </p>
+      <p class="footer-date" id="footerYear"></p>
+    </div>
+  </footer>
+
+  <script src="js/resources.js"></script>
+  <script src="js/bookmarks.js"></script>
+  <script src="js/tour.js"></script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    /* ── Mobile menu ── */
     const mobileMenu      = document.getElementById('mobileMenu');
     const mobileNavBtn    = document.getElementById('mobileNavBtn');
     const mobileMenuClose = document.getElementById('mobileMenuClose');
-    function openMobileMenu()  { mobileMenu.classList.add('open'); mobileMenu.setAttribute('aria-hidden','false'); mobileNavBtn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
-    function closeMobileMenu() { mobileMenu.classList.remove('open'); mobileMenu.setAttribute('aria-hidden','true'); mobileNavBtn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
-    if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
-    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
-    if (mobileMenu) mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMobileMenu));
- 
-    // ── Dropdown ──────────────────────────────────────────
+
+    function openMM()  {
+      mobileMenu.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden','false');
+      mobileNavBtn.setAttribute('aria-expanded','true');
+      document.body.style.overflow='hidden';
+    }
+    function closeMM() {
+      mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden','true');
+      mobileNavBtn.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    }
+
+    if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMM);
+    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMM);
+    if (mobileMenu)      mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMM));
+
+    /* ── Mobile dropdown ── */
+    const dropdownToggle = document.querySelector('.mobile-menu-dropdown-toggle');
+    if (dropdownToggle) {
+      dropdownToggle.addEventListener('click', function() {
+        this.parentElement.classList.toggle('open');
+      });
+    }
+
+    /* ── Desktop dropdown ── */
     const toggle = document.querySelector('.dropdown-toggle');
     const menu   = document.querySelector('.dropdown-menu');
     if (toggle && menu) {
@@ -173,117 +672,215 @@ document.addEventListener('DOMContentLoaded', function () {
         toggle.setAttribute('aria-expanded', !isOpen);
       });
     }
- 
-    // ── Footer year ───────────────────────────────────────
+
+    /* ── Footer year ── */
     const yearEl = document.getElementById('footerYear');
     if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
- 
-    // ── Render bookmarks ──────────────────────────────────
-    const grid        = document.getElementById('bookmarkGrid');
-    const emptyState  = document.getElementById('bookmarkEmpty');
-    const subtitle    = document.getElementById('bookmarkSubtitle');
-    const clearRow    = document.getElementById('bookmarkClearRow');
-    const clearBtn    = document.getElementById('clearAllBookmarks');
- 
-    // Category → CSS class map
+
+    /* ────────────────────────────────────────────────────────
+       CATEGORY → CSS class  (for directory / SAVED section)
+    ──────────────────────────────────────────────────────── */
     const catClass = {
-      'food': 'cat-food',
-      'housing': 'cat-shelter',
+      'food':              'cat-food',
+      'housing':           'cat-shelter',
       'domestic-violence': 'cat-shelter',
-      'youth': 'cat-food',
-      'health': 'cat-housing',
-      'legal': 'cat-housing',
-      'mental-health': 'cat-shelter',
-      'substance-use': 'cat-food',
-      'disability': 'cat-housing',
-      'education': 'cat-housing',
-      'senior': 'cat-housing',
+      'youth':             'cat-food',
+      'health':            'cat-housing',
+      'legal':             'cat-housing',
+      'mental-health':     'cat-shelter',
+      'substance-use':     'cat-food',
+      'disability':        'cat-housing',
+      'education':         'cat-housing',
+      'senior':            'cat-housing',
     };
- 
-    function renderBookmarks() {
-      const savedIds = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED);
+
+    /* ────────────────────────────────────────────────────────
+       BUILD A SAVED-RESOURCES CARD  (directory style)
+    ──────────────────────────────────────────────────────── */
+    function buildSavedCard(resource) {
+      const cls  = catClass[resource.category] || 'cat-food';
+      const label = (resource.category || '').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+      const tags  = (resource.tags || []).slice(0, 4)
+        .map(t => `<span class="pill">${t}</span>`).join('');
+
+      const article = document.createElement('article');
+      article.className = 'resource-card';
+      article.id        = 'saved-card-' + resource.id;
+      article.innerHTML = `
+        <div class="card-top">
+          <span class="card-category ${cls}">${label}</span>
+          <button class="card-bookmark saved"
+                  data-id="${resource.id}"
+                  data-section="${CareMapBookmarks.SECTIONS.SAVED}"
+                  aria-label="Unsave this organization"
+                  title="Remove bookmark">♥</button>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${resource.title}</h3>
+          <p class="card-meta">${resource.town || 'Morris County'}</p>
+          <p class="card-text">${resource.shortDesc || ''}</p>
+          <div class="pill-row">${tags}</div>
+        </div>
+        <div class="card-actions">
+          <a class="btn btn-secondary" href="directory.html?id=${resource.id}">View in Directory</a>
+          ${resource.website ? `<a class="btn btn-ghost" href="${resource.website}" target="_blank" rel="noopener">Website ↗</a>` : ''}
+        </div>`;
+
+      /* Remove on heart click */
+      article.querySelector('.card-bookmark').addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        CareMapBookmarks.remove(resource.id, CareMapBookmarks.SECTIONS.SAVED);
+        article.style.transition = 'opacity .3s, transform .3s';
+        article.style.opacity    = '0';
+        article.style.transform  = 'scale(.95)';
+        setTimeout(() => { article.remove(); renderSaved(); }, 320);
+      });
+
+      return article;
+    }
+
+    /* ────────────────────────────────────────────────────────
+       BUILD A GIVE-BACK CARD  (donate-volunteer style)
+    ──────────────────────────────────────────────────────── */
+    function buildGiveBackCard(item) {
+      const kindLabel = item.kind === 'donate & volunteer'
+        ? '<span class="kind-badge badge-donate">Donate</span><span class="kind-badge badge-volunteer">Volunteer</span>'
+        : item.kind === 'volunteer'
+          ? '<span class="kind-badge badge-volunteer">Volunteer</span>'
+          : '<span class="kind-badge badge-donate">Donate</span>';
+
+      const townDisplay = (item.location || 'County-wide')
+        .split('-')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+
+      const article = document.createElement('article');
+      article.className = 'resource-card';
+      article.id        = 'gb-card-' + item.id;
+      article.innerHTML = `
+        <div class="card-top">
+          <div class="kind-badges">${kindLabel}</div>
+          <button class="card-bookmark saved"
+                  data-id="${item.id}"
+                  data-section="${CareMapBookmarks.SECTIONS.GIVE_BACK}"
+                  aria-label="Unsave this opportunity"
+                  title="Remove bookmark">♥</button>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${item.title}</h3>
+          <p class="card-meta">${townDisplay}</p>
+          <p class="card-text">${item.desc || ''}</p>
+        </div>
+        <div class="card-actions">
+          <a class="btn btn-secondary" href="donate-volunteer.html">View on Give Back</a>
+          ${item.link ? `<a class="btn btn-ghost" href="${item.link}" target="_blank" rel="noopener">Website ↗</a>` : ''}
+        </div>`;
+
+      article.querySelector('.card-bookmark').addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        CareMapBookmarks.remove(item.id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+        localStorage.removeItem('cm_gb_item_' + item.id);
+        article.style.transition = 'opacity .3s, transform .3s';
+        article.style.opacity    = '0';
+        article.style.transform  = 'scale(.95)';
+        setTimeout(() => { article.remove(); renderGiveBack(); }, 320);
+      });
+
+      return article;
+    }
+
+    /* ────────────────────────────────────────────────────────
+       RENDER — SAVED RESOURCES SECTION
+    ──────────────────────────────────────────────────────── */
+    function renderSaved() {
+      const grid      = document.getElementById('savedGrid');
+      const empty     = document.getElementById('savedEmpty');
+      const actions   = document.getElementById('savedActions');
+
+      const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED);
       grid.innerHTML = '';
- 
-      if (savedIds.length === 0) {
-        emptyState.style.display = 'block';
-        subtitle.textContent     = 'Save organizations from the directory to access them here.';
-        clearRow.style.display   = 'none';
+
+      if (ids.length === 0) {
+        empty.style.display    = 'block';
+        actions.classList.add('hidden');
+        grid.classList.add('hidden');
         return;
       }
- 
-      emptyState.style.display = 'none';
-      clearRow.style.display   = 'block';
-      subtitle.textContent     = savedIds.length === 1
-        ? 'You have 1 saved organization.'
-        : `You have ${savedIds.length} saved organizations.`;
- 
-      savedIds.forEach(function (id) {
-        // RESOURCES is loaded from js/resources.js
-        const resource = typeof RESOURCES !== 'undefined'
-          ? RESOURCES.find(r => r.id === id)
-          : null;
- 
-        if (!resource) return;
- 
-        const cls  = catClass[resource.category] || 'cat-food';
-        const tags = (resource.tags || []).slice(0, 4)
-          .map(t => `<span class="pill">${t}</span>`).join('');
- 
-        const card = document.createElement('article');
-        card.className = 'resource-card';
-        card.id        = 'bookmark-card-' + resource.id;
-        card.innerHTML = `
-          <div class="card-top">
-            <span class="card-category ${cls}">${resource.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
-            <button class="card-bookmark saved" data-id="${resource.id}" aria-label="Unsave this organization" title="Remove bookmark">♥</button>
-          </div>
-          <div class="card-body">
-            <h2 class="card-title">${resource.title}</h2>
-            <p class="card-meta">${resource.town || ''}</p>
-            <p class="card-text">${resource.shortDesc || ''}</p>
-            <div class="pill-row">${tags}</div>
-          </div>
-          <div class="card-actions">
-            <a class="btn btn-secondary" href="directory.html?id=${resource.id}">View in Directory</a>
-            ${resource.website ? `<a class="btn btn-ghost" href="${resource.website}" target="_blank" rel="noopener">Website ↗</a>` : ''}
-          </div>
-        `;
-        grid.appendChild(card);
-      });
- 
-      // After rendering, re-wire bookmarks so removing heart removes card too
-      grid.querySelectorAll('.card-bookmark[data-id]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const id = this.dataset.id;
-          CareMapBookmarks.remove(id);
-          const card = document.getElementById('bookmark-card-' + id);
-          if (card) {
-            card.style.transition = 'opacity .3s, transform .3s';
-            card.style.opacity    = '0';
-            card.style.transform  = 'scale(.95)';
-            setTimeout(() => { card.remove(); renderBookmarks(); }, 320);
-          }
-        });
+
+      empty.style.display    = 'none';
+      actions.classList.remove('hidden');
+      grid.classList.remove('hidden');
+
+      const resources = window.RESOURCES || [];
+      ids.forEach(function (id) {
+        const r = resources.find(r => r.id === id);
+        if (r) grid.appendChild(buildSavedCard(r));
       });
     }
- 
-    const resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
-    resourcesReady.then(function () {
-      renderBookmarks();
-      CareMapBookmarks.applyToPage();
-    });
- 
-    // Clear all button
-    if (clearBtn) {
-      clearBtn.addEventListener('click', function () {
-        if (confirm('Remove all saved resources?')) {
-          localStorage.removeItem('cm_bookmarks');
-          renderBookmarks();
+
+    /* ────────────────────────────────────────────────────────
+       RENDER — GIVE BACK SECTION
+    ──────────────────────────────────────────────────────── */
+    function renderGiveBack() {
+      const grid      = document.getElementById('giveBackGrid');
+      const empty     = document.getElementById('giveBackEmpty');
+      const actions   = document.getElementById('giveBackActions');
+
+      const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.GIVE_BACK);
+      grid.innerHTML = '';
+
+      if (ids.length === 0) {
+        empty.style.display    = 'block';
+        actions.classList.add('hidden');
+        grid.classList.add('hidden');
+        return;
+      }
+
+      empty.style.display    = 'none';
+      actions.classList.remove('hidden');
+      grid.classList.remove('hidden');
+
+      /* Read cached item snapshots (stored by donate-volunteer.html) */
+      ids.forEach(function (id) {
+        let item = null;
+        try { item = JSON.parse(localStorage.getItem('cm_gb_item_' + id)); } catch {}
+        if (!item) {
+          /* Fallback: render a minimal stub */
+          item = { id, title: 'Opportunity #' + id, kind: 'donate & volunteer', location: '', desc: '', link: '' };
         }
+        grid.appendChild(buildGiveBackCard(item));
       });
     }
+
+    /* ── Clear buttons ── */
+    document.getElementById('clearSaved').addEventListener('click', function () {
+      if (!confirm('Remove all saved resources?')) return;
+      CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED)
+        .forEach(id => CareMapBookmarks.remove(id, CareMapBookmarks.SECTIONS.SAVED));
+      renderSaved();
+    });
+
+    document.getElementById('clearGiveBack').addEventListener('click', function () {
+      if (!confirm('Remove all saved give back opportunities?')) return;
+      const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.GIVE_BACK);
+      ids.forEach(id => {
+        localStorage.removeItem('cm_gb_item_' + id);
+        CareMapBookmarks.remove(id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+      });
+      renderGiveBack();
+    });
+
+    /* ── Initial render once RESOURCES is ready ── */
+    const ready = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
+    ready.then(function () {
+      renderSaved();
+      renderGiveBack();
+      CareMapBookmarks.updateAllBadges();
+    });
+
   });
   </script>
 </body>
 </html>
- 

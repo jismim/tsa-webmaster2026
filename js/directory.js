@@ -689,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (typeof CareMapBookmarks === "undefined") return;
 
-    var nowSaved = CareMapBookmarks.toggle(resourceId);
+    var nowSaved = CareMapBookmarks.toggle(resourceId, CareMapBookmarks.SECTIONS.SAVED);
 
     /* Update button */
     btn.textContent = nowSaved ? "♥" : "♡";
@@ -894,7 +894,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         e.stopPropagation();
 
-        var nowSaved = CareMapBookmarks.toggle(r.id);
+        var nowSaved = CareMapBookmarks.toggle(r.id, CareMapBookmarks.SECTIONS.SAVED);
 
         /* Update modal heart */
         modalHeart.textContent = nowSaved ? "♥" : "♡";

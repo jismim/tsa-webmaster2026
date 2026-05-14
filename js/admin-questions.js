@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   auth.requireAdminAuth();
   auth.wireLogoutButtons();
   auth.markActiveNav();
+  auth.wireAdminMenu();
 
   const list = document.getElementById('questionsList');
   const searchInput = document.getElementById('questionSearch');

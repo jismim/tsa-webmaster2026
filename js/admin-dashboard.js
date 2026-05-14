@@ -5,12 +5,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   auth.requireAdminAuth();
   auth.wireLogoutButtons();
   auth.markActiveNav();
+  auth.wireAdminMenu();
 
   try {
     const { resourceSubmissions, volunteerSubmissions, questions } = await dataUtils.loadAdminData();
     document.getElementById('totalResources').textContent = resourceSubmissions.length;
     document.getElementById('totalQuestions').textContent = questions.length;
-    document.getElementById('totalPending').textContent = dataUtils.countByStatus(resourceSubmissions, 'Pending') + dataUtils.countByStatus(questions, 'New');
+    document.getElementById('totalVolunteers').textContent = volunteerSubmissions.length;
 
     const recentSubmissions = [...resourceSubmissions]
       .sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate))
