@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   auth.requireAdminAuth();
   auth.wireLogoutButtons();
   auth.markActiveNav();
+  auth.wireAdminMenu();
 
   const isVolunteerPage = window.location.pathname.includes('volunteer-submission');
   const tbody = document.getElementById('resourceTableBody');
