@@ -7,13 +7,14 @@
   <meta name="description" content="Browse Morris County community resources — food, housing, health, legal aid, and more." />
 
 <link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/tour.css" />
 <link rel="stylesheet" href="css/directory.css" />
-<link rel="stylesheet" href="css/tour.css" />  
 <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="images/logo.png"/>
 
   <style>
+    #cm-help-btn { display: none !important; }
     /* ── PAGE LOAD-IN ANIMATION ───────────────────────────────
        Hero elements animate in on page load (not scroll).
        Cards and filter bar animate in via IntersectionObserver.
@@ -330,7 +331,7 @@
 <script src="js/resources.js"></script>
 <script src="js/bookmarks.js"></script>
 <script src="js/directory.js"></script>
-<script src="js/tour.js"></script>  
+<script src="js/tour.js"></script>
   <script>
 /* ── Page-level init (nav + modal handled by script.js) ── */
 document.addEventListener('DOMContentLoaded', function () {
