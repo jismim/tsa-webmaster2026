@@ -194,6 +194,34 @@
               />
             </div>
 
+            <div class="dir-location-panel">
+              <div class="dir-address-wrap">
+                <label for="addressInput">Find Near an Address</label>
+                <input
+                  type="text"
+                  id="addressInput"
+                  autocomplete="street-address"
+                  aria-autocomplete="list"
+                  aria-controls="addressSuggestions"
+                  aria-expanded="false"
+                  placeholder="Start typing an address or town..."
+                />
+                <div class="dir-address-suggestions" id="addressSuggestions" role="listbox" hidden></div>
+              </div>
+              <div class="dir-radius-wrap">
+                <label for="radiusFilter">Radius</label>
+                <select id="radiusFilter">
+                  <option value="3">3 miles</option>
+                  <option value="5" selected>5 miles</option>
+                  <option value="10">10 miles</option>
+                  <option value="15">15 miles</option>
+                  <option value="25">25 miles</option>
+                </select>
+              </div>
+              <button id="demoAddressBtn" class="dir-demo-btn" type="button">Use Demo Address</button>
+            </div>
+            <p class="dir-location-status" id="locationStatus" aria-live="polite"></p>
+
             <div class="dir-filter-row">
               <div>
                 <label for="categoryFilter">Category</label>
