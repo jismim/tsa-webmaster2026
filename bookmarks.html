@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Saved Resources — CareMap Morris</title>
+  <title>My Bookmarks — CareMap Morris</title>
   <meta name="description" content="Your saved CareMap Morris resources, bookmarked for easy access." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -64,11 +64,19 @@
 
     .bm-section-head {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: space-between;
       gap: 1.25rem;
       margin-bottom: 2rem;
       padding-bottom: 1.25rem;
       border-bottom: 2px solid var(--border);
+    }
+
+    .bm-section-header {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
     }
 
     .bm-section-icon {
@@ -78,7 +86,7 @@
       margin-top: 0.1rem;
     }
 
-    .bm-section-header {
+    .bm-section-header-text {
       flex: 1;
     }
 
@@ -101,59 +109,17 @@
       margin: 0;
     }
 
-    .bm-section-count {
-      font-family: var(--ff-mono);
-      font-size: 0.75rem;
-      color: var(--warm-gray);
-      white-space: nowrap;
+    /* ── Clear button in header ── */
+    .bm-section-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       flex-shrink: 0;
-      padding-top: 0.2rem;
-      letter-spacing: 0.05em;
     }
 
-    /* ── Empty state ── */
-    .bm-empty {
-      text-align: center;
-      padding: 3rem 2rem;
-      background: linear-gradient(135deg, var(--paper) 0%, rgba(247,242,234,0.5) 100%);
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      margin-bottom: 2rem;
-    }
-
-    .bm-empty-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      opacity: 0.8;
-      display: inline-block;
-    }
-
-    .bm-empty h3 {
-      font-family: var(--ff-display);
-      color: var(--bark);
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin: 0 0 0.5rem 0;
-    }
-
-    .bm-empty p {
-      color: var(--warm-gray);
-      font-size: 1rem;
-      margin: 0 0 1.5rem 0;
-      max-width: 50ch;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* ── Clear row ── */
-    .bm-clear-row {
-      text-align: right;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .bm-clear-row.hidden {
+    .bm-section-actions.hidden {
       display: none;
     }
 
@@ -169,6 +135,7 @@
       padding: 0.5rem 0;
       transition: all 0.2s ease;
       font-weight: 500;
+      white-space: nowrap;
     }
 
     .bm-clear-btn:hover {
@@ -403,6 +370,40 @@
       color: white;
     }
 
+    /* ── Empty state ── */
+    .bm-empty {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, var(--paper) 0%, rgba(247,242,234,0.5) 100%);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .bm-empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+      display: inline-block;
+    }
+
+    .bm-empty h3 {
+      font-family: var(--ff-display);
+      color: var(--bark);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .bm-empty p {
+      color: var(--warm-gray);
+      font-size: 1rem;
+      margin: 0 0 1.5rem 0;
+      max-width: 50ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       .bm-page-head {
@@ -416,16 +417,23 @@
 
       .bm-section-head {
         flex-direction: column;
+        align-items: flex-start;
         gap: 1rem;
+      }
+
+      .bm-section-header {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
       }
 
       .bm-section-title {
         font-size: 1.5rem;
       }
 
-      .bm-section-count {
-        order: -1;
-        padding-top: 0;
+      .bm-section-actions {
+        width: 100%;
+        justify-content: flex-start;
       }
 
       .card-actions {
@@ -511,7 +519,7 @@
         <!-- ── Page Header ── -->
         <div class="bm-page-head">
           <p class="section-label">Your Bookmarks</p>
-          <h1 class="section-title">Saved Resources</h1>
+          <h1 class="section-title">Bookmarks</h1>
           <p class="section-sub">
             Resources and opportunities you've saved across CareMap Morris for easy access.
           </p>
@@ -523,14 +531,14 @@
         <section class="bm-section">
           <div class="bm-section-head">
             <div class="bm-section-header">
-              <span class="bm-section-label">Find Help</span>
-              <h2 class="bm-section-title">Saved Resources</h2>
+              <div class="bm-section-header-text">
+                <span class="bm-section-label">Find Help</span>
+                <h2 class="bm-section-title">Saved Resources</h2>
+              </div>
             </div>
-            <span class="bm-section-count" id="savedCount"></span>
-          </div>
-
-          <div class="bm-clear-row hidden" id="savedClearRow">
-            <button class="bm-clear-btn" id="clearSaved">Clear all saved resources</button>
+            <div class="bm-section-actions hidden" id="savedActions">
+              <button class="bm-clear-btn" id="clearSaved">Clear all</button>
+            </div>
           </div>
 
           <div id="savedEmpty" class="bm-empty">
@@ -549,14 +557,14 @@
         <section class="bm-section">
           <div class="bm-section-head">
             <div class="bm-section-header">
-              <span class="bm-section-label">Give Back</span>
-              <h2 class="bm-section-title">Saved Opportunities</h2>
+              <div class="bm-section-header-text">
+                <span class="bm-section-label">Give Back</span>
+                <h2 class="bm-section-title">Saved Opportunities</h2>
+              </div>
             </div>
-            <span class="bm-section-count" id="giveBackCount"></span>
-          </div>
-
-          <div class="bm-clear-row hidden" id="giveBackClearRow">
-            <button class="bm-clear-btn" id="clearGiveBack">Clear all give back saves</button>
+            <div class="bm-section-actions hidden" id="giveBackActions">
+              <button class="bm-clear-btn" id="clearGiveBack">Clear all</button>
+            </div>
           </div>
 
           <div id="giveBackEmpty" class="bm-empty">
@@ -590,7 +598,7 @@
           <li><a href="donate-volunteer.html">Give Back</a></li>
           <li><a href="submit.html">Submit a Resource</a></li>
           <li><a href="highlights.html">Highlights</a></li>
-          <li><a href="bookmarks.html">♥ Saved Resources</a></li>
+          <li><a href="bookmarks.html">♥ Bookmarks</a></li>
         </ul>
       </div>
       <div>
@@ -789,23 +797,20 @@
     function renderSaved() {
       const grid      = document.getElementById('savedGrid');
       const empty     = document.getElementById('savedEmpty');
-      const clearRow  = document.getElementById('savedClearRow');
-      const countEl   = document.getElementById('savedCount');
+      const actions   = document.getElementById('savedActions');
 
       const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED);
       grid.innerHTML = '';
 
-      countEl.textContent = ids.length ? ids.length + ' saved' : '';
-
       if (ids.length === 0) {
         empty.style.display    = 'block';
-        clearRow.classList.add('hidden');
+        actions.classList.add('hidden');
         grid.classList.add('hidden');
         return;
       }
 
       empty.style.display    = 'none';
-      clearRow.classList.remove('hidden');
+      actions.classList.remove('hidden');
       grid.classList.remove('hidden');
 
       const resources = window.RESOURCES || [];
@@ -821,23 +826,20 @@
     function renderGiveBack() {
       const grid      = document.getElementById('giveBackGrid');
       const empty     = document.getElementById('giveBackEmpty');
-      const clearRow  = document.getElementById('giveBackClearRow');
-      const countEl   = document.getElementById('giveBackCount');
+      const actions   = document.getElementById('giveBackActions');
 
       const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.GIVE_BACK);
       grid.innerHTML = '';
 
-      countEl.textContent = ids.length ? ids.length + ' saved' : '';
-
       if (ids.length === 0) {
         empty.style.display    = 'block';
-        clearRow.classList.add('hidden');
+        actions.classList.add('hidden');
         grid.classList.add('hidden');
         return;
       }
 
       empty.style.display    = 'none';
-      clearRow.classList.remove('hidden');
+      actions.classList.remove('hidden');
       grid.classList.remove('hidden');
 
       /* Read cached item snapshots (stored by donate-volunteer.html) */
