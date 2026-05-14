@@ -14,6 +14,9 @@
   <link rel="icon" type="image/png" href="images/logo.png" />
 
   <style>
+    #cm-help-btn {
+  display: none !important;
+}
     /* ════════════════════════════════════════════════════════
        BOOKMARKS PAGE STYLING
     ════════════════════════════════════════════════════════ */
@@ -627,260 +630,78 @@
   <script src="js/resources.js"></script>
   <script src="js/bookmarks.js"></script>
   <script src="js/tour.js"></script>
+<script>
+/* ── Page-level init (nav + modal handled by script.js) ── */
+document.addEventListener('DOMContentLoaded', function () {
 
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    'use strict';
+  /* ── Welcome Modal ── */
+  var modalBackdrop = document.getElementById('modalBackdrop');
+  var modalWrap     = document.getElementById('modalWrap');
+  var dismissX      = document.getElementById('dismissX');
+  var dismissBtn    = document.getElementById('dismissBtn');
 
-    /* ── Mobile menu ── */
-    const mobileMenu      = document.getElementById('mobileMenu');
-    const mobileNavBtn    = document.getElementById('mobileNavBtn');
-    const mobileMenuClose = document.getElementById('mobileMenuClose');
+  function closeModal() {
+    if (!modalBackdrop || !modalWrap) return;
+    modalBackdrop.hidden = true;
+    modalWrap.hidden     = true;
+    document.body.style.overflow = '';
+    sessionStorage.setItem('cm_welcomed', '1');
+  }
 
-    function openMM()  {
-      mobileMenu.classList.add('open');
-      mobileMenu.setAttribute('aria-hidden','false');
-      mobileNavBtn.setAttribute('aria-expanded','true');
-      document.body.style.overflow='hidden';
-    }
-    function closeMM() {
-      mobileMenu.classList.remove('open');
-      mobileMenu.setAttribute('aria-hidden','true');
-      mobileNavBtn.setAttribute('aria-expanded','false');
-      document.body.style.overflow='';
-    }
+  if (dismissX)      dismissX.addEventListener('click', closeModal);
+  if (dismissBtn)    dismissBtn.addEventListener('click', closeModal);
+  if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
 
-    if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMM);
-    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMM);
-    if (mobileMenu)      mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMM));
-
-    /* ── Mobile dropdown ── */
-    const dropdownToggle = document.querySelector('.mobile-menu-dropdown-toggle');
-    if (dropdownToggle) {
-      dropdownToggle.addEventListener('click', function() {
-        this.parentElement.classList.toggle('open');
-      });
-    }
-
-    /* ── Desktop dropdown ── */
-    const toggle = document.querySelector('.dropdown-toggle');
-    const menu   = document.querySelector('.dropdown-menu');
-    if (toggle && menu) {
-      toggle.addEventListener('click', () => {
-        const isOpen = menu.style.display === 'flex';
-        menu.style.display = isOpen ? 'none' : 'flex';
-        toggle.setAttribute('aria-expanded', !isOpen);
-      });
-    }
-
-    /* ── Footer year ── */
-    const yearEl = document.getElementById('footerYear');
-    if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
-
-    /* ────────────────────────────────────────────────────────
-       CATEGORY → CSS class  (for directory / SAVED section)
-    ──────────────────────────────────────────────────────── */
-    const catClass = {
-      'food':              'cat-food',
-      'housing':           'cat-shelter',
-      'domestic-violence': 'cat-shelter',
-      'youth':             'cat-food',
-      'health':            'cat-housing',
-      'legal':             'cat-housing',
-      'mental-health':     'cat-shelter',
-      'substance-use':     'cat-food',
-      'disability':        'cat-housing',
-      'education':         'cat-housing',
-      'senior':            'cat-housing',
-    };
-
-    /* ────────────────────────────────────────────────────────
-       BUILD A SAVED-RESOURCES CARD  (directory style)
-    ──────────────────────────────────────────────────────── */
-    function buildSavedCard(resource) {
-      const cls  = catClass[resource.category] || 'cat-food';
-      const label = (resource.category || '').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
-      const tags  = (resource.tags || []).slice(0, 4)
-        .map(t => `<span class="pill">${t}</span>`).join('');
-
-      const article = document.createElement('article');
-      article.className = 'resource-card';
-      article.id        = 'saved-card-' + resource.id;
-      article.innerHTML = `
-        <div class="card-top">
-          <span class="card-category ${cls}">${label}</span>
-          <button class="card-bookmark saved"
-                  data-id="${resource.id}"
-                  data-section="${CareMapBookmarks.SECTIONS.SAVED}"
-                  aria-label="Unsave this organization"
-                  title="Remove bookmark">♥</button>
-        </div>
-        <div class="card-body">
-          <h3 class="card-title">${resource.title}</h3>
-          <p class="card-meta">${resource.town || 'Morris County'}</p>
-          <p class="card-text">${resource.shortDesc || ''}</p>
-          <div class="pill-row">${tags}</div>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-secondary" href="directory.html?id=${resource.id}">View in Directory</a>
-          ${resource.website ? `<a class="btn btn-ghost" href="${resource.website}" target="_blank" rel="noopener">Website ↗</a>` : ''}
-        </div>`;
-
-      /* Remove on heart click */
-      article.querySelector('.card-bookmark').addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        CareMapBookmarks.remove(resource.id, CareMapBookmarks.SECTIONS.SAVED);
-        article.style.transition = 'opacity .3s, transform .3s';
-        article.style.opacity    = '0';
-        article.style.transform  = 'scale(.95)';
-        setTimeout(() => { article.remove(); renderSaved(); }, 320);
-      });
-
-      return article;
-    }
-
-    /* ────────────────────────────────────────────────────────
-       BUILD A GIVE-BACK CARD  (donate-volunteer style)
-    ──────────────────────────────────────────────────────── */
-    function buildGiveBackCard(item) {
-      const kindLabel = item.kind === 'donate & volunteer'
-        ? '<span class="kind-badge badge-donate">Donate</span><span class="kind-badge badge-volunteer">Volunteer</span>'
-        : item.kind === 'volunteer'
-          ? '<span class="kind-badge badge-volunteer">Volunteer</span>'
-          : '<span class="kind-badge badge-donate">Donate</span>';
-
-      const townDisplay = (item.location || 'County-wide')
-        .split('-')
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ');
-
-      const article = document.createElement('article');
-      article.className = 'resource-card';
-      article.id        = 'gb-card-' + item.id;
-      article.innerHTML = `
-        <div class="card-top">
-          <div class="kind-badges">${kindLabel}</div>
-          <button class="card-bookmark saved"
-                  data-id="${item.id}"
-                  data-section="${CareMapBookmarks.SECTIONS.GIVE_BACK}"
-                  aria-label="Unsave this opportunity"
-                  title="Remove bookmark">♥</button>
-        </div>
-        <div class="card-body">
-          <h3 class="card-title">${item.title}</h3>
-          <p class="card-meta">${townDisplay}</p>
-          <p class="card-text">${item.desc || ''}</p>
-        </div>
-        <div class="card-actions">
-          <a class="btn btn-secondary" href="donate-volunteer.html">View on Give Back</a>
-          ${item.link ? `<a class="btn btn-ghost" href="${item.link}" target="_blank" rel="noopener">Website ↗</a>` : ''}
-        </div>`;
-
-      article.querySelector('.card-bookmark').addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        CareMapBookmarks.remove(item.id, CareMapBookmarks.SECTIONS.GIVE_BACK);
-        localStorage.removeItem('cm_gb_item_' + item.id);
-        article.style.transition = 'opacity .3s, transform .3s';
-        article.style.opacity    = '0';
-        article.style.transform  = 'scale(.95)';
-        setTimeout(() => { article.remove(); renderGiveBack(); }, 320);
-      });
-
-      return article;
-    }
-
-    /* ────────────────────────────────────────────────────────
-       RENDER — SAVED RESOURCES SECTION
-    ──────────────────────────────────────────────────────── */
-    function renderSaved() {
-      const grid      = document.getElementById('savedGrid');
-      const empty     = document.getElementById('savedEmpty');
-      const actions   = document.getElementById('savedActions');
-
-      const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED);
-      grid.innerHTML = '';
-
-      if (ids.length === 0) {
-        empty.style.display    = 'block';
-        actions.classList.add('hidden');
-        grid.classList.add('hidden');
-        return;
-      }
-
-      empty.style.display    = 'none';
-      actions.classList.remove('hidden');
-      grid.classList.remove('hidden');
-
-      const resources = window.RESOURCES || [];
-      ids.forEach(function (id) {
-        const r = resources.find(r => r.id === id);
-        if (r) grid.appendChild(buildSavedCard(r));
-      });
-    }
-
-    /* ────────────────────────────────────────────────────────
-       RENDER — GIVE BACK SECTION
-    ──────────────────────────────────────────────────────── */
-    function renderGiveBack() {
-      const grid      = document.getElementById('giveBackGrid');
-      const empty     = document.getElementById('giveBackEmpty');
-      const actions   = document.getElementById('giveBackActions');
-
-      const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.GIVE_BACK);
-      grid.innerHTML = '';
-
-      if (ids.length === 0) {
-        empty.style.display    = 'block';
-        actions.classList.add('hidden');
-        grid.classList.add('hidden');
-        return;
-      }
-
-      empty.style.display    = 'none';
-      actions.classList.remove('hidden');
-      grid.classList.remove('hidden');
-
-      /* Read cached item snapshots (stored by donate-volunteer.html) */
-      ids.forEach(function (id) {
-        let item = null;
-        try { item = JSON.parse(localStorage.getItem('cm_gb_item_' + id)); } catch {}
-        if (!item) {
-          /* Fallback: render a minimal stub */
-          item = { id, title: 'Opportunity #' + id, kind: 'donate & volunteer', location: '', desc: '', link: '' };
-        }
-        grid.appendChild(buildGiveBackCard(item));
-      });
-    }
-
-    /* ── Clear buttons ── */
-    document.getElementById('clearSaved').addEventListener('click', function () {
-      if (!confirm('Remove all saved resources?')) return;
-      CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.SAVED)
-        .forEach(id => CareMapBookmarks.remove(id, CareMapBookmarks.SECTIONS.SAVED));
-      renderSaved();
+  /* ── Hero Load-in ── */
+  setTimeout(function () {
+    document.querySelectorAll('.reveal-hero').forEach(function (el) {
+      el.classList.add('visible');
     });
+  }, 80);
 
-    document.getElementById('clearGiveBack').addEventListener('click', function () {
-      if (!confirm('Remove all saved give back opportunities?')) return;
-      const ids = CareMapBookmarks.getSection(CareMapBookmarks.SECTIONS.GIVE_BACK);
-      ids.forEach(id => {
-        localStorage.removeItem('cm_gb_item_' + id);
-        CareMapBookmarks.remove(id, CareMapBookmarks.SECTIONS.GIVE_BACK);
+  /* ── Scroll Reveal ── */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var siblings = el.parentElement
+          ? Array.from(el.parentElement.querySelectorAll('.reveal:not(.visible)'))
+          : [];
+        var delay = Math.min(siblings.indexOf(el) * 70, 360);
+        setTimeout(function () { el.classList.add('visible'); }, delay);
+        io.unobserve(el);
       });
-      renderGiveBack();
-    });
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
 
-    /* ── Initial render once RESOURCES is ready ── */
-    const ready = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
-    ready.then(function () {
-      renderSaved();
-      renderGiveBack();
-      CareMapBookmarks.updateAllBadges();
+  /* ── Total count label (directory only) ── */
+  var totalEl = document.getElementById('totalCount');
+  if (totalEl) {
+    var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
+    resourcesReady.then(function (resources) {
+      totalEl.textContent = resources.length;
     });
+  }
 
-  });
-  </script>
+  /* ── Bookmark Badge ── */
+  if (typeof CareMapBookmarks !== 'undefined') {
+    document.querySelectorAll('.bookmark-count').forEach(function (el) {
+      var c = CareMapBookmarks.count();
+      el.textContent = c;
+      el.style.display = c > 0 ? 'inline-flex' : 'none';
+    });
+  }
+
+  /* ── Footer Year ── */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+
+});
+</script>
 </body>
 </html>

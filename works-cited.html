@@ -287,6 +287,7 @@ These documents show the research base, the development trail, and the final che
 <script src="js/works-cited.js"></script>
   <script src="js/bookmarks.js" defer></script>
 <script>
+/* ── Page-level init (nav + modal handled by script.js) ── */
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Welcome Modal ── */
@@ -303,83 +304,9 @@ document.addEventListener('DOMContentLoaded', function () {
     sessionStorage.setItem('cm_welcomed', '1');
   }
 
-  if (!sessionStorage.getItem('cm_welcomed') && modalBackdrop && modalWrap) {
-    modalBackdrop.hidden = false;
-    modalWrap.hidden     = false;
-    document.body.style.overflow = 'hidden';
-  }
-
   if (dismissX)      dismissX.addEventListener('click', closeModal);
   if (dismissBtn)    dismissBtn.addEventListener('click', closeModal);
   if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
-
-  /* ── Desktop Dropdown ── */
-  var toggle = document.querySelector('.dropdown-toggle');
-  var menu   = document.querySelector('.dropdown-menu');
-
-  if (toggle && menu) {
-    toggle.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var isOpen = menu.classList.contains('open');
-      menu.classList.toggle('open', !isOpen);
-      menu.style.display = isOpen ? '' : 'flex';
-      toggle.setAttribute('aria-expanded', String(!isOpen));
-    });
-    document.addEventListener('click', function (e) {
-      if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.remove('open');
-        menu.style.display = '';
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-
-  /* ── Mobile Menu ── */
-  var mobileMenu      = document.getElementById('mobileMenu');
-  var mobileNavBtn    = document.getElementById('mobileNavBtn');
-  var mobileMenuClose = document.getElementById('mobileMenuClose');
-
-  function openMobileMenu() {
-    if (!mobileMenu) return;
-    mobileMenu.classList.add('open');
-    mobileMenu.setAttribute('aria-hidden', 'false');
-    if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMobileMenu() {
-    if (!mobileMenu) return;
-    mobileMenu.classList.remove('open');
-    mobileMenu.setAttribute('aria-hidden', 'true');
-    if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-
-  if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
-  if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
-  if (mobileMenu) {
-    mobileMenu.querySelectorAll('a').forEach(function (l) {
-      l.addEventListener('click', function () { setTimeout(closeMobileMenu, 50); });
-    });
-  }
-
-  /* ── Mobile Submenu (Resources dropdown inside mobile menu) ── */
-  var mobileSubToggle = document.querySelector('.mobile-menu-dropdown-toggle');
-  if (mobileSubToggle) {
-    mobileSubToggle.addEventListener('click', function () {
-      this.parentElement.classList.toggle('open');
-    });
-  }
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      closeMobileMenu();
-      closeModal();
-    }
-  });
-
-  /* ── Footer Year ── */
-  var yearEl = document.getElementById('footerYear');
-  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
 
   /* ── Hero Load-in ── */
   setTimeout(function () {
@@ -394,10 +321,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        var el      = entry.target;
-        var parent  = el.parentElement;
-        var siblings = parent
-          ? Array.from(parent.querySelectorAll('.reveal:not(.visible)'))
+        var el = entry.target;
+        var siblings = el.parentElement
+          ? Array.from(el.parentElement.querySelectorAll('.reveal:not(.visible)'))
           : [];
         var delay = Math.min(siblings.indexOf(el) * 70, 360);
         setTimeout(function () { el.classList.add('visible'); }, delay);
@@ -409,6 +335,15 @@ document.addEventListener('DOMContentLoaded', function () {
     revealEls.forEach(function (el) { el.classList.add('visible'); });
   }
 
+  /* ── Total count label (directory only) ── */
+  var totalEl = document.getElementById('totalCount');
+  if (totalEl) {
+    var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
+    resourcesReady.then(function (resources) {
+      totalEl.textContent = resources.length;
+    });
+  }
+
   /* ── Bookmark Badge ── */
   if (typeof CareMapBookmarks !== 'undefined') {
     document.querySelectorAll('.bookmark-count').forEach(function (el) {
@@ -417,6 +352,11 @@ document.addEventListener('DOMContentLoaded', function () {
       el.style.display = c > 0 ? 'inline-flex' : 'none';
     });
   }
+
+  /* ── Footer Year ── */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+
 });
 </script>
 </body>

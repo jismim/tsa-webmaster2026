@@ -279,138 +279,78 @@
   <div class="detail-modal-wrap" id="detailModalWrap" hidden role="dialog" aria-modal="true" aria-labelledby="detailTitle">
     <div class="detail-card" id="detailCard"></div>
   </div>
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
+ <script>
+/* ── Page-level init (nav + modal handled by script.js) ── */
+document.addEventListener('DOMContentLoaded', function () {
 
-    /* ── LOADER ── */
-    (function () {
-      var loader = document.getElementById('loader');
-      var pageWrap = document.getElementById('page-wrap');
-      if (!loader) return;
+  /* ── Welcome Modal ── */
+  var modalBackdrop = document.getElementById('modalBackdrop');
+  var modalWrap     = document.getElementById('modalWrap');
+  var dismissX      = document.getElementById('dismissX');
+  var dismissBtn    = document.getElementById('dismissBtn');
 
-      var hasVisited = sessionStorage.getItem('cm_visited');
+  function closeModal() {
+    if (!modalBackdrop || !modalWrap) return;
+    modalBackdrop.hidden = true;
+    modalWrap.hidden     = true;
+    document.body.style.overflow = '';
+    sessionStorage.setItem('cm_welcomed', '1');
+  }
 
-      if (hasVisited) {
-        loader.style.display = 'none';
-      } else {
-        sessionStorage.setItem('cm_visited', 'true');
-        document.body.classList.add('loading');
-        if (pageWrap) pageWrap.style.opacity = '0';
+  if (dismissX)      dismissX.addEventListener('click', closeModal);
+  if (dismissBtn)    dismissBtn.addEventListener('click', closeModal);
+  if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
 
-        setTimeout(function () {
-          loader.classList.add('hide');
-          if (pageWrap) pageWrap.style.opacity = '1';
-          document.body.classList.remove('loading');
-          setTimeout(function () { loader.style.display = 'none'; }, 600);
-        }, 2400);
-      }
-    })();
-
-    /* ── Mobile menu ── */
-    var mobileMenu      = document.getElementById('mobileMenu');
-    var mobileNavBtn    = document.getElementById('mobileNavBtn');
-    var mobileMenuClose = document.getElementById('mobileMenuClose');
-
-    function openMobileMenu() {
-      if (!mobileMenu) return;
-      mobileMenu.classList.add('open');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMobileMenu() {
-      if (!mobileMenu) return;
-      mobileMenu.classList.remove('open');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      if (mobileNavBtn) mobileNavBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    if (mobileNavBtn)    mobileNavBtn.addEventListener('click', openMobileMenu);
-    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
-    if (mobileMenu) {
-      mobileMenu.querySelectorAll('a').forEach(function (l) {
-        l.addEventListener('click', closeMobileMenu);
-      });
-    }
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeMobileMenu();
+  /* ── Hero Load-in ── */
+  setTimeout(function () {
+    document.querySelectorAll('.reveal-hero').forEach(function (el) {
+      el.classList.add('visible');
     });
+  }, 80);
 
-    /* ── Dropdown ── */
-    var toggle = document.querySelector('.dropdown-toggle');
-    var menu   = document.querySelector('.dropdown-menu');
-    if (toggle && menu) {
-      toggle.addEventListener('click', function () {
-        var isOpen = menu.style.display === 'flex';
-        menu.style.display = isOpen ? 'none' : 'flex';
-        toggle.setAttribute('aria-expanded', String(!isOpen));
+  /* ── Scroll Reveal ── */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var siblings = el.parentElement
+          ? Array.from(el.parentElement.querySelectorAll('.reveal:not(.visible)'))
+          : [];
+        var delay = Math.min(siblings.indexOf(el) * 70, 360);
+        setTimeout(function () { el.classList.add('visible'); }, delay);
+        io.unobserve(el);
       });
-      document.addEventListener('click', function (e) {
-        if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-          menu.style.display = 'none';
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
 
-    /* ── Footer year ── */
-    var yearEl = document.getElementById('footerYear');
-    if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
-
-    /* ── HERO LOAD-IN ─────────────────────────────────────────
-       Fire on DOMContentLoaded (not scroll) so hero animates
-       the moment the page is ready.
-    --------------------------------------------------------- */
-    setTimeout(function () {
-      document.querySelectorAll('.reveal-hero').forEach(function (el) {
-        el.classList.add('visible');
-      });
-    }, 80);
-
-    /* ── SCROLL REVEAL (filter bar, cards, footer cta) ───── */
-    var revealEls = document.querySelectorAll('.reveal');
-
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var el     = entry.target;
-          var parent = el.parentElement;
-
-          var siblings = parent
-            ? Array.from(parent.querySelectorAll('.reveal:not(.visible)'))
-            : [];
-          var idx   = siblings.indexOf(el);
-          var delay = Math.min(idx * 70, 360);
-
-          setTimeout(function () { el.classList.add('visible'); }, delay);
-          io.unobserve(el);
-        });
-      }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
-
-      revealEls.forEach(function (el) { io.observe(el); });
-    } else {
-      revealEls.forEach(function (el) { el.classList.add('visible'); });
-    }
-
-    /* ── Total count label ── */
-    var totalEl = document.getElementById('totalCount');
+  /* ── Total count label (directory only) ── */
+  var totalEl = document.getElementById('totalCount');
+  if (totalEl) {
     var resourcesReady = window.CareMapResourcesReady || Promise.resolve(window.RESOURCES || []);
     resourcesReady.then(function (resources) {
-      if (totalEl) totalEl.textContent = resources.length;
+      totalEl.textContent = resources.length;
     });
+  }
 
-    /* ── Bookmark badge on load ── */
-    if (typeof CareMapBookmarks !== 'undefined') {
-      document.querySelectorAll('.bookmark-count').forEach(function (el) {
-        var c = CareMapBookmarks.count();
-        el.textContent = c;
-        el.style.display = c > 0 ? 'inline-flex' : 'none';
-      });
-    }
+  /* ── Bookmark Badge ── */
+  if (typeof CareMapBookmarks !== 'undefined') {
+    document.querySelectorAll('.bookmark-count').forEach(function (el) {
+      var c = CareMapBookmarks.count();
+      el.textContent = c;
+      el.style.display = c > 0 ? 'inline-flex' : 'none';
+    });
+  }
 
-  });
-  </script>
+  /* ── Footer Year ── */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = '© ' + new Date().getFullYear() + ' CareMap Morris. All rights reserved.';
+
+});
+</script>
 </body>
 </html>
